@@ -69,4 +69,9 @@ Kruis je geplande **mobile features** aan:
 
 Plaats hier de wireframes die je uploadde naar `/reports/wireframes` (gebruik relatieve verwijzingen).
 
+![Flyout](/reports/wireframes/Flyout.png)
+![Home](/reports/wireframes/Home.png)
+![TranslationPage](/reports/wireframes/TranslationPage.png)
+![CargosPage](/reports/wireframes/CargosPage.png)
+![NavigationPage](/reports/wireframes/NavigationPage.png)
 
