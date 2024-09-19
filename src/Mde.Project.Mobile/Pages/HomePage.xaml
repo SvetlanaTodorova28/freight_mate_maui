@@ -22,15 +22,16 @@
                     VerticalOptions="Center"
                     x:Name="btnTranslate" />
                 <Button
-                    Clicked="BtnNavigation_OnClicked"
-                    Text="Route Planner"
-                    VerticalOptions="Center"
-                    x:Name="btnNavigation" />
-                <Button
                     Clicked="BtnCargosInfo_OnClicked"
                     Text="Cargo Info"
                     VerticalOptions="Center"
                     x:Name="btnCargosInfo" />
+                <Button
+                    Clicked="BtnNavigation_OnClicked"
+                    Text="Navigation"
+                    VerticalOptions="Center"
+                    x:Name="btnNavigation" />
+
                 <!--
                     TO DO later weather service maken
                     goed om te weten voor de trucker

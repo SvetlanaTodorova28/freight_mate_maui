@@ -4,5 +4,49 @@
     x:Class="Mde.Project.Mobile.Pages.AboutPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="25">
+
+
+                <Label
+                    FontSize="Title"
+                    Padding="15"
+                    Text="About this app" />
+                <Label Text="FreightMate helps truckers with navigation, route planning, cargo management, and language support." />
+                <Label Text="Developed by Svetlana Todorova" />
+                <Label Text="For feedback or support, contact us via: support@email.com" />
+                <Label Text="© 2024 FreightMate. All rights reserved." />
+                <Label FontAttributes="Bold" Text="FreightMate v1.0" />
+                <Label Text="Used images:" />
+
+                <Label
+                    Text="Image by vectorjuice on Freepik"
+                    TextColor="Blue"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="https://www.freepik.com/free-vector/delivery-point-abstract-concept-illustration_12291351.htm" Tapped="LabelTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Text="Image by isometric Freepik"
+                    TextColor="Blue"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="https://www.freepik.com/free-vector/isometric-vehicle_4980942.htm" Tapped="LabelTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Text="Image by isometric Freepik"
+                    TextColor="Blue"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="https://www.freepik.com/free-vector/worldwide-logistics-distribution-contract-road-transport-documents-cmr-transport-document-international-transportation-regulation-concept-pinkish-coral-bluevector-isolated-illustration_11667357.htm" Tapped="LabelTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>

@@ -4,5 +4,19 @@
     x:Class="Mde.Project.Mobile.Pages.CargosPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Cargos to deliver"
+                TextColor="Brown"
+                VerticalOptions="Center" />
+            <Image>
+                <Image.Source>
+                    <FileImageSource File="cargo.png" />
+                </Image.Source>
+            </Image>
+        </VerticalStackLayout>
+    </ContentPage.Content>
 </ContentPage>

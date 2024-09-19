@@ -39,7 +39,7 @@
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate pages:CargosPage}" Route="Cargos" />
         </Tab>
-        <Tab Route="route" Title="Route">
+        <Tab Route="navigation" Title="Navigation">
             <!--  f279  -->
             <Tab.Icon>
                 <FontImageSource
@@ -48,7 +48,7 @@
                     Glyph="&#xf041;"
                     Size="20" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate NavigationPage}" Route="Route" />
+            <ShellContent ContentTemplate="{DataTemplate pages:NavigationPage}" Route="Navigation" />
         </Tab>
     </FlyoutItem>
     <!--  f05a  -->

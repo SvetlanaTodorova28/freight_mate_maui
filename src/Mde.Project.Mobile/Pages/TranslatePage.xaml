@@ -4,5 +4,39 @@
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
+    <ContentPage.Content>
+
+        <VerticalStackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Margin="0,0,0,10"
+                Text="Here can you speak in your language"
+                TextColor="Blue"
+                VerticalOptions="Center" />
+            <Button
+                HorizontalOptions="Center"
+                Margin="20"
+                VerticalOptions="Center">
+                <Button.ImageSource>
+                    <FontImageSource
+                        Color="Green"
+                        FontFamily="FontAwesome"
+                        Glyph="&#xf130;"
+                        Size="50" />
+                </Button.ImageSource>
+            </Button>
+            <Editor
+                BackgroundColor="#E8E8E8"
+                FontSize="18"
+                HeightRequest="100"
+                HorizontalOptions="FillAndExpand"
+                Placeholder="Your translation will appear here..."
+                TextColor="DarkGray"
+                VerticalOptions="Center" />
+
+        </VerticalStackLayout>
+
+
+    </ContentPage.Content>
 </ContentPage>
