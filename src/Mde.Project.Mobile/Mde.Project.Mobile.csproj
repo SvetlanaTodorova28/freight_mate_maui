@@ -55,6 +55,11 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+	<ItemGroup>
+		<MauiFont Include="Resources/Fonts/fontawesome-webfont.ttf" Alias="FontAwesome">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</MauiFont>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
