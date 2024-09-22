@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Mde.Project.Mobile.Pages;
 
-public partial class NavigationPage : ContentPage{
-    public NavigationPage(){
+public partial class CreateCargoPage : ContentPage{
+    public CreateCargoPage(){
         InitializeComponent();
     }
 }

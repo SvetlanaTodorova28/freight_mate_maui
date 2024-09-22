@@ -3,7 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.OptionsPage">
-        <ContentPage.Content>
+     <ContentPage.Content>
                 <VerticalStackLayout Spacing="25" Padding="30">
                     <!-- About Item met FontAwesome icoon en klik event -->
                     <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand"
@@ -26,7 +26,7 @@
                                Grid.Column="1" />
 
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NavigateToAbout_OnTapped" />
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NavigateToAbout" />
                         </Grid.GestureRecognizers>
                     </Grid>
 
@@ -43,7 +43,7 @@
                                HorizontalOptions="Start"
                                FontSize="18">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" x:Name="OpenEmailApp" Tapped="OpenEmailApp_OnTapped"  />
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OpenEmailApp" />
                             </Label.GestureRecognizers>
                         </Label>
 

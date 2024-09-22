@@ -4,19 +4,47 @@
     x:Class="Mde.Project.Mobile.Pages.CargosPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content>
-        <VerticalStackLayout>
-            <Label
-                FontSize="20"
-                HorizontalOptions="Center"
-                Text="Cargos to deliver"
-                TextColor="Brown"
-                VerticalOptions="Center" />
-            <Image>
-                <Image.Source>
-                    <FileImageSource File="cargo.png" />
-                </Image.Source>
-            </Image>
-        </VerticalStackLayout>
+   <ContentPage.Content>
+             <ScrollView>
+                 <Grid>
+                     <Grid.RowDefinitions>
+                         <RowDefinition Height="Auto" />
+                         <RowDefinition Height="*" />
+                     </Grid.RowDefinitions>
+                     <Grid BackgroundColor="OrangeRed" Opacity=".9" />
+           
+                     <Grid Padding="40">
+                         <Grid.ColumnDefinitions>
+                             <ColumnDefinition Width="*"/>
+                             <ColumnDefinition Width="*"/>
+                         </Grid.ColumnDefinitions>
+
+                         <Image
+                             Grid.Column="0"
+                             Aspect="AspectFit"
+                             Source="cargos.png" />
+                       
+                     </Grid>
+                     <Frame
+                         Grid.Row="1"
+                         Margin="0,-30,0,0"
+                         CornerRadius="25">
+                         <VerticalStackLayout Padding="20" Spacing="10">
+                
+                     <!-- Eerste Cargo Button -->
+                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" />
+                     <!-- Tweede Cargo Button -->
+                     <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" />
+                     <!-- Derde Cargo Button -->
+                     <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"/>
+                     <!--<Button Text="&#xf0fe;" FontFamily="FontAwesome" HeiCreate_Cargo_OnClickedequest="250"  Margin="30"/>-->
+                     <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked"/>
+
+                     <!-- Voeg meer knoppen toe naar behoefte -->
+                         </VerticalStackLayout>
+                         </Frame>
+                     </Grid>
+                
+             </ScrollView>
     </ContentPage.Content>
 </ContentPage>

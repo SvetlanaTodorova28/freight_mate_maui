@@ -10,12 +10,11 @@ public partial class OptionsPage : ContentPage{
     public OptionsPage(){
         InitializeComponent();
     }
-
-    private async void NavigateToAbout_OnTapped(object? sender, TappedEventArgs e){
+    private async void NavigateToAbout(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//options/about");
     }
 
-    private void OpenEmailApp_OnTapped(object? sender, TappedEventArgs e){
-        throw new NotImplementedException();
+    public async void OpenEmailApp(object sender, EventArgs e){
+        
     }
 }

@@ -4,7 +4,6 @@
     Title="Mde.Project.Mobile"
     x:Class="Mde.Project.Mobile.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:local="clr-namespace:Mde.Project.Mobile"
     xmlns:pages="clr-namespace:Mde.Project.Mobile.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
@@ -22,7 +21,7 @@
         <Tab Route="translate" Title="Translate">
             <Tab.Icon>
                 <FontImageSource
-                    Color="Brown"
+                    Color="OrangeRed"
                     FontFamily="FontAwesome"
                     Glyph="&#xf1ab;"
                     Size="20" />
@@ -32,28 +31,24 @@
         <Tab Route="cargos" Title="Cargos">
             <Tab.Icon>
                 <FontImageSource
-                    Color="Brown"
+                    Color="OrangeRed"
                     FontFamily="FontAwesome"
                     Glyph="&#xf02a;"
                     Size="20" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate pages:CargosPage}" Route="Cargos" />
         </Tab>
-        <Tab Route="navigation" Title="Navigation">
+        <Tab Route="options" Title="Options">
             <!--  f279  -->
             <Tab.Icon>
                 <FontImageSource
-                    Color="Brown"
+                    Color="OrangeRed"
                     FontFamily="FontAwesome"
-                    Glyph="&#xf041;"
+                    Glyph="&#xf059;"
                     Size="20" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate pages:NavigationPage}" Route="Navigation" />
+            <ShellContent ContentTemplate="{DataTemplate pages:OptionsPage}" Route="Options" />
         </Tab>
-    </FlyoutItem>
-    <!--  f05a  -->
-    <FlyoutItem Icon="{FontImage FontFamily='FontAwesome', Glyph='&#xf05a;', Size=40, Color=Brown}" Title="About">
-        <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" Route="about" />
     </FlyoutItem>
 
     <MenuItem
