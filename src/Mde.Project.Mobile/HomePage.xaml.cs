@@ -18,7 +18,7 @@ public partial class HomePage : ContentPage{
         await Shell.Current.GoToAsync("//navigation");
     }
 
-    private async void BtnCargosInfo_OnClicked(object? sender, EventArgs e){
+    private async void BtnCargos_OnClicked(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//cargos");
     }
 }

@@ -22,10 +22,10 @@
                     VerticalOptions="Center"
                     x:Name="btnTranslate" />
                 <Button
-                    Clicked="BtnCargosInfo_OnClicked"
-                    Text="Cargo Info"
+                    Clicked="BtnCargos_OnClicked"
+                    Text="Cargos"
                     VerticalOptions="Center"
-                    x:Name="btnCargosInfo" />
+                    x:Name="btnCargos" />
                 <Button
                     Clicked="BtnNavigation_OnClicked"
                     Text="Navigation"
