@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace Mde.Project.Mobile.Pages;
 
@@ -14,7 +15,7 @@ public partial class OptionsPage : ContentPage{
         await Shell.Current.GoToAsync("//pages/about");
     }
 
-    public async void OpenEmailApp(object sender, EventArgs e){
-        
+    private async void OpenEmailApp(object sender, EventArgs e){
+        await Shell.Current.GoToAsync("//pages/about");
     }
 }

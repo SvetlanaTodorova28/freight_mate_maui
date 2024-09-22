@@ -6,12 +6,12 @@
     <ContentPage.Content>
           <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".3*" />
-            <RowDefinition Height=".7*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid BackgroundColor="OrangeRed" Opacity=".9" />
            
-        <Grid Padding="10">
+        <Grid Padding="40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

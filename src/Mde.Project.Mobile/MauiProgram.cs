@@ -1,5 +1,8 @@
 ﻿using Mde.Project.Mobile.Pages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
 
 namespace Mde.Project.Mobile
 {
