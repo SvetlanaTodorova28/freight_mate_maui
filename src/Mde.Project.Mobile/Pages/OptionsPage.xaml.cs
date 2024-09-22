@@ -11,7 +11,7 @@ public partial class OptionsPage : ContentPage{
         InitializeComponent();
     }
     private async void NavigateToAbout(object? sender, EventArgs e){
-        await Shell.Current.GoToAsync("//options/about");
+        await Shell.Current.GoToAsync("//pages/about");
     }
 
     public async void OpenEmailApp(object sender, EventArgs e){

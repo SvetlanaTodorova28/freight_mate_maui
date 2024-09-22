@@ -18,7 +18,7 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("FontAwesomeSolid.otf", "AwesomeSolid");
                 });
             Routing.RegisterRoute("//pages/createAccount", typeof(CreateAccountPage));
-            Routing.RegisterRoute("//pages/options/about", typeof(AboutPage));
+            Routing.RegisterRoute("//pages/about", typeof(AboutPage));
             Routing.RegisterRoute("//pages/createCargo", typeof(CreateCargoPage));
             Routing.RegisterRoute("//pages/infoCargo", typeof(CargoInfoPage));
 

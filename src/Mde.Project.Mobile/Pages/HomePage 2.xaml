@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mde.Project.Mobile.Pages.HomePage">
+     <ContentPage.Content>
+       <ScrollView>
+           
+           <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid BackgroundColor="OrangeRed" Opacity=".9" />
+           
+            <Grid Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    Aspect="AspectFit"
+                    HeightRequest="190"
+                    Source="truck.png" />
+                <Image
+                    Grid.Column="1"
+                    Aspect="AspectFit"
+                    HeightRequest="190"
+                    Source="name.png" />
+            </Grid>
+
+            <Frame
+                Grid.Row="1"
+                Margin="0,-30,0,0"
+                CornerRadius="25">
+                <Grid>
+                    <VerticalStackLayout>
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="bold"
+                            FontSize="Medium"
+                            Text="Welcome!"
+                            TextColor="#2D2D2D" />
+                        <Label
+                            FontFamily="medium"
+                            Text="Log in to continue"
+                            TextColor="#A3A3A4" />
+                        <Grid Margin="0,30,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".2*" />
+                                <ColumnDefinition Width=".8*" />
+                            </Grid.ColumnDefinitions>
+                            <Frame
+                                Padding="0"
+                                BackgroundColor="#EDEBF6"
+                                CornerRadius="10"
+                                HeightRequest="60"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="60">
+                                <Image HorizontalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource
+                                            FontFamily="AwesomeSolid"
+                                            Glyph="&#xf0e0;"
+                                            Size="44"
+                                            Color="#4F3F9B" />
+                                    </Image.Source>
+                                </Image>
+                            </Frame>
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="EMAIL"
+                                Text="driver@transport.com" />
+                        </Grid>
+                        <Grid Margin="0,25,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".2*" />
+                                <ColumnDefinition Width=".8*" />
+                            </Grid.ColumnDefinitions>
+                            <Frame
+                                Padding="0"
+                                BackgroundColor="#EDEBF6"
+                                CornerRadius="10"
+                                HeightRequest="60"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="60">
+                                <Image HorizontalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource
+                                            FontFamily="AwesomeSolid"
+                                            Glyph="&#xf084;"
+                                            Color="#4F3F9B" />
+                                    </Image.Source>
+                                </Image>
+                            </Frame>
+                            <Entry
+                                Grid.Column="1"
+                                IsPassword="True"
+                                Placeholder="PASSWORD"
+                                Text="12345" />
+                        </Grid>
+                        <Button
+                            x:Name="Login"
+                            Margin="0,20,0,0"
+                            BackgroundColor="#4F3F9B"
+                            Clicked="Login_OnClicked"
+                            HeightRequest="60"
+                            Text="Login"
+                            TextColor="#FBF6FD" />
+                        <Label
+                            Margin="0,20,0,-10"
+                            HorizontalOptions="Center"
+                            Text="Forgot your password?" />
+                        <Button
+                            x:Name="CreateAccount"
+                            Margin="0,30,0,0"
+                            BackgroundColor="#FBF6FD"
+                            Clicked=
+"CreateAccount_OnClicked"                            HeightRequest="60"
+                            Text="Create your Account"
+                            TextColor="#4F3F9B" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+        </Grid>
+    </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

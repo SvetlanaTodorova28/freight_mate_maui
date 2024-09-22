@@ -10,8 +10,16 @@ public partial class HomePage : ContentPage{
     public HomePage(){
         InitializeComponent();
     }
+    private  async void BtnTranslate_OnClicked(object? sender, EventArgs e){
+        await Shell.Current.GoToAsync("//translate");
+    }
+
+    private async void BtnCargosInfo_OnClicked(object? sender, EventArgs e){
+        await Shell.Current.GoToAsync("//cargos");
+    }
+
     private async void CreateAccount_OnClicked(object? sender, EventArgs e){
-        await Shell.Current.GoToAsync("//pages/createAccount");
+        await Shell.Current.GoToAsync("//createAccount");
     }
 
     private void Login_OnClicked(object? sender, EventArgs e){

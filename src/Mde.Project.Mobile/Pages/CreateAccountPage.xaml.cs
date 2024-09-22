@@ -11,6 +11,6 @@ public partial class CreateAccountPage : ContentPage{
         InitializeComponent();
     }
     private async void CreateAccount_Clicked(object sender, EventArgs e){
-        await Shell.Current.GoToAsync("//home");
+        await Shell.Current.GoToAsync("//pages/home");
     }
 }
