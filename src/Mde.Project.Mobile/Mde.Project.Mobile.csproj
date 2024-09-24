@@ -24,7 +24,7 @@
 		<ApplicationTitle>Freight Mate</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.mde.project.mobile</ApplicationId>
+		<ApplicationId>projmde</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -37,10 +37,8 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-	  <CodesignKey>Apple Development: svetlanatodorova28@gmail.com (76HV98CWDV)</CodesignKey>
-	</PropertyGroup>
+	
+	
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -67,20 +65,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Azure.AI.Translation.Text" Version="1.0.0" />
-		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.40.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\AboutPage.xaml">
-	    <SubType>Designer</SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\CargoInfoPage.xaml">
-	    <SubType>Designer</SubType>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\CargosPage.xaml">
 	    <SubType>Designer</SubType>
 	  </MauiXaml>
@@ -88,24 +79,25 @@
 	    <SubType>Designer</SubType>
 	  </MauiXaml>
 	</ItemGroup>
+	
 
 	<ItemGroup>
-	  <Compile Update="Pages\AboutPage.xaml.cs">
-	    <DependentUpon>AboutPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </Compile>
-	  <Compile Update="Pages\CargoInfoPage.xaml.cs">
-	    <DependentUpon>CargoInfoPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </Compile>
 	  <Compile Update="Pages\CargosPage.xaml.cs">
 	    <DependentUpon>CargosPage.xaml</DependentUpon>
 	    <SubType>Code</SubType>
 	  </Compile>
-	  <Compile Update="Pages\TranslatePage.xaml.cs">
-	    <DependentUpon>TranslatePage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </Compile>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <Content Include="Platforms\.DS_Store" />
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <None Include="Platforms\Tizen\Main.cs" />
+	  <None Include="Platforms\Windows\App.xaml" />
+	  <None Include="Platforms\Windows\App.xaml.cs" />
 	</ItemGroup>
 
 </Project>

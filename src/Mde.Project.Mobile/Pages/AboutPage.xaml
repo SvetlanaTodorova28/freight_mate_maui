@@ -1,25 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
-<ContentPage
-    x:Class="Mde.Project.Mobile.Pages.AboutPage"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mde.Project.Mobile.Pages.AboutPage">
     <ContentPage.Content>
         <ScrollView>
             <VerticalStackLayout Padding="30" Spacing="25">
-
-
                 <Label
-                    FontSize="Title"
                     Padding="15"
                     Text="About this app" />
-                <Label Text="FreightMate helps truckers with navigation, route planning, cargo management, and language support." />
+                <Label Text="Freight Mate helps truckers with navigation, route planning, cargo management, and language support." />
                 <Label Text="Developed by Svetlana Todorova" />
                 <Label Text="For feedback or support, contact us via: support@email.com" />
-                <Label Text="© 2024 FreightMate. All rights reserved." />
-                <Label FontAttributes="Bold" Text="FreightMate v1.0" />
-
-
+                <Label Text="© 2024 Freight Mate. All rights reserved." />
+                <Label FontAttributes="Bold" Text="Freight Mate v1.0" />
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -42,9 +42,6 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                FontSize="18">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OpenEmailApp" />
-                            </Label.GestureRecognizers>
                         </Label>
 
                         <Label Text="&#xf054;"

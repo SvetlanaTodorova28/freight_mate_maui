@@ -4,7 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CreateAccountPage">
     <ContentPage.Content>
-          <Grid>
+        <ScrollView>
+             <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -126,7 +127,7 @@
                     <Button
                         Margin="0,30,0,0"
                         BackgroundColor="#4F3F9B"
-                        Clicked="CreateAccount_Clicked"
+                        
                         HeightRequest="60"
                         Text="Create your Account"
                         TextColor="#FBF6FD" />
@@ -134,5 +135,7 @@
             </Grid>
         </Frame>
     </Grid>
+        </ScrollView>
+       
     </ContentPage.Content>
 </ContentPage>
