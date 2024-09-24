@@ -16,7 +16,8 @@
                         <Label Text="About"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
-                               FontSize="18" />
+                               FontSize="18" 
+                               FontFamily="PlayBold"/>
 
                         <Label Text="&#xf054;"
                                FontFamily="FontAwesome"
@@ -41,7 +42,8 @@
                         <Label Text="Contact"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
-                               FontSize="18">
+                               FontSize="18"
+                               FontFamily="PlayBold">
                         </Label>
 
                         <Label Text="&#xf054;"

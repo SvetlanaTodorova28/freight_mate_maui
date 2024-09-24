@@ -5,7 +5,22 @@
     <Application.Resources>
         <ResourceDictionary>
             <Shadow x:Key="basicShadow" Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
-            
+            <Style Class="FlyoutItemLabelStyle" TargetType="Label" >
+                <Setter Property="TextColor" Value="Orange" />
+                <Setter Property="FontSize" Value="20"></Setter>
+                <Setter Property="FontFamily" Value="PlayBold"></Setter>
+            </Style>
+<Style TargetType="TabBar">
+    <Setter Property="Shell.TabBarBackgroundColor"
+            Value="CornflowerBlue" />
+    <Setter Property="Shell.TabBarTitleColor"
+            Value="Black" />
+    <Setter Property="Shell.TabBarUnselectedColor"
+            Value="Green" />
+</Style>
+
+
+         
             <Style Class="LoginCreate" TargetType="Frame">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="Margin" Value="0,10,0,5"></Setter>
@@ -16,13 +31,14 @@
             </Style>
             <Style Class="LoginCreate" TargetType="Button">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
-                <Setter Property="Margin" Value="0,10,0,5"></Setter>
+                <Setter Property="Margin" Value="0,5,0,5"></Setter>
                 <Setter Property="BackgroundColor" Value="#4F3F9B"></Setter>
                 <Setter Property="CornerRadius" Value="9"></Setter>
-                <Setter Property="Opacity" Value="0.80"></Setter>
                 <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="FontFamily" Value="PlayBold"></Setter>
+                <Setter Property="FontSize" Value="20"></Setter>
                 
-                
+          
             </Style>
         </ResourceDictionary>
         </Application.Resources>

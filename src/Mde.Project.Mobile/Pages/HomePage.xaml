@@ -36,14 +36,15 @@
                     <VerticalStackLayout Padding="20" Spacing="10">
                         <Label
                             FontAttributes="Bold"
-                            FontFamily="bold"
-                            FontSize="Medium"
+                            FontFamily="PlayBold"
+                            FontSize="Large"
                             Text="Welcome!"
                             TextColor="#2D2D2D" />
                         <Label
-                            FontFamily="medium"
+                            FontFamily="PlayBold"
                             Text="Log in to continue"
-                            TextColor="#A3A3A4" />
+                            TextColor="#A3A3A4" 
+                            />
                         <Grid Margin="0,30,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
@@ -119,6 +120,7 @@
                         <Label
                             Margin="0,20,0,-10"
                             HorizontalOptions="Center"
+                            FontFamily="PlayBold"
                             Text="Forgot your password?" />
                         <Button
                             x:Name="CreateAccount"
@@ -128,6 +130,7 @@
                             Clicked=
 "CreateAccount_OnClicked"                            HeightRequest="60"
                             Text="Create your Account"
+                            FontFamily="PlayBold"
                             TextColor="#4F3F9B" />
                     </VerticalStackLayout>
                

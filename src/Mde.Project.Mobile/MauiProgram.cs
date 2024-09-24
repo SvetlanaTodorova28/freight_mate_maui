@@ -5,6 +5,7 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
 
+
 namespace Mde.Project.Mobile
 {
     public static class MauiProgram
@@ -21,6 +22,8 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("fontawesome-webfont.ttf", "FontAwesome");
                     fonts.AddFont("FontAwesomeSolid.otf", "AwesomeSolid");
+                    fonts.AddFont("Cinzel-VariableFont_wght.ttf", "Cinzel");
+                    fonts.AddFont("Play-Bold.ttf", "PlayBold");
                 });
             Routing.RegisterRoute("//pages/createAccount", typeof(CreateAccountPage));
             Routing.RegisterRoute("//pages/about", typeof(AboutPage));
