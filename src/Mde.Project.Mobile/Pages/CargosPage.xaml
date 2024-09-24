@@ -32,13 +32,13 @@
                          <VerticalStackLayout Padding="20" Spacing="10">
                 
                      <!-- Eerste Cargo Button -->
-                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" />
+                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" x:Name="Button1" Clicked="Button1_OnClicked"/>
                      <!-- Tweede Cargo Button -->
                      <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" />
                      <!-- Derde Cargo Button -->
                      <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"/>
                      <!--<Button Text="&#xf0fe;" FontFamily="FontAwesome" HeiCreate_Cargo_OnClickedequest="250"  Margin="30"/>-->
-                     <!--<ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked"/>-->
+                     <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked"/>
 
                      <!-- Voeg meer knoppen toe naar behoefte -->
                          </VerticalStackLayout>

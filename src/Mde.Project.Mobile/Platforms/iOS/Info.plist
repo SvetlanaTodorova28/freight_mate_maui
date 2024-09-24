@@ -29,6 +29,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>CFBundleIdentifier</key>
-	<string>projmde</string>
+	<string>com.companyname.mde.project.mobile</string>
 </dict>
 </plist>

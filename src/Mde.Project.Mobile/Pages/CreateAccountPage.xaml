@@ -30,6 +30,7 @@
                 Source="name.png" />
         </Grid>
         <Frame
+            StyleClass="LoginCreate"
             Grid.Row="1"
             Margin="0,-30,0,0"
             CornerRadius="25">
@@ -47,6 +48,7 @@
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
                         <Frame
+                            StyleClass="LoginCreate"
                             Padding="0"
                             BackgroundColor="#EDEBF6"
                             CornerRadius="10"
@@ -64,6 +66,7 @@
                             </Image>
                         </Frame>
                         <Entry
+                            StyleClass="LoginCreate"
                             Grid.Column="1"
                             Placeholder="NAME"
                             VerticalOptions="Center" />
@@ -74,6 +77,7 @@
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
                         <Frame
+                            StyleClass="LoginCreate"
                             Padding="0"
                             BackgroundColor="#EDEBF6"
                             CornerRadius="10"
@@ -91,6 +95,7 @@
                             </Image>
                         </Frame>
                         <Entry
+                            StyleClass="LoginCreate"
                             Grid.Column="1"
                             Placeholder="EMAIL"
                             VerticalOptions="Center" />
@@ -101,6 +106,7 @@
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
                         <Frame
+                            StyleClass="LoginCreate"
                             Padding="0"
                             BackgroundColor="#EDEBF6"
                             CornerRadius="10"
@@ -118,6 +124,7 @@
                             </Image>
                         </Frame>
                         <Entry
+                            StyleClass="LoginCreate"
                             Grid.Column="1"
                             IsPassword="True"
                             Placeholder="PASSWORD"
@@ -126,11 +133,9 @@
 
                     <Button
                         Margin="0,30,0,0"
-                        BackgroundColor="#4F3F9B"
-                        
+                        StyleClass="LoginCreate"
                         HeightRequest="60"
-                        Text="Create your Account"
-                        TextColor="#FBF6FD" />
+                        Text="Create your Account"/>
                 </VerticalStackLayout>
             </Grid>
         </Frame>

@@ -1,4 +1,5 @@
-﻿using Mde.Project.Mobile.Pages;
+﻿using CommunityToolkit.Maui;
+using Mde.Project.Mobile.Pages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Hosting;
@@ -13,6 +14,7 @@ namespace Mde.Project.Mobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

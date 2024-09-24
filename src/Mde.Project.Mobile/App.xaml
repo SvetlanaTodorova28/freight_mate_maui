@@ -4,10 +4,26 @@
              x:Class="Mde.Project.Mobile.App">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <Shadow x:Key="basicShadow" Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+            
+            <Style Class="LoginCreate" TargetType="Frame">
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="Margin" Value="0,10,0,5"></Setter>
+            </Style>
+            <Style Class="LoginCreate" TargetType="Entry">
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="Margin" Value="0,10,0,5"></Setter>
+            </Style>
+            <Style Class="LoginCreate" TargetType="Button">
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="Margin" Value="0,10,0,5"></Setter>
+                <Setter Property="BackgroundColor" Value="#4F3F9B"></Setter>
+                <Setter Property="CornerRadius" Value="9"></Setter>
+                <Setter Property="Opacity" Value="0.80"></Setter>
+                <Setter Property="TextColor" Value="White"></Setter>
+                
+                
+            </Style>
         </ResourceDictionary>
-    </Application.Resources>
+        </Application.Resources>
 </Application>

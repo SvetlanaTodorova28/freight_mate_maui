@@ -5,6 +5,19 @@
              x:Class="Mde.Project.Mobile.Pages.CargoInfoPage"
              Title="Info over your cargo">
     <ContentPage.Content>
-        
+        <Border Margin="0"
+                Stroke="#2B0B98"
+                HeightRequest="50"
+                StrokeThickness="2"
+                HorizontalOptions="Fill">
+            <!-- setting the StrokeShape using the Element property notation -->
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="60"></RoundRectangle>
+            </Border.StrokeShape>
+            <!-- setting the Shadow using the Element property notation -->
+            <Border.Shadow>
+                <Shadow Offset="35,5" Radius="39" Opacity="0.35" Brush="#4F3F9B"></Shadow>
+            </Border.Shadow>
+            </Border>
     </ContentPage.Content>
 </ContentPage>

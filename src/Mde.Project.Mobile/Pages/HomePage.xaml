@@ -4,8 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.HomePage">
 
-         <ContentPage.Content>
-           
+        
+  
            <ScrollView>
                <Grid>
                    <Grid.RowDefinitions>
@@ -30,7 +30,7 @@
                    </Grid>
 
             <Frame Grid.Row="1"
-                Margin="0,-30,0,0"
+                Margin="0,-30,0,12"
                 CornerRadius="25">
                 
                     <VerticalStackLayout Padding="20" Spacing="10">
@@ -50,6 +50,7 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
                             <Frame
+                                StyleClass="LoginCreate"
                                 Padding="0"
                                 BackgroundColor="#EDEBF6"
                                 CornerRadius="10"
@@ -57,6 +58,7 @@
                                 HorizontalOptions="Center"
                                 VerticalOptions="Center"
                                 WidthRequest="60">
+                                <Border>
                                 <Image HorizontalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
@@ -66,8 +68,10 @@
                                             Color="#4F3F9B" />
                                     </Image.Source>
                                 </Image>
+                                </Border>
                             </Frame>
                             <Entry
+                                StyleClass="LoginCreate"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
                                 Text="driver@transport.com" />
@@ -77,7 +81,9 @@
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
+                            
                             <Frame
+                                StyleClass="LoginCreate"
                                 Padding="0"
                                 BackgroundColor="#EDEBF6"
                                 CornerRadius="10"
@@ -94,7 +100,9 @@
                                     </Image.Source>
                                 </Image>
                             </Frame>
+                            
                             <Entry
+                                StyleClass="LoginCreate"
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"
@@ -104,11 +112,10 @@
                         <Button
                             x:Name="Login"
                             Margin="0,20,0,0"
-                            BackgroundColor="#4F3F9B"
+                            StyleClass="LoginCreate"
                             Clicked="Login_OnClicked"
                             HeightRequest="60"
-                            Text="Login"
-                            TextColor="#FBF6FD" />
+                            Text="Login"/>
                         <Label
                             Margin="0,20,0,-10"
                             HorizontalOptions="Center"
@@ -117,6 +124,7 @@
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"
                             BackgroundColor="#FBF6FD"
+                            
                             Clicked=
 "CreateAccount_OnClicked"                            HeightRequest="60"
                             Text="Create your Account"
@@ -126,5 +134,5 @@
             </Frame>
         </Grid>
                </ScrollView>
-    </ContentPage.Content>
+   
 </ContentPage>

@@ -7,10 +7,9 @@
     <ContentPage.Content>
         
         <ScrollView>
-                
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid BackgroundColor="OrangeRed" Opacity=".9" />
@@ -24,7 +23,6 @@
                     <Image
                         Grid.Column="0"
                         Aspect="AspectFit"
-                        HeightRequest="140"
                         Source="translate.png" />
                        
                 </Grid>

@@ -14,4 +14,8 @@ public partial class CargosPage : ContentPage{
     private async void Add_Cargo_OnClicked(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//pages/createCargo");
     }
+
+    private async  void Button1_OnClicked(object? sender, EventArgs e){
+        await Shell.Current.GoToAsync("//pages/infoCargo");
+    }
 }
