@@ -4,7 +4,20 @@
     x:Class="Mde.Project.Mobile.Pages.CargosPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-   <ContentPage.Content>
+    <Shell.TitleView>
+        <Label
+            Text="Your Cargos"
+            TextColor="#4F3F9B"
+            VerticalTextAlignment="Center"
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            Padding="100,0,0,0"
+            HeightRequest="50"
+            FontSize="20"
+            FontFamily="PlayBold" />
+    </Shell.TitleView>
+    
+    <ContentPage.Content>
              <ScrollView>
                  <Grid>
                      <Grid.RowDefinitions>
@@ -32,11 +45,11 @@
                          <VerticalStackLayout Padding="20" Spacing="10">
                 
                      <!-- Eerste Cargo Button -->
-                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" x:Name="Button1" Clicked="Button1_OnClicked"/>
+                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold" x:Name="Button1" Clicked="Button1_OnClicked"/>
                      <!-- Tweede Cargo Button -->
-                     <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" />
+                     <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold"/>
                      <!-- Derde Cargo Button -->
-                     <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"/>
+                     <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold"/>
                      <!--<Button Text="&#xf0fe;" FontFamily="FontAwesome" HeiCreate_Cargo_OnClickedequest="250"  Margin="30"/>-->
                      <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked"/>
 

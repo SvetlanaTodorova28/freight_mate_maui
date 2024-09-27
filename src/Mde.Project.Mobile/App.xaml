@@ -38,7 +38,6 @@
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
                 <Setter Property="FontSize" Value="20"></Setter>
                 
-          
             </Style>
         </ResourceDictionary>
         </Application.Resources>

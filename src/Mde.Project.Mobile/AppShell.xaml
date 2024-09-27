@@ -17,7 +17,18 @@
             <GradientStop Color="Orange"
                           Offset="1.0" />
         </LinearGradientBrush>
-        </Shell.FlyoutBackground>
+    </Shell.FlyoutBackground>
+    <Shell.TitleView>
+        <HorizontalStackLayout VerticalOptions="Fill">
+            <Label
+                FontFamily="PlayBold"
+                VerticalTextAlignment="Center"
+                VerticalOptions="Center"
+                HeightRequest="50"
+                FontSize="Medium" />
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
         <Tab Route="home" Title="Home" >
             <Tab.Icon>

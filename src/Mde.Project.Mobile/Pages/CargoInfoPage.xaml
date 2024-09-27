@@ -3,21 +3,53 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CargoInfoPage"
-             Title="Info over your cargo">
+             >
+    <Shell.TitleView>
+        <Label
+            Text="Cargo Info"
+            TextColor="#4F3F9B"
+            VerticalTextAlignment="Center"
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            Padding="100,0,0,0"
+            HeightRequest="50"
+            FontSize="20"
+            FontFamily="PlayBold" />
+    
+    </Shell.TitleView>
     <ContentPage.Content>
-        <Border Margin="0"
-                Stroke="#2B0B98"
-                HeightRequest="50"
-                StrokeThickness="2"
-                HorizontalOptions="Fill">
-            <!-- setting the StrokeShape using the Element property notation -->
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="60"></RoundRectangle>
-            </Border.StrokeShape>
-            <!-- setting the Shadow using the Element property notation -->
-            <Border.Shadow>
-                <Shadow Offset="35,5" Radius="39" Opacity="0.35" Brush="#4F3F9B"></Shadow>
-            </Border.Shadow>
-            </Border>
+        
+            <ScrollView>
+                <VerticalStackLayout Padding="12" Spacing="5">
+                    <Button 
+                        Margin="0,20,0,0"  
+                        x:Name="btnDelete"
+                        Text="Delete cargo" 
+                        HeightRequest="60"
+                        BackgroundColor="PaleVioletRed"
+                        TextColor="White"
+                        FontFamily="PlayBold"
+                        FontSize="14"
+                        CornerRadius="9"
+                        Shadow="{StaticResource basicShadow}"
+                        Clicked= "btnDelete_Clicked"/>
+                
+               
+                    <Button 
+                        Margin="0,20,0,0"  
+                        x:Name="btnUpdate"
+                        Text="Update cargo" 
+                        HeightRequest="60"
+                        BackgroundColor="ForestGreen"
+                        TextColor="White"
+                        FontFamily="PlayBold"
+                        FontSize="14"
+                        CornerRadius="9"
+                        Shadow="{StaticResource basicShadow}"
+                        Clicked= "btnUpdate_Clicked"/>
+                </VerticalStackLayout>
+            </ScrollView>
+       
+       
     </ContentPage.Content>
 </ContentPage>

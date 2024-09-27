@@ -50,6 +50,7 @@
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
+                            <Grid>
                             <Frame
                                 StyleClass="LoginCreate"
                                 Padding="0"
@@ -71,6 +72,7 @@
                                 </Image>
                                 </Border>
                             </Frame>
+                                </Grid>
                             <Entry
                                 StyleClass="LoginCreate"
                                 Grid.Column="1"

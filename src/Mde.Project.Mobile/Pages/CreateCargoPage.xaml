@@ -2,9 +2,36 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.CreateCargoPage"
-             Title="Create  here the cargo">
+             x:Class="Mde.Project.Mobile.Pages.CreateCargoPage">
+    <Shell.TitleView>
+        <Label
+            Text="Create Cargos"
+            TextColor="#4F3F9B"
+            VerticalTextAlignment="Center"
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            Padding="100,0,0,0"
+            HeightRequest="50"
+            FontSize="20"
+            FontFamily="PlayBold" />
+    </Shell.TitleView>
     <ContentPage.Content>
-        
+        <ScrollView>
+            <VerticalStackLayout Padding="12" Spacing="5">
+                <Button 
+                    Margin="0,20,0,0"  
+                    x:Name="btnCreate"
+                    Text="Create cargo" 
+                    HeightRequest="60"
+                    BackgroundColor="ForestGreen"
+                    TextColor="White"
+                    FontFamily="PlayBold"
+                    FontSize="16"
+                    CornerRadius="9"
+                    Shadow="{StaticResource basicShadow}"
+                    Clicked= "btnCreate_Clicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
+       
     </ContentPage.Content>
 </ContentPage>
