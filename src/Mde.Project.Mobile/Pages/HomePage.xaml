@@ -13,7 +13,7 @@
                        <RowDefinition Height="*" />
                    </Grid.RowDefinitions>
                    <Grid BackgroundColor="OrangeRed" Opacity=".9" />
-                   <Grid Padding="40">
+                   <Grid Row="0" Padding="40">
                        <Grid.ColumnDefinitions>
                            <ColumnDefinition Width="*"/>
                            <ColumnDefinition Width="*"/>
@@ -29,11 +29,18 @@
                            Source="name.png" />
                    </Grid>
 
-            <Frame 
-                StyleClass="LoginCreate"
-                Grid.Row="1"
-                Margin="0,-30,0,12"
-                CornerRadius="25">
+                   <Border Grid.Row="1"
+                           StrokeThickness="1"
+                           Padding="6"
+                           BackgroundColor="White"
+                           Margin="0,-35,0,10"
+                   > <Border.Shadow>
+                           <Shadow
+                               Brush="#4F3F9B" Offset="8,8" Opacity="0.9" />
+                       </Border.Shadow>
+                       <Border.StrokeShape>
+                           <RoundRectangle CornerRadius="43,43,43,43" />
+                       </Border.StrokeShape>
                 <VerticalStackLayout Padding="20" Spacing="10">
                         <Label
                             FontAttributes="Bold"
@@ -52,28 +59,40 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
                            
-                            <Frame
-                                StyleClass="LoginCreate"
-                                Padding="0"
-                                BackgroundColor="#EDEBF6"
-                                CornerRadius="10"
-                                HeightRequest="60"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                WidthRequest="60">
-                              
-                                <Image HorizontalOptions="Center" VerticalOptions="Center">
+                            <Border 
+                                    StrokeThickness="13"
+                                    BackgroundColor="White"
+                                    Height="80"
+                                    Width="60"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Margin="5"
+                            > <Border.Shadow>
+                                    <Shadow
+                                        Brush="#4F3F9B" 
+                                        Opacity="0.93"
+                                        Radius="45"
+                                        Offset="10,10" />
+                                </Border.Shadow>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="43,43,43,43"/>
+                                </Border.StrokeShape>
+                            
+                                <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf0e0;"
-                                            Color="#4F3F9B" />
+                                            Color="#4F3F9B" 
+                                            Size="100"
+                                            />
                                     </Image.Source>
                                 </Image>
-                            </Frame>
+                               
+                            </Border>
                                
                             <Entry
-                                StyleClass="LoginCreate"
+                                Shadow="{StaticResource basicShadow}"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
                                 Text="driver@transport.com" />
@@ -84,28 +103,35 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
                             
-                            <Frame
-                                StyleClass="LoginCreate"
-                                Padding="0"
-                                BackgroundColor="#EDEBF6"
-                                CornerRadius="10"
-                                HeightRequest="60"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                WidthRequest="60">
-                                
+                            <Border 
+                                    StrokeThickness="13"
+                                    BackgroundColor="White"
+                                    Height="80"
+                                    Width="60"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Margin="5"
+                            > <Border.Shadow>
+                                    <Shadow
+                                        Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+                                </Border.Shadow>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="43,43,43,43"/>
+                                </Border.StrokeShape>
                                 <Image HorizontalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf084;"
-                                            Color="#4F3F9B" />
+                                            Color="#4F3F9B" 
+                                            Size="60"/>
                                     </Image.Source>
                                 </Image>
                                 
-                            </Frame>
+                            </Border>
+                            
                             <Entry
-                                StyleClass="LoginCreate"
+                                Shadow="{StaticResource basicShadow}"
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"
@@ -135,7 +161,7 @@
                             TextColor="#4F3F9B" />
                     </VerticalStackLayout>
                
-            </Frame>
+            </Border>
         </Grid>
                </ScrollView>
    

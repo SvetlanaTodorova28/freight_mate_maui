@@ -12,9 +12,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid BackgroundColor="OrangeRed" Opacity=".9" />
+                <Grid BackgroundColor="OrangeRed" Opacity=".9"  >
            
-                <Grid Padding="40">
+                <Grid Padding="50">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -23,13 +23,23 @@
                     <Image
                         Grid.Column="0"
                         Aspect="AspectFit"
-                        Source="translate.png" />
+                        Source="translate.png" 
+                        />
                        
                 </Grid>
-                <Frame
-                    Grid.Row="1"
-                    Margin="0,-30,0,0"
-                    CornerRadius="25">
+                    </Grid>
+                <Border Grid.Row="1"
+                        StrokeThickness="1"
+                        Padding="20"
+                        BackgroundColor="White"
+                        Margin="0,-40,0,12"
+                > <Border.Shadow>
+                        <Shadow
+                            Brush="#4F3F9B" Offset="8,8" Opacity="0.9" />
+                    </Border.Shadow>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="43,43,43,43" />
+                    </Border.StrokeShape>
                     <VerticalStackLayout Padding="20" Spacing="10">
                 
                         <Label
@@ -58,7 +68,7 @@
                             TextColor="DarkGray"
                             VerticalOptions="Center" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
             </Grid>
                 
         </ScrollView>

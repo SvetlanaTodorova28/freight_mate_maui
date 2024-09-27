@@ -17,47 +17,54 @@
             FontFamily="PlayBold" />
     </Shell.TitleView>
     
+  
     <ContentPage.Content>
-             <ScrollView>
-                 <Grid>
-                     <Grid.RowDefinitions>
-                         <RowDefinition Height="Auto" />
-                         <RowDefinition Height="*" />
-                     </Grid.RowDefinitions>
-                     <Grid BackgroundColor="OrangeRed" Opacity=".9" />
-           
-                     <Grid Padding="40">
-                         <Grid.ColumnDefinitions>
-                             <ColumnDefinition Width="*"/>
-                             <ColumnDefinition Width="*"/>
-                         </Grid.ColumnDefinitions>
+        <ScrollView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid BackgroundColor="OrangeRed" Opacity=".9" />
+                    <Grid Padding="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                         <Image
-                             Grid.Column="0"
-                             Aspect="AspectFit"
-                             Source="cargos.png" />
-                       
-                     </Grid>
-                     <Frame
-                         Grid.Row="1"
-                         Margin="0,-30,0,0"
-                         CornerRadius="25">
-                         <VerticalStackLayout Padding="20" Spacing="10">
-                
-                     <!-- Eerste Cargo Button -->
-                     <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold" x:Name="Button1" Clicked="Button1_OnClicked"/>
-                     <!-- Tweede Cargo Button -->
-                     <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold"/>
-                     <!-- Derde Cargo Button -->
-                     <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50" FontFamily="PlayBold"/>
-                     <!--<Button Text="&#xf0fe;" FontFamily="FontAwesome" HeiCreate_Cargo_OnClickedequest="250"  Margin="30"/>-->
-                     <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked"/>
-
-                     <!-- Voeg meer knoppen toe naar behoefte -->
-                         </VerticalStackLayout>
-                         </Frame>
-                     </Grid>
-                
-             </ScrollView>
+                        <Image Grid.Column="0"
+                               Aspect="AspectFit"
+                               Source="cargos.png"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Grid>
+                    <Border Grid.Row="1"
+                            StrokeThickness="1"
+                            Padding="20"
+                            BackgroundColor="White"
+                            Margin="0,-60,0,12"
+                    > <Border.Shadow>
+                            <Shadow
+                                Brush="#4F3F9B" Offset="5,5" Opacity="0.9"  />
+                        </Border.Shadow>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="43,43,43,43" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Padding="20" Spacing="10">
+                            <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
+                                    FontFamily="PlayBold" x:Name="Button1" Clicked="Button1_OnClicked" />
+                            <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
+                                    FontFamily="PlayBold" />
+                            <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
+                                    FontFamily="PlayBold" />
+                            <Button Text="Cargo 4" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
+                                    FontFamily="PlayBold" />
+                            <Button Text="Cargo 5" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
+                                    FontFamily="PlayBold" />
+                            <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         <Grid BackgroundColor="OrangeRed" Opacity=".9" />
            
-        <Grid Padding="40">
+        <Grid Padding="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -29,17 +29,25 @@
                 HeightRequest="190"
                 Source="name.png" />
         </Grid>
-        <Frame
-            StyleClass="LoginCreate"
+        <Border
             Grid.Row="1"
-            Margin="0,-30,0,0"
-            CornerRadius="25">
+            StrokeThickness="1"
+            Padding="6"
+            BackgroundColor="White"
+            Margin="0,-75,0,5"
+        > <Border.Shadow>
+                <Shadow
+                    Brush="#4F3F9B" Offset="8,8" Opacity="0.9" />
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="43,43,43,43" />
+            </Border.StrokeShape>
             <Grid>
-                <VerticalStackLayout>
+                <VerticalStackLayout Padding="20" Spacing="10">
                     <Label
-                        FontAttributes="Bold"
-                        FontFamily="bold"
+                        FontFamily="PlayBold"
                         FontSize="Medium"
+                        HorizontalOptions="Center"
                         Text="Create your Account"
                         TextColor="#2D2D2D" />
                     <Grid Margin="0,30,0,0">
@@ -47,15 +55,21 @@
                             <ColumnDefinition Width=".2*" />
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            StyleClass="LoginCreate"
-                            Padding="0"
-                            BackgroundColor="#EDEBF6"
-                            CornerRadius="10"
-                            HeightRequest="60"
+                        <Border 
+                            StrokeThickness="13"
+                            BackgroundColor="White"
+                            Height="80"
+                            Width="60"
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
-                            WidthRequest="60">
+                            Margin="5">
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+                            </Border.Shadow>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="43,43,43,43"/>
+                            </Border.StrokeShape>
                             <Image HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image.Source>
                                     <FontImageSource
@@ -64,9 +78,9 @@
                                         Color="#4F3F9B" />
                                 </Image.Source>
                             </Image>
-                        </Frame>
+                        </Border>
                         <Entry
-                            StyleClass="LoginCreate"
+                            Shadow="{StaticResource basicShadow}"
                             Grid.Column="1"
                             Placeholder="NAME"
                             VerticalOptions="Center" />
@@ -76,24 +90,31 @@
                             <ColumnDefinition Width=".2*" />
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            StyleClass="LoginCreate"
-                            Padding="0"
-                            BackgroundColor="#EDEBF6"
-                            CornerRadius="10"
-                            HeightRequest="60"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            WidthRequest="60">
-                            <Image HorizontalOptions="Center" VerticalOptions="Center">
+                        <Border 
+                                StrokeThickness="13"
+                                BackgroundColor="White"
+                                Height="80"
+                                Width="60"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                Margin="5">
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+                            </Border.Shadow>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="43,43,43,43"/>
+                            </Border.StrokeShape>
+                            <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                 <Image.Source>
                                     <FontImageSource
                                         FontFamily="AwesomeSolid"
                                         Glyph="&#xf0e0;"
-                                        Color="#4F3F9B" />
+                                        Color="#4F3F9B" 
+                                        Size="100"/>
                                 </Image.Source>
                             </Image>
-                        </Frame>
+                        </Border>
                        
                         <Entry
                             StyleClass="LoginCreate"
@@ -108,16 +129,22 @@
                             <ColumnDefinition Width=".2*" />
                             <ColumnDefinition Width=".8*" />
                         </Grid.ColumnDefinitions>
-                        <Frame
-                            StyleClass="LoginCreate"
-                            Padding="0"
-                            BackgroundColor="#EDEBF6"
-                            CornerRadius="10"
-                            HeightRequest="60"
+                        <Border 
+                            StrokeThickness="13"
+                            BackgroundColor="White"
+                            Height="80"
+                            Width="60"
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
-                            WidthRequest="60">
-                            <Image HorizontalOptions="Center" VerticalOptions="Center">
+                            Margin="5">
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+                            </Border.Shadow>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="43,43,43,43"/>
+                            </Border.StrokeShape>
+                            <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                 <Image.Source>
                                     <FontImageSource
                                         FontFamily="AwesomeSolid"
@@ -125,7 +152,7 @@
                                         Color="#4F3F9B" />
                                 </Image.Source>
                             </Image>
-                        </Frame>
+                        </Border>
                         <Entry
                             StyleClass="LoginCreate"
                             Grid.Column="1"
@@ -141,7 +168,7 @@
                         Text="Create your Account"/>
                 </VerticalStackLayout>
             </Grid>
-        </Frame>
+        </Border>
     </Grid>
         </ScrollView>
        

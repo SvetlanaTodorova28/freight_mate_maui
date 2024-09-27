@@ -27,7 +27,7 @@
             </Style>
             <Style Class="LoginCreate" TargetType="Entry">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
-                <Setter Property="Margin" Value="0,10,0,5"></Setter>
+                <Setter Property="Margin" Value="0,0,0,5"></Setter>
             </Style>
             <Style Class="LoginCreate" TargetType="Button">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
