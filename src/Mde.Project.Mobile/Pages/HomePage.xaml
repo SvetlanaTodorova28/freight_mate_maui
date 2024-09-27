@@ -29,11 +29,12 @@
                            Source="name.png" />
                    </Grid>
 
-            <Frame Grid.Row="1"
+            <Frame 
+                StyleClass="LoginCreate"
+                Grid.Row="1"
                 Margin="0,-30,0,12"
                 CornerRadius="25">
-                
-                    <VerticalStackLayout Padding="20" Spacing="10">
+                <VerticalStackLayout Padding="20" Spacing="10">
                         <Label
                             FontAttributes="Bold"
                             FontFamily="PlayBold"
@@ -50,7 +51,7 @@
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
-                            <Grid>
+                           
                             <Frame
                                 StyleClass="LoginCreate"
                                 Padding="0"
@@ -60,19 +61,17 @@
                                 HorizontalOptions="Center"
                                 VerticalOptions="Center"
                                 WidthRequest="60">
-                                <Border>
-                                <Image HorizontalOptions="Center">
+                              
+                                <Image HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf0e0;"
-                                            Size="44"
                                             Color="#4F3F9B" />
                                     </Image.Source>
                                 </Image>
-                                </Border>
                             </Frame>
-                                </Grid>
+                               
                             <Entry
                                 StyleClass="LoginCreate"
                                 Grid.Column="1"
@@ -94,6 +93,7 @@
                                 HorizontalOptions="Center"
                                 VerticalOptions="Center"
                                 WidthRequest="60">
+                                
                                 <Image HorizontalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
@@ -102,8 +102,8 @@
                                             Color="#4F3F9B" />
                                     </Image.Source>
                                 </Image>
+                                
                             </Frame>
-                            
                             <Entry
                                 StyleClass="LoginCreate"
                                 Grid.Column="1"
@@ -128,7 +128,6 @@
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"
                             BackgroundColor="#FBF6FD"
-                            
                             Clicked=
 "CreateAccount_OnClicked"                            HeightRequest="60"
                             Text="Create your Account"

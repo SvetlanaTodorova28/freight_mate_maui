@@ -94,11 +94,14 @@
                                 </Image.Source>
                             </Image>
                         </Frame>
+                       
                         <Entry
                             StyleClass="LoginCreate"
                             Grid.Column="1"
                             Placeholder="EMAIL"
+                            Keyboard="Email"
                             VerticalOptions="Center" />
+                       
                     </Grid>
                     <Grid Margin="0,25,0,0">
                         <Grid.ColumnDefinitions>
