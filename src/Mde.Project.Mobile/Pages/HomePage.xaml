@@ -69,10 +69,7 @@
                                     Margin="5"
                             > <Border.Shadow>
                                     <Shadow
-                                        Brush="#4F3F9B" 
-                                        Opacity="0.93"
-                                        Radius="45"
-                                        Offset="10,10" />
+                                        Brush="#4F3F9B" Offset="5,5" Opacity="0.6"  />
                                 </Border.Shadow>
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="43,43,43,43"/>
@@ -84,8 +81,7 @@
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf0e0;"
                                             Color="#4F3F9B" 
-                                            Size="100"
-                                            />
+                                           />
                                     </Image.Source>
                                 </Image>
                                
@@ -118,13 +114,13 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="43,43,43,43"/>
                                 </Border.StrokeShape>
-                                <Image HorizontalOptions="Center">
+                                <Image HorizontalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf084;"
                                             Color="#4F3F9B" 
-                                            Size="60"/>
+                                            />
                                     </Image.Source>
                                 </Image>
                                 

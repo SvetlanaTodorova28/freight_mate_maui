@@ -70,7 +70,7 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="43,43,43,43"/>
                             </Border.StrokeShape>
-                            <Image HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                 <Image.Source>
                                     <FontImageSource
                                         FontFamily="AwesomeSolid"
@@ -110,8 +110,7 @@
                                     <FontImageSource
                                         FontFamily="AwesomeSolid"
                                         Glyph="&#xf0e0;"
-                                        Color="#4F3F9B" 
-                                        Size="100"/>
+                                        Color="#4F3F9B"/>
                                 </Image.Source>
                             </Image>
                         </Border>
