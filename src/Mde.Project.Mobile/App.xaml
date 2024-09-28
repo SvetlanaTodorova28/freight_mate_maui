@@ -6,7 +6,8 @@
         <ResourceDictionary>
             <Shadow x:Key="basicShadow" Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
             
-            <Style Class="baseBorder" TargetType="Border" >
+            <!-- ############################################# BASE BORDER STYLE  ############################################# -->
+            <Style Class="baseBorder" TargetType="Border">
                 <Setter Property="StrokeShape">
                     <Setter.Value>
                         <RoundRectangle CornerRadius="43,43,43,43"/>
@@ -14,37 +15,39 @@
                 </Setter>
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1237F3" Offset="0.1" />
+                            <GradientStop Color="LightBlue" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="Padding" Value="18" />
-                <Setter Property="Margin" Value="0,-40,0,12" />
-                
+                <Setter Property="Margin" Value="0,15,0,12" />
             </Style>
+
+            <!-- ############################################# FLYOUTITEM  STYLE  ############################################# -->
             <Style Class="FlyoutItemLabelStyle" TargetType="Label" >
-                <Setter Property="TextColor" Value="Orange" />
+                <Setter Property="TextColor" Value="White" />
                 <Setter Property="FontSize" Value="20"></Setter>
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
             </Style>
-<!--<Style TargetType="TabBar">
-    <Setter Property="Shell.TabBarBackgroundColor"
-            Value="CornflowerBlue" />
-    <Setter Property="Shell.TabBarTitleColor"
-            Value="Black" />
-    <Setter Property="Shell.TabBarUnselectedColor"
-            Value="Green" />
-</Style>-->
 
-            
-            
+
+            <!-- ############################################# ENTRY STYLE  ############################################# -->
             <Style Class="LoginCreateEntry" TargetType="Entry">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="Margin" Value="0,0,0,5"></Setter>
                 <Setter Property="VerticalOptions" Value="Center"></Setter>
             </Style>
             
+            <!-- ############################################# CREATE USER BUTTONS STYLE  ############################################# -->
             <Style Class="LoginCreateIcons" TargetType="Border">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="Margin" Value="5" />
                 <Setter Property="BackgroundColor" Value="White" />
+             
                 <Setter Property="StrokeThickness" Value="13" />
                 <Setter Property="Height" Value="80" />
                 <Setter Property="Width" Value="60" />
@@ -56,17 +59,31 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            
+            <!-- ############################################# BASE BUTTONS STYLE  ############################################# -->
             <Style Class="baseButton" TargetType="Button">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="Margin" Value="0,15,0,5"></Setter>
-                <Setter Property="BackgroundColor" Value="#4F3F9B"></Setter>
+                <Setter Property="BackgroundColor" Value="#1237F3"></Setter>
                 <Setter Property="HeightRequest" Value="60"></Setter>
                 <Setter Property="CornerRadius" Value="9"></Setter>
                 <Setter Property="TextColor" Value="White"></Setter>
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
                 <Setter Property="FontSize" Value="20"></Setter>
-                
             </Style>
+            
+            <!-- ############################################# BASE BUTTONS STYLE  ############################################# -->
+            <Style x:Key="GradientBackgroundGrid" TargetType="Grid">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#1237F3" Offset="0.1"/>
+                            <GradientStop Color="LightBlue" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             
         </ResourceDictionary>
         </Application.Resources>

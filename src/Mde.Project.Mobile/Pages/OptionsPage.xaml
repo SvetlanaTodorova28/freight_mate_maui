@@ -4,10 +4,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.OptionsPage">
      <ContentPage.Content>
-                <VerticalStackLayout Spacing="25" Padding="30">
-                    <!-- About Item met FontAwesome icoon en klik event -->
-                    <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand"
-                          BackgroundColor="#FFFFFF" HeightRequest="60">
+         <Grid Style="{StaticResource GradientBackgroundGrid}">
+         <VerticalStackLayout Spacing="25" Padding="30">
+             
+                    <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="40" />
@@ -17,14 +17,16 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                FontSize="18" 
-                               FontFamily="PlayBold"/>
+                               FontFamily="PlayBold"
+                               TextColor="White"/>
 
                         <Label Text="&#xf054;"
                                FontFamily="FontAwesome"
                                VerticalOptions="Center"
                                HorizontalOptions="End"
                                FontSize="12"
-                               Grid.Column="1" />
+                               Grid.Column="1" 
+                               TextColor="White"/>
 
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NavigateToAbout" />
@@ -32,8 +34,7 @@
                     </Grid>
 
                     <!-- Contact Item met FontAwesome icoon en klik event -->
-                    <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand"
-                          BackgroundColor="#FFFFFF" HeightRequest="60">
+                    <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="40" />
@@ -43,7 +44,8 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                FontSize="18"
-                               FontFamily="PlayBold">
+                               FontFamily="PlayBold"
+                               TextColor="White">
                         </Label>
 
                         <Label Text="&#xf054;"
@@ -51,10 +53,11 @@
                                VerticalOptions="Center"
                                HorizontalOptions="End"
                                FontSize="12"
+                               TextColor="White"
                                Grid.Column="1" />
                     </Grid>
 
                 </VerticalStackLayout>
-
+         </Grid>
             </ContentPage.Content>
 </ContentPage>

@@ -3,28 +3,45 @@
 <ContentPage
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#1D3448" Opacity="1.4">
+    <Shell.TitleView>
+        <Label
+            Text="Translate"
+            TextColor="OrangeRed"
+            VerticalTextAlignment="Center"
+            VerticalOptions="Center"
+            HorizontalOptions="Start"
+            Padding="100,0,0,0"
+            HeightRequest="50"
+            FontSize="20"
+            FontFamily="PlayBold" />
+    </Shell.TitleView>
+
     <ContentPage.Content>
 
         <ScrollView>
             <Grid>
-                <Grid.RowDefinitions>
+                <Grid.RowDefinitions >
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid BackgroundColor="OrangeRed" Opacity=".9" />
-                <Grid Padding="50">
+                
+                <Grid Margin="16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-
+                    
                     <Image
-                        Grid.Column="0"
+                        Grid.Column="1"
+                        Source="pff.png" 
                         Aspect="AspectFit"
-                        Source="translate.png" />
-
+                        HeightRequest="150"
+                        /> 
                 </Grid>
+
 
                 <Border Grid.Row="1"
                         StyleClass="baseBorder">
@@ -35,7 +52,7 @@
                             FontFamily="PlayBold"
                             Margin="0,0,0,10"
                             Text="Here can you speak in your language"
-                            TextColor="Blue"
+                            TextColor="White"
                             VerticalOptions="Center" />
                         <Button HorizontalOptions="Center" VerticalOptions="Center">
                             <Button.ImageSource>
@@ -47,13 +64,16 @@
                             </Button.ImageSource>
                         </Button>
                         <Editor
+                            Shadow="{StaticResource basicShadow}"
                             BackgroundColor="#E8E8E8"
                             FontSize="18"
                             HeightRequest="100"
                             HorizontalOptions="FillAndExpand"
+                            FontFamily="PlayBold"
                             Placeholder="Your translation will appear here..."
                             TextColor="DarkGray"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Center" 
+                            StyleClass="LoginCreateIcons"/>
                     </VerticalStackLayout>
                 </Border>
             </Grid>

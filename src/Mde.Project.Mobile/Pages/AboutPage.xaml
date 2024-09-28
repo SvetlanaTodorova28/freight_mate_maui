@@ -4,17 +4,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.AboutPage">
     <ContentPage.Content>
+        <Grid Style="{StaticResource GradientBackgroundGrid}">
         <ScrollView>
+           
             <VerticalStackLayout Padding="30" Spacing="25">
                 <Label
                     Padding="15"
+                    FontFamily="PlayBold"
+                    TextColor="White"
+                    FontSize="25"
                     Text="About this app" />
-                <Label Text="Freight Mate helps truckers with navigation, route planning, cargo management, and language support." />
-                <Label Text="Developed by Svetlana Todorova" />
-                <Label Text="For feedback or support, contact us via: support@email.com" />
-                <Label Text="© 2024 Freight Mate. All rights reserved." />
-                <Label FontAttributes="Bold" Text="Freight Mate v1.0" />
+                <Label FontFamily="PlayBold"
+                       TextColor="White"  FontSize="15" Text="Freight Mate helps truckers with navigation, route planning, cargo management, and language support." />
+                <Label FontFamily="PlayBold"
+                       TextColor="White"  FontSize="15" Text="Developed by Svetlana Todorova" />
+                <Label FontFamily="PlayBold"
+                       TextColor="White"  FontSize="15" Text="For feedback or support, contact us via: support@email.com" />
+                <Label FontFamily="PlayBold"
+                       TextColor="White" FontSize="15" Text="© 2024 Freight Mate. All rights reserved." />
+                <Label FontFamily="PlayBold"
+                       TextColor="White" FontSize="15" FontAttributes="Bold" Text="Freight Mate v1.0" />
             </VerticalStackLayout>
+            
         </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

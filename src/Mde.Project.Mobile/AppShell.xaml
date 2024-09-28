@@ -10,11 +10,10 @@
     <Shell.FlyoutBackground>
         <LinearGradientBrush StartPoint="0,0"
                              EndPoint="1,1">
-            <GradientStop Color="#701198"
+            <GradientStop Color="#1D3448"
                           Offset="0.1" />
-            <!--<GradientStop Color="#701198"
-                          Offset="0.6" />-->
-            <GradientStop Color="Orange"
+         
+            <GradientStop Color="LightBlue"
                           Offset="1.0" />
         </LinearGradientBrush>
     </Shell.FlyoutBackground>
