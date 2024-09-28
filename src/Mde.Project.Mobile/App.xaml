@@ -5,40 +5,69 @@
     <Application.Resources>
         <ResourceDictionary>
             <Shadow x:Key="basicShadow" Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
+            
+            <Style Class="baseBorder" TargetType="Border" >
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <RoundRectangle CornerRadius="43,43,43,43"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="Padding" Value="18" />
+                <Setter Property="Margin" Value="0,-40,0,12" />
+                
+            </Style>
             <Style Class="FlyoutItemLabelStyle" TargetType="Label" >
                 <Setter Property="TextColor" Value="Orange" />
                 <Setter Property="FontSize" Value="20"></Setter>
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
             </Style>
-<Style TargetType="TabBar">
+<!--<Style TargetType="TabBar">
     <Setter Property="Shell.TabBarBackgroundColor"
             Value="CornflowerBlue" />
     <Setter Property="Shell.TabBarTitleColor"
             Value="Black" />
     <Setter Property="Shell.TabBarUnselectedColor"
             Value="Green" />
-</Style>
+</Style>-->
 
-
-         
-            <Style Class="LoginCreate" TargetType="Frame">
-                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
-                <Setter Property="Margin" Value="0,10,0,5"></Setter>
-            </Style>
-            <Style Class="LoginCreate" TargetType="Entry">
+            
+            
+            <Style Class="LoginCreateEntry" TargetType="Entry">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="Margin" Value="0,0,0,5"></Setter>
+                <Setter Property="VerticalOptions" Value="Center"></Setter>
             </Style>
-            <Style Class="LoginCreate" TargetType="Button">
+            
+            <Style Class="LoginCreateIcons" TargetType="Border">
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
-                <Setter Property="Margin" Value="0,5,0,5"></Setter>
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="StrokeThickness" Value="13" />
+                <Setter Property="Height" Value="80" />
+                <Setter Property="Width" Value="60" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <RoundRectangle CornerRadius="43,43,43,43"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style Class="baseButton" TargetType="Button">
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="Margin" Value="0,15,0,5"></Setter>
                 <Setter Property="BackgroundColor" Value="#4F3F9B"></Setter>
+                <Setter Property="HeightRequest" Value="60"></Setter>
                 <Setter Property="CornerRadius" Value="9"></Setter>
                 <Setter Property="TextColor" Value="White"></Setter>
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
                 <Setter Property="FontSize" Value="20"></Setter>
                 
             </Style>
+            
         </ResourceDictionary>
         </Application.Resources>
 </Application>

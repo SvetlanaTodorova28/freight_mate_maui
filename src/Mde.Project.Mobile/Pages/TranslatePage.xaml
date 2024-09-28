@@ -1,47 +1,34 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <ContentPage.Content>
-        
+
         <ScrollView>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid BackgroundColor="OrangeRed" Opacity=".9"  >
-           
+                <Grid BackgroundColor="OrangeRed" Opacity=".9" />
                 <Grid Padding="50">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Image
                         Grid.Column="0"
                         Aspect="AspectFit"
-                        Source="translate.png" 
-                        />
-                       
+                        Source="translate.png" />
+
                 </Grid>
-                    </Grid>
+
                 <Border Grid.Row="1"
-                        StrokeThickness="1"
-                        Padding="20"
-                        BackgroundColor="White"
-                        Margin="0,-40,0,12"
-                > <Border.Shadow>
-                        <Shadow
-                            Brush="#4F3F9B" Offset="8,8" Opacity="0.9" />
-                    </Border.Shadow>
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="43,43,43,43" />
-                    </Border.StrokeShape>
+                        StyleClass="baseBorder">
                     <VerticalStackLayout Padding="20" Spacing="10">
-                
                         <Label
                             FontSize="20"
                             HorizontalOptions="Center"
@@ -70,7 +57,6 @@
                     </VerticalStackLayout>
                 </Border>
             </Grid>
-                
         </ScrollView>
 
 

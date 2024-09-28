@@ -9,11 +9,11 @@
            <ScrollView>
                <Grid>
                    <Grid.RowDefinitions>
-                       <RowDefinition Height="*" />
+                       <RowDefinition Height="Auto" />
                        <RowDefinition Height="*" />
                    </Grid.RowDefinitions>
                    <Grid BackgroundColor="OrangeRed" Opacity=".9" />
-                   <Grid Row="0" Padding="40">
+                   <Grid  Padding="50">
                        <Grid.ColumnDefinitions>
                            <ColumnDefinition Width="*"/>
                            <ColumnDefinition Width="*"/>
@@ -30,17 +30,8 @@
                    </Grid>
 
                    <Border Grid.Row="1"
-                           StrokeThickness="1"
-                           Padding="6"
-                           BackgroundColor="White"
-                           Margin="0,-35,0,10"
-                   > <Border.Shadow>
-                           <Shadow
-                               Brush="#4F3F9B" Offset="8,8" Opacity="0.9" />
-                       </Border.Shadow>
-                       <Border.StrokeShape>
-                           <RoundRectangle CornerRadius="43,43,43,43" />
-                       </Border.StrokeShape>
+                           StyleClass="baseBorder">
+                      <Grid>
                 <VerticalStackLayout Padding="20" Spacing="10">
                         <Label
                             FontAttributes="Bold"
@@ -59,22 +50,7 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
                            
-                            <Border 
-                                    StrokeThickness="13"
-                                    BackgroundColor="White"
-                                    Height="80"
-                                    Width="60"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    Margin="5"
-                            > <Border.Shadow>
-                                    <Shadow
-                                        Brush="#4F3F9B" Offset="5,5" Opacity="0.6"  />
-                                </Border.Shadow>
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="43,43,43,43"/>
-                                </Border.StrokeShape>
-                            
+                            <Border StyleClass="LoginCreateIcons">
                                 <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
@@ -88,7 +64,7 @@
                             </Border>
                                
                             <Entry
-                                Shadow="{StaticResource basicShadow}"
+                               StyleClass="LoginCreateEntry"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
                                 Text="driver@transport.com" />
@@ -100,20 +76,7 @@
                             </Grid.ColumnDefinitions>
                             
                             <Border 
-                                    StrokeThickness="13"
-                                    BackgroundColor="White"
-                                    Height="80"
-                                    Width="60"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    Margin="5"
-                            > <Border.Shadow>
-                                    <Shadow
-                                        Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
-                                </Border.Shadow>
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="43,43,43,43"/>
-                                </Border.StrokeShape>
+                                   StyleClass="LoginCreateIcons">
                                 <Image HorizontalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
@@ -127,7 +90,7 @@
                             </Border>
                             
                             <Entry
-                                Shadow="{StaticResource basicShadow}"
+                               StyleClass="LoginCreateEntry"
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"
@@ -136,10 +99,8 @@
                         
                         <Button
                             x:Name="Login"
-                            Margin="0,20,0,0"
-                            StyleClass="LoginCreate"
+                            StyleClass="baseButton"
                             Clicked="Login_OnClicked"
-                            HeightRequest="60"
                             Text="Login"/>
                         <Label
                             Margin="0,20,0,-10"
@@ -150,13 +111,13 @@
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"
                             BackgroundColor="#FBF6FD"
-                            Clicked=
-"CreateAccount_OnClicked"                            HeightRequest="60"
+                            Clicked= "CreateAccount_OnClicked"                            
+                            HeightRequest="60"
                             Text="Create your Account"
                             FontFamily="PlayBold"
                             TextColor="#4F3F9B" />
                     </VerticalStackLayout>
-               
+               </Grid>
             </Border>
         </Grid>
                </ScrollView>

@@ -22,11 +22,11 @@
         <ScrollView>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid BackgroundColor="OrangeRed" Opacity=".9" />
-                    <Grid Padding="40">
+                    <Grid Padding="50">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -39,30 +39,23 @@
                                VerticalOptions="Center" />
                     </Grid>
                     <Border Grid.Row="1"
-                            StrokeThickness="1"
-                            Padding="20"
-                            BackgroundColor="White"
-                            Margin="0,-60,0,12"
-                    > <Border.Shadow>
-                            <Shadow
-                                Brush="#4F3F9B" Offset="5,5" Opacity="0.9"  />
-                        </Border.Shadow>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="43,43,43,43" />
-                        </Border.StrokeShape>
-                        <VerticalStackLayout Padding="20" Spacing="10">
-                            <Button Text="Cargo 1" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
-                                    FontFamily="PlayBold" x:Name="Button1" Clicked="Button1_OnClicked" />
-                            <Button Text="Cargo 2" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
-                                    FontFamily="PlayBold" />
-                            <Button Text="Cargo 3" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
-                                    FontFamily="PlayBold" />
-                            <Button Text="Cargo 4" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
-                                    FontFamily="PlayBold" />
-                            <Button Text="Cargo 5" BackgroundColor="#4F3F9B" TextColor="White" HeightRequest="50"
-                                    FontFamily="PlayBold" />
-                            <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked" />
-                        </VerticalStackLayout>
+                            StyleClass="baseBorder"
+                            Margin="0,-40,0,12"> 
+                        <ScrollView
+                            VerticalOptions="Start" 
+                            HeightRequest="500" 
+                            HorizontalScrollBarVisibility="Never" 
+                            VerticalScrollBarVisibility="Always"> 
+                            <VerticalStackLayout Padding="20" Spacing="10">
+                                <Button Text="Cargo 1" StyleClass="baseButton" x:Name="Button1" Clicked="Button1_OnClicked" />
+                                <Button Text="Cargo 2" StyleClass="baseButton" x:Name="Button2" Clicked="Button1_OnClicked"/>
+                                <Button Text="Cargo 3" StyleClass="baseButton" x:Name="Button3" Clicked="Button1_OnClicked"/>
+                                <Button Text="Cargo 4" StyleClass="baseButton" x:Name="Button4" Clicked="Button1_OnClicked"/>
+                                <Button Text="Cargo 5" StyleClass="baseButton" x:Name="Button5" Clicked="Button1_OnClicked"/>
+                                <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked" />
+                            </VerticalStackLayout>
+                        </ScrollView>
+
                     </Border>
                 </Grid>
         </ScrollView>
