@@ -60,11 +60,11 @@
                                     Color="Green"
                                     FontFamily="FontAwesome"
                                     Glyph="&#xf130;"
-                                    Size="50" />
+                                    Size="50" 
+                                    />
                             </Button.ImageSource>
                         </Button>
                         <Editor
-                            Shadow="{StaticResource basicShadow}"
                             BackgroundColor="#E8E8E8"
                             FontSize="18"
                             HeightRequest="100"
@@ -73,7 +73,7 @@
                             Placeholder="Your translation will appear here..."
                             TextColor="DarkGray"
                             VerticalOptions="Center" 
-                            StyleClass="LoginCreateIcons"/>
+                           />
                     </VerticalStackLayout>
                 </Border>
             </Grid>

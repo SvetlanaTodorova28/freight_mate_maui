@@ -22,10 +22,12 @@
                     </Grid.ColumnDefinitions>
 
                     <Image
+                        Shadow="{StaticResource basicShadow}"
                         Grid.Column="0"
                         Aspect="AspectFit"
                         Source="truck_white.png" />
                     <Image
+                        Shadow="{StaticResource basicShadow}"
                         Grid.Column="1"
                         Aspect="AspectFit"
                         Source="name_white.png" />
