@@ -16,16 +16,8 @@ public partial class HomePage : ContentPage{
     private async void CreateAccount_OnClicked(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//pages/createAccount");
     }
-    private async void OnLoginClicked(object sender, EventArgs e)
-    {
-        if (((HomeViewModel)BindingContext).IsAuthenticated())
-        {
-            await Navigation.PushAsync(new CargosPage());
-        }
-        else
-        {
-            // Toon een foutmelding
-        }
+    private async void OnLoginClicked(object sender, EventArgs e){
+        await Shell.Current.GoToAsync("//pages/CagosPage");
     }
 
   

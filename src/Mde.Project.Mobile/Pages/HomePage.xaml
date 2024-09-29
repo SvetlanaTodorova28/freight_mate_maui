@@ -33,7 +33,7 @@
                     StyleClass="baseBorder"
                     Margin="0,5,0,12">
                 <Grid>
-                    <VerticalStackLayout Padding="20" Spacing="10">
+                    <VerticalStackLayout Padding="20" Spacing="10" IsVisible="{Binding ShowLoginSection}">
                         <Label
                             FontAttributes="Bold"
                             FontFamily="PlayBold"
@@ -95,7 +95,7 @@
                         <Button
                             x:Name="Login"
                             StyleClass="baseButton"
-                            Clicked="OnLoginClicked"
+                            Command="{Binding LoginCommand}"
                             Text="Login" />
                         <Label
                             Margin="0,20,0,-10"
@@ -113,6 +113,15 @@
                             FontFamily="PlayBold"
                             TextColor="#4F3F9B" />
                     </VerticalStackLayout>
+                    <VerticalStackLayout IsVisible="{Binding ShowWelcomeSection}">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="PlayBold"
+                        FontSize="Large"
+                        HorizontalOptions="Center"
+                        Text="{Binding Welcome}"
+                        TextColor="White" />
+                                         </VerticalStackLayout>
                 </Grid>
             </Border>
         </Grid>

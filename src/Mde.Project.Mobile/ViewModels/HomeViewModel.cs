@@ -6,15 +6,22 @@ using Mde.Project.Mobile.Pages;
 
 public class HomeViewModel : ObservableObject
 {
-    private string username;
-    private string password;
-    private string welcomeUser = "Log in te continue"; 
+    private string? username;
+    private string? password;
+    private string welcomeUser = "Log in te continue";
+
+    
+    private bool showLoginSection = true;
+    private bool showWelcomeSection = false;
+    
+     public ICommand LoginCommand { get; }
    
     
     private readonly UsernameTransformer _usernameTransformer;
 
     public HomeViewModel(){
         _usernameTransformer = new UsernameTransformer();
+        LoginCommand = new RelayCommand(PerformLogin);
     }
 
     public string UserName
@@ -37,12 +44,25 @@ public class HomeViewModel : ObservableObject
         get => password;
         set => SetProperty(ref password, value);
     }
+    public bool ShowLoginSection
+    {
+        get => showLoginSection;
+        set => SetProperty(ref showLoginSection, value);
+    }
+    public bool ShowWelcomeSection
+    {
+        get => showWelcomeSection;
+        set => SetProperty(ref showWelcomeSection, value);
+    }
 
     
     public bool IsAuthenticated() {
         var transformed= _usernameTransformer.EnsureLowercase(username);
         if (transformed == "sve@dot.com" && password == "1234"){
             UpdateWelcomeMessage();
+            SetProperty(ref showLoginSection, false, nameof(ShowLoginSection));
+            SetProperty(ref showWelcomeSection, true, nameof(ShowWelcomeSection));
+            
             return true;
         }
         
@@ -51,4 +71,18 @@ public class HomeViewModel : ObservableObject
     private void UpdateWelcomeMessage() {
         Welcome = $"Welcome {_usernameTransformer.ExtractUsername(username)} !";
     }
+    private void PerformLogin()
+    {
+        if (IsAuthenticated())
+        {
+            ShowLoginSection = false;
+            ShowWelcomeSection = true;
+        }
+        else
+        {
+            ShowLoginSection = true;
+            ShowWelcomeSection = false;
+        }
+    }
+
 }
