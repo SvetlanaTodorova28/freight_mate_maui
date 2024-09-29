@@ -2,8 +2,10 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:global="clr-namespace:"
              x:Class="Mde.Project.Mobile.Pages.HomePage"
              BackgroundColor="#1D3448" Opacity="1.4">
+    
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -37,13 +39,9 @@
                             FontFamily="PlayBold"
                             FontSize="Large"
                             HorizontalOptions="Center"
-                            Text="Welcome!"
+                            Text="{Binding Welcome}"
                             TextColor="White" />
-                        <Label
-                            FontFamily="PlayBold"
-                            HorizontalOptions="Center"
-                            Text="Log in to continue"
-                            TextColor="#A3A3A4" />
+                       
                         <Grid Margin="0,30,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
@@ -65,7 +63,7 @@
                                 StyleClass="LoginCreateEntry"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
-                                Text="{Binding UserName}" />
+                                Text="{Binding UserName}"/>
                         </Grid>
                         <Grid Margin="0,25,0,0">
                             <Grid.ColumnDefinitions>
@@ -91,20 +89,20 @@
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"
-                                Text="12345" />
+                                Text="{Binding Password}"/>
                         </Grid>
 
                         <Button
                             x:Name="Login"
                             StyleClass="baseButton"
-                            Clicked="Login_OnClicked"
+                            Clicked="OnLoginClicked"
                             Text="Login" />
                         <Label
                             Margin="0,20,0,-10"
                             HorizontalOptions="Center"
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
-                        <Label></Label>
+                        <Label Text="{Binding UserName}" TextColor="OrangeRed"></Label>
                         <Button
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"

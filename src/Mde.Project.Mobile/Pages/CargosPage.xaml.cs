@@ -10,6 +10,7 @@ namespace Mde.Project.Mobile.Pages;
 public partial class CargosPage : ContentPage{
     public CargosPage(){
         InitializeComponent();
+       
     }
     private async void Add_Cargo_OnClicked(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//pages/createCargo");
