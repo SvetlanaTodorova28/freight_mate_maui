@@ -32,6 +32,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute("//pages/infoCargo", typeof(CargoInfoPage));
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<CargosPage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

@@ -34,7 +34,8 @@
                             VerticalOptions="Start" 
                             HeightRequest="500" 
                             HorizontalScrollBarVisibility="Never" 
-                            VerticalScrollBarVisibility="Never"> 
+                            VerticalScrollBarVisibility="Never"
+                            > 
                             <VerticalStackLayout Padding="20" Spacing="10">
                                 <Button Text="Cargo 1" StyleClass="baseButton" x:Name="Button1" Clicked="Button1_OnClicked" />
                                 <Button Text="Cargo 2" StyleClass="baseButton" x:Name="Button2" Clicked="Button1_OnClicked"/>

@@ -102,7 +102,7 @@
                             HorizontalOptions="Center"
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
-                        <Label Text="{Binding UserName}" TextColor="OrangeRed"></Label>
+                       
                         <Button
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"

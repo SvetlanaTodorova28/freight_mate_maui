@@ -60,8 +60,9 @@ public class HomeViewModel : ObservableObject
         var transformed= _usernameTransformer.EnsureLowercase(username);
         if (transformed == "sve@dot.com" && password == "1234"){
             UpdateWelcomeMessage();
-            SetProperty(ref showLoginSection, false, nameof(ShowLoginSection));
-            SetProperty(ref showWelcomeSection, true, nameof(ShowWelcomeSection));
+            ShowLoginSection = false;
+            ShowWelcomeSection = true;
+         
             
             return true;
         }
@@ -71,17 +72,10 @@ public class HomeViewModel : ObservableObject
     private void UpdateWelcomeMessage() {
         Welcome = $"Welcome {_usernameTransformer.ExtractUsername(username)} !";
     }
-    private void PerformLogin()
-    {
-        if (IsAuthenticated())
-        {
-            ShowLoginSection = false;
+    private void PerformLogin(){
+        if (IsAuthenticated()){
             ShowWelcomeSection = true;
-        }
-        else
-        {
-            ShowLoginSection = true;
-            ShowWelcomeSection = false;
+            ShowLoginSection = false;
         }
     }
 

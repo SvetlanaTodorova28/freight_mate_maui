@@ -38,9 +38,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-	  <CodesignKey>Apple Development: svetlanatodorova28@gmail.com (76HV98CWDV)</CodesignKey>
-	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
 	
 	
 

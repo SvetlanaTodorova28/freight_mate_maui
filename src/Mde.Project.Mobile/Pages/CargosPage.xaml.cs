@@ -8,9 +8,15 @@ using Microsoft.Maui.Controls;
 namespace Mde.Project.Mobile.Pages;
 
 public partial class CargosPage : ContentPage{
+    
     public CargosPage(){
         InitializeComponent();
-       
+        BindingContext = new HomeViewModel();
+    }
+    public CargosPage(HomeViewModel homeViewModel){
+        InitializeComponent();
+        BindingContext = homeViewModel;
+        
     }
     private async void Add_Cargo_OnClicked(object? sender, EventArgs e){
         await Shell.Current.GoToAsync("//pages/createCargo");
