@@ -4,8 +4,29 @@
              x:Class="Mde.Project.Mobile.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Shadow x:Key="basicShadow" Brush="#4F3F9B" Offset="5,5" Opacity="0.6" />
             
+            <Shadow x:Key="basicShadow" Brush="#003B46" Offset="5,5" Opacity="0.3" />
+            
+            
+            <!-- ############################################# GRADIENT BACKGROUND STYLE FOR BORDERS ############################################# -->
+            
+            <LinearGradientBrush x:Key="GradientBackground" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#002432" Offset="0.0"/>  <!-- Zeer donkere kleur aan de bovenkant -->
+                <GradientStop Color="#35606E" Offset="0.10"/> <!-- Donkerste kleur aan de bovenkant -->
+                <GradientStop Color="#66A5AD" Offset="0.25"/> <!-- Eerste overgangskleur -->
+                <GradientStop Color="#ADD8E6" Offset="0.45"/> <!-- Lichtste in het midden -->
+                <GradientStop Color="#66A5AD" Offset="0.75"/> <!-- Tweede overgangskleur -->
+                <GradientStop Color="#35606E" Offset="0.90"/> <!-- Donkerste kleur aan de onderkant -->
+                <GradientStop Color="#002432" Offset="1.0"/>  <!-- Zeer donkere kleur aan de onderkant -->
+            </LinearGradientBrush>
+            <!-- ############################################# GRADIENT BACKGROUND STYLE FOR FLYOUT ############################################# -->
+            
+            <LinearGradientBrush x:Key="BackgroundFlyout" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#1D3448"
+                              Offset="0.1" />
+                <GradientStop Color="LightBlue"
+                              Offset="1.0" />
+            </LinearGradientBrush>
             <!-- ############################################# BASE BORDER STYLE  ############################################# -->
             <Style Class="baseBorder" TargetType="Border">
                 <Setter Property="StrokeShape">
@@ -15,14 +36,7 @@
                 </Setter>
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#1237F3" Offset="0.1" />
-                            <GradientStop Color="LightBlue" Offset="1.0" />
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Background" Value="{StaticResource GradientBackground}"/>
                 <Setter Property="Padding" Value="18" />
                 <Setter Property="Margin" Value="0,15,0,12" />
             </Style>

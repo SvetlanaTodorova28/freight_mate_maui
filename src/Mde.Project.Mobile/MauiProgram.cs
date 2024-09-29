@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Pages;
+using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Hosting;
@@ -29,6 +30,8 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute("//pages/about", typeof(AboutPage));
             Routing.RegisterRoute("//pages/createCargo", typeof(CreateCargoPage));
             Routing.RegisterRoute("//pages/infoCargo", typeof(CargoInfoPage));
+            builder.Services.AddTransient<HomeViewModel>();
+            builder.Services.AddTransient<HomePage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

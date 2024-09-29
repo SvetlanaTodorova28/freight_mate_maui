@@ -5,8 +5,7 @@
              x:Class="Mde.Project.Mobile.Pages.CreateAccountPage"
              BackgroundColor="#1D3448" Opacity="1.4">
 
-
-    <ContentPage.Content>
+    
         <ScrollView>
             <Grid>
                 <Grid.RowDefinitions>
@@ -32,6 +31,7 @@
                         Aspect="AspectFit"
                         Source="name_white.png" />
                 </Grid>
+                
                 <Border Grid.Row="1" StyleClass="baseBorder">
                     <Grid>
                         <VerticalStackLayout Padding="20" Spacing="10">
@@ -116,6 +116,4 @@
                 </Border>
             </Grid>
         </ScrollView>
-
-    </ContentPage.Content>
 </ContentPage>

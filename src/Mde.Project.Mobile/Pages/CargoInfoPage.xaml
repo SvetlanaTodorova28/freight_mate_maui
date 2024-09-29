@@ -4,21 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CargoInfoPage"
              >
-    <Shell.TitleView>
-        <Label
-            Text="Cargo Info"
-            TextColor="#4F3F9B"
-            VerticalTextAlignment="Center"
-            VerticalOptions="Center"
-            HorizontalOptions="Start"
-            Padding="100,0,0,0"
-            HeightRequest="50"
-            FontSize="20"
-            FontFamily="PlayBold" />
-    
-    </Shell.TitleView>
-    <ContentPage.Content>
-        
+    <Grid Background="{StaticResource GradientBackground}">
             <ScrollView>
                 <VerticalStackLayout Padding="12" Spacing="5">
                     <Button 
@@ -49,7 +35,5 @@
                         Clicked= "btnUpdate_Clicked"/>
                 </VerticalStackLayout>
             </ScrollView>
-       
-       
-    </ContentPage.Content>
+        </Grid>
 </ContentPage>

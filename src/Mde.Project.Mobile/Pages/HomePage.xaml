@@ -4,36 +4,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.HomePage"
              BackgroundColor="#1D3448" Opacity="1.4">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-    
-           <ScrollView>
-               <Grid>
-                   <Grid.RowDefinitions>
-                       <RowDefinition Height="Auto" />
-                       <RowDefinition Height="*" />
-                   </Grid.RowDefinitions>
-                   
-                   <Grid  Padding="50">
-                       <Grid.ColumnDefinitions>
-                           <ColumnDefinition Width="*"/>
-                           <ColumnDefinition Width="*"/>
-                       </Grid.ColumnDefinitions>
+            <Grid Padding="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                       <Image
-                           Grid.Column="0"
-                           Aspect="AspectFit"
-                           Source="truck_white.png" />
-                       <Image
-                           Grid.Column="1"
-                           Aspect="AspectFit"
-                           Source="name_white.png" />
-                   </Grid>
+                <Image
+                    Grid.Column="0"
+                    Aspect="AspectFit"
+                    Source="truck_white.png" />
+                <Image
+                    Grid.Column="1"
+                    Aspect="AspectFit"
+                    Source="name_white.png" />
+            </Grid>
 
-                   <Border Grid.Row="1"
-                           StyleClass="baseBorder"
-                           Margin="0,5,0,12">
-                      <Grid>
-                <VerticalStackLayout Padding="20" Spacing="10">
+            <Border Grid.Row="1"
+                    StyleClass="baseBorder"
+                    Margin="0,5,0,12">
+                <Grid>
+                    <VerticalStackLayout Padding="20" Spacing="10">
                         <Label
                             FontAttributes="Bold"
                             FontFamily="PlayBold"
@@ -45,14 +43,13 @@
                             FontFamily="PlayBold"
                             HorizontalOptions="Center"
                             Text="Log in to continue"
-                            TextColor="#A3A3A4" 
-                            />
+                            TextColor="#A3A3A4" />
                         <Grid Margin="0,30,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
-                           
+
                             <Border StyleClass="LoginCreateIcons">
                                 <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                     <Image.Source>
@@ -63,33 +60,32 @@
                                     </Image.Source>
                                 </Image>
                             </Border>
-                               
+
                             <Entry
                                 StyleClass="LoginCreateEntry"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
-                                Text="driver@transport.com" />
+                                Text="{Binding UserName}" />
                         </Grid>
                         <Grid Margin="0,25,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
-                            
-                            <Border 
-                                   StyleClass="LoginCreateIcons">
+
+                            <Border
+                                StyleClass="LoginCreateIcons">
                                 <Image HorizontalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf084;"
-                                            Color="#4F3F9B" 
-                                            />
+                                            Color="#4F3F9B" />
                                     </Image.Source>
                                 </Image>
-                                
+
                             </Border>
-                            
+
                             <Entry
                                 StyleClass="LoginCreateEntry"
                                 Grid.Column="1"
@@ -97,30 +93,31 @@
                                 Placeholder="PASSWORD"
                                 Text="12345" />
                         </Grid>
-                        
+
                         <Button
                             x:Name="Login"
                             StyleClass="baseButton"
                             Clicked="Login_OnClicked"
-                            Text="Login"/>
+                            Text="Login" />
                         <Label
                             Margin="0,20,0,-10"
                             HorizontalOptions="Center"
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
+                        <Label></Label>
                         <Button
                             x:Name="CreateAccount"
                             Margin="0,30,0,0"
                             BackgroundColor="#FBF6FD"
-                            Clicked= "CreateAccount_OnClicked"                            
+                            Clicked="CreateAccount_OnClicked"
                             HeightRequest="60"
                             Text="Create your Account"
                             FontFamily="PlayBold"
                             TextColor="#4F3F9B" />
                     </VerticalStackLayout>
-               </Grid>
+                </Grid>
             </Border>
         </Grid>
-               </ScrollView>
-   
+    </ScrollView>
+
 </ContentPage>
