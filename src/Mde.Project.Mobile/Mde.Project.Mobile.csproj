@@ -77,20 +77,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\CargosPage.xaml">
-	    <SubType>Designer</SubType>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\TranslatePage.xaml">
 	    <SubType>Designer</SubType>
 	  </MauiXaml>
-	</ItemGroup>
-	
-
-	<ItemGroup>
-	  <Compile Update="Pages\CargosPage.xaml.cs">
-	    <DependentUpon>CargosPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </Compile>
 	</ItemGroup>
 	
 

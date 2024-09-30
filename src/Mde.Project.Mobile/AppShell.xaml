@@ -43,7 +43,7 @@
                     Glyph="&#xf02a;"
                     Size="20" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate pages:CargosPage}" Route="Cargos" />
+            <ShellContent ContentTemplate="{DataTemplate pages:CargoListPage}" Route="Cargos" />
         </Tab>
         <Tab Route="options" Title="Options">
             <!--  f279  -->

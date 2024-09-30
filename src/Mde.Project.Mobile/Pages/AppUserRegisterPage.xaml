@@ -2,11 +2,9 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.CreateAccountPage"
+             x:Class="Mde.Project.Mobile.Pages.AppUserRegisterPage"
              BackgroundColor="#1D3448" Opacity="1.4">
-
-    
-        <ScrollView>
+     <ScrollView>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

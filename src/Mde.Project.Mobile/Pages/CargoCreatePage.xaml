@@ -2,7 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.CreateCargoPage">
+             x:Class="Mde.Project.Mobile.Pages.CargoCreatePage">
     <Grid Background="{StaticResource GradientBackground}">
         <ScrollView>
             <VerticalStackLayout Padding="12" Spacing="5">
@@ -20,5 +20,5 @@
                     Clicked= "btnCreate_Clicked"/>
             </VerticalStackLayout>
         </ScrollView>
-   </Grid>
+    </Grid>
 </ContentPage>

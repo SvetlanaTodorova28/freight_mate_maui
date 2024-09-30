@@ -40,7 +40,7 @@ public class CargoService{
                 throw new ArgumentException("The cargo you're trying to update already exists.");
             }
 
-            await WriteStudents(cargos);
+            await WriteCargos(cargos);
             return cargo;
         }
 
@@ -59,10 +59,10 @@ public class CargoService{
             }
             else
             {
-                throw new ArgumentException("The appUser you're trying to update does not have a correct id.");
+                throw new ArgumentException("The cargo you're trying to update does not have a correct id.");
             }
 
-            await WriteStudents(cargos);
+            await WriteCargos(cargos);
             return cargo;
         }
 
@@ -74,7 +74,7 @@ public class CargoService{
             }
         }
 
-        private async Task WriteStudents(List<Cargo> cargos)
+        private async Task WriteCargos(List<Cargo> cargos)
         {
             string serializedCargos = JsonSerializer.Serialize(cargos);
             await File.WriteAllTextAsync(targetFile, serializedCargos);
