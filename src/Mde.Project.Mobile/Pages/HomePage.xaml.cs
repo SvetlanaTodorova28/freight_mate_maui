@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mde.Project.Mobile.ViewModels;
 
-using Microsoft.Maui.Controls;
 
 namespace Mde.Project.Mobile.Pages;
 
 public partial class HomePage : ContentPage{
+    
+    
     public HomePage(HomeViewModel homeViewModel){
         InitializeComponent();
         BindingContext = homeViewModel;

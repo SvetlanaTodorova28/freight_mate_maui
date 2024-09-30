@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Pages;
-using Mde.Project.Mobile;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
+using Mde.Project.Mobile.ViewModels;
+
 
 
 namespace Mde.Project.Mobile

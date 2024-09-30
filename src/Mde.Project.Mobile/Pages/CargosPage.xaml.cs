@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
+
+using Mde.Project.Mobile.ViewModels;
+
 
 namespace Mde.Project.Mobile.Pages;
 
 public partial class CargosPage : ContentPage{
     
-    public CargosPage(){
-        InitializeComponent();
-        BindingContext = new HomeViewModel();
-    }
+   
     public CargosPage(HomeViewModel homeViewModel){
         InitializeComponent();
         BindingContext = homeViewModel;

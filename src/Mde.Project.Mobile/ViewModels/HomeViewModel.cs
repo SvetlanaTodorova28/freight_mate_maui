@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Models;
 using Mde.Project.Mobile.Pages;
+namespace Mde.Project.Mobile.ViewModels;
 
 public class HomeViewModel : ObservableObject
 {
@@ -23,6 +24,7 @@ public class HomeViewModel : ObservableObject
         _usernameTransformer = new UsernameTransformer();
         LoginCommand = new RelayCommand(PerformLogin);
     }
+    
 
     public string UserName
     {
@@ -62,8 +64,6 @@ public class HomeViewModel : ObservableObject
             UpdateWelcomeMessage();
             ShowLoginSection = false;
             ShowWelcomeSection = true;
-         
-            
             return true;
         }
         
