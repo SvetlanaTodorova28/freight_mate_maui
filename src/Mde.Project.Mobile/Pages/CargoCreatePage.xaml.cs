@@ -19,22 +19,5 @@ public partial class CargoCreatePage : ContentPage{
         InitializeComponent();
         BindingContext = cargoCreateViewModel;
     }
-    private async void btnCreate_Clicked(object? sender, EventArgs e){
-
-        var snackbarOptions = new SnackbarOptions{
-            BackgroundColor = Colors.DarkSeaGreen,
-            TextColor = Colors.White,
-            CornerRadius = new CornerRadius(10),
-            /*Font = MediaTypeNames.Font.SystemFontOfSize(18),*/
-            CharacterSpacing = 1
-            
-        };
-
-        string text = "CARGO CREATED SUCCESSFULLY 📦";
-        TimeSpan duration = TimeSpan.FromSeconds(5);
-        
-
-        var snackbar = Snackbar.Make(text, null, "", duration, snackbarOptions);
-        await snackbar.Show();
-    }
+  
 }

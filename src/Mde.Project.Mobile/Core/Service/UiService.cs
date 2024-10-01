@@ -24,7 +24,7 @@ public class UiService : IUiService
     {
         var snackbarOptions = new SnackbarOptions
         {
-            BackgroundColor = Colors.OrangeRed,
+            BackgroundColor = Colors.Pink,
             TextColor = Colors.White,
             CornerRadius = new CornerRadius(10),
             CharacterSpacing = 1
@@ -33,4 +33,6 @@ public class UiService : IUiService
         var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(15), snackbarOptions);
         await snackbar.Show();
     }
+    
+    
 }

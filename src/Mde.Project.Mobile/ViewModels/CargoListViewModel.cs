@@ -22,9 +22,10 @@ public class CargoListViewModel:ObservableObject{
         }
     }
     
-    public CargoListViewModel(ICargoService cargoService)
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService)
     {
         this.cargoService = cargoService;
+        this.uiService = uiService;
     }
     
     
@@ -61,11 +62,17 @@ public class CargoListViewModel:ObservableObject{
     public ICommand DeleteCargoCommand => new Command<Cargo>(async (cargo) =>
     {
         
-            if (cargo != null){
-                    await cargoService.Delete(cargo);
-                    await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
-                    Cargos.Remove(cargo); // Assuming 'Cargos' is an ObservableCollection<Cargo>
-            }
+        if (cargo != null)
+        {
+            await cargoService.Delete(cargo);
+            Cargos.Remove(cargo); 
+            await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
+           
+        }
+        else
+        {
+            // Log error or handle the null case
+        }
         
     });
 
