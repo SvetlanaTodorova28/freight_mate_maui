@@ -67,24 +67,22 @@ public class CargoService:ICargoService{
             await WriteCargos(cargos);
             return cargo;
         }
-        public async Task<Cargo> Delete(Cargo cargo)
+        public async Task Delete(Cargo cargo)
         {
             List<Cargo> cargos = (await GetAll()).ToList();
-            bool cargoExists = cargos.Any(search => search.Id == cargo.Id);
+            Cargo existingCargo = cargos.FirstOrDefault(c => c.Id == cargo.Id);
 
-            if (!cargoExists)
+            if (existingCargo != null)
             {
-                
-                cargos.Remove(cargo);
+                cargos.Remove(existingCargo);
+                await WriteCargos(cargos);
             }
             else
             {
                 throw new ArgumentException("The cargo you're trying to delete doesn't exist.");
             }
-
-            await WriteCargos(cargos);
-            return cargo;
         }
+
 
 
         private void EnsureFileExists(string targetFile)

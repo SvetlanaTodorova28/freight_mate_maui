@@ -60,10 +60,13 @@ public class CargoListViewModel:ObservableObject{
     //=========================== DELETE =====================================
     public ICommand DeleteCargoCommand => new Command<Cargo>(async (cargo) =>
     {
-        await cargoService.Delete(cargo);
-        await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY 📦");
         
-
-        await Shell.Current.GoToAsync("//CargoListPage");
+            if (cargo != null){
+                    await cargoService.Delete(cargo);
+                    await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
+                    Cargos.Remove(cargo); // Assuming 'Cargos' is an ObservableCollection<Cargo>
+            }
+        
     });
+
 }

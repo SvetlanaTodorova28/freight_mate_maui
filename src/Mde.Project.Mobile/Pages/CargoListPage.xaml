@@ -48,7 +48,18 @@
                             <DataTemplate x:DataType="models:Cargo">
                                
                                     <ViewCell>
-                                    <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
+                                        <SwipeView>
+                                            <SwipeView.RightItems>
+                                                <SwipeItems>
+                                                    <SwipeItem Text="Delete"
+                                                               IconImageSource="delete.png"
+                                                               BackgroundColor="Red"
+                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=DeleteCargoCommand}" 
+                                                               CommandParameter="{Binding .}"/>
+                                                              
+                                                </SwipeItems>
+                                            </SwipeView.RightItems>
+                                        <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
                                         <Grid ColumnDefinitions="Auto, *"
                                               RowDefinitions="Auto, Auto, Auto">
                                             <Label Grid.Column="0" Grid.Row="2" Text="Destination:" FontSize="16"
@@ -57,6 +68,7 @@
                                                    FontFamily="PlayBold" TextColor="White" FontSize="16"/>
                                         </Grid>
                                     </Border>
+                                            </SwipeView>
                                 </ViewCell>
                                   
                             </DataTemplate>
