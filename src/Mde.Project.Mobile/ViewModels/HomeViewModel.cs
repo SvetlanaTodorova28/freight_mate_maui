@@ -25,6 +25,8 @@ public class HomeViewModel : ObservableObject
         LoginCommand = new RelayCommand(PerformLogin);
     }
     
+   
+    
 
     public string UserName
     {

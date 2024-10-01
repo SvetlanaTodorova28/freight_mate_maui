@@ -2,23 +2,62 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.CargoCreatePage">
-    <Grid Background="{StaticResource GradientBackground}">
-        <ScrollView>
-            <VerticalStackLayout Padding="12" Spacing="5">
-                <Button 
-                    Margin="0,20,0,0"  
-                    x:Name="btnCreate"
-                    Text="Create cargo" 
-                    HeightRequest="60"
-                    BackgroundColor="ForestGreen"
-                    TextColor="White"
-                    FontFamily="PlayBold"
-                    FontSize="16"
-                    CornerRadius="9"
-                    Shadow="{StaticResource basicShadow}"
-                    Clicked= "btnCreate_Clicked"/>
-            </VerticalStackLayout>
+             xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             Title="{Binding PageTitle}"
+             x:DataType="viewmodels:CargoCreateViewModel"
+             x:Class="Mde.Project.Mobile.Pages.CargoCreatePage"
+             BackgroundColor="#1D3448" Opacity="1.4">
+    
+           <Border Grid.Row="1" Margin="0,25,0,12"
+                   StyleClass="baseBorder">
+           <ScrollView>
+            <Grid ColumnDefinitions="*"
+                  RowDefinitions="Auto,*"
+                  RowSpacing="0">
+                
+                   <!-- Verwijderd onnodige ScrollView hier -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Padding="10">
+                    <!-- Een consistent gebruik van padding en margins -->
+                    <Label StyleClass="TitleLabel" Text="Create Cargo"></Label>
+                    <Grid ColumnDefinitions="100,*"
+                          RowDefinitions="Auto, Auto, Auto"
+                          RowSpacing="10">  <!-- Voeg ruimte tussen rijen toe -->
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               StyleClass="BaseLabel"
+                               Text="Weight" />
+                        <Entry Grid.Row="0"
+                               Grid.Column="1"
+                               Placeholder="12345"
+                               Text="{Binding TotalWeight}" />
+
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               StyleClass="BaseLabel"
+                               Text="Destination" />
+                        <Entry Grid.Row="1"
+                               Grid.Column="1"
+                               Placeholder="Antwerp"
+                               Text="{Binding Destination}" />
+
+                        <Label Grid.Row="2"
+                               Grid.Column="0"
+                               StyleClass="BaseLabel"
+                               Text="Is it dangerous?"></Label>
+                        <Entry Grid.Row="2"
+                               Grid.Column="1"
+                               Placeholder="Yes"
+                               Text="{Binding IsDangerous}" />
+                    </Grid>
+
+                    <Button Command="{Binding SaveCommand}"
+                            Text="Save"
+                            StyleClass="baseButton"/>
+                </VerticalStackLayout>
+            </Grid>
         </ScrollView>
-    </Grid>
+           
+
+   
+       </Border>
 </ContentPage>

@@ -15,8 +15,7 @@ namespace Mde.Project.Mobile.Pages;
 
 public partial class CargoCreatePage : ContentPage{
     
-    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel){
-        
+    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel){ 
         InitializeComponent();
         BindingContext = cargoCreateViewModel;
     }

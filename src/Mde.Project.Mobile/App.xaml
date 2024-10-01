@@ -7,6 +7,28 @@
             
             <Shadow x:Key="basicShadow" Brush="#003B46" Offset="5,5" Opacity="0.3" />
             
+            <!-- #############################################   STYLE FOR TITLE LABEL ############################################# -->
+            <Style Class="TitleLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="OrangeRed"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="FontFamily" Value="PlayBold"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            
+            <!-- #############################################   STYLE FOR BASE LABEL ############################################# -->
+            <Style Class="BaseLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="FontFamily" Value="PlayBold"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            
             
             <!-- ############################################# GRADIENT BACKGROUND STYLE FOR BORDERS ############################################# -->
             
@@ -86,17 +108,6 @@
                 <Setter Property="FontSize" Value="20"></Setter>
             </Style>
             
-            <!-- ############################################# BASE BUTTONS STYLE  ############################################# -->
-            <Style x:Key="GradientBackgroundGrid" TargetType="Grid">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#1237F3" Offset="0.1"/>
-                            <GradientStop Color="LightBlue" Offset="1.0"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Style>
 
             
         </ResourceDictionary>

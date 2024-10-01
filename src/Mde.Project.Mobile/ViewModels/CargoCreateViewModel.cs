@@ -2,12 +2,22 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
 
 
-[QueryProperty(nameof(selectedCargo), nameof(selectedCargo))]
+[QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
 public class CargoCreateViewModel:ObservableObject{
+    
+    private ICommand createCargoCommand;
+
+    public ICommand CreateCargoCommand{
+        get{ return createCargoCommand;}
+        set{
+            SetProperty(ref createCargoCommand, value);
+        }
+    }
        private readonly ICargoService cargoService;
 
         private string pageTitle;
@@ -21,7 +31,6 @@ public class CargoCreateViewModel:ObservableObject{
         }
 
         private Cargo selectedCargo;
-        
         public Cargo SelectedCargo
         {
             get { return selectedCargo; }
@@ -33,13 +42,17 @@ public class CargoCreateViewModel:ObservableObject{
                 if (selectedCargo != null)
                 {
                     PageTitle = "Edit cargo";
+                    Destination = selectedCargo.Destination;
                     TotalWeight = selectedCargo.TotalWeight;
                     IsDangerous = selectedCargo.IsDangerous;
                 }
                 else
                 {
-                    PageTitle = "Add student";
-                  
+                    PageTitle = "Add cargo";
+                    Destination = default;
+                    TotalWeight = default;
+                    IsDangerous = default;
+
                 }
             }
         }
@@ -57,9 +70,8 @@ public class CargoCreateViewModel:ObservableObject{
 
         
 
-        private bool isDangerous;
-        
-        public bool IsDangerous
+        private string isDangerous;
+        public string IsDangerous
         {
             get { return isDangerous; }
             set{
@@ -70,7 +82,6 @@ public class CargoCreateViewModel:ObservableObject{
         
 
         private string destination;
-
         public string Destination
         {
             get { return destination; }
@@ -79,10 +90,7 @@ public class CargoCreateViewModel:ObservableObject{
             }
         }
         
-    
-
-      
-
+        
         public CargoCreateViewModel(ICargoService cargoService)
         {
             this.cargoService = cargoService;
@@ -102,10 +110,10 @@ public class CargoCreateViewModel:ObservableObject{
                 cargo = SelectedCargo;
             }
 
-            cargo.TotalWeight = selectedCargo.TotalWeight;
-            cargo.Destination = selectedCargo.Destination;
-            cargo.IsDangerous = selectedCargo.IsDangerous;
-            cargo.Destination = selectedCargo.Destination;
+            cargo.TotalWeight = TotalWeight;
+            cargo.Destination = Destination;
+            cargo.IsDangerous = IsDangerous;
+            cargo.Destination = Destination;
 
             if (cargo.Id.Equals(Guid.Empty))
             {
@@ -117,6 +125,7 @@ public class CargoCreateViewModel:ObservableObject{
             }
 
             await Shell.Current.GoToAsync("//CargoListPage");
+           
 
         });
 

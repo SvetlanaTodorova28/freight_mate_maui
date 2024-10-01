@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui;
+using Mde.Project.Mobile.Core.Service;
+using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Pages;
 using Microsoft.Extensions.Logging;
 using Mde.Project.Mobile.ViewModels;
@@ -26,7 +28,7 @@ namespace Mde.Project.Mobile
                 });
             Routing.RegisterRoute("//pages/appuserRegister", typeof(AppUserRegisterPage));
             Routing.RegisterRoute("//pages/about", typeof(AboutPage));
-            Routing.RegisterRoute("//pages/createCargo", typeof(CargoCreatePage));
+            Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
             Routing.RegisterRoute("//pages/infoCargo", typeof(CargoInfoPage));
             
             builder.Services.AddTransient<HomeViewModel>();
@@ -40,6 +42,8 @@ namespace Mde.Project.Mobile
             
             builder.Services.AddTransient<AppUserRegisterPage>();
             builder.Services.AddTransient<AppUserRegisterViewModel>();
+            
+            builder.Services.AddTransient<ICargoService, CargoService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

@@ -1,9 +1,10 @@
 using System.Text.Json;
+using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Models;
 
 namespace Mde.Project.Mobile.Core.Service;
 
-public class CargoService{
+public class CargoService:ICargoService{
       private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
     public async Task<ICollection<Cargo>> GetAll()
         {

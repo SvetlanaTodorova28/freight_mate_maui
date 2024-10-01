@@ -1,54 +1,107 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage
     x:Class="Mde.Project.Mobile.Pages.CargoListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
-    x:DataType="viewmodels:HomeViewModel"
+    xmlns:models="clr-namespace:Mde.Project.Mobile.Models"
+    x:DataType="viewmodels:CargoListViewModel"
     BackgroundColor="#1D3448" Opacity="1.4">
-    
-    
+
+
     <ScrollView>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                   
-                    <Grid Padding="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" /> 
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <Image
-                            Grid.Column="1"
-                            Source="pff1.png" 
-                            Aspect="AspectFit"
-                            HeightRequest="150"
-                        /> 
-                    </Grid>
-                    <Border Grid.Row="1" Margin= "0,25,0,12"
-                            StyleClass="baseBorder">
-                       
-                        <ScrollView
-                            VerticalOptions="Start" 
-                            HeightRequest="500" 
-                            HorizontalScrollBarVisibility="Never" 
-                            VerticalScrollBarVisibility="Never"> 
-                            <VerticalStackLayout Padding="20" Spacing="10" IsVisible="{Binding ShowWelcomeSection}">
-                                <Button Text="Cargo 1" StyleClass="baseButton" x:Name="Button1" Clicked="Button1_OnClicked" />
-                                <Button Text="Cargo 2" StyleClass="baseButton" x:Name="Button2" Clicked="Button1_OnClicked"/>
-                                <Button Text="Cargo 3" StyleClass="baseButton" x:Name="Button3" Clicked="Button1_OnClicked"/>
-                                <Button Text="Cargo 4" StyleClass="baseButton" x:Name="Button4" Clicked="Button1_OnClicked"/>
-                                <Button Text="Cargo 5" StyleClass="baseButton" x:Name="Button5" Clicked="Button1_OnClicked"/>
-                                <ImageButton Source="plus.png" x:Name="Add_Cargo" Clicked="Add_Cargo_OnClicked" />
-                            </VerticalStackLayout>
-                        </ScrollView>
-                    </Border>
-                </Grid>
-        </ScrollView>
-    
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Padding="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="1"
+                    Source="pff1.png"
+                    Aspect="AspectFit"
+                    HeightRequest="150" />
+            </Grid>
+            <Border Grid.Row="1" Margin="0,25,0,12"
+                    StyleClass="baseBorder">
+
+               <VerticalStackLayout>
+                   <ListView 
+                              x:Name="lstCargos"
+                              HasUnevenRows="True"
+                              ItemTapped="LstCargos_OnItemTapped"
+                              ItemsSource="{Binding Cargos}"
+                              Background="Transparent"
+                             >
+                        <ListView.ItemTemplate >
+                            <DataTemplate x:DataType="models:Cargo">
+                                <ViewCell>
+                                    <VerticalStackLayout >
+                                        <Grid Padding="10"
+                                              ColumnDefinitions="40, *">
+                                            <BoxView
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                HorizontalOptions="Start" />
+                                            <VerticalStackLayout
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                VerticalOptions="Center">
+                                                <Label>
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding TotalWeight}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding IsDangerous}" />
+                                                            <Span Text="{Binding Destination}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!--  Buttons floating over the ListView  -->
+                    <VerticalStackLayout
+                        AbsoluteLayout.LayoutBounds="0,0,.95,.95"
+                        AbsoluteLayout.LayoutFlags="SizeProportional"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        Padding="20">
+
+                        <Button
+                            Command="{Binding CreateCargoCommand}"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HeightRequest="50"
+                            Text="+"
+                            WidthRequest="50">
+                            <Button.Shadow>
+                                <Shadow
+                                    Opacity="0.75"
+                                    Radius="1"
+                                    Offset="5,5" />
+                            </Button.Shadow>
+                        </Button>
+
+                    </VerticalStackLayout>
+                
+               </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+
 </ContentPage>
