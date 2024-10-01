@@ -7,6 +7,7 @@
             
             <Shadow x:Key="basicShadow" Brush="#003B46" Offset="5,5" Opacity="0.3" />
             
+            
             <!-- #############################################   STYLE FOR TITLE LABEL ############################################# -->
             <Style Class="TitleLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="OrangeRed"/>
@@ -41,6 +42,10 @@
                 <GradientStop Color="#35606E" Offset="0.90"/> <!-- Donkerste kleur aan de onderkant -->
                 <GradientStop Color="#002432" Offset="1.0"/>  <!-- Zeer donkere kleur aan de onderkant -->
             </LinearGradientBrush>
+            
+            <LinearGradientBrush x:Key="GradientBackground1" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#002432" Offset="0.0"/>  <!-- Zeer donkere kleur aan de bovenkant -->
+                </LinearGradientBrush>
             <!-- ############################################# GRADIENT BACKGROUND STYLE FOR FLYOUT ############################################# -->
             
             <LinearGradientBrush x:Key="BackgroundFlyout" StartPoint="0,0" EndPoint="1,1">
@@ -59,9 +64,9 @@
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="StrokeThickness" Value="1" />
                 <Setter Property="Background" Value="{StaticResource GradientBackground}"/>
-                <Setter Property="Padding" Value="18" />
-                <Setter Property="Margin" Value="0,15,0,12" />
             </Style>
+            
+            
 
             <!-- ############################################# FLYOUTITEM  STYLE  ############################################# -->
             <Style Class="FlyoutItemLabelStyle" TargetType="Label" >
@@ -108,6 +113,7 @@
                 <Setter Property="FontSize" Value="20"></Setter>
             </Style>
             
+          
 
             
         </ResourceDictionary>

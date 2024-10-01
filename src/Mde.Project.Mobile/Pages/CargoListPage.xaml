@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage
     x:Class="Mde.Project.Mobile.Pages.CargoListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -9,7 +8,6 @@
     x:DataType="viewmodels:CargoListViewModel"
     BackgroundColor="#1D3448" Opacity="1.4">
 
-
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -17,91 +15,48 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Padding="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <Image
+                Grid.Row="0"
+                Source="pff1.png"
+                Aspect="AspectFit"
+                HeightRequest="150"
+                HorizontalOptions="Center" />
 
-                <Image
-                    Grid.Column="1"
-                    Source="pff1.png"
-                    Aspect="AspectFit"
-                    HeightRequest="150" />
-            </Grid>
-            <Border Grid.Row="1" Margin="0,25,0,12"
-                    StyleClass="baseBorder">
+            <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder" >
+                <ListView
+                    x:Name="lstCargos"
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding Cargos}"
+                    Background="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Cargo">
+                            <ViewCell Height="120">
+                                <Border BackgroundColor="#1D3448" Opacity="0.7" Padding="25" Margin="10">
+                                    <Grid ColumnDefinitions="Auto, *"
+                                          RowDefinitions="Auto, Auto, Auto" >
 
-               <VerticalStackLayout>
-                   <ListView 
-                              x:Name="lstCargos"
-                              HasUnevenRows="True"
-                              ItemTapped="LstCargos_OnItemTapped"
-                              ItemsSource="{Binding Cargos}"
-                              Background="Transparent"
-                             >
-                        <ListView.ItemTemplate >
-                            <DataTemplate x:DataType="models:Cargo">
-                                <ViewCell>
-                                    <VerticalStackLayout >
-                                        <Grid Padding="10"
-                                              ColumnDefinitions="40, *">
-                                            <BoxView
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                HorizontalOptions="Start" />
-                                            <VerticalStackLayout
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                VerticalOptions="Center">
-                                                <Label>
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <Span Text="{Binding TotalWeight}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding IsDangerous}" />
-                                                            <Span Text="{Binding Destination}" />
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                    </VerticalStackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                        <Label Grid.Column="0" Grid.Row="0" Text="Total Weight:" 
+                                               FontFamily="PlayBold" TextColor="White" />
+                                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding TotalWeight}" 
+                                               FontFamily="PlayBold" TextColor="White" />
 
-                    <!--  Buttons floating over the ListView  -->
-                    <VerticalStackLayout
-                        AbsoluteLayout.LayoutBounds="0,0,.95,.95"
-                        AbsoluteLayout.LayoutFlags="SizeProportional"
-                        HorizontalOptions="End"
-                        VerticalOptions="End"
-                        Padding="20">
+                                        <Label Grid.Column="0" Grid.Row="1" Text="Is Dangerous:" 
+                                               FontFamily="PlayBold" TextColor="White" />
+                                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding IsDangerous}" 
+                                               FontFamily="PlayBold" TextColor="White" />
 
-                        <Button
-                            Command="{Binding CreateCargoCommand}"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="14"
-                            HeightRequest="50"
-                            Text="+"
-                            WidthRequest="50">
-                            <Button.Shadow>
-                                <Shadow
-                                    Opacity="0.75"
-                                    Radius="1"
-                                    Offset="5,5" />
-                            </Button.Shadow>
-                        </Button>
-
-                    </VerticalStackLayout>
-                
-               </VerticalStackLayout>
+                                        <Label Grid.Column="0" Grid.Row="2" Text="Destination:" 
+                                               FontFamily="PlayBold" TextColor="White" />
+                                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}" 
+                                               FontFamily="PlayBold" TextColor="White" />
+                                    </Grid>
+                                </Border>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Border>
         </Grid>
     </ScrollView>
-
 </ContentPage>
+

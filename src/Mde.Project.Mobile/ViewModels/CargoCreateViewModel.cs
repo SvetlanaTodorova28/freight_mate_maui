@@ -10,15 +10,9 @@ namespace Mde.Project.Mobile.ViewModels;
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
 public class CargoCreateViewModel:ObservableObject{
     
-    private ICommand createCargoCommand;
-
-    public ICommand CreateCargoCommand{
-        get{ return createCargoCommand;}
-        set{
-            SetProperty(ref createCargoCommand, value);
-        }
-    }
-       private readonly ICargoService cargoService;
+    
+    private readonly ICargoService cargoService;
+    
 
         private string pageTitle;
         public string PageTitle

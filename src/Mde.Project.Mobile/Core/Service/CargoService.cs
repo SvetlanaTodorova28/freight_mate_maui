@@ -6,6 +6,7 @@ namespace Mde.Project.Mobile.Core.Service;
 
 public class CargoService:ICargoService{
       private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
+      
     public async Task<ICollection<Cargo>> GetAll()
         {
             EnsureFileExists(targetFile);
