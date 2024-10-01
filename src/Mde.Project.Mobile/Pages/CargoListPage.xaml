@@ -26,8 +26,8 @@
             <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>  <!-- Voor de knop -->
-                        <RowDefinition Height="*"/>    <!-- Voor de lijst -->
+                        <RowDefinition Height="Auto"/> 
+                        <RowDefinition Height="*"/>    
                     </Grid.RowDefinitions>
 
                     <ImageButton Source="plus.png"
@@ -42,20 +42,23 @@
                               x:Name="lstCargos"
                               HasUnevenRows="True"
                               ItemsSource="{Binding Cargos}"
-                              Background="Transparent">
+                              Background="Transparent"
+                              ItemTapped="LstCargos_OnItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:Cargo">
-                                <ViewCell>
+                               
+                                    <ViewCell>
                                     <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
                                         <Grid ColumnDefinitions="Auto, *"
                                               RowDefinitions="Auto, Auto, Auto">
-                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination:"
+                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination:" FontSize="16"
                                                    FontFamily="PlayBold" TextColor="White" />
                                             <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}"
-                                                   FontFamily="PlayBold" TextColor="White" />
+                                                   FontFamily="PlayBold" TextColor="White" FontSize="16"/>
                                         </Grid>
                                     </Border>
                                 </ViewCell>
+                                  
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

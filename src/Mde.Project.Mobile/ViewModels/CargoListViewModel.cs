@@ -11,6 +11,7 @@ public class CargoListViewModel:ObservableObject{
     
     private ObservableCollection<Cargo> cargos;
     private readonly ICargoService cargoService;
+    private readonly IUiService uiService;
     
     public ObservableCollection<Cargo> Cargos
     {
@@ -54,5 +55,15 @@ public class CargoListViewModel:ObservableObject{
         };
 
         await Shell.Current.GoToAsync($"{nameof(CargoCreatePage)}", navigationParameter);
+    });
+    
+    //=========================== DELETE =====================================
+    public ICommand DeleteCargoCommand => new Command<Cargo>(async (cargo) =>
+    {
+        await cargoService.Delete(cargo);
+        await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY 📦");
+        
+
+        await Shell.Current.GoToAsync("//CargoListPage");
     });
 }

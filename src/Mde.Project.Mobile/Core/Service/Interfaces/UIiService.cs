@@ -2,5 +2,6 @@ namespace Mde.Project.Mobile.Core.Service.Interfaces;
 
 public interface IUiService
 {
-    Task ShowSnackbarAsync(string message);
+    Task ShowSnackbarCreateAsync(string message);
+    Task ShowSnackbarDeleteAsync(string message);
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mde.Project.Mobile.Pages.CargoDetailsPage"
+             xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             x:DataType="viewmodels:CargoDetailsViewModel"
+             BackgroundColor="#3B3131" Opacity="1.4">
+    
+    <Grid Background="{StaticResource GradientBackground}">
+        <StackLayout Padding="20">
+            <Label Text="Total Weight:"/>
+            <Label Text="{Binding SelectedCargo.TotalWeight}"/>
+        
+            <Label Text="Is Dangerous:"/>
+            <Label Text="{Binding SelectedCargo.IsDangerous}"/>
+        
+            <Label Text="Destination:"/>
+            <Label Text="{Binding SelectedCargo.Destination}"/>
+            
+            
+            <Button Text="Delete" Command="{Binding DeleteCommand}"/>
+        </StackLayout>
+           
+    </Grid>
+</ContentPage>

@@ -29,7 +29,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute("//pages/appuserRegister", typeof(AppUserRegisterPage));
             Routing.RegisterRoute("//pages/about", typeof(AboutPage));
             Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
-            Routing.RegisterRoute("//pages/infoCargo", typeof(CargoInfoPage));
+            Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
             
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<HomePage>();
@@ -39,6 +39,9 @@ namespace Mde.Project.Mobile
 
             builder.Services.AddTransient<CargoCreatePage>();
             builder.Services.AddTransient<CargoCreateViewModel>();
+            
+            builder.Services.AddTransient<CargoDetailsPage>();
+            builder.Services.AddTransient<CargoDetailsViewModel>();
             
             builder.Services.AddTransient<AppUserRegisterPage>();
             builder.Services.AddTransient<AppUserRegisterViewModel>();

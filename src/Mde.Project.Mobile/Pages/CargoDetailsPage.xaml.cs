@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mde.Project.Mobile.Models;
 using Mde.Project.Mobile.ViewModels;
 
 namespace Mde.Project.Mobile.Pages;
 
-public partial class CargoListPage : ContentPage{
-    
-    public CargoListPage(CargoListViewModel cargoListViewModel){
+public partial class CargoDetailsPage : ContentPage{
+    public CargoDetailsPage(CargoDetailsViewModel cargoDetailsViewModel){
         InitializeComponent();
-        BindingContext = cargoListViewModel;
+        BindingContext = cargoDetailsViewModel;
     }
-   
     
     protected override void OnAppearing()
     {
@@ -22,12 +19,5 @@ public partial class CargoListPage : ContentPage{
         HomeViewModel viewmodelHome = BindingContext as HomeViewModel;
         viewmodel.RefreshListCommand?.Execute(null);
         base.OnAppearing();
-    }
-   
-
-    private void LstCargos_OnItemTapped(object? sender, ItemTappedEventArgs e){
-        Cargo cargo = e.Item as Cargo;
-        CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        viewmodel.EditCargoCommand?.Execute(cargo);
     }
 }

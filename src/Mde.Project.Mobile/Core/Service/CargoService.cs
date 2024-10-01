@@ -67,6 +67,25 @@ public class CargoService:ICargoService{
             await WriteCargos(cargos);
             return cargo;
         }
+        public async Task<Cargo> Delete(Cargo cargo)
+        {
+            List<Cargo> cargos = (await GetAll()).ToList();
+            bool cargoExists = cargos.Any(search => search.Id == cargo.Id);
+
+            if (!cargoExists)
+            {
+                
+                cargos.Remove(cargo);
+            }
+            else
+            {
+                throw new ArgumentException("The cargo you're trying to delete doesn't exist.");
+            }
+
+            await WriteCargos(cargos);
+            return cargo;
+        }
+
 
         private void EnsureFileExists(string targetFile)
         {
@@ -81,4 +100,6 @@ public class CargoService:ICargoService{
             string serializedCargos = JsonSerializer.Serialize(cargos);
             await File.WriteAllTextAsync(targetFile, serializedCargos);
         }
+        
+        
 }

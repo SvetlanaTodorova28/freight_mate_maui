@@ -8,4 +8,5 @@ public interface ICargoService{
     public Task<ICollection<Cargo>> GetAll();
     public Task<Cargo> Add(Cargo cargo);
     public Task<Cargo> Update(Cargo cargo);
+    public Task<Cargo> Delete(Cargo cargo);
 }
