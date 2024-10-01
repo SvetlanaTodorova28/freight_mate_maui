@@ -12,6 +12,7 @@ public class CargoCreateViewModel:ObservableObject{
     
     
     private readonly ICargoService cargoService;
+    private readonly IUiService uiService;
     
 
         private string pageTitle;
@@ -85,9 +86,10 @@ public class CargoCreateViewModel:ObservableObject{
         }
         
         
-        public CargoCreateViewModel(ICargoService cargoService)
+        public CargoCreateViewModel(ICargoService cargoService, IUiService uiService)
         {
             this.cargoService = cargoService;
+            this.uiService = uiService;
         }
         
         public ICommand SaveCommand => new Command(async () =>
@@ -112,10 +114,12 @@ public class CargoCreateViewModel:ObservableObject{
             if (cargo.Id.Equals(Guid.Empty))
             {
                 await cargoService.Add(cargo);
+                await uiService.ShowSnackbarAsync("CARGO CREATED SUCCESSFULLY 📦");
             }
             else
             {
                 await cargoService.Update(cargo);
+               
             }
 
             await Shell.Current.GoToAsync("//CargoListPage");

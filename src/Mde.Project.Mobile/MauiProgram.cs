@@ -44,6 +44,11 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<AppUserRegisterViewModel>();
             
             builder.Services.AddTransient<ICargoService, CargoService>();
+            
+            builder.Services.AddTransient<IUiService, UiService>();
+            
+            
+
 
 #if DEBUG
     		builder.Logging.AddDebug();

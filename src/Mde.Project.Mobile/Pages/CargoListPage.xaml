@@ -23,6 +23,14 @@
                 HorizontalOptions="Center" />
 
             <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder" >
+                <VerticalStackLayout>
+                   <!--<Button Text="Create" Command="{Binding CreateCargoCommand}"></Button>-->
+                    <ImageButton Source="plus.png"
+                                 HeightRequest="100"
+                                 WidthRequest="100"
+                                 HorizontalOptions="Start"
+                                 Command="{Binding CreateCargoCommand}"
+                                 Margin="0,0,20,0" />
                 <ListView
                     x:Name="lstCargos"
                     HasUnevenRows="True"
@@ -55,6 +63,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                    </VerticalStackLayout>
             </Border>
         </Grid>
     </ScrollView>
