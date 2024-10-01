@@ -44,15 +44,19 @@
             </LinearGradientBrush>
             
             <LinearGradientBrush x:Key="GradientBackground1" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#002432" Offset="0.0"/>  <!-- Zeer donkere kleur aan de bovenkant -->
+                <GradientStop Color="#1E1E1E"
+                              Offset="0.1" />
+                <GradientStop Color="#505050"
+                              Offset="1.0" /> <!-- Zeer donkere kleur aan de bovenkant -->
                 </LinearGradientBrush>
             <!-- ############################################# GRADIENT BACKGROUND STYLE FOR FLYOUT ############################################# -->
             
             <LinearGradientBrush x:Key="BackgroundFlyout" StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#1D3448"
                               Offset="0.1" />
-                <GradientStop Color="LightBlue"
-                              Offset="1.0" />
+                <GradientStop Color="#35606E" Offset="0.60"/>
+                <GradientStop Color="#1D3448"
+                              Offset="0.8" />
             </LinearGradientBrush>
             <!-- ############################################# BASE BORDER STYLE  ############################################# -->
             <Style Class="baseBorder" TargetType="Border">
@@ -63,7 +67,19 @@
                 </Setter>
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="Background" Value="{StaticResource GradientBackground}"/>
+                <Setter Property="Background" Value="{StaticResource BackgroundFlyout}"/>
+            </Style>
+            
+            
+            <Style Class="baseBorder1" TargetType="Border">
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <RoundRectangle CornerRadius="13"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Background" Value="{StaticResource GradientBackground1}"/>
             </Style>
             
             

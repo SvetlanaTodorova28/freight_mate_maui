@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:global="clr-namespace:"
              x:Class="Mde.Project.Mobile.Pages.HomePage"
-             BackgroundColor="#1D3448" Opacity="1.4">
+             BackgroundColor="#3B3131" Opacity="1.4">
     
     <ScrollView>
         <Grid>

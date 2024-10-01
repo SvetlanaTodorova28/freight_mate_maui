@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage
     x:Class="Mde.Project.Mobile.Pages.CargoListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -6,7 +7,7 @@
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     xmlns:models="clr-namespace:Mde.Project.Mobile.Models"
     x:DataType="viewmodels:CargoListViewModel"
-    BackgroundColor="#1D3448" Opacity="1.4">
+    BackgroundColor="#3B3131" Opacity="1.4">
 
     <ScrollView>
         <Grid>
@@ -19,53 +20,47 @@
                 Grid.Row="0"
                 Source="pff1.png"
                 Aspect="AspectFit"
-                HeightRequest="150"
+                HeightRequest="100"
                 HorizontalOptions="Center" />
 
-            <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder" >
-                <VerticalStackLayout>
-                   <!--<Button Text="Create" Command="{Binding CreateCargoCommand}"></Button>-->
+            <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>  <!-- Voor de knop -->
+                        <RowDefinition Height="*"/>    <!-- Voor de lijst -->
+                    </Grid.RowDefinitions>
+
                     <ImageButton Source="plus.png"
+                                 Grid.Row="0"
                                  HeightRequest="100"
                                  WidthRequest="100"
                                  HorizontalOptions="Start"
                                  Command="{Binding CreateCargoCommand}"
                                  Margin="0,0,20,0" />
-                <ListView
-                    x:Name="lstCargos"
-                    HasUnevenRows="True"
-                    ItemsSource="{Binding Cargos}"
-                    Background="Transparent">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Cargo">
-                            <ViewCell Height="120">
-                                <Border BackgroundColor="#1D3448" Opacity="0.7" Padding="25" Margin="10">
-                                    <Grid ColumnDefinitions="Auto, *"
-                                          RowDefinitions="Auto, Auto, Auto" >
 
-                                        <Label Grid.Column="0" Grid.Row="0" Text="Total Weight:" 
-                                               FontFamily="PlayBold" TextColor="White" />
-                                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding TotalWeight}" 
-                                               FontFamily="PlayBold" TextColor="White" />
-
-                                        <Label Grid.Column="0" Grid.Row="1" Text="Is Dangerous:" 
-                                               FontFamily="PlayBold" TextColor="White" />
-                                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding IsDangerous}" 
-                                               FontFamily="PlayBold" TextColor="White" />
-
-                                        <Label Grid.Column="0" Grid.Row="2" Text="Destination:" 
-                                               FontFamily="PlayBold" TextColor="White" />
-                                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}" 
-                                               FontFamily="PlayBold" TextColor="White" />
-                                    </Grid>
-                                </Border>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                    </VerticalStackLayout>
+                    <ListView Grid.Row="1"
+                              x:Name="lstCargos"
+                              HasUnevenRows="True"
+                              ItemsSource="{Binding Cargos}"
+                              Background="Transparent">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Cargo">
+                                <ViewCell>
+                                    <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
+                                        <Grid ColumnDefinitions="Auto, *"
+                                              RowDefinitions="Auto, Auto, Auto">
+                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination:"
+                                                   FontFamily="PlayBold" TextColor="White" />
+                                            <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}"
+                                                   FontFamily="PlayBold" TextColor="White" />
+                                        </Grid>
+                                    </Border>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    </Grid>
             </Border>
         </Grid>
     </ScrollView>
 </ContentPage>
-

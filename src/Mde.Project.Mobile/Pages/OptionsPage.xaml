@@ -2,9 +2,12 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.OptionsPage">
+             x:Class="Mde.Project.Mobile.Pages.OptionsPage"
+             BackgroundColor="#3B3131" Opacity="1.4">
      <ContentPage.Content>
-         <Grid Background="{StaticResource GradientBackground}">
+         <Border Grid.Row="1" Margin="0,25,0,12"
+                 StyleClass="baseBorder">
+         <Grid >
          <VerticalStackLayout Spacing="25" Padding="30">
              
                     <Grid >
@@ -59,5 +62,6 @@
 
                 </VerticalStackLayout>
          </Grid>
+             </Border>
             </ContentPage.Content>
 </ContentPage>

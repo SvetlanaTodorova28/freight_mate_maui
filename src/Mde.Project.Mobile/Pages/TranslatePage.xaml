@@ -4,7 +4,7 @@
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#1D3448" Opacity="1.4">
+    BackgroundColor="#3B3131" Opacity="1.4">
     
         <ScrollView>
             <Grid>
@@ -24,7 +24,7 @@
                         Grid.Column="1"
                         Source="pff.png" 
                         Aspect="AspectFit"
-                        HeightRequest="150"
+                        HeightRequest="100"
                         /> 
                 </Grid>
 
