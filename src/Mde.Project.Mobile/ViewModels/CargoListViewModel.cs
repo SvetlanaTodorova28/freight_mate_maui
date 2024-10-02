@@ -75,5 +75,15 @@ public class CargoListViewModel:ObservableObject{
         }
         
     });
+    //=========================== SHOW =====================================
+    public ICommand DetailsCargoCommand => new Command<Cargo>(async (cargo) =>
+    {
+        var navigationParameter = new Dictionary<string, object>
+        {
+            { nameof(CargoCreateViewModel.SelectedCargo), cargo }
+        };
+
+        await Shell.Current.GoToAsync($"{nameof(CargoDetailsPage)}", navigationParameter);
+    });
 
 }

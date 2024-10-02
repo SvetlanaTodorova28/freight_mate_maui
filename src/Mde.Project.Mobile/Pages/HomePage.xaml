@@ -102,26 +102,8 @@
                             HorizontalOptions="Center"
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
-                       
-                        <Button
-                            x:Name="CreateAccount"
-                            Margin="0,30,0,0"
-                            BackgroundColor="#FBF6FD"
-                            Clicked="CreateAccount_OnClicked"
-                            HeightRequest="60"
-                            Text="Create your Account"
-                            FontFamily="PlayBold"
-                            TextColor="#4F3F9B" />
                     </VerticalStackLayout>
-                    <VerticalStackLayout IsVisible="{Binding ShowWelcomeSection}">
-                    <Label
-                        FontAttributes="Bold"
-                        FontFamily="PlayBold"
-                        FontSize="Large"
-                        HorizontalOptions="Center"
-                        Text="{Binding Welcome}"
-                        TextColor="White" />
-                                         </VerticalStackLayout>
+                   
                 </Grid>
             </Border>
         </Grid>

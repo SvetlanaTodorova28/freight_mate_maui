@@ -13,11 +13,5 @@ public partial class CargoDetailsPage : ContentPage{
         BindingContext = cargoDetailsViewModel;
     }
     
-    protected override void OnAppearing()
-    {
-        CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        HomeViewModel viewmodelHome = BindingContext as HomeViewModel;
-        viewmodel.RefreshListCommand?.Execute(null);
-        base.OnAppearing();
-    }
+   
 }

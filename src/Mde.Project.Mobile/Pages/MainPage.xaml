@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mde.Project.Mobile.Pages.MainPage"
+             BackgroundColor="#3B3131" Opacity="1.4">
+    <Grid VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>  <!-- Content area -->
+            <RowDefinition Height="Auto"/>  <!-- First button -->
+            <RowDefinition Height="Auto"/>  <!-- Second button -->
+        </Grid.RowDefinitions>
+
+        <!-- Eerste knop -->
+        <Border Grid.Row="1"
+                StyleClass="baseBorder1"
+                Opacity="0.7"
+                Padding="25"
+                Margin="10,0,10,5">
+            <Button x:Name="login"
+                    Text="Already have an account"
+                    FontSize="16"
+                    Clicked="Login_OnClicked"
+                    FontFamily="PlayBold"
+                    TextColor="White"/>
+        </Border>
+
+        <!-- Tweede knop -->
+        <Border Grid.Row="2"
+                StyleClass="baseBorder1"
+                Opacity="0.7"
+                Padding="25"
+                Margin="10,0,10,10">
+            <Button x:Name="crtAccount"
+                    Text="Create a Freight Mate Account"
+                    FontSize="16"
+                    Clicked="CrtAccount_OnClicked"
+                    TextColor="White"/>
+        </Border>
+
+    </Grid>
+
+</ContentPage>

@@ -56,7 +56,11 @@
                                                                BackgroundColor="Red"
                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=DeleteCargoCommand}" 
                                                                CommandParameter="{Binding .}"/>
-                                                              
+                                                    <SwipeItem Text="Update"
+                                                               IconImageSource="update.png"
+                                                               BackgroundColor="Green"
+                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=EditCargoCommand}" 
+                                                               CommandParameter="{Binding .}"/>
                                                 </SwipeItems>
                                             </SwipeView.RightItems>
                                         <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">

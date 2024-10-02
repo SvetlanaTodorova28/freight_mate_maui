@@ -28,6 +28,6 @@ public partial class CargoListPage : ContentPage{
     private void LstCargos_OnItemTapped(object? sender, ItemTappedEventArgs e){
         Cargo cargo = e.Item as Cargo;
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        viewmodel.EditCargoCommand?.Execute(cargo);
+        viewmodel.DetailsCargoCommand?.Execute(cargo);
     }
 }

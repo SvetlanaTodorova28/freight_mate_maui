@@ -11,11 +11,8 @@
     TabBarBackgroundColor="#1D3448"
     BackgroundColor="#3B3131" Opacity="1.4"
 >
-    
-   
-
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
-        <Tab Route="HomePage" Title="Home" >
+        <!--<Tab Route="HomePage" Title="Home" >
             <Tab.Icon>
                 <FontImageSource
                     Color="OrangeRed"
@@ -24,7 +21,7 @@
                     Size="20" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" Route="Home" />
-        </Tab>
+        </Tab>-->
         <Tab Route="TranslatePage" Title="Translate">
             <Tab.Icon>
                 <FontImageSource

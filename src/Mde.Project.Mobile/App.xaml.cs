@@ -1,12 +1,20 @@
-﻿namespace Mde.Project.Mobile
-{
+﻿using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Pages;
+
+namespace Mde.Project.Mobile;
+
     public partial class App : Application
     {
-        public App()
-        {
-            InitializeComponent();
+        private readonly ICargoService cargoService;
+        private readonly IUiService uiService;
 
-            MainPage = new AppShell();
+        public App(ICargoService cargoService, IUiService uiService){
+            this.cargoService = cargoService;
+            this.uiService = uiService;
+            {
+
+                InitializeComponent();
+                MainPage = new NavigationPage(new MainPage(uiService, cargoService));
+            }
         }
     }
-}

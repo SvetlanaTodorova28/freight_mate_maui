@@ -26,10 +26,16 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("Cinzel-VariableFont_wght.ttf", "Cinzel");
                     fonts.AddFont("Play-Bold.ttf", "PlayBold");
                 });
-            Routing.RegisterRoute("//pages/appuserRegister", typeof(AppUserRegisterPage));
+            Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
             Routing.RegisterRoute("//pages/about", typeof(AboutPage));
             Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
             Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
+            Routing.RegisterRoute("//pages/registerUser", typeof(AppUserRegisterPage));
+            Routing.RegisterRoute("//pages/home", typeof(HomePage));
+            
+            
+           
+            builder.Services.AddTransient<MainPage>();
             
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<HomePage>();

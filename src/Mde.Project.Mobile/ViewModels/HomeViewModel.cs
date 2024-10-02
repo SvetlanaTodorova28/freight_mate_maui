@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Models;
 using Mde.Project.Mobile.Pages;
 namespace Mde.Project.Mobile.ViewModels;
@@ -9,23 +10,24 @@ public class HomeViewModel : ObservableObject
 {
     private string? username;
     private string? password;
-    private string welcomeUser = "Log in te continue";
-
     
-    private bool showLoginSection = true;
-    private bool showWelcomeSection = false;
+    
+    private readonly ICargoService cargoService;
+    private readonly IUiService uiService;
+    
     
      public ICommand LoginCommand { get; }
    
     
     private readonly UsernameTransformer _usernameTransformer;
 
-    public HomeViewModel(){
+    public HomeViewModel(ICargoService cargoService, IUiService uiService){
         _usernameTransformer = new UsernameTransformer();
-        LoginCommand = new RelayCommand(PerformLogin);
-    }
+        this.cargoService = cargoService;
+        this.uiService = uiService;
+        LoginCommand = new Command(async () => await ExecuteLoginCommand());
     
-   
+    }
     
 
     public string UserName
@@ -37,10 +39,15 @@ public class HomeViewModel : ObservableObject
         }
 
     }
-    public string Welcome
+    public ICargoService CargoService
     {
-        get => welcomeUser;
-        private set => SetProperty(ref welcomeUser, value); // Maak setter private
+        get => cargoService;
+
+    }
+    public IUiService UiService
+    {
+        get => uiService;
+
     }
 
     public string Password
@@ -48,37 +55,32 @@ public class HomeViewModel : ObservableObject
         get => password;
         set => SetProperty(ref password, value);
     }
-    public bool ShowLoginSection
+    
+   
+    private async Task ExecuteLoginCommand()
     {
-        get => showLoginSection;
-        set => SetProperty(ref showLoginSection, value);
-    }
-    public bool ShowWelcomeSection
-    {
-        get => showWelcomeSection;
-        set => SetProperty(ref showWelcomeSection, value);
+        var isAuthenticated = AuthenticateUser(UserName, Password); // Implementeer deze functie
+        if (isAuthenticated)
+        {
+            // Na succesvolle aanmelding of registratie
+            Application.Current.MainPage = new AppShell();
+            await Shell.Current.GoToAsync("//CargoListPage");
+
+        }
+        else
+        {
+            // Toon foutmelding
+            
+            
+        }
     }
 
+    private bool AuthenticateUser(string userName, string password){
+        return (string.Equals(userName, "S") && string.Equals(password, "1"));
+    }
     
-    public bool IsAuthenticated() {
-        var transformed= _usernameTransformer.EnsureLowercase(username);
-        if (transformed == "sve@dot.com" && password == "1234"){
-            UpdateWelcomeMessage();
-            ShowLoginSection = false;
-            ShowWelcomeSection = true;
-            return true;
-        }
-        
-        return false;
-    }
-    private void UpdateWelcomeMessage() {
-        Welcome = $"Welcome {_usernameTransformer.ExtractUsername(username)} !";
-    }
-    private void PerformLogin(){
-        if (IsAuthenticated()){
-            ShowWelcomeSection = true;
-            ShowLoginSection = false;
-        }
-    }
+  
+    
+   
 
 }
