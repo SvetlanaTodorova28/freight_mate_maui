@@ -30,7 +30,7 @@ public class UiService : IUiService
             CharacterSpacing = 1
         };
 
-        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(15), snackbarOptions);
+        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
         await snackbar.Show();
     }
     

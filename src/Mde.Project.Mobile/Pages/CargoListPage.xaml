@@ -62,7 +62,7 @@
                                         <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
                                         <Grid ColumnDefinitions="Auto, *"
                                               RowDefinitions="Auto, Auto, Auto">
-                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination:" FontSize="16"
+                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination: " FontSize="16"
                                                    FontFamily="PlayBold" TextColor="White" />
                                             <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}"
                                                    FontFamily="PlayBold" TextColor="White" FontSize="16"/>
