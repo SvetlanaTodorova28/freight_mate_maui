@@ -17,23 +17,28 @@
         
         <Border Grid.Row="1"
                 StyleClass="cargosBorder">
-            <Button x:Name="login"
-                    Text="Already have an account"
-                    FontSize="22"
-                    Clicked="Login_OnClicked"
-                    FontFamily="PlayBold"
-                    TextColor="White"/>
+            <Label StyleClass="BaseLabel" Text="Already have an account"
+                   HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        x:Name="Login"
+                        Tapped="Login_OnClicked"
+                        NumberOfTapsRequired="1"/>
+                </Label.GestureRecognizers>
+            </Label>
         </Border>
 
         
         <Border Grid.Row="2"
                 StyleClass="cargosBorder">
-            <Button x:Name="crtAccount"
-                    Text="Create a Freight Mate Account"
-                    FontSize="22"
-                    FontFamily="PlayBold"
-                    Clicked="CrtAccount_OnClicked"
-                    TextColor="White"/>
+            <Label StyleClass="BaseLabel" Text="Create Account" HorizontalOptions="Center">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer
+                    x:Name="CrtAccount"
+                    Tapped="CrtAccount_OnClicked"
+                    NumberOfTapsRequired="1"/>
+            </Label.GestureRecognizers>
+            </Label>
         </Border>
 
     </Grid>
