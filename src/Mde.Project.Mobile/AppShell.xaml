@@ -9,8 +9,7 @@
     xmlns:pages="clr-namespace:Mde.Project.Mobile.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     TabBarBackgroundColor="#1D3448"
-    BackgroundColor="#3B3131" Opacity="1.4"
->
+    BackgroundColor="#3B3131" Opacity="1.4">
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
         <!--<Tab Route="HomePage" Title="Home" >
             <Tab.Icon>

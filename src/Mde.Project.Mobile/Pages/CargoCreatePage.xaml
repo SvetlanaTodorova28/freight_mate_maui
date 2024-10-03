@@ -5,7 +5,7 @@
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
              x:DataType="viewmodels:CargoCreateViewModel"
              x:Class="Mde.Project.Mobile.Pages.CargoCreatePage"
-             BackgroundColor="#3B3131" Opacity="1.4">
+             Style="{StaticResource CustomPageStyle}">
     
            <Border Grid.Row="1" Margin="0,25,0,12"
                    StyleClass="baseBorder">

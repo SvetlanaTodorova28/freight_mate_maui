@@ -3,7 +3,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.AppUserRegisterPage"
-             BackgroundColor="#3B3131" Opacity="1.4">
+             Style="{StaticResource CustomPageStyle}"
+             NavigationPage.HasNavigationBar="False">
      <ScrollView>
             <Grid>
                 <Grid.RowDefinitions>
@@ -23,22 +24,16 @@
                         Grid.Column="0"
                         Aspect="AspectFit"
                         Source="truck_white.png" />
-                    <Image
-                        Shadow="{StaticResource basicShadow}"
-                        Grid.Column="1"
-                        Aspect="AspectFit"
-                        Source="name_white.png" />
                 </Grid>
                 
                 <Border Grid.Row="1" StyleClass="baseBorder">
                     <Grid>
                         <VerticalStackLayout Padding="20" Spacing="10">
                             <Label
-                                FontFamily="PlayBold"
-                                FontSize="20"
+                               StyleClass="BaseLabel"
                                 HorizontalOptions="Center"
                                 Text="Create your Account"
-                                TextColor="White" />
+                                 />
                             <Grid Margin="0,30,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width=".2*" />
@@ -109,6 +104,19 @@
                             <Button
                                 StyleClass="baseButton"
                                 Text="Create your Account" />
+                            
+                            <Label  FontFamily="PlayBold"
+                                    Text="Back to Login" 
+                                    TextColor="White"
+                                    HorizontalOptions="Center"
+                                    >
+                                <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    x:Name="backToLogin"
+                                    Tapped="BackToLogin_OnTapped"
+                                    NumberOfTapsRequired="1"/>
+                            </Label.GestureRecognizers>
+                            </Label>
                         </VerticalStackLayout>
                     </Grid>
                 </Border>

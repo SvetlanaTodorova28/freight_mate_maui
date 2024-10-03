@@ -36,6 +36,7 @@ public class CargoListViewModel:ObservableObject{
         var cargos = await cargoService.GetAll();
         Cargos = new ObservableCollection<Cargo>(cargos);
     });
+    
     //=========================== CREATE =====================================
     public ICommand CreateCargoCommand => new Command(async () =>
     {

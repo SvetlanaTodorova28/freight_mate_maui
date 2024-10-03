@@ -340,7 +340,7 @@
     </Style>
 
     <Style TargetType="SwipeItem">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryBrush}, Dark={StaticResource PrimaryBrush}}" />
     </Style>
 
     <Style TargetType="Switch">

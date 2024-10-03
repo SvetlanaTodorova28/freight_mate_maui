@@ -7,7 +7,7 @@
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     xmlns:models="clr-namespace:Mde.Project.Mobile.Models"
     x:DataType="viewmodels:CargoListViewModel"
-    BackgroundColor="#3B3131" Opacity="1.4">
+    Style="{StaticResource CustomPageStyle}">
 
     <ScrollView>
         <Grid>
@@ -23,7 +23,7 @@
                 HeightRequest="100"
                 HorizontalOptions="Center" />
 
-            <Border Grid.Row="1" Margin="0,25,0,12" StyleClass="baseBorder">
+            <Border Grid.Row="1" Margin="0,25,0,0" StyleClass="baseBorder">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/> 
@@ -47,23 +47,24 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:Cargo">
                                
-                                    <ViewCell>
+                                    <ViewCell >
                                         <SwipeView>
                                             <SwipeView.RightItems>
                                                 <SwipeItems>
                                                     <SwipeItem Text="Delete"
-                                                               IconImageSource="delete.png"
+                                                               IconImageSource="del.png"
                                                                BackgroundColor="Red"
                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=DeleteCargoCommand}" 
-                                                               CommandParameter="{Binding .}"/>
+                                                               CommandParameter="{Binding .}"
+                                                               />
                                                     <SwipeItem Text="Update"
-                                                               IconImageSource="update.png"
+                                                               IconImageSource="upd.png"
                                                                BackgroundColor="Green"
                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=EditCargoCommand}" 
                                                                CommandParameter="{Binding .}"/>
                                                 </SwipeItems>
                                             </SwipeView.RightItems>
-                                        <Border StyleClass="baseBorder1" Opacity="0.7" Padding="25" Margin="10">
+                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="25" Margin="10">
                                         <Grid ColumnDefinitions="Auto, *"
                                               RowDefinitions="Auto, Auto, Auto">
                                             <Label Grid.Column="0" Grid.Row="2" Text="Destination: " FontSize="16"

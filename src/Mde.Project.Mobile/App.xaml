@@ -7,6 +7,13 @@
             
             <Shadow x:Key="basicShadow" Brush="#003B46" Offset="5,5" Opacity="0.3" />
             
+            <Style x:Key="CustomPageStyle" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="#3B3131"/>
+                <Setter Property="Opacity" Value="1.4"/>
+            </Style>
+            
+           
+
            
             <!-- #############################################   STYLE FOR TITLE LABEL ############################################# -->
             <Style Class="TitleLabel" TargetType="Label">
@@ -22,7 +29,7 @@
             <!-- #############################################   STYLE FOR BASE LABEL ############################################# -->
             <Style Class="BaseLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontSize" Value="20"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
@@ -62,7 +69,7 @@
             <Style Class="baseBorder" TargetType="Border">
                 <Setter Property="StrokeShape">
                     <Setter.Value>
-                        <RoundRectangle CornerRadius="43,43,43,43"/>
+                        <RoundRectangle CornerRadius="18"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
@@ -70,15 +77,18 @@
                 <Setter Property="Background" Value="{StaticResource BackgroundFlyout}"/>
             </Style>
             
-            
-            <Style Class="baseBorder1" TargetType="Border">
+            <!-- ############################################# CARGOS BORDER STYLE  ############################################# -->
+            <Style Class="cargosBorder" TargetType="Border">
                 <Setter Property="StrokeShape">
                     <Setter.Value>
-                        <RoundRectangle CornerRadius="13"/>
+                        <RoundRectangle CornerRadius="8"/>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
                 <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Opacity" Value="0.7" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="Padding" Value="15" />
                 <Setter Property="Background" Value="{StaticResource GradientBackground1}"/>
             </Style>
             
@@ -128,6 +138,8 @@
                 <Setter Property="FontFamily" Value="PlayBold"></Setter>
                 <Setter Property="FontSize" Value="20"></Setter>
             </Style>
+            
+           
             
           
 

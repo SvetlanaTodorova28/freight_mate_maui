@@ -5,22 +5,40 @@
              x:Class="Mde.Project.Mobile.Pages.CargoDetailsPage"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
              x:DataType="viewmodels:CargoDetailsViewModel"
-             BackgroundColor="#3B3131" Opacity="1.4">
+             Style="{StaticResource CustomPageStyle}">
     
-    <Grid Background="{StaticResource GradientBackground}">
-        <StackLayout Padding="20">
-            <Label Text="Total Weight:"/>
-            <Label Text="{Binding SelectedCargo.TotalWeight}"/>
-        
-            <Label Text="Is Dangerous:"/>
-            <Label Text="{Binding SelectedCargo.IsDangerous}"/>
-        
-            <Label Text="Destination:"/>
-            <Label Text="{Binding SelectedCargo.Destination}"/>
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image
+                Grid.Row="0"
+                Source="info_cargo.png"
+                Aspect="AspectFit"
+                HeightRequest="100"
+                HorizontalOptions="Center" />
             
+        <Border Grid.Row="1" Margin="0,55,0,0" StyleClass="baseBorder">
+        <Border StyleClass="cargosBorder" HeightRequest="400">
+        <StackLayout Padding="20" >
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto, Auto, Auto, Auto" RowSpacing="10">
+                <Label Grid.Row="0" Grid.Column="0" Text="Total Weight:" StyleClass="BaseLabel"/>
+                <Label Grid.Row="0" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding TotalWeight}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel"/>
+                <Label Grid.Row="1" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding IsDangerous}"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel"/>
+                <Label Grid.Row="2" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding Destination}"/>
+                
+            </Grid>
             
-            <Button Text="Delete" Command="{Binding DeleteCommand}"/>
         </StackLayout>
-           
+        </Border>
+            </Border>
     </Grid>
+        </ScrollView>
 </ContentPage>

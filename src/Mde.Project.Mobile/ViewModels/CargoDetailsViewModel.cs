@@ -1,11 +1,12 @@
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Models;
 
 namespace Mde.Project.Mobile.ViewModels;
 
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
-public class CargoDetailsViewModel{
+public class CargoDetailsViewModel:ObservableObject{
     private readonly ICargoService cargoService;
     private readonly IUiService uiService;
     
@@ -17,22 +18,52 @@ public class CargoDetailsViewModel{
         set
         {
             selectedCargo = value;
-            
+
+                
+            if (selectedCargo != null)
+            {
+               
+                Destination = selectedCargo.Destination;
+                TotalWeight = selectedCargo.TotalWeight;
+                IsDangerous = selectedCargo.IsDangerous;
+            }
+            else{
+                Console.Error.WriteLine("Cannot find Cargo with this id");
+
+            }
         }
-        
     }
-    public ICommand DeleteCommand => new Command(async () =>
+    private double totalWeight;
+    public double TotalWeight
     {
-        //todo: validation
-        Cargo cargo;
-        cargo = SelectedCargo;
+        get { return totalWeight; }
+        set{
+            SetProperty(ref totalWeight, value);
+        }
+    }
+
         
-            await cargoService.Delete(cargo);
-            await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY 📦");
-       
 
-        await Shell.Current.GoToAsync("//CargoListPage");
-           
+    private string isDangerous;
+    public string IsDangerous
+    {
+        get { return isDangerous; }
+        set{
+            SetProperty(ref isDangerous, value);
 
-    });
+        }
+    }
+        
+
+    private string destination;
+    public string Destination
+    {
+        get { return destination; }
+        set{
+            SetProperty(ref destination, value);
+        }
+    }
+
+   
+  
 }

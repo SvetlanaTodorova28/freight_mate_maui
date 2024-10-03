@@ -3,7 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.OptionsPage"
-             BackgroundColor="#3B3131" Opacity="1.4">
+             Style="{StaticResource CustomPageStyle}">
      <ContentPage.Content>
          <Border Grid.Row="1" Margin="0,25,0,12"
                  StyleClass="baseBorder">

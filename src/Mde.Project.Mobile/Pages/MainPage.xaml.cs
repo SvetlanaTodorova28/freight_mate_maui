@@ -21,7 +21,7 @@ public partial class MainPage : ContentPage{
     }
 
     private async void CrtAccount_OnClicked(object? sender, EventArgs e){
-        await Navigation.PushAsync(new AppUserRegisterPage());
+        await Navigation.PushAsync(new AppUserRegisterPage(_uiService, _cargoService));
     }
 
     private async void Login_OnClicked(object? sender, EventArgs e){
@@ -31,7 +31,7 @@ public partial class MainPage : ContentPage{
             Password = ""
         };
 
-        var loginPage = new HomePage(loginViewModel)
+        var loginPage = new HomePage(loginViewModel, _uiService, _cargoService)
         {
             BindingContext = loginViewModel
         };
