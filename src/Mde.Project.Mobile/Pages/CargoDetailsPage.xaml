@@ -34,7 +34,7 @@
                 
                 <Label Grid.Row="2" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel" 
                        TextColor="White"/>
-                <Label Grid.Row="2" Grid.Column="1" FontFamily="PlayBold" FontSize="16"
+                <Label Grid.Row="2" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
                        HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                        Text="{Binding IsDangerous, Converter={StaticResource BoolToDangerousTextConverter}}"
                        TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"

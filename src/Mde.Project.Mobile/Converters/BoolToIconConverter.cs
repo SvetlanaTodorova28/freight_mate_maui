@@ -10,7 +10,7 @@ public class BoolToIconConverter: IValueConverter
             throw new ArgumentException("An bool value was not supplied. Cannot convert.");
 
         bool dangerous = (bool)value;
-        if (dangerous) return "biohazard.png";
+        if (dangerous) return "danger_container.png";
         return " ";
     }
 

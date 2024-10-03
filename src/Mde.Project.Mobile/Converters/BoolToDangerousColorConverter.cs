@@ -10,7 +10,7 @@ public class BoolToDangerousColorConverter : IValueConverter
 
         bool dangerous = (bool)value;
 
-        Application.Current.Resources.TryGetValue("WarningRed", out object dangerousColor);
+        Application.Current.Resources.TryGetValue("Warning", out object dangerousColor);
         Application.Current.Resources.TryGetValue("White", out object notDangerousColor);
         Color fallback = Color.FromRgb(0, 0, 0);
 

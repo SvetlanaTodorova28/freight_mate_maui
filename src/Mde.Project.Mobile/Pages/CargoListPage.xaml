@@ -71,7 +71,7 @@
                                                        VerticalOptions="Center"/>
                                                 <Image Grid.Column="1" Grid.Row="0"
                                                        Source="{Binding IsDangerous, Converter={StaticResource BoolToIconConverter}}"
-                                                       HeightRequest="100" WidthRequest="100" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                                       HeightRequest="100" WidthRequest="100"/>
                                             </Grid>
                                         </Border>
                                     </SwipeView>
