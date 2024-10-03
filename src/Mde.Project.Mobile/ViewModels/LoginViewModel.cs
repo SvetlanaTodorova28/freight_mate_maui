@@ -6,7 +6,7 @@ using Mde.Project.Mobile.Models;
 using Mde.Project.Mobile.Pages;
 namespace Mde.Project.Mobile.ViewModels;
 
-public class HomeViewModel : ObservableObject
+public class LoginViewModel : ObservableObject
 {
     private string? username;
     private string? password;
@@ -21,7 +21,7 @@ public class HomeViewModel : ObservableObject
     
     private readonly UsernameTransformer _usernameTransformer;
 
-    public HomeViewModel(ICargoService cargoService, IUiService uiService){
+    public LoginViewModel(ICargoService cargoService, IUiService uiService){
         _usernameTransformer = new UsernameTransformer();
         this.cargoService = cargoService;
         this.uiService = uiService;

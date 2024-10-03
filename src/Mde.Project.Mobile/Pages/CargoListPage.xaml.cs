@@ -19,7 +19,7 @@ public partial class CargoListPage : ContentPage{
     protected override void OnAppearing()
     {
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        HomeViewModel viewmodelHome = BindingContext as HomeViewModel;
+        LoginViewModel viewmodelLogin = BindingContext as LoginViewModel;
         viewmodel.RefreshListCommand?.Execute(null);
         base.OnAppearing();
     }

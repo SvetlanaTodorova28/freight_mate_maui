@@ -31,14 +31,14 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
             Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
             Routing.RegisterRoute("//pages/registerUser", typeof(AppUserRegisterPage));
-            Routing.RegisterRoute("//pages/home", typeof(HomePage));
+            Routing.RegisterRoute("//pages/login", typeof(LoginPage));
             
             
            
             builder.Services.AddTransient<MainPage>();
             
-            builder.Services.AddTransient<HomeViewModel>();
-            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<LoginPage>();
             
             builder.Services.AddTransient<CargoListPage>();
             builder.Services.AddTransient<CargoListViewModel>();

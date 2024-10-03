@@ -25,13 +25,13 @@ public partial class MainPage : ContentPage{
     }
 
     private async void Login_OnClicked(object? sender, EventArgs e){
-        var loginViewModel = new HomeViewModel(_cargoService, _uiService)
+        var loginViewModel = new LoginViewModel(_cargoService, _uiService)
         {
             UserName = "",
             Password = ""
         };
 
-        var loginPage = new HomePage(loginViewModel, _uiService, _cargoService)
+        var loginPage = new LoginPage(loginViewModel, _uiService, _cargoService)
         {
             BindingContext = loginViewModel
         };
