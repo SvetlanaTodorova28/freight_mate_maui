@@ -42,10 +42,12 @@
                                Grid.Column="0"
                                StyleClass="BaseLabel"
                                Text="Is it dangerous?"></Label>
-                        <Entry Grid.Row="2"
-                               Grid.Column="1"
-                               Placeholder="Yes"
-                               Text="{Binding IsDangerous}" />
+                        <CheckBox  Grid.Row="2"
+                                   Grid.Column="1"
+                                   IsChecked="{Binding IsDangerous}"
+                                   Color="Red"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"/>
                     </Grid>
 
                     <Button Command="{Binding SaveCommand}"

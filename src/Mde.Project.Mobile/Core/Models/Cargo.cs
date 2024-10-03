@@ -5,7 +5,7 @@ public class Cargo{
     public Guid Id { get; set; }
     public double TotalWeight{ get; set; }
     
-    public string IsDangerous{ get; set; }
+    public bool IsDangerous{ get; set; }
     
     public string Destination { get; set; }
     

@@ -58,7 +58,6 @@ namespace Mde.Project.Mobile
             
             
 
-
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif

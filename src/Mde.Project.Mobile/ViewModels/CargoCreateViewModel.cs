@@ -65,8 +65,8 @@ public class CargoCreateViewModel:ObservableObject{
 
         
 
-        private string isDangerous;
-        public string IsDangerous
+        private bool isDangerous;
+        public bool IsDangerous
         {
             get { return isDangerous; }
             set{

@@ -37,6 +37,9 @@
                                  HorizontalOptions="Start"
                                  Command="{Binding CreateCargoCommand}"
                                  Margin="0,0,20,0" />
+                    
+                        
+                    
 
                     <ListView Grid.Row="1"
                               x:Name="lstCargos"
