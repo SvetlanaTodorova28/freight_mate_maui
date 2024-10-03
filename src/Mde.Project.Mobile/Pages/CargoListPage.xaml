@@ -26,8 +26,8 @@
             <Border Grid.Row="1" Margin="0,25,0,0" StyleClass="baseBorder">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> 
-                        <RowDefinition Height="*"/>    
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <ImageButton Source="plus.png"
@@ -37,9 +37,7 @@
                                  HorizontalOptions="Start"
                                  Command="{Binding CreateCargoCommand}"
                                  Margin="0,0,20,0" />
-                    
-                        
-                    
+
 
                     <ListView Grid.Row="1"
                               x:Name="lstCargos"
@@ -49,40 +47,40 @@
                               ItemTapped="LstCargos_OnItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:Cargo">
-                               
-                                    <ViewCell >
-                                        <SwipeView>
-                                            <SwipeView.RightItems>
-                                                <SwipeItems>
-                                                    <SwipeItem Text="Delete"
-                                                               IconImageSource="del.png"
-                                                               BackgroundColor="Red"
-                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=DeleteCargoCommand}" 
-                                                               CommandParameter="{Binding .}"
-                                                               />
-                                                    <SwipeItem Text="Update"
-                                                               IconImageSource="upd.png"
-                                                               BackgroundColor="Green"
-                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}},Path=EditCargoCommand}" 
-                                                               CommandParameter="{Binding .}"/>
-                                                </SwipeItems>
-                                            </SwipeView.RightItems>
-                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="25" Margin="10">
-                                        <Grid ColumnDefinitions="Auto, *"
-                                              RowDefinitions="Auto, Auto, Auto">
-                                            <Label Grid.Column="0" Grid.Row="2" Text="Destination: " FontSize="16"
-                                                   FontFamily="PlayBold" TextColor="White" />
-                                            <Label Grid.Column="1" Grid.Row="2" Text="{Binding Destination}"
-                                                   FontFamily="PlayBold" TextColor="White" FontSize="16"/>
-                                        </Grid>
-                                    </Border>
-                                            </SwipeView>
+                                <ViewCell>
+                                    <SwipeView Padding="0" Margin="0">
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem Text="Delete"
+                                                           IconImageSource="del.png"
+                                                           BackgroundColor="Red"
+                                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}}, Path=DeleteCargoCommand}"
+                                                           CommandParameter="{Binding .}" />
+                                                <SwipeItem Text="Update"
+                                                           IconImageSource="upd.png"
+                                                           BackgroundColor="Green"
+                                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}}, Path=EditCargoCommand}"
+                                                           CommandParameter="{Binding .}" />
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="35, 0, 0, 0" Margin="10">
+                                            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
+                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Destination}"
+                                                       FontFamily="PlayBold" FontSize="22"
+                                                       TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}" 
+                                                       VerticalOptions="Center"/>
+                                                <Image Grid.Column="1" Grid.Row="0"
+                                                       Source="{Binding IsDangerous, Converter={StaticResource BoolToIconConverter}}"
+                                                       HeightRequest="100" WidthRequest="100" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                            </Grid>
+                                        </Border>
+                                    </SwipeView>
                                 </ViewCell>
-                                  
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    </Grid>
+
+                </Grid>
             </Border>
         </Grid>
     </ScrollView>
