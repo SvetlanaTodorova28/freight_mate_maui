@@ -27,11 +27,11 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("Play-Bold.ttf", "PlayBold");
                 });
             Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
-            Routing.RegisterRoute("//pages/about", typeof(AboutPage));
+            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
             Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
             Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
-            Routing.RegisterRoute("//pages/registerUser", typeof(AppUserRegisterPage));
-            Routing.RegisterRoute("//pages/login", typeof(LoginPage));
+            Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             
             
            
@@ -53,7 +53,6 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<AppUserRegisterViewModel>();
             
             builder.Services.AddTransient<ICargoService, CargoService>();
-            
             builder.Services.AddTransient<IUiService, UiService>();
             
             

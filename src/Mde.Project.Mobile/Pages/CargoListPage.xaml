@@ -48,7 +48,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:Cargo">
                                 <ViewCell>
-                                    <SwipeView Padding="0" Margin="0">
+                                    <SwipeView>
                                         <SwipeView.RightItems>
                                             <SwipeItems>
                                                 <SwipeItem Text="Delete"
@@ -63,7 +63,7 @@
                                                            CommandParameter="{Binding .}" />
                                             </SwipeItems>
                                         </SwipeView.RightItems>
-                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="35, 0, 0, 0" Margin="10">
+                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="10" Margin="10">
                                             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
                                                 <Label Grid.Column="0" Grid.Row="0" Text="{Binding Destination}"  LineBreakMode="TailTruncation" MaximumWidthRequest="250"
                                                        FontFamily="PlayBold" FontSize="22" Padding="10"

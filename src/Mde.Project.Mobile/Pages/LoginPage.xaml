@@ -25,23 +25,18 @@
                     Grid.Column="0"
                     Aspect="AspectFit"
                     Source="truck_white.png" />
-                <!--<Image
-                    Grid.Column="1"
-                    Aspect="AspectFit"
-                    Source="name_white.png" />-->
             </Grid>
 
             <Border Grid.Row="1"
                     StyleClass="baseBorder"
                     Margin="0,5,0,12">
                 <Grid>
-                    <VerticalStackLayout Padding="20" Spacing="10" IsVisible="{Binding ShowLoginSection}">
+                    <VerticalStackLayout Padding="20" Spacing="10" >
                         <Label
                             FontAttributes="Bold"
                             FontFamily="PlayBold"
                             FontSize="Large"
                             HorizontalOptions="Center"
-                            Text="{Binding Welcome}"
                             TextColor="White" />
                        
                         <Grid Margin="0,30,0,0">
@@ -62,7 +57,7 @@
                             </Border>
 
                             <Entry
-                                StyleClass="LoginCreateEntry"
+                                StyleClass="BaseEntry"
                                 Grid.Column="1"
                                 Placeholder="EMAIL"
                                 Text="{Binding UserName}"/>
@@ -75,7 +70,7 @@
 
                             <Border
                                 StyleClass="LoginCreateIcons">
-                                <Image HorizontalOptions="Center" Margin="4">
+                                <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
@@ -87,7 +82,7 @@
                             </Border>
 
                             <Entry
-                                StyleClass="LoginCreateEntry"
+                                StyleClass="BaseEntry"
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"

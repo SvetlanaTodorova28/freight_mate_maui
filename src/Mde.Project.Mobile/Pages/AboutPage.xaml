@@ -2,9 +2,10 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.AboutPage">
+             x:Class="Mde.Project.Mobile.Pages.AboutPage"
+             Style="{StaticResource CustomPageStyle}">
   
-        <Grid Background="{StaticResource GradientBackground}">
+       
         <ScrollView>
             <VerticalStackLayout Padding="30" Spacing="25">
                 <Label
@@ -25,6 +26,6 @@
                        TextColor="White" FontSize="15" FontAttributes="Bold" Text="Freight Mate v1.0" />
             </VerticalStackLayout>
         </ScrollView>
-        </Grid>
+       
     
 </ContentPage>

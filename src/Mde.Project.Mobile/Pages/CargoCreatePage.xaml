@@ -36,6 +36,7 @@
                         <Entry Grid.Row="1"
                                Grid.Column="1"
                                Placeholder="Antwerp"
+                               StyleClass="baseEntry"
                                Text="{Binding Destination}" />
 
                         <Label Grid.Row="2"

@@ -7,7 +7,7 @@ public partial class OptionsPage : ContentPage{
         InitializeComponent();
     }
     private async void NavigateToAbout(object? sender, EventArgs e){
-        await Shell.Current.GoToAsync("//pages/about");
+        await Shell.Current.GoToAsync(nameof(AboutPage));
     }
     
 

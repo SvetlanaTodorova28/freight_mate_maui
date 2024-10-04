@@ -53,7 +53,7 @@
                                     </Image>
                                 </Border>
                                 <Entry
-                                    StyleClass="LoginCreateEntry"
+                                    StyleClass="BaseEntry"
                                     Grid.Column="1"
                                     Placeholder="NAME"/>
                             </Grid>
@@ -74,7 +74,7 @@
                                 </Border>
 
                                 <Entry
-                                    StyleClass="LoginCreateEntry"
+                                    StyleClass="BaseEntry"
                                     Grid.Column="1"
                                     Placeholder="EMAIL"
                                     Keyboard="Email"/>
@@ -97,7 +97,7 @@
                                     </Image>
                                 </Border>
                                 <Entry
-                                    StyleClass="LoginCreateEntry"
+                                    StyleClass="BaseEntry"
                                     Grid.Column="1"
                                     IsPassword="True"
                                     Placeholder="PASSWORD"/>
