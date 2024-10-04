@@ -3,6 +3,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.AppUserRegisterPage"
+             xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             x:DataType="viewmodels:AppUserRegisterViewModel"
              Style="{StaticResource CustomPageStyle}"
              NavigationPage.HasNavigationBar="False">
      <ScrollView>

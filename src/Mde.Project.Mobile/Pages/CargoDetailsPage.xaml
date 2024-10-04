@@ -23,18 +23,21 @@
             
         <Border Grid.Row="1" Margin="0,55,0,0" StyleClass="baseBorder">
         <Border StyleClass="cargosBorder" HeightRequest="400">
-        <StackLayout Padding="20" >
+            <ScrollView>
+            <StackLayout Padding="20" >
             
             <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto, Auto, Auto, *" RowSpacing="10">
-                <Label Grid.Row="0" Grid.Column="0" Text="Total Weight:" StyleClass="BaseLabel"/>
-                <Label Grid.Row="0" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding TotalWeight}"/>
+                <Image Grid.Column="0" Grid.Row="0" IsVisible="{Binding IsDangerous}" Source="danger_container.png"
+                                                       HeightRequest="100" WidthRequest="100"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="Total Weight:" StyleClass="BaseLabel"/>
+                <Label Grid.Row="1" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding TotalWeight}"/>
                
-                <Label Grid.Row="1" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel"  />
-                <Label Grid.Row="1" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding Destination}"/>
+                <Label Grid.Row="2" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel"  />
+                <Label Grid.Row="2" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding Destination}"/>
                 
-                <Label Grid.Row="2" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel" 
+                <Label Grid.Row="3" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel" 
                        TextColor="White"/>
-                <Label Grid.Row="2" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
+                <Label Grid.Row="3" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
                        HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                        Text="{Binding IsDangerous, Converter={StaticResource BoolToDangerousTextConverter}}"
                        TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"
@@ -43,6 +46,7 @@
             </Grid>
             
         </StackLayout>
+            </ScrollView>
         </Border>
             </Border>
     </Grid>

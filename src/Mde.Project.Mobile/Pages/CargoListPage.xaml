@@ -65,13 +65,11 @@
                                         </SwipeView.RightItems>
                                         <Border StyleClass="cargosBorder" Opacity="0.7" Padding="35, 0, 0, 0" Margin="10">
                                             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
-                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Destination}"
-                                                       FontFamily="PlayBold" FontSize="22"
+                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Destination}"  LineBreakMode="TailTruncation" MaximumWidthRequest="250"
+                                                       FontFamily="PlayBold" FontSize="22" Padding="10"
                                                        TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}" 
                                                        VerticalOptions="Center"/>
-                                                <Image Grid.Column="1" Grid.Row="0"
-                                                       Source="{Binding IsDangerous, Converter={StaticResource BoolToIconConverter}}"
-                                                       HeightRequest="100" WidthRequest="100"/>
+                                              
                                             </Grid>
                                         </Border>
                                     </SwipeView>

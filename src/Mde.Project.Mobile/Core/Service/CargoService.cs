@@ -7,12 +7,14 @@ namespace Mde.Project.Mobile.Core.Service;
 public class CargoService:ICargoService{
       private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
       
+      
     public async Task<ICollection<Cargo>> GetAll()
         {
             EnsureFileExists(targetFile);
 
             string savedSerialized = await File.ReadAllTextAsync(targetFile);
             List<Cargo> savedCargos = JsonSerializer.Deserialize<List<Cargo>>(savedSerialized);
+            Console.WriteLine($"Path to cargos.json: {FileSystem.AppDataDirectory}/cargos.json");
 
             return savedCargos.OrderByDescending(cargo => cargo.TotalWeight).ToList();
         }
