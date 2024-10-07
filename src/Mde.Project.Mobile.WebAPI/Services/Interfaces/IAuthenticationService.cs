@@ -1,5 +1,5 @@
 namespace Mde.Project.Mobile.WebAPI.Services.Interfaces;
 
-public interface IClaimservice{
+public interface IAuthenticationService{
     
 }
