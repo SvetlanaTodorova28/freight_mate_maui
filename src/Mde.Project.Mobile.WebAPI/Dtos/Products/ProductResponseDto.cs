@@ -12,6 +12,7 @@ public class ProductResponseDto:BaseDto{
     public decimal Price { get; set; }
     
     public CategoryResponseDto Category { get; set; }
+    public List<CargoResponseDto>? Cargos { get; set; } = new List<CargoResponseDto>();
     
   
 }
