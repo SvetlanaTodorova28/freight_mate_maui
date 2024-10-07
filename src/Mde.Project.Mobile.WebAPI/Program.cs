@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddEndpointsApiExplorer();
 //Add Swagger/RestAPI//
 builder.Services.AddSwaggerGen(c => {
@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString(GlobalConstants.FreightMateDb));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(GlobalConstants.FreightMateMobile));
 });
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -103,19 +103,31 @@ builder.Services.AddAuthorization(options => {
     options.AddPolicy(GlobalConstants.DriverRoleName, policy => policy.RequireRole(GlobalConstants.DriverRoleName));
    
 });
-// Add DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString(GlobalConstants.FreightMateDb));
-});
+
+builder.Services.AddControllers();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()){
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.InjectJavascript("/custom-swagger.js");
+    });
 }
-
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 
