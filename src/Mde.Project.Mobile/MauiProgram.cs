@@ -2,10 +2,12 @@
 
 
 
+using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Core.Service;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Mde.Project.Mobile
 {
