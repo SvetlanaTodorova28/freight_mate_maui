@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mde.Project.Mobile", "Mde.Project.Mobile\Mde.Project.Mobile.csproj", "{354D7013-A8D4-4E60-B232-EDC332FD8069}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mde.Project.Mobile.WebAPI", "Mde.Project.Mobile.WebAPI\Mde.Project.Mobile.WebAPI.csproj", "{87320CF4-AE0D-4A80-9AF2-286B653415D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mde.Project.Mobile.Utilities", "Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj", "{13D612E5-F822-4211-A15E-541C78A5D1C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +21,14 @@ Global
 		{354D7013-A8D4-4E60-B232-EDC332FD8069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354D7013-A8D4-4E60-B232-EDC332FD8069}.Release|Any CPU.Build.0 = Release|Any CPU
 		{354D7013-A8D4-4E60-B232-EDC332FD8069}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D612E5-F822-4211-A15E-541C78A5D1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D612E5-F822-4211-A15E-541C78A5D1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D612E5-F822-4211-A15E-541C78A5D1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D612E5-F822-4211-A15E-541C78A5D1C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

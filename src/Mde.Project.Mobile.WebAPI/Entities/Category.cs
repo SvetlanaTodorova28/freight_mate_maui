@@ -1,5 +1,5 @@
 namespace Mde.Project.Mobile.WebAPI.Entities;
 
-public class Categorie{
-    
+public class Category:BaseEntity{
+    public string Name { get; set; }
 }

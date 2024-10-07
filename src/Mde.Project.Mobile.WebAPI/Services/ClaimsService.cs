@@ -1,8 +1,12 @@
+using System.Security.Claims;
+using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Utilities;
 
 namespace Mde.Project.Mobile.WebAPI.Services;
 
-public class ClaimService:IClaimService{
+public class ClaimsService:IClaimsService{
      private readonly UserManager<AppUser> _userManager;
   
     public ClaimsService(UserManager<AppUser> userManager){
@@ -21,8 +25,7 @@ public class ClaimService:IClaimService{
         
         claims.Add(new Claim("FirstName", user.FirstName ?? ""));
         claims.Add(new Claim("LastName", user.LastName ?? ""));
-        claims.Add(new Claim(GlobalConstants.HazardousMaterialsClaimType, user.CargoHandlingCapability.ToString()));
-        claims.Add(new Claim(GlobalConstants.AdvancedAccessLevelClaimType, user.AccessLevelType.ToString()));
+       
         
         
         //get the roles of the user from the user table (if any)
@@ -35,15 +38,6 @@ public class ClaimService:IClaimService{
             claims.Add(new Claim(ClaimTypes.Role, userRole));
         }
         
-        
-        bool isSpecialRole = userRoles.Any(role => role == GlobalConstants.AdminRoleName || role == GlobalConstants.DriverRoleName);
-        string profileImageUrl;
-        if (isSpecialRole) {
-            profileImageUrl = user.ProfilePicture;
-        } else {
-            profileImageUrl = GlobalConstants.DefaultAvatar;
-        }
-        claims.Add(new Claim("ProfileImage", profileImageUrl));
         
         return claims;
     }

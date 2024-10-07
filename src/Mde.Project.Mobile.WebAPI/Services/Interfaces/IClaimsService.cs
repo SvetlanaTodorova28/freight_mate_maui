@@ -3,6 +3,6 @@ using Mde.Project.Mobile.WebAPI.Entities;
 
 namespace Mde.Project.Mobile.WebAPI.Services.Interfaces;
 
-public interface IClaimService{
+public interface IClaimsService{
     Task<IEnumerable<Claim>> GenerateClaimsForUser(AppUser user);
 }
