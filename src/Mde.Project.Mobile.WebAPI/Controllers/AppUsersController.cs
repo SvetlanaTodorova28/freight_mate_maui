@@ -3,6 +3,7 @@ using System.Text;
 using Mde.Project.Mobile.WebAPI.Api.Dtos;
 using Mde.Project.Mobile.WebAPI.Api.Dtos.Users;
 using Mde.Project.Mobile.WebAPI.Entities;
+using Mde.Project.Mobile.WebAPI.Enums;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -142,8 +143,8 @@ public class AppUserController:ControllerBase{
             Email = model.Email,
             UserName = model.Email,
             FirstName = model.FirstName,
-            LastName = model.LastName
-            
+            LastName = model.LastName,
+            AccessLevelType = (AccessLevelType)Enum.Parse(typeof(AccessLevelType), model.AccessLevelType)
         };
         
         var result = await _userService.CreateUserAsync(user, model.Password);
@@ -229,6 +230,8 @@ public class AppUserController:ControllerBase{
         existingUser.Email = userUpdateRequestDto.Email;
         existingUser.FirstName = userUpdateRequestDto.FirstName;
         existingUser.LastName = userUpdateRequestDto.LastName;
+        existingUser.AccessLevelType =
+            (AccessLevelType)Enum.Parse(typeof(AccessLevelType), userUpdateRequestDto.AccessLevelType);
     
 
         var updateResult = await _userManager.UpdateAsync(existingUser);

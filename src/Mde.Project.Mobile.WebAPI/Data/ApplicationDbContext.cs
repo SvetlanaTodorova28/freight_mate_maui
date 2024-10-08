@@ -2,6 +2,7 @@ using Mde.Project.Mobile.WebAPI.Data.Seeding;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 namespace Mde.Project.Mobile.WebAPI.Data;
 
 public class ApplicationDbContext:IdentityDbContext<AppUser>{
@@ -12,6 +13,7 @@ public class ApplicationDbContext:IdentityDbContext<AppUser>{
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
 
 
+   
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){

@@ -52,7 +52,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString(GlobalConstants.FreightMateMobile));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
 });
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -101,7 +101,8 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddAuthorization(options => {
     options.AddPolicy(GlobalConstants.AdminRoleName, policy => policy.RequireRole(GlobalConstants.AdminRoleName));
     options.AddPolicy(GlobalConstants.DriverRoleName, policy => policy.RequireRole(GlobalConstants.DriverRoleName));
-   
+    options.AddPolicy(GlobalConstants.AdvancedAccessLevelPolicy, policy => 
+        policy.RequireClaim(GlobalConstants.AdvancedAccessLevelClaimType, GlobalConstants.AdvancedAccessLevelClaimValue));
 });
 
 builder.Services.AddControllers();
@@ -115,6 +116,8 @@ if (app.Environment.IsDevelopment()){
         c.InjectJavascript("/custom-swagger.js");
     });
 }
+
+
 app.UseCors(options =>
 {
     options.AllowAnyHeader();

@@ -25,6 +25,8 @@ public class RegisterUserRequestDto:LoginUserRequestDto{
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     
+    public string AccessLevelType { get; set; }
+    
     
     
    

@@ -5,7 +5,9 @@ using Mde.Project.Mobile.WebAPI.Dtos.Categories;
 using Mde.Project.Mobile.WebAPI.Dtos.Products;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Utilities;
 
 
 namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
@@ -157,6 +159,7 @@ public class CargosController : ControllerBase{
     /// </remarks>
     /// <param name="cargoRequestDto">The CargoRequestDto object containing the data for the new Cargo entity.</param>
     [HttpPost]
+    [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
     public async Task<IActionResult> Add([FromBody] CargoRequestDto cargoRequestDto){
         // Create a new Cargo entity with the provided data
         var cargo = new Cargo{
@@ -232,6 +235,7 @@ public class CargosController : ControllerBase{
    
    
     [HttpPut("{id}")]
+    [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
     public async Task<IActionResult> Update([FromBody] CargoRequestDto cargoRequestDto){
         
         // Check if the Cargo entity with the given id exists in the database
@@ -340,6 +344,7 @@ public class CargosController : ControllerBase{
     /// If the deletion operation fails, a BadRequest result with the error messages is returned.
     /// </returns>
     [HttpDelete("{id}")]
+    [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
     public async Task<IActionResult> Delete(Guid id){
         // Check if the Cargo entity with the given id exists in the database
         if (!await _cargoService.DoesCargoIdExistAsync(id)){

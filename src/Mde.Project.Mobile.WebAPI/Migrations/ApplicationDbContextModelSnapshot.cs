@@ -67,6 +67,9 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("AccessLevelType")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -134,6 +137,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-100000000000",
                             AccessFailedCount = 0,
+                            AccessLevelType = 2,
                             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
                             Email = "Admin@fedex.com",
                             EmailConfirmed = true,
@@ -141,7 +145,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FEDEX.COM",
                             NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPzQgDRcvznHT9IUmEgyh2+u0vWkZ+Itt1G8QgNb9jhY4INmRpxlUwcj2gQMVGPhKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEId/YRCKJWf6GtLLUQ2BV4rvabyk53dao9QF99V06gp7SeiekcX4dbDgBrGkyi3cLw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
                             TwoFactorEnabled = false,
@@ -151,6 +155,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-200000000000",
                             AccessFailedCount = 0,
+                            AccessLevelType = 0,
                             ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1",
                             Email = "tom@gmail.com",
                             EmailConfirmed = true,
@@ -159,7 +164,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TOM@GMAIL.COM",
                             NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKV3k5HcUG38i6Il56bmXmZY3+EA9by9i1v0xxlLgBf2DYEcl2TvGdXzKxfCtXv+VQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGlk79a78JDOUzaI1KByDICXzhj9f7Jlsv+GjIUXd/jBp/Z0vd5PC2VIpJFhfQvtOA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
                             TwoFactorEnabled = false,
@@ -169,6 +174,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-300000000000",
                             AccessFailedCount = 0,
+                            AccessLevelType = 0,
                             ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2",
                             Email = "sarah@gmail.com",
                             EmailConfirmed = true,
@@ -177,7 +183,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SARAH@GMAIL.COM",
                             NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE+Z1fN/Yss8A8v91suOKc3KrcO+i76/JuSdMzXNScyIrPQLky6E90tV9UWfcWTvMA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM8A/SmFgVeNtM2mI0fszv30g2ff9zzq6UiaPVDL8nruVYYmIbvcPpV6KEh3AO8tgg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
                             TwoFactorEnabled = false,
@@ -187,6 +193,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-400000000000",
                             AccessFailedCount = 0,
+                            AccessLevelType = 1,
                             ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
                             Email = "milka@speedy.gr",
                             EmailConfirmed = true,
@@ -195,7 +202,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MILKA@SPEEDY.GR",
                             NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMrc3I22fH6AVYaFh4kh9zKPMdUh6VkI6zBkRO9+nYUx9y2rDmHtZegqQhmcv1GTzg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEESkId3fRZtobvQKiV1pL+hhNBAQJYe7+nVXFd+LMMgJ/MWRGhfSsxwYmnyB0ubVyQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,

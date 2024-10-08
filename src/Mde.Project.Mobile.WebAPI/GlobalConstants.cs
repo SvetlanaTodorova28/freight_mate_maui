@@ -20,11 +20,15 @@ public class GlobalConstants{
     public const string DriverRoleName = "Driver";
     public const string DriverPassword = "Driver1234";
     
+    public const string AdvancedAccessLevelClaimType = "AdvancedAccessLevel";
+    public const string AdvancedAccessLevelClaimValue = "Advanced";
+    public const string AdvancedAccessLevelPolicy = "AdvancedAccessLevel";
+    
     public const string TokenExpirationDaysConfig = "JWTConfiguration:TokenExpirationDays";
     public const string SigningKeyConfig = "JWTConfiguration:SigningKey";
     public const string IssuerConfig = "JWTConfiguration:Issuer";
     public const string AudienceConfig = "JWTConfiguration:Audience";
     
-    public const string FreightMateDb = "FreightMateMobile";
+    public const string FreightMateMobile = "FreightMateMobile";
     
 }

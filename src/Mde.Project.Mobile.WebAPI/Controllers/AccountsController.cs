@@ -46,7 +46,9 @@ public class AccountsController : ControllerBase{
     ///             "password": "string",
     ///             "confirmPassword": "string",
     ///             "firstName": "svetlana",
-    ///             "lastName": "todorova"
+    ///             "lastName": "todorova",
+    ///             "accessLevelType": "string"
+    /// };
     ///         }
     ///
     ///
@@ -94,7 +96,7 @@ public class AccountsController : ControllerBase{
     ///LOGIN:
     /// 
     ///         {
-    ///             "username": "Admin@freightmate.com",
+    ///             "username": "Admin@fedex.com",
     ///             "password": "Admin1234"
     ///         }
     ///

@@ -1,4 +1,5 @@
 using Mde.Project.Mobile.WebAPI.Entities;
+using Mde.Project.Mobile.WebAPI.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
@@ -42,7 +43,6 @@ public class Seeder{
                 TotalWeight = 2900.0,
             }
         };
-        
         var cargosProducts = new[]{
             new{ CargosId = cargos[0].Id, ProductsId = products[0].Id },
             new{ CargosId = cargos[0].Id, ProductsId = products[1].Id },
@@ -63,7 +63,8 @@ public class Seeder{
             NormalizedUserName = GlobalConstants.AdminUserName.ToUpper(),
             EmailConfirmed = true,
             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
-            ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a"
+            ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
+            AccessLevelType = AccessLevelType.Admin,
         };
         adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, GlobalConstants.AdminUserPassword);
 
@@ -80,6 +81,7 @@ public class Seeder{
                 ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1", 
                 FirstName = "Tom",
                 LastName = "Calme",
+                AccessLevelType = AccessLevelType.Basic
                
             },
             new(){
@@ -93,6 +95,7 @@ public class Seeder{
                 ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2", 
                 FirstName = "Sarah",
                 LastName = "Vrout",
+                AccessLevelType = AccessLevelType.Basic
               
             }
         };
@@ -108,6 +111,7 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stanis",
+                AccessLevelType = AccessLevelType.Advanced
               
                 }
             };

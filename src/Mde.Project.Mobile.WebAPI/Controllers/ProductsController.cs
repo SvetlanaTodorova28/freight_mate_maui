@@ -220,6 +220,7 @@ public async Task<IActionResult> GetById(Guid id)
   /// <param name="productUpdateRequestDto"></param>
   /// <returns></returns>
    [HttpPut("{id}")]
+  [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
     public async Task<IActionResult> Update([FromBody] ProductRequestDto productUpdateRequestDto){
         
         // Check if the Product entity with the given id exists in the database
@@ -338,6 +339,7 @@ public async Task<IActionResult> GetById(Guid id)
   /// If the deletion operation fails, a BadRequest result with the error messages is returned.
   /// </returns>
   [HttpDelete("{id}")]
+  [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
   public async Task<IActionResult> Delete(Guid id){
     // Check if the Product entity with the given id exists in the database
     if (!await _productService.DoesProductIdExistAsync(id)){

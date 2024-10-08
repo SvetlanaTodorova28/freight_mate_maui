@@ -202,7 +202,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// <param name="id">The unique identifier of the Cartegory entity to retrieve.</param>
         /// <returns> An IActionResult containing a CartegoryRequestDto object to can use it later in a post or put method or an error message.</returns>
         [HttpGet("for-testing-{id}")]
-        [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
+       
         public async Task<IActionResult> GetByIdForUpdate(Guid id){
             // Calls the GetByIdAsync method from the ICategoryService interface
 
