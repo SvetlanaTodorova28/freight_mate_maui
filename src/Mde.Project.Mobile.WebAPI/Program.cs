@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using Mde.Project.Mobile.WebAPI.Data;
@@ -5,8 +9,13 @@ using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Utilities;
@@ -54,6 +63,8 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING"));
 });
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>(); //
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
@@ -106,24 +117,62 @@ builder.Services.AddAuthorization(options => {
 });
 
 builder.Services.AddControllers();
+
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()){
+
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.InjectJavascript("/custom-swagger.js");
+
+
+    app.UseSwaggerUI(options => {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API V1");
+        if (app.Environment.IsDevelopment())
+            options.RoutePrefix = "swagger";
+        else
+            options.RoutePrefix = string.Empty;
     });
-}
+    app.UseSwagger();
 
 
-app.UseCors(options =>
-{
-    options.AllowAnyHeader();
-    options.AllowAnyMethod();
-    options.AllowAnyOrigin();
-});
+    app.UseCors(options =>
+    {
+        options.AllowAnyHeader();
+        options.AllowAnyMethod();
+        options.AllowAnyOrigin();
+    });
+    app.UseRouting();
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapHealthChecks("/health"); // Stelt een route in voor de health check
+    });
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler(
+            options =>
+            {
+                options.Run(
+                    async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.ContentType = "text/html";
+                        var ex = context.Features.Get<IExceptionHandlerFeature>();
+                        if (ex != null)
+                        {
+                            var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
+                            await context.Response.WriteAsync(err).ConfigureAwait(false);
+                        }
+                    });
+            });
+    }
+
+
+app.UseRouting();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -4,6 +4,7 @@ using Mde.Project.Mobile.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009070312_product")]
+    partial class product
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +148,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FEDEX.COM",
                             NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECDMwMMv/Z4Zr2mXOuHK0aShfKywsDAU4+dQlHbaY7NTTYaytK4CtOTbrJmW1wL4GQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ0/V5jdwvbw2iEBHGBNTdag0wXtd675P0+P1ghjYQEykNhBH65ZTMiYTAFI1PgM7A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
                             TwoFactorEnabled = false,
@@ -164,7 +167,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TOM@GMAIL.COM",
                             NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJjiw2kUeNEpRwLeujqf+8RXjvfoyb7s822sf3tjRDp7/uMHiERszHCdX+F0x2O1mQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENBpTKzYx2SVLpP3qZKzdfPXY2mrKjADRh27Z59f9BAm/J63+9ZMYKnqCdkYfJtYUA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
                             TwoFactorEnabled = false,
@@ -183,7 +186,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SARAH@GMAIL.COM",
                             NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBMNAOHddJ3VWUs6J6SB8724OM7676xDIqMgOLF1zhmeQ0RE8xcSGDRFEoEnf0IDeg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKXV64aiUJW+laOrl6yAAmvsbFfnIWb3MBa80sfmerj6RbGf3Jgz+1gaJJSryjm5Rw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
                             TwoFactorEnabled = false,
@@ -202,7 +205,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MILKA@SPEEDY.GR",
                             NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEXlfK/SrRYsq5yXr6z0GoI6Z87qYCgzR3pUZ/jFYbjenGP4heyjaplyQobpvttR8w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG8rUTk0Y84gJ7fNka6MP14krV0vBS6IHfOiUoWYSnFgEwec35pdWwK/wC0wKLxsIQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,

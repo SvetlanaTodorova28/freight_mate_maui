@@ -112,7 +112,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </remarks>
         /// <param name="cargoRequestDto">The CategoryRequestDto object containing the data for the new Category entity.</param>
         [HttpPost]
-        [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
+        /*[Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]*/
         public async Task<IActionResult> Add([FromBody] CategoryRequestDto categoryRequestDto){
             
             // Create a new Category entity from the CreateCategoryDto object

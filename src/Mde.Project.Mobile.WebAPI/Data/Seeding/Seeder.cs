@@ -29,6 +29,11 @@ public class Seeder{
                 Name = "Sneakers",
                 CategoryId = categories[1].Id
             },
+            new Product{
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000024"),
+                Name = "Training",
+                CategoryId = categories[1].Id
+            },
 
         };
         var cargos = new List<Cargo>{
