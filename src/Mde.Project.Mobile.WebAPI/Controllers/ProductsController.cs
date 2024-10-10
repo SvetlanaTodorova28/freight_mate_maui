@@ -140,7 +140,7 @@ public async Task<IActionResult> GetById(Guid id)
   /// </remarks>
   /// <param name="productRequestDto">The ProductRequestDto object containing the data for the new Product entity.</param>
   [HttpPost]
-  [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
+  
   public async Task<IActionResult> Add([FromBody] ProductRequestDto productRequestDto){
 
     var product = new Product{

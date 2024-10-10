@@ -1,0 +1,15 @@
+{
+  "Name": "Consignee",
+  "IsCustom": true,
+  "Description": "Can create categories",
+  "Actions": [
+    "AddCategory"
+  ],
+  "NotActions": [
+
+  ],
+  "AssignableScopes": [
+    "/subscriptions/{subscriptionId1}",
+    "/subscriptions/{subscriptionId2}"
+  ]
+}

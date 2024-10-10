@@ -87,31 +87,43 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
 }).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-//Add authentication
+/*//Add authentication
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options => {
     options.RequireHttpsMetadata = false;
-    //Hiermee wordt het JWT-token opgeslagen in de HttpContext nadat het gevalideerd is.
-    // Dit is handig als je het token later in de request lifecycle opnieuw wilt gebruiken
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters {
-        ValidateActor = true,
+        ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        /*ValidIssuer = builder.Configuration[GlobalConstants.IssuerConfig],
-        ValidAudience = builder.Configuration[GlobalConstants.AudienceConfig],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[GlobalConstants.SigningKeyConfig])),*/
         ValidIssuer = builder.Configuration["JWTConfiguration:Issuer"],
         ValidAudience = builder.Configuration["JWTConfiguration:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:SigningKey"]))
     };
-});
+});*/
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(jwtBearerOptions =>
+    { 
+        jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWTConfiguration:Issuer"],
+            ValidAudience = builder.Configuration["JWTConfiguration:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:SigningKey"])),
+            ClockSkew = TimeSpan.Zero
+        }; 
+    });
+
 //add Authorization
 builder.Services.AddAuthorization(options => {
     options.AddPolicy(GlobalConstants.AdminRoleName, policy => policy.RequireRole(GlobalConstants.AdminRoleName));
     options.AddPolicy(GlobalConstants.DriverRoleName, policy => policy.RequireRole(GlobalConstants.DriverRoleName));
+    options.AddPolicy(GlobalConstants.ConsigneeRoleName, policy => policy.RequireRole(GlobalConstants.ConsigneeRoleName));
     options.AddPolicy(GlobalConstants.AdvancedAccessLevelPolicy, policy => 
         policy.RequireClaim(GlobalConstants.AdvancedAccessLevelClaimType, GlobalConstants.AdvancedAccessLevelClaimValue));
 });

@@ -112,8 +112,8 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </remarks>
         /// <param name="cargoRequestDto">The CategoryRequestDto object containing the data for the new Category entity.</param>
         [HttpPost]
-        /*[Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]*/
-        public async Task<IActionResult> Add([FromBody] CategoryRequestDto categoryRequestDto){
+        [Authorize(Roles = "Consignee")]
+        public async Task<IActionResult> AddCategory([FromBody] CategoryRequestDto categoryRequestDto){
             
             // Create a new Category entity from the CreateCategoryDto object
             var category = new Category{
@@ -160,7 +160,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// 
         /// </remarks>
         [HttpPut("{id}")]
-        [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
+        [Authorize(Policy = GlobalConstants.ConsigneeRoleName)]
         public async Task<IActionResult> Update(CategoryRequestDto categoryRequestDto){
             if (!await _categoryService.DoesCategoryIdExistAsync(categoryRequestDto.Id)){
                 return BadRequest($"Category with id :'{categoryRequestDto.Id}' does not exist!");
