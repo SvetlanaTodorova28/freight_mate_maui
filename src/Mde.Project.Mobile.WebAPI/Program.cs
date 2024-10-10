@@ -88,7 +88,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
 .AddDefaultTokenProviders();
 
 //Add authentication
-builder.Services.AddAuthentication(options => {
+/*builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options => {
@@ -102,9 +102,9 @@ builder.Services.AddAuthentication(options => {
         ValidAudience = builder.Configuration["JWTConfiguration:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:SigningKey"]))
     };
-});
+});*/
 
-/*builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -122,7 +122,7 @@ builder.Services.AddAuthentication(options => {
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:SigningKey"])),
             RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         };
-    });*/
+    });
 
 //add Authorization
 
