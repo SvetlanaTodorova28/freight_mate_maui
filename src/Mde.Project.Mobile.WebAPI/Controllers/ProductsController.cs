@@ -140,7 +140,6 @@ public async Task<IActionResult> GetById(Guid id)
   /// </remarks>
   /// <param name="productRequestDto">The ProductRequestDto object containing the data for the new Product entity.</param>
   [HttpPost]
-  
   public async Task<IActionResult> Add([FromBody] ProductRequestDto productRequestDto){
 
     var product = new Product{
@@ -222,7 +221,7 @@ public async Task<IActionResult> GetById(Guid id)
    [HttpPut("{id}")]
   [Authorize(Policy = GlobalConstants.AdvancedAccessLevelPolicy)]
     public async Task<IActionResult> Update([FromBody] ProductRequestDto productUpdateRequestDto){
-        
+      string pff = GlobalConstants.AdminId;
         // Check if the Product entity with the given id exists in the database
         if (!await _productService.DoesProductIdExistAsync(productUpdateRequestDto.Id)){
             return BadRequest($"Product with id :'{productUpdateRequestDto.Id}' does not exist !");

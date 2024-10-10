@@ -123,42 +123,42 @@ public class Seeder{
         
         //Add admin  role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
-            Id = GlobalConstants.AdminRoleId,
-            Name = GlobalConstants.AdminRoleName,
-            NormalizedName = GlobalConstants.AdminRoleName.ToUpper()
+            Id = "00000000-0000-0000-0000-000000000060",
+            Name = "Admin",
+            NormalizedName = "Admin".ToUpper()
         });
         //Add  driver role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
-            Id = GlobalConstants.DriverRoleId,
-            Name = GlobalConstants.DriverRoleName,
-            NormalizedName = GlobalConstants.DriverRoleName.ToUpper()
+            Id = "00000000-0000-0000-0000-000000000061",
+            Name = "Driver",
+            NormalizedName = "Driver".ToUpper()
         });
         //Add consignee role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
-            Id = GlobalConstants.ConsigneeRoleId,
-            Name = GlobalConstants.ConsigneeRoleName,
-            NormalizedName = GlobalConstants.ConsigneeRoleName.ToUpper()
+            Id = "00000000-0000-0000-0000-000000000063",
+            Name = "Consignee",
+            NormalizedName = "Consignee".ToUpper()
         });
         //Link roles to users
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
             //admin
             new IdentityUserRole<string>{
-                UserId = GlobalConstants.AdminId,
-                RoleId = GlobalConstants.AdminRoleId
+                UserId = "00000000-0000-0000-0000-100000000000",
+                RoleId = "00000000-0000-0000-0000-000000000060"
             },
             //drivers
             new IdentityUserRole<string>{
                 UserId = drivers[0].Id,
-                RoleId = GlobalConstants.DriverRoleId
+                RoleId = "00000000-0000-0000-0000-000000000061"
             },
             new IdentityUserRole<string>{
                 UserId = drivers[1].Id,
-                RoleId = GlobalConstants.DriverRoleId
+                RoleId = "00000000-0000-0000-0000-000000000061"
             },
             //consignees
             new IdentityUserRole<string>{
                 UserId = consignees[0].Id,
-                RoleId = GlobalConstants.ConsigneeRoleId
+                RoleId = "00000000-0000-0000-0000-000000000063"
             }
         );
         

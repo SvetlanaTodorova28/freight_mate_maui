@@ -1,6 +1,7 @@
 
 using Mde.Project.Mobile.WebAPI.Dtos.Categories;
 using Mde.Project.Mobile.WebAPI.Entities;
+using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </summary>
         /// <returns>An IActionResult containing a list of CategoryResponseDto objects or an error message.</returns>
         [HttpGet]
+        [Authorize(Policy = GlobalConstants.DriverRoleName)]
         public async Task<IActionResult> Get(){
             /// <summary>
             /// This property always returns a value &lt; 1.
@@ -112,7 +114,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </remarks>
         /// <param name="cargoRequestDto">The CategoryRequestDto object containing the data for the new Category entity.</param>
         [HttpPost]
-        [Authorize(Roles = "Consignee")]
+        [Authorize(Policy = GlobalConstants.ConsigneeRoleName)]
         public async Task<IActionResult> AddCategory([FromBody] CategoryRequestDto categoryRequestDto){
             
             // Create a new Category entity from the CreateCategoryDto object
