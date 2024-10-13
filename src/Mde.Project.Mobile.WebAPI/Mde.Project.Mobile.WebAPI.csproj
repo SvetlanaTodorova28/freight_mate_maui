@@ -34,5 +34,17 @@
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
+   
+
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Roles\Consignee.json" />
+    </ItemGroup>
+   
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj" />
+    </ItemGroup>
 
 </Project>

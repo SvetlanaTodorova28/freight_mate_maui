@@ -88,21 +88,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
 .AddDefaultTokenProviders();
 
 //Add authentication
-/*builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidIssuer = builder.Configuration["JWTConfiguration:Issuer"],
-        ValidAudience = builder.Configuration["JWTConfiguration:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:SigningKey"]))
-    };
-});*/
 
 builder.Services.AddAuthentication(options =>
     {
