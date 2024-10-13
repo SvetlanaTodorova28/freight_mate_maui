@@ -1,4 +1,4 @@
-﻿namespace Mde.OnlineServices.MoodTracker.Core.Services.Interfaces
+﻿namespace Mde.Project.Mobile.Core.Service.Interfaces
 {
     public interface IAuthenticationService
     {
