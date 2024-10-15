@@ -1,8 +1,7 @@
 namespace Mde.Project.Mobile.Models;
 
-public class Cargo{
+public class Cargo:BaseModel{
     
-    public Guid Id { get; set; }
     public double TotalWeight{ get; set; }
     
     public bool IsDangerous{ get; set; }

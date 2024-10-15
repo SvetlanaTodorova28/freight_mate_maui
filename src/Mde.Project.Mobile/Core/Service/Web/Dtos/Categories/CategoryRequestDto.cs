@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.Dtos.Categories;
+namespace Mde.Project.Mobile.Core.Service.Web.Dto;
 
 public class CategoryRequestDto:BaseDto{
     

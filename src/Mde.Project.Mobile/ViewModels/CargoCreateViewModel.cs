@@ -11,7 +11,7 @@ namespace Mde.Project.Mobile.ViewModels;
 public class CargoCreateViewModel:ObservableObject{
     
     
-    private readonly ICargoService cargoService;
+    private readonly IWebCargoService cargoService;
     private readonly IUiService uiService;
     
 
@@ -86,7 +86,7 @@ public class CargoCreateViewModel:ObservableObject{
         }
         
         
-        public CargoCreateViewModel(ICargoService cargoService, IUiService uiService)
+        public CargoCreateViewModel(IWebCargoService cargoService, IUiService uiService)
         {
             this.cargoService = cargoService;
             this.uiService = uiService;

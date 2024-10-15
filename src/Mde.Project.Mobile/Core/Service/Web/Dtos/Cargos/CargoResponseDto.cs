@@ -1,7 +1,6 @@
-using WebApplication1.Dtos.Products;
-using WebApplication1.Dtos.Vehicles;
+using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.Dtos.Cargos;
+namespace Mde.Project.Mobile.Core.Service.Web.Dto;
 
 public class CargoResponseDto:BaseDto{
     public string Name { get; set; }
@@ -10,6 +9,4 @@ public class CargoResponseDto:BaseDto{
    
     public List<ProductResponseDto> Products { get; set; }
     
-    
-    public List<VehicleResponseDto> Vehicles { get; set; }
 }

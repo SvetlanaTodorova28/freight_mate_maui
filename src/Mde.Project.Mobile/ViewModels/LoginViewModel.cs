@@ -8,79 +8,50 @@ namespace Mde.Project.Mobile.ViewModels;
 
 public class LoginViewModel : ObservableObject
 {
-    private string? username;
-    private string? password;
-    
-    
-    private readonly ICargoService cargoService;
+    private readonly IAuthenticationServiceMobile authenticationServiceMobile;
     private readonly IUiService uiService;
-    
-    
-     public ICommand LoginCommand { get; }
-   
-    
-    private readonly UsernameTransformer _usernameTransformer;
 
-    public LoginViewModel(ICargoService cargoService, IUiService uiService){
-        _usernameTransformer = new UsernameTransformer();
-        this.cargoService = cargoService;
+    public ICommand LoginCommand { get; }
+
+    public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile)
+    {
+       
         this.uiService = uiService;
+        authenticationServiceMobile = authServiceMobile;
         LoginCommand = new Command(async () => await ExecuteLoginCommand());
-    
     }
-    
 
+    private string username;
     public string UserName
     {
         get => username;
-        set{
-            SetProperty(ref username, value);
-           
-        }
-
-    }
-    public ICargoService CargoService
-    {
-        get => cargoService;
-
-    }
-    public IUiService UiService
-    {
-        get => uiService;
-
+        set => SetProperty(ref username, value);
     }
 
+    private string password;
     public string Password
     {
         get => password;
         set => SetProperty(ref password, value);
     }
-    
-   
+
     private async Task ExecuteLoginCommand()
     {
-        var isAuthenticated = AuthenticateUser(UserName, Password); // Implementeer deze functie
+        var isAuthenticated = await authenticationServiceMobile.TryLoginAsync(UserName, Password);
         if (isAuthenticated)
         {
-            // Na succesvolle aanmelding of registratie
+            // Redirect naar de hoofdpagina na succesvolle login
             Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//CargoListPage");
-
         }
         else
         {
             // Toon foutmelding
-            
-            
+            await uiService.ShowSnackbarCreateAsync("Login Failed. Please check your username and password and try again.");
         }
     }
+}
 
-    private bool AuthenticateUser(string userName, string password){
-        return (string.Equals(userName, "S") && string.Equals(password, "1"));
-    }
-    
   
     
    
-
-}

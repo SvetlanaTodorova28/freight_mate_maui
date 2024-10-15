@@ -1,19 +1,19 @@
-﻿using Mde.OnlineServices.MoodTracker.Core.Services.Interfaces;
-using Mde.OnlineServices.MoodTracker.Core.Services.Web.Dtos;
+﻿
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Core.Service.Web.Dto;
+using Mde.Project.Mobile.Core.Services.Web;
+using Utilities;
 
-namespace Mde.OnlineServices.MoodTracker.Core.Services.Web
-{
-    public class SecureWebAuthenticationStorage : IAuthenticationService
+namespace Mde.Project.Mobile.Core.Service.Web;
+    public class SecureWebAuthenticationStorage : IAuthenticationServiceMobile
     {
         private const string TokenKey = "token";
         private readonly HttpClient _httpClient;
         public SecureWebAuthenticationStorage(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClientFactory.CreateClient(Constants.MoodTrackerClientName);
+            _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
         }
 
         public async Task<string> GetTokenAsync()
@@ -39,9 +39,9 @@ namespace Mde.OnlineServices.MoodTracker.Core.Services.Web
             return success;
         }
 
-        public async Task<bool> TryLoginAsync(string email, string password)
+        public async Task<bool> TryLoginAsync(string username, string password)
         {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/account/login", new LoginRequestDto { Email = email, Password = password });
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/accounts/login", new LoginRequestDto { Username = username, Password = password });
 
             if (response.IsSuccessStatusCode)
             {
@@ -59,4 +59,4 @@ namespace Mde.OnlineServices.MoodTracker.Core.Services.Web
             await SecureStorage.Default.SetAsync(TokenKey, token);
         }
     }
-}
+

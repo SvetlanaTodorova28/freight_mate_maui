@@ -1,13 +1,11 @@
-﻿
-
-
-
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Core.Service;
 using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Core.Service.Web;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
+using Utilities;
 
 namespace Mde.Project.Mobile
 {
@@ -37,7 +35,7 @@ namespace Mde.Project.Mobile
             
             
            
-            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<WelcomePage>();
             
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();
@@ -54,10 +52,12 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<AppUserRegisterPage>();
             builder.Services.AddTransient<AppUserRegisterViewModel>();
             
-            builder.Services.AddTransient<ICargoService, CargoService>();
+            
+            builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
+            builder.Services.AddTransient<IWebCargoService, WebCargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
-            
-            
+
+            builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.Base));
 
 #if DEBUG
     		builder.Logging.AddDebug();

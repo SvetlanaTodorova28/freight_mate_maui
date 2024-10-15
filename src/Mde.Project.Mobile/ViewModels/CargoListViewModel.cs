@@ -10,7 +10,7 @@ namespace Mde.Project.Mobile.ViewModels;
 public class CargoListViewModel:ObservableObject{
     
     private ObservableCollection<Cargo> cargos;
-    private readonly ICargoService cargoService;
+    private readonly IWebCargoService cargoService;
     private readonly IUiService uiService;
     
     public ObservableCollection<Cargo> Cargos
@@ -22,7 +22,7 @@ public class CargoListViewModel:ObservableObject{
         }
     }
     
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService)
+    public CargoListViewModel(IWebCargoService cargoService, IUiService uiService)
     {
         this.cargoService = cargoService;
         this.uiService = uiService;

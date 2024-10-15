@@ -1,5 +1,5 @@
 namespace Mde.Project.Mobile.Models;
 
-public class Category{
-    
+public class Category:BaseModel{
+    public string Name { get; set; }
 }

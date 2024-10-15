@@ -65,15 +65,18 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</MauiFont>
 	</ItemGroup>
+	
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
 
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.4" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -92,6 +95,11 @@
 	  <None Include="Platforms\Tizen\Main.cs" />
 	  <None Include="Platforms\Windows\App.xaml" />
 	  <None Include="Platforms\Windows\App.xaml.cs" />
+	</ItemGroup>
+	
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj" />
 	</ItemGroup>
 
 </Project>

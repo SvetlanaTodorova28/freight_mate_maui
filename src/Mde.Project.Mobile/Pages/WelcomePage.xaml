@@ -2,8 +2,45 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.WelcomePage">
-    <ContentPage.Content>
+             x:Class="Mde.Project.Mobile.Pages.WelcomePage"
+             Style="{StaticResource CustomPageStyle}"
+             NavigationPage.HasNavigationBar="False">
+    <Grid VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
         
-    </ContentPage.Content>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>  
+            <RowDefinition Height="Auto"/>  
+            <RowDefinition Height="Auto"/>  
+        </Grid.RowDefinitions>
+
+        
+        <Border Grid.Row="1"
+                StyleClass="cargosBorder">
+            <Label StyleClass="BaseLabel" Text="Already have an account"
+                   HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        x:Name="Login"
+                        Tapped="Login_OnClicked"
+                        NumberOfTapsRequired="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Border>
+
+        
+        <Border Grid.Row="2"
+                StyleClass="cargosBorder">
+            <Label StyleClass="BaseLabel" Text="Create Account" HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        x:Name="CrtAccount"
+                        Tapped="CrtAccount_OnClicked"
+                        NumberOfTapsRequired="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Border>
+
+    </Grid>
+
 </ContentPage>

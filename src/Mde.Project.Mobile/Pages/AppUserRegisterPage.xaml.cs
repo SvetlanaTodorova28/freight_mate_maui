@@ -9,15 +9,16 @@ namespace Mde.Project.Mobile.Pages;
 
 public partial class AppUserRegisterPage : ContentPage{
     private readonly IUiService _uiService;
-    private readonly 
-        ICargoService _cargoService;
-    public AppUserRegisterPage(IUiService uiService, ICargoService cargoService){
+    private readonly IAuthenticationServiceMobile authenticationServiceMobile;
+   
+    public AppUserRegisterPage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile){
         InitializeComponent();
         _uiService = uiService;
-        _cargoService = cargoService;
+        this.authenticationServiceMobile = authenticationServiceMobile;
+       
     }
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
-        Navigation.PushAsync( new MainPage(_uiService, _cargoService));
+        Navigation.PushAsync( new WelcomePage(_uiService, authenticationServiceMobile));
     }
 }

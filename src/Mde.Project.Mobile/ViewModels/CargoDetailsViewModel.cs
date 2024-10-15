@@ -7,7 +7,7 @@ namespace Mde.Project.Mobile.ViewModels;
 
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
 public class CargoDetailsViewModel:ObservableObject{
-    private readonly ICargoService cargoService;
+    private readonly IWebCargoService cargoService;
     private readonly IUiService uiService;
     
     
