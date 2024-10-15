@@ -4,7 +4,7 @@ using Mde.Project.Mobile.Models;
 
 namespace Mde.Project.Mobile.Core.Service;
 
-public class CargoService:ICargoService{
+public class CargoService:IWebCargoService{
       private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
       
       

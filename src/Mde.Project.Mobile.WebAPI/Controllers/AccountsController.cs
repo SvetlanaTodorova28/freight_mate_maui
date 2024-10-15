@@ -130,7 +130,6 @@ public class AccountsController : ControllerBase{
 
         return Ok(new LoginUserResponseDto(){
             Token = result.Data
-
         });
     }
 

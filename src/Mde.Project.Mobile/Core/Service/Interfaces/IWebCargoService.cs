@@ -2,7 +2,7 @@ using Mde.Project.Mobile.Models;
 
 namespace Mde.Project.Mobile.Core.Service.Interfaces;
 
-public interface ICargoService{
+public interface IWebCargoService{
     
     public Task<Cargo> GetById(Guid id);
     public Task<ICollection<Cargo>> GetAll();
