@@ -114,10 +114,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options => {
     
     options.AddPolicy(GlobalConstants.AdminRoleName, policy => policy.RequireRole(GlobalConstants.AdminRoleName));
-    options.AddPolicy(GlobalConstants.DriverRoleName, policy => policy.RequireRole(GlobalConstants.DriverRoleName));
-    options.AddPolicy(GlobalConstants.ConsigneeRoleName, policy => policy.RequireRole(GlobalConstants.ConsigneeRoleName));
-    options.AddPolicy(GlobalConstants.AdvancedAccessLevelPolicy, policy => 
-        policy.RequireClaim(GlobalConstants.AdvancedAccessLevelClaimType, GlobalConstants.AdvancedAccessLevelClaimValue));
+    options.AddPolicy(GlobalConstants.Driver, policy => policy.RequireRole(GlobalConstants.Driver));
+    options.AddPolicy(GlobalConstants.Consignee, policy => policy.RequireRole(GlobalConstants.Consignee));
+    
 });
 
 builder.Services.AddControllers();

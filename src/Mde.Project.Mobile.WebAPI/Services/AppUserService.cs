@@ -21,7 +21,7 @@ public class AppUserService:IAppUserService{
             Email = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            AccessLevelType = user.AccessLevelType
+            Function = user.Function
             
         };
        

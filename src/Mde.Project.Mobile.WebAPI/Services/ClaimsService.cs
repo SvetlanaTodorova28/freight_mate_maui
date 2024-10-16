@@ -22,10 +22,10 @@ public class ClaimsService:IClaimsService{
         //get the claims from the user table (if any)
         var userClaims = await _userManager.GetClaimsAsync(user);
         claims.AddRange(userClaims);
-        
         claims.Add(new Claim("FirstName", user.FirstName ?? ""));
         claims.Add(new Claim("LastName", user.LastName ?? ""));
-        claims.Add(new Claim(GlobalConstants.AdvancedAccessLevelClaimType, user.AccessLevelType.ToString()));
+        claims.Add(new Claim("Function", user.Function.Name ?? ""));
+       
         
         
         //get the roles of the user from the user table (if any)

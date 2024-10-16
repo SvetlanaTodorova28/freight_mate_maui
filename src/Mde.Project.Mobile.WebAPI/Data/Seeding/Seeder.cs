@@ -1,5 +1,5 @@
 using Mde.Project.Mobile.WebAPI.Entities;
-using Mde.Project.Mobile.WebAPI.Enums;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
@@ -54,6 +54,24 @@ public class Seeder{
             new{ CargosId = cargos[1].Id, ProductsId = products[1].Id },
             new{ CargosId = cargos[1].Id, ProductsId = products[2].Id }
         };
+        var functions = new List<Function>{
+            new Function(){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000081"),
+                Name = GlobalConstants.AdminUserName
+            },
+            new Function(){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000082"),
+                Name = GlobalConstants.Driver
+            },
+            new Function(){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000083"),
+                Name = GlobalConstants.Consignee
+            },
+            new Function(){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000084"),
+                Name = GlobalConstants.Consignor
+            }
+        };
         
               //========================== AppUsers =========================
         IPasswordHasher<AppUser> passwordHasher = new PasswordHasher<AppUser>();
@@ -69,7 +87,8 @@ public class Seeder{
             EmailConfirmed = true,
             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
-            AccessLevelType = AccessLevelType.Admin,
+            FunctionId = functions[0].Id
+           
         };
         adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, GlobalConstants.AdminUserPassword);
 
@@ -86,7 +105,7 @@ public class Seeder{
                 ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1", 
                 FirstName = "Tom",
                 LastName = "Calme",
-                AccessLevelType = AccessLevelType.Basic
+                FunctionId = functions[1].Id
                
             },
             new(){
@@ -100,7 +119,7 @@ public class Seeder{
                 ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2", 
                 FirstName = "Sarah",
                 LastName = "Vrout",
-                AccessLevelType = AccessLevelType.Basic
+                FunctionId = functions[1].Id
               
             }
         };
@@ -116,7 +135,7 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stanis",
-                AccessLevelType = AccessLevelType.Advanced
+                FunctionId = functions[2].Id
               
                 }
             };
@@ -165,6 +184,7 @@ public class Seeder{
         modelBuilder.Entity<Category>().HasData(categories);
         modelBuilder.Entity<Product>().HasData(products);  
         modelBuilder.Entity<Cargo>().HasData(cargos);
+        modelBuilder.Entity<Function>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
         drivers.ForEach(driver => {
             driver.PasswordHash = passwordHasher.HashPassword(driver, GlobalConstants.DriverPassword);
