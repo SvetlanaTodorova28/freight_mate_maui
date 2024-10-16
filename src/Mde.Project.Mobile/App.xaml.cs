@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows.Input;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
@@ -8,7 +9,6 @@ public partial class App : Application
 {
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IWebCargoService _cargoService;
-    
     private readonly IUiService uiService;
     public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, IWebCargoService cargoService)
     {
@@ -38,7 +38,7 @@ public partial class App : Application
         {
             Debug.WriteLine($"Authentication Service Initialized: {_authenticationService != null}");
 
-            MainPage = new CargoListPage(new CargoListViewModel(_cargoService,uiService)); 
+            MainPage = new AppShell(_authenticationService,uiService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -46,4 +46,7 @@ public partial class App : Application
             MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService));
         }
     }
+    
+   
+
 }

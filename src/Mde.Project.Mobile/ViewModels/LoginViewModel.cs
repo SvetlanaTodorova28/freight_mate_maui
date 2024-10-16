@@ -41,12 +41,11 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             // Redirect naar de hoofdpagina na succesvolle login
-            Application.Current.MainPage = new AppShell();
+            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
-            // Toon foutmelding
             await uiService.ShowSnackbarCreateAsync("Login Failed. Please check your username and password and try again.");
         }
     }
