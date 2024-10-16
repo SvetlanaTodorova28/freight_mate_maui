@@ -55,7 +55,30 @@
                                 <Entry
                                     StyleClass="BaseEntry"
                                     Grid.Column="1"
-                                    Placeholder="NAME"/>
+                                    Placeholder=" FIRST NAME"
+                                    Text="{Binding FirstName}"/>
+                            </Grid>
+                            <Grid Margin="0,30,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".2*" />
+                                    <ColumnDefinition Width=".8*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    StyleClass="LoginCreateIcons">
+                                    <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
+                                        <Image.Source>
+                                            <FontImageSource
+                                                FontFamily="AwesomeSolid"
+                                                Glyph="&#xf2bd;"
+                                                Color="#4F3F9B" />
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
+                                <Entry
+                                    StyleClass="BaseEntry"
+                                    Grid.Column="1"
+                                    Placeholder="LAST NAME"
+                                    Text="{Binding LastName}"/>
                             </Grid>
                             <Grid Margin="0,30,0,0">
                                 <Grid.ColumnDefinitions>
@@ -77,7 +100,9 @@
                                     StyleClass="BaseEntry"
                                     Grid.Column="1"
                                     Placeholder="EMAIL"
-                                    Keyboard="Email"/>
+                                    Keyboard="Email"
+                                    Text="{Binding Username}"
+                                   />
 
                             </Grid>
                             <Grid Margin="0,25,0,0">
@@ -100,7 +125,31 @@
                                     StyleClass="BaseEntry"
                                     Grid.Column="1"
                                     IsPassword="True"
-                                    Placeholder="PASSWORD"/>
+                                    Placeholder="PASSWORD"
+                                    Text="{Binding Password}"/>
+                            </Grid>
+                            <Grid Margin="0,25,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".2*" />
+                                    <ColumnDefinition Width=".8*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    StyleClass="LoginCreateIcons">
+                                    <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
+                                        <Image.Source>
+                                            <FontImageSource
+                                                FontFamily="AwesomeSolid"
+                                                Glyph="&#xf084;"
+                                                Color="#4F3F9B" />
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
+                                <Entry
+                                    StyleClass="BaseEntry"
+                                    Grid.Column="1"
+                                    IsPassword="True"
+                                    Placeholder="CONFIRM PASSWORD"
+                                    Text="{Binding ConfirmPassword}"/>
                             </Grid>
 
                             <Button
@@ -108,7 +157,7 @@
                                 Text="Create your Account" />
                             
                             <Label  FontFamily="PlayBold"
-                                    Text="Back to Login" 
+                                    Text="Back to Welcome" 
                                     TextColor="White"
                                     HorizontalOptions="Center"
                                     >

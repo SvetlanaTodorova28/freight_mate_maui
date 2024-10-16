@@ -6,7 +6,7 @@ namespace Mde.Project.Mobile.Core.Service;
 
 public class UiService : IUiService
 {
-    public async Task ShowSnackbarCreateAsync(string message)
+    public async Task ShowSnackbarSuccessAsync(string message)
     {
         var snackbarOptions = new SnackbarOptions
         {
@@ -26,6 +26,20 @@ public class UiService : IUiService
         {
             BackgroundColor = Colors.Pink,
             TextColor = Colors.White,
+            CornerRadius = new CornerRadius(10),
+            CharacterSpacing = 1
+        };
+
+        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
+        await snackbar.Show();
+    }
+    public async Task ShowSnackbarWarning(string message)
+    {
+        var snackbarOptions = new SnackbarOptions
+        {
+            BackgroundColor = Colors.LightCoral,
+            TextColor = Colors.White,
+            Font =Microsoft.Maui.Font.SystemFontOfSize(18),
             CornerRadius = new CornerRadius(10),
             CharacterSpacing = 1
         };

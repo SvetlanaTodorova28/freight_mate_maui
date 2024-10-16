@@ -96,10 +96,10 @@
         <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
         <Setter Property="Margin" Value="0,0,0,5"></Setter>
         <Setter Property="VerticalOptions" Value="Center"></Setter>
-        <Setter Property="BackgroundColor" Value="#3B3131"></Setter>
+        <Setter Property="BackgroundColor" Value="White"></Setter>
         <Setter Property="Opacity" Value="0.5"/>
         <Setter Property="FontFamily" Value="PlayBold"/>
-        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="TextColor" Value="Grey"/>
         <Setter Property="FontSize" Value="18"/>
     </Style>
 
