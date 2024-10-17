@@ -26,7 +26,6 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </summary>
         /// <returns>An IActionResult containing a list of CategoryResponseDto objects or an error message.</returns>
         [HttpGet]
-        
         public async Task<IActionResult> Get(){
             /// <summary>
             /// This property always returns a value &lt; 1.
@@ -68,7 +67,6 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// <param name="id">The unique identifier of the Category entity to retrieve.</param>
         /// <returns>An IActionResult containing a CategoryResponseDto object or an error message.</returns>
         [HttpGet("{id}")]
-       
         public async Task<IActionResult> GetById(Guid id){
             // Check if the Category entity with the given id exists
             if (!await _categoryService.DoesCategoryIdExistAsync(id)){

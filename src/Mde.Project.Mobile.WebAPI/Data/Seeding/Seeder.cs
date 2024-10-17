@@ -17,22 +17,22 @@ public class Seeder{
             new Product{
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000021"),
                 Name = "Smartphone",
-                CategoryId = categories[0].Id
+                CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000011")
             },
             new Product{
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000022"),
                 Name = "Toaster",
-                CategoryId = categories[1].Id
+                CategoryId =Guid.Parse("00000000-0000-0000-0000-000000000012")
             },
             new Product{
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000023"),
                 Name = "Sneakers",
-                CategoryId = categories[1].Id
+                CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000012")
             },
             new Product{
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000024"),
                 Name = "Training",
-                CategoryId = categories[1].Id
+                CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000012")
             },
 
         };
@@ -49,10 +49,10 @@ public class Seeder{
             }
         };
         var cargosProducts = new[]{
-            new{ CargosId = cargos[0].Id, ProductsId = products[0].Id },
-            new{ CargosId = cargos[0].Id, ProductsId = products[1].Id },
-            new{ CargosId = cargos[1].Id, ProductsId = products[1].Id },
-            new{ CargosId = cargos[1].Id, ProductsId = products[2].Id }
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") }
         };
         var functions = new List<Function>{
             new Function(){
@@ -78,19 +78,19 @@ public class Seeder{
         
         // admin seeden
         var adminUser = new AppUser(){
-            Id = GlobalConstants.AdminId,
-            UserName = GlobalConstants.AdminUserName,
+            Id = "00000000-0000-0000-0000-100000000000",
+            UserName = "Admin@fedex.com",
             FirstName = "Admin",
-            Email = GlobalConstants.AdminUserName,
-            NormalizedEmail = GlobalConstants.AdminUserName.ToUpper(),
-            NormalizedUserName = GlobalConstants.AdminUserName.ToUpper(),
+            Email = "Admin@fedex.com",
+            NormalizedEmail = "ADMIN@FEDEX.COM",
+            NormalizedUserName = "ADMIN@FEDEX.COM",
             EmailConfirmed = true,
             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
-            FunctionId = functions[0].Id
+            FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000081")
            
         };
-        adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, GlobalConstants.AdminUserPassword);
+        adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin1234");
 
         // driver seeden
         var drivers = new List<AppUser>{
@@ -105,7 +105,7 @@ public class Seeder{
                 ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1", 
                 FirstName = "Tom",
                 LastName = "Calme",
-                FunctionId = functions[1].Id
+                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
                
             },
             new(){
@@ -119,7 +119,7 @@ public class Seeder{
                 ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2", 
                 FirstName = "Sarah",
                 LastName = "Vrout",
-                FunctionId = functions[1].Id
+                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
               
             }
         };
@@ -135,7 +135,7 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stanis",
-                FunctionId = functions[2].Id
+                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
               
                 }
             };
@@ -144,19 +144,19 @@ public class Seeder{
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
             Id = "00000000-0000-0000-0000-000000000060",
             Name = "Admin",
-            NormalizedName = "Admin".ToUpper()
+            NormalizedName = "ADMIN"
         });
         //Add  driver role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
             Id = "00000000-0000-0000-0000-000000000061",
             Name = "Driver",
-            NormalizedName = "Driver".ToUpper()
+            NormalizedName = "DRIVER"
         });
         //Add consignee role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
             Id = "00000000-0000-0000-0000-000000000063",
             Name = "Consignee",
-            NormalizedName = "Consignee".ToUpper()
+            NormalizedName = "CONSIGNEE"
         });
         //Link roles to users
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -167,16 +167,16 @@ public class Seeder{
             },
             //drivers
             new IdentityUserRole<string>{
-                UserId = drivers[0].Id,
+                UserId = "00000000-0000-0000-0000-300000000000",
                 RoleId = "00000000-0000-0000-0000-000000000061"
             },
             new IdentityUserRole<string>{
-                UserId = drivers[1].Id,
+                UserId = "00000000-0000-0000-0000-200000000000",
                 RoleId = "00000000-0000-0000-0000-000000000061"
             },
             //consignees
             new IdentityUserRole<string>{
-                UserId = consignees[0].Id,
+                UserId = "00000000-0000-0000-0000-400000000000",
                 RoleId = "00000000-0000-0000-0000-000000000063"
             }
         );
@@ -187,11 +187,11 @@ public class Seeder{
         modelBuilder.Entity<Function>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
         drivers.ForEach(driver => {
-            driver.PasswordHash = passwordHasher.HashPassword(driver, GlobalConstants.DriverPassword);
+            driver.PasswordHash = passwordHasher.HashPassword(driver, "Driver1234");
             modelBuilder.Entity<AppUser>().HasData(driver);
         });
         consignees.ForEach(consignee => {
-            consignee.PasswordHash = passwordHasher.HashPassword(consignee, GlobalConstants.ConsigneePassword);
+            consignee.PasswordHash = passwordHasher.HashPassword(consignee, "Consignee1234");
             modelBuilder.Entity<AppUser>().HasData(consignee);
         });
         modelBuilder.Entity($"{nameof(Cargo)}{nameof(Product)}").HasData(cargosProducts);

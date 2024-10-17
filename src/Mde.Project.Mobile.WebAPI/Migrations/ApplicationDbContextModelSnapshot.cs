@@ -35,28 +35,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("CargoProduct");
-
-                    b.HasData(
-                        new
-                        {
-                            CargosId = new Guid("00000000-0000-0000-0000-000000000031"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000021")
-                        },
-                        new
-                        {
-                            CargosId = new Guid("00000000-0000-0000-0000-000000000031"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000022")
-                        },
-                        new
-                        {
-                            CargosId = new Guid("00000000-0000-0000-0000-000000000032"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000022")
-                        },
-                        new
-                        {
-                            CargosId = new Guid("00000000-0000-0000-0000-000000000032"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000023")
-                        });
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.AppUser", b =>
@@ -133,83 +111,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-100000000000",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
-                            Email = "Admin@fedex.com",
-                            EmailConfirmed = true,
-                            FirstName = "Admin",
-                            FunctionId = new Guid("00000000-0000-0000-0000-000000000081"),
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@FEDEX.COM",
-                            NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEauiFZyQYfde4n7sKwm09p5ARmfuRTt479QIQ772By14WDv9uLz9OM9AvyhtxZJsQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "BABUNAPLANINAVHODCHETERI",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin@fedex.com"
-                        },
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-200000000000",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1",
-                            Email = "tom@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Tom",
-                            FunctionId = new Guid("00000000-0000-0000-0000-000000000082"),
-                            LastName = "Calme",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "TOM@GMAIL.COM",
-                            NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGP4qt/51AVHv/TckTEpQ66p07bzYZX7RShHxYUVZJuYXRB5g89UzrLaxSZyqNfKPQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
-                            TwoFactorEnabled = false,
-                            UserName = "tom@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-300000000000",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2",
-                            Email = "sarah@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Sarah",
-                            FunctionId = new Guid("00000000-0000-0000-0000-000000000082"),
-                            LastName = "Vrout",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SARAH@GMAIL.COM",
-                            NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHZqthOKqAjH8tTl3KxLVV28Yx14o7R0oH1AGcU+bIjkQOQi6zEtTcLBBpfq5XdLWg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
-                            TwoFactorEnabled = false,
-                            UserName = "sarah@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-400000000000",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
-                            Email = "milka@speedy.gr",
-                            EmailConfirmed = true,
-                            FirstName = "Milka",
-                            FunctionId = new Guid("00000000-0000-0000-0000-000000000083"),
-                            LastName = "Stanis",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MILKA@SPEEDY.GR",
-                            NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAENDPMDjoBQTfr8/L3hVNCTyF200y0YYwH1hpbp2ukcubrByzi4zYEZhCF3COW/4o4w==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
-                            TwoFactorEnabled = false,
-                            UserName = "milka@speedy.gr"
-                        });
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Cargo", b =>
@@ -228,20 +129,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cargos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000031"),
-                            Destination = "Milan",
-                            TotalWeight = 1500.5
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000032"),
-                            Destination = "London",
-                            TotalWeight = 2900.0
-                        });
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Category", b =>
@@ -257,23 +144,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000011"),
-                            Name = "Electronics"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000012"),
-                            Name = "Home Appliances"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000013"),
-                            Name = "Sportswear"
-                        });
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Function", b =>
@@ -289,28 +159,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Functions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000081"),
-                            Name = "Admin@fedex.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000082"),
-                            Name = "Driver"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000083"),
-                            Name = "Consignee"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000084"),
-                            Name = "Consignor"
-                        });
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Product", b =>
@@ -334,36 +182,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000021"),
-                            CategoryId = new Guid("00000000-0000-0000-0000-000000000011"),
-                            IsDangerous = false,
-                            Name = "Smartphone"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000022"),
-                            CategoryId = new Guid("00000000-0000-0000-0000-000000000012"),
-                            IsDangerous = false,
-                            Name = "Toaster"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000023"),
-                            CategoryId = new Guid("00000000-0000-0000-0000-000000000012"),
-                            IsDangerous = false,
-                            Name = "Sneakers"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000024"),
-                            CategoryId = new Guid("00000000-0000-0000-0000-000000000012"),
-                            IsDangerous = false,
-                            Name = "Training"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -391,26 +209,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-000000000060",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-000000000061",
-                            Name = "Driver",
-                            NormalizedName = "DRIVER"
-                        },
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-000000000063",
-                            Name = "Consignee",
-                            NormalizedName = "CONSIGNEE"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -498,28 +296,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "00000000-0000-0000-0000-100000000000",
-                            RoleId = "00000000-0000-0000-0000-000000000060"
-                        },
-                        new
-                        {
-                            UserId = "00000000-0000-0000-0000-200000000000",
-                            RoleId = "00000000-0000-0000-0000-000000000061"
-                        },
-                        new
-                        {
-                            UserId = "00000000-0000-0000-0000-300000000000",
-                            RoleId = "00000000-0000-0000-0000-000000000061"
-                        },
-                        new
-                        {
-                            UserId = "00000000-0000-0000-0000-400000000000",
-                            RoleId = "00000000-0000-0000-0000-000000000063"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
