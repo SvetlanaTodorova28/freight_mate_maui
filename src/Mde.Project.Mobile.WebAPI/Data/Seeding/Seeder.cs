@@ -57,19 +57,19 @@ public class Seeder{
         var functions = new List<Function>{
             new Function(){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000081"),
-                Name = GlobalConstants.AdminUserName
+                Name = "Admin"
             },
             new Function(){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000082"),
-                Name = GlobalConstants.Driver
+                Name = "Driver"
             },
             new Function(){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000083"),
-                Name = GlobalConstants.Consignee
+                Name = "Consignee"
             },
             new Function(){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000084"),
-                Name = GlobalConstants.Consignor
+                Name = "Consignor"
             }
         };
         
