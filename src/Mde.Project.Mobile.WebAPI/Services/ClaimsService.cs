@@ -1,7 +1,9 @@
 using System.Security.Claims;
+using Mde.Project.Mobile.WebAPI.Data;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Utilities;
 
 namespace Mde.Project.Mobile.WebAPI.Services;
@@ -9,8 +11,10 @@ namespace Mde.Project.Mobile.WebAPI.Services;
 public class ClaimsService:IClaimsService{
      private readonly UserManager<AppUser> _userManager;
   
-    public ClaimsService(UserManager<AppUser> userManager){
+     private readonly ApplicationDbContext _applicationDbContext;
+    public ClaimsService(UserManager<AppUser> userManager, ApplicationDbContext applicationDbContext){
         _userManager = userManager;
+        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<IEnumerable<Claim>> GenerateClaimsForUser(AppUser user){
@@ -24,7 +28,8 @@ public class ClaimsService:IClaimsService{
         claims.AddRange(userClaims);
         claims.Add(new Claim("FirstName", user.FirstName ?? ""));
         claims.Add(new Claim("LastName", user.LastName ?? ""));
-        claims.Add(new Claim("Function", user.Function.Name ?? ""));
+        var functionOfUser = await _applicationDbContext.Functions.FirstOrDefaultAsync(f => f.Id == user.FunctionId);
+        claims.Add(new Claim("Function", functionOfUser.Name ?? ""));
        
         
         
