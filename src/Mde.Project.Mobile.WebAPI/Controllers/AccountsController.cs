@@ -70,7 +70,10 @@ public class AccountsController : ControllerBase{
             UserName = registerUserRequestDto.Username,
             Email = registerUserRequestDto.Username,
             FirstName = registerUserRequestDto.FirstName?? "",
-            LastName = registerUserRequestDto.LastName??""
+            LastName = registerUserRequestDto.LastName??"",
+            Function = new Function(){
+                Name = registerUserRequestDto.Function?? ""
+            }
            
         };
 
@@ -128,7 +131,7 @@ public class AccountsController : ControllerBase{
             return Unauthorized(new{ message = "Username or password is incorrect." });
         }
 
-        return Ok(new LoginUserResponseDto(){
+        return Ok(new LoginUserResponseDto{
             Token = result.Data
         });
     }

@@ -159,6 +159,7 @@ public class CargosController : ControllerBase{
     /// </remarks>
     /// <param name="cargoRequestDto">The CargoRequestDto object containing the data for the new Cargo entity.</param>
     [HttpPost]
+    
     public async Task<IActionResult> Add([FromBody] CargoRequestDto cargoRequestDto){
         // Create a new Cargo entity with the provided data
         var cargo = new Cargo{

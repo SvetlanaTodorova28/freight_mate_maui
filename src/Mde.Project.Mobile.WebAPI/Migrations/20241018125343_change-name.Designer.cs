@@ -4,6 +4,7 @@ using Mde.Project.Mobile.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241018125343_change-name")]
+    partial class changename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +84,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("FunctionId")
+                    b.Property<Guid>("FunctionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
@@ -147,7 +150,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FEDEX.COM",
                             NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIgxFm98kyT7H2T04iUV88Bxo9QIF+pRw5X3cIpGzJFlFe7qpFhlinNZK+V/cjse7g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED+QLyexx6yVNpHqo+RZZTcyVMH3a2yVMS9BW2MMdnbnRhQRPX4JSP/XuQnQanzZnQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
                             TwoFactorEnabled = false,
@@ -166,7 +169,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TOM@GMAIL.COM",
                             NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMMwU1IohY9IFZst9SBvBMKQlkOyAOEtPyffogE0FXW2b5RMJ4Aj74yEqHdWLHphyw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIG3yYul7sg6jkuyqeJvLEHicoL4FHyGLeDnY8nlV6M3wLSGMBVmEfNK/Adxa9hOGw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
                             TwoFactorEnabled = false,
@@ -185,7 +188,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SARAH@GMAIL.COM",
                             NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL4pFtNaPg6lkFjQN8Q5Ijwded9BVqNgToQwpLoczp6TbPpvGyQkyCLwDXGxSpW6oQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHZeGo/wqU0jo1f1ICz7b6M46y6DnngEPiU2t+6qRj/LUWZ8+4AJ+goR0SrjZ3LvKQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
                             TwoFactorEnabled = false,
@@ -204,7 +207,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MILKA@SPEEDY.GR",
                             NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFuyp9XpU93E0l1wX2LxrRz1xZEYhIbF6bYzC661StuK97vId6KD7/CvLs3a6/+6bQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBEfqKm4yxBkGgEchqarspBpg6Px8pQBAwj2ZIYmtxs/p4OwWdsjkfXfAJIAIgCYOw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,
@@ -283,6 +286,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -559,7 +563,9 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 {
                     b.HasOne("Mde.Project.Mobile.WebAPI.Entities.Function", "Function")
                         .WithMany()
-                        .HasForeignKey("FunctionId");
+                        .HasForeignKey("FunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Function");
                 });

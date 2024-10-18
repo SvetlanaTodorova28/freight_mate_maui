@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class withoutseed : Migration
+    public partial class changename : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -244,6 +246,90 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "00000000-0000-0000-0000-000000000060", null, "Admin", "ADMIN" },
+                    { "00000000-0000-0000-0000-000000000061", null, "Driver", "DRIVER" },
+                    { "00000000-0000-0000-0000-000000000063", null, "Consignee", "CONSIGNEE" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cargos",
+                columns: new[] { "Id", "Destination", "TotalWeight" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000031"), "Milan", 1500.5 },
+                    { new Guid("00000000-0000-0000-0000-000000000032"), "London", 2900.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000011"), "Electronics" },
+                    { new Guid("00000000-0000-0000-0000-000000000012"), "Home Appliances" },
+                    { new Guid("00000000-0000-0000-0000-000000000013"), "Sportswear" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Functions",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000081"), "Admin" },
+                    { new Guid("00000000-0000-0000-0000-000000000082"), "Driver" },
+                    { new Guid("00000000-0000-0000-0000-000000000083"), "Consignee" },
+                    { new Guid("00000000-0000-0000-0000-000000000084"), "Consignor" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "FunctionId", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "00000000-0000-0000-0000-100000000000", 0, "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", new Guid("00000000-0000-0000-0000-000000000081"), null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAED+QLyexx6yVNpHqo+RZZTcyVMH3a2yVMS9BW2MMdnbnRhQRPX4JSP/XuQnQanzZnQ==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
+                    { "00000000-0000-0000-0000-200000000000", 0, "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", new Guid("00000000-0000-0000-0000-000000000082"), "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEIG3yYul7sg6jkuyqeJvLEHicoL4FHyGLeDnY8nlV6M3wLSGMBVmEfNK/Adxa9hOGw==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
+                    { "00000000-0000-0000-0000-300000000000", 0, "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", new Guid("00000000-0000-0000-0000-000000000082"), "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAEHZeGo/wqU0jo1f1ICz7b6M46y6DnngEPiU2t+6qRj/LUWZ8+4AJ+goR0SrjZ3LvKQ==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
+                    { "00000000-0000-0000-0000-400000000000", 0, "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", new Guid("00000000-0000-0000-0000-000000000083"), "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEBEfqKm4yxBkGgEchqarspBpg6Px8pQBAwj2ZIYmtxs/p4OwWdsjkfXfAJIAIgCYOw==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "IsDangerous", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000021"), new Guid("00000000-0000-0000-0000-000000000011"), false, "Smartphone" },
+                    { new Guid("00000000-0000-0000-0000-000000000022"), new Guid("00000000-0000-0000-0000-000000000012"), false, "Toaster" },
+                    { new Guid("00000000-0000-0000-0000-000000000023"), new Guid("00000000-0000-0000-0000-000000000012"), false, "Sneakers" },
+                    { new Guid("00000000-0000-0000-0000-000000000024"), new Guid("00000000-0000-0000-0000-000000000012"), false, "Training" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "00000000-0000-0000-0000-000000000060", "00000000-0000-0000-0000-100000000000" },
+                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-200000000000" },
+                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-300000000000" },
+                    { "00000000-0000-0000-0000-000000000063", "00000000-0000-0000-0000-400000000000" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CargoProduct",
+                columns: new[] { "CargosId", "ProductsId" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000031"), new Guid("00000000-0000-0000-0000-000000000021") },
+                    { new Guid("00000000-0000-0000-0000-000000000031"), new Guid("00000000-0000-0000-0000-000000000022") },
+                    { new Guid("00000000-0000-0000-0000-000000000032"), new Guid("00000000-0000-0000-0000-000000000021") },
+                    { new Guid("00000000-0000-0000-0000-000000000032"), new Guid("00000000-0000-0000-0000-000000000022") }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,6 +1,0 @@
-@Mde.Project.Mobile.WebAPI_HostAddress = http://localhost:5150
-
-GET {{Mde.Project.Mobile.WebAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

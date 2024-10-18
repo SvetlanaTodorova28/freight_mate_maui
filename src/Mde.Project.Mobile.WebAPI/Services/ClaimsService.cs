@@ -15,9 +15,9 @@ public class ClaimsService:IClaimsService{
 
     public async Task<IEnumerable<Claim>> GenerateClaimsForUser(AppUser user){
         var claims = new List<Claim> {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email),
+            new (ClaimTypes.Name, user.UserName),
+            new (ClaimTypes.NameIdentifier, user.Id),
+            new (ClaimTypes.Email, user.Email),
         };
         //get the claims from the user table (if any)
         var userClaims = await _userManager.GetClaimsAsync(user);

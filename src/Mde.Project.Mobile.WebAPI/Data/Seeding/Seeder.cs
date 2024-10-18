@@ -134,7 +134,7 @@ public class Seeder{
                 SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
-                LastName = "Stanis",
+                LastName = "Stenis",
                 FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
               
                 }
