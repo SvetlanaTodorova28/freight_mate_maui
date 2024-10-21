@@ -28,8 +28,11 @@ public class GlobalConstants{
     public const string AudienceConfig = "JWTConfiguration:Audience";
     
     public const string Base = "https://localhost:7041";
+    public const string BaseAzure = "https://next-web-app-hhgwfndcemcgajaf.northeurope-01.azurewebsites.net/index.html";
     public const string HttpClient = "FrightMateClient";
     public const string Auth = Base + "accounts/login";
-    public const string Accesslevel = Base + "enums/accessLevel";
     public const string Cargos = Base + "cargos/";
+    
+    public const string AuthAzure = BaseAzure + "accounts/login";
+    public const string CargosAzure = BaseAzure + "cargos/";
 }
