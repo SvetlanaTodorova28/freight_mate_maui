@@ -1,7 +1,9 @@
 using System.Security.Claims;
+using Mde.Project.Mobile.WebAPI.Data;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Utilities;
 
 namespace Mde.Project.Mobile.WebAPI.Services;
@@ -9,23 +11,26 @@ namespace Mde.Project.Mobile.WebAPI.Services;
 public class ClaimsService:IClaimsService{
      private readonly UserManager<AppUser> _userManager;
   
-    public ClaimsService(UserManager<AppUser> userManager){
+     private readonly ApplicationDbContext _applicationDbContext;
+    public ClaimsService(UserManager<AppUser> userManager, ApplicationDbContext applicationDbContext){
         _userManager = userManager;
+        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<IEnumerable<Claim>> GenerateClaimsForUser(AppUser user){
         var claims = new List<Claim> {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email),
+            new (ClaimTypes.Name, user.UserName),
+            new (ClaimTypes.NameIdentifier, user.Id),
+            new (ClaimTypes.Email, user.Email),
         };
         //get the claims from the user table (if any)
         var userClaims = await _userManager.GetClaimsAsync(user);
         claims.AddRange(userClaims);
-        
         claims.Add(new Claim("FirstName", user.FirstName ?? ""));
         claims.Add(new Claim("LastName", user.LastName ?? ""));
-        claims.Add(new Claim(GlobalConstants.AdvancedAccessLevelClaimType, user.AccessLevelType.ToString()));
+        var functionOfUser = await _applicationDbContext.Functions.FirstOrDefaultAsync(f => f.Id == user.FunctionId);
+        claims.Add(new Claim("Function", functionOfUser.Name ?? ""));
+       
         
         
         //get the roles of the user from the user table (if any)

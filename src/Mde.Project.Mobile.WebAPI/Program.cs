@@ -112,12 +112,10 @@ builder.Services.AddAuthentication(options =>
 //add Authorization
 
 builder.Services.AddAuthorization(options => {
-    
     options.AddPolicy(GlobalConstants.AdminRoleName, policy => policy.RequireRole(GlobalConstants.AdminRoleName));
-    options.AddPolicy(GlobalConstants.DriverRoleName, policy => policy.RequireRole(GlobalConstants.DriverRoleName));
-    options.AddPolicy(GlobalConstants.ConsigneeRoleName, policy => policy.RequireRole(GlobalConstants.ConsigneeRoleName));
-    options.AddPolicy(GlobalConstants.AdvancedAccessLevelPolicy, policy => 
-        policy.RequireClaim(GlobalConstants.AdvancedAccessLevelClaimType, GlobalConstants.AdvancedAccessLevelClaimValue));
+    options.AddPolicy(GlobalConstants.Driver, policy => policy.RequireRole(GlobalConstants.Driver));
+    options.AddPolicy(GlobalConstants.Consignee, policy => policy.RequireRole(GlobalConstants.Consignee));
+    
 });
 
 builder.Services.AddControllers();
@@ -147,36 +145,7 @@ var app = builder.Build();
     });
     app.UseRouting();
 
-    /*app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapHealthChecks("/health"); // Stelt een route in voor de health check
-    });
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseDeveloperExceptionPage();
-    }
-    else
-    {
-        app.UseExceptionHandler(
-            options =>
-            {
-                options.Run(
-                    async context =>
-                    {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        context.Response.ContentType = "text/html";
-                        var ex = context.Features.Get<IExceptionHandlerFeature>();
-                        if (ex != null)
-                        {
-                            var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
-                            await context.Response.WriteAsync(err).ConfigureAwait(false);
-                        }
-                    });
-            });
-    }
-
-
-app.UseRouting();*/
+   
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -46,7 +46,7 @@ public class LoginViewModel : ObservableObject
         }
         else
         {
-            await uiService.ShowSnackbarCreateAsync("Login Failed. Please check your username and password and try again.");
+            await uiService.ShowSnackbarWarning("Login Failed. Please check your username and password and try again.");
         }
     }
 }

@@ -100,7 +100,7 @@
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
                         <Label  FontFamily="PlayBold"
-                                Text="Back to Login" 
+                                Text="Back to Welcome" 
                                 TextColor="White"
                                 HorizontalOptions="Center"
                         >

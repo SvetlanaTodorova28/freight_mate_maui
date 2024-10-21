@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241010185745_without-const")]
-    partial class withoutconst
+    [Migration("20241018125343_change-name")]
+    partial class changename
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,12 +53,12 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         new
                         {
                             CargosId = new Guid("00000000-0000-0000-0000-000000000032"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000022")
+                            ProductsId = new Guid("00000000-0000-0000-0000-000000000021")
                         },
                         new
                         {
                             CargosId = new Guid("00000000-0000-0000-0000-000000000032"),
-                            ProductsId = new Guid("00000000-0000-0000-0000-000000000023")
+                            ProductsId = new Guid("00000000-0000-0000-0000-000000000022")
                         });
                 });
 
@@ -68,9 +68,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccessLevelType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -86,6 +83,9 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("FunctionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -125,6 +125,8 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FunctionId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -140,15 +142,15 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-100000000000",
                             AccessFailedCount = 0,
-                            AccessLevelType = 2,
                             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
                             Email = "Admin@fedex.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
+                            FunctionId = new Guid("00000000-0000-0000-0000-000000000081"),
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FEDEX.COM",
                             NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKUUNj4Pn3xGd9d27kRQSzAPtyhy1xosPzy4ACvNNyzK09WS4iaJOEQvJ9Me1QkeQg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED+QLyexx6yVNpHqo+RZZTcyVMH3a2yVMS9BW2MMdnbnRhQRPX4JSP/XuQnQanzZnQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
                             TwoFactorEnabled = false,
@@ -158,16 +160,16 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-200000000000",
                             AccessFailedCount = 0,
-                            AccessLevelType = 0,
                             ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1",
                             Email = "tom@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Tom",
+                            FunctionId = new Guid("00000000-0000-0000-0000-000000000082"),
                             LastName = "Calme",
                             LockoutEnabled = false,
                             NormalizedEmail = "TOM@GMAIL.COM",
                             NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFadVYe/iMvFakYdVHjEm1Q5rcT4tekHaxLW14glRrorC9fqF4ed5N8i/Sz/dIsUaw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIG3yYul7sg6jkuyqeJvLEHicoL4FHyGLeDnY8nlV6M3wLSGMBVmEfNK/Adxa9hOGw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
                             TwoFactorEnabled = false,
@@ -177,16 +179,16 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-300000000000",
                             AccessFailedCount = 0,
-                            AccessLevelType = 0,
                             ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2",
                             Email = "sarah@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Sarah",
+                            FunctionId = new Guid("00000000-0000-0000-0000-000000000082"),
                             LastName = "Vrout",
                             LockoutEnabled = false,
                             NormalizedEmail = "SARAH@GMAIL.COM",
                             NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOPTeNivKpnDoyfyVS5f31dg0nvrnC2dFzn6oNbpEhiWVujWHgFzUIydASe6RipArA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHZeGo/wqU0jo1f1ICz7b6M46y6DnngEPiU2t+6qRj/LUWZ8+4AJ+goR0SrjZ3LvKQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
                             TwoFactorEnabled = false,
@@ -196,16 +198,16 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = "00000000-0000-0000-0000-400000000000",
                             AccessFailedCount = 0,
-                            AccessLevelType = 1,
                             ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
                             Email = "milka@speedy.gr",
                             EmailConfirmed = true,
                             FirstName = "Milka",
-                            LastName = "Stanis",
+                            FunctionId = new Guid("00000000-0000-0000-0000-000000000083"),
+                            LastName = "Stenis",
                             LockoutEnabled = false,
                             NormalizedEmail = "MILKA@SPEEDY.GR",
                             NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE9V/OJ5MraW84galuPnQZAq7JkcGSTLHzL0/KVj/8pZwH8CIOWrEqhPGaXK22EgtQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBEfqKm4yxBkGgEchqarspBpg6Px8pQBAwj2ZIYmtxs/p4OwWdsjkfXfAJIAIgCYOw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,
@@ -274,6 +276,43 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000013"),
                             Name = "Sportswear"
+                        });
+                });
+
+            modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Function", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Functions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000081"),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000082"),
+                            Name = "Driver"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000083"),
+                            Name = "Consignee"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000084"),
+                            Name = "Consignor"
                         });
                 });
 
@@ -471,12 +510,12 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         },
                         new
                         {
-                            UserId = "00000000-0000-0000-0000-200000000000",
+                            UserId = "00000000-0000-0000-0000-300000000000",
                             RoleId = "00000000-0000-0000-0000-000000000061"
                         },
                         new
                         {
-                            UserId = "00000000-0000-0000-0000-300000000000",
+                            UserId = "00000000-0000-0000-0000-200000000000",
                             RoleId = "00000000-0000-0000-0000-000000000061"
                         },
                         new
@@ -518,6 +557,17 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.AppUser", b =>
+                {
+                    b.HasOne("Mde.Project.Mobile.WebAPI.Entities.Function", "Function")
+                        .WithMany()
+                        .HasForeignKey("FunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Function");
                 });
 
             modelBuilder.Entity("Mde.Project.Mobile.WebAPI.Entities.Product", b =>

@@ -26,7 +26,6 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </summary>
         /// <returns>An IActionResult containing a list of CategoryResponseDto objects or an error message.</returns>
         [HttpGet]
-        [Authorize(Policy = GlobalConstants.DriverRoleName)]
         public async Task<IActionResult> Get(){
             /// <summary>
             /// This property always returns a value &lt; 1.
@@ -68,7 +67,6 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// <param name="id">The unique identifier of the Category entity to retrieve.</param>
         /// <returns>An IActionResult containing a CategoryResponseDto object or an error message.</returns>
         [HttpGet("{id}")]
-       
         public async Task<IActionResult> GetById(Guid id){
             // Check if the Category entity with the given id exists
             if (!await _categoryService.DoesCategoryIdExistAsync(id)){
@@ -114,7 +112,7 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// </remarks>
         /// <param name="cargoRequestDto">The CategoryRequestDto object containing the data for the new Category entity.</param>
         [HttpPost]
-        [Authorize(Policy = GlobalConstants.ConsigneeRoleName)]
+        [Authorize(Policy = GlobalConstants.Consignee)]
         public async Task<IActionResult> AddCategory([FromBody] CategoryRequestDto categoryRequestDto){
             
             // Create a new Category entity from the CreateCategoryDto object
@@ -162,7 +160,6 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
         /// 
         /// </remarks>
         [HttpPut("{id}")]
-        [Authorize(Policy = GlobalConstants.ConsigneeRoleName)]
         public async Task<IActionResult> Update(CategoryRequestDto categoryRequestDto){
             if (!await _categoryService.DoesCategoryIdExistAsync(categoryRequestDto.Id)){
                 return BadRequest($"Category with id :'{categoryRequestDto.Id}' does not exist!");

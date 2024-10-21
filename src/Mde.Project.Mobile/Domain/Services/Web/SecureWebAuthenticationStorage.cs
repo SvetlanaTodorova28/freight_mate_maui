@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Core.Service.Web.Dto;
+using Mde.Project.Mobile.Core.Service.Web.Dtos.AppUsers;
 using Mde.Project.Mobile.Core.Services.Web;
 using Microsoft.Maui.Storage;
 using Utilities;
@@ -57,6 +58,30 @@ namespace Mde.Project.Mobile.Core.Service.Web;
 
             return false;
         }
+        
+        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname)
+        {
+            HttpResponseMessage response = await _httpClient
+                .PostAsJsonAsync("api/accounts/register", 
+                    new RegisterRequestDto{
+                        Username = username, 
+                        Password = password,
+                        Email = username,
+                        FirstName = firstname,
+                        LastName = lastname
+                    });
+
+            if (response.IsSuccessStatusCode)
+            {
+                LoginResponseDto loginResponseDto = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
+
+                await StoreToken(loginResponseDto.Token);
+                return true;
+            }
+
+            return false;
+        }
+
 
         private async Task StoreToken(string token)
         {
