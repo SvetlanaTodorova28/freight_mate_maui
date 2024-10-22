@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mde.Project.Mobile.WebAPI.Core.Services;
 
-public class FunctionService:IAccessLevelTypeService{
+public class FunctionService:IFunctionService{
     private readonly ApplicationDbContext _applicationDbContext;
     public FunctionService(ApplicationDbContext applicationDbContext){
         _applicationDbContext = applicationDbContext;

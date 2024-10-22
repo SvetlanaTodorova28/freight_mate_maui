@@ -33,7 +33,7 @@ public class AuthenticationService:IAuthenticationService{
             }
 
             // Add role only if user creation is successful
-            var roleResult = await _userManager.AddToRoleAsync(newUser, GlobalConstants.AdminRoleName);
+            var roleResult = await _userManager.AddToRoleAsync(newUser, newUser.Function.Name);
             if (!roleResult.Succeeded){
                 // Optionally handle errors related to role assignment
                 return new ResultModel<AppUser>{

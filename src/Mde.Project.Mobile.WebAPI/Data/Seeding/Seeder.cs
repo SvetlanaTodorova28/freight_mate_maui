@@ -135,10 +135,27 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stenis",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
+                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000084")
               
                 }
             };
+        var consignors = new List<AppUser>{
+            new(){
+                Id = "00000000-0000-0000-0000-500000000000",
+                UserName = "s@t.com",
+                NormalizedUserName = "S@T.COM",
+                Email = "s@t.com",
+                NormalizedEmail = "S@T.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
+                ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
+                FirstName = "Sve",
+                LastName = "Tod",
+                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
+
+            }
+        };
+        
         
         //Add admin  role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
@@ -157,6 +174,11 @@ public class Seeder{
             Id = "00000000-0000-0000-0000-000000000063",
             Name = "Consignee",
             NormalizedName = "CONSIGNEE"
+        });
+        modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
+            Id = "00000000-0000-0000-0000-000000000064",
+            Name = "Consignor",
+            NormalizedName = "CONSIGNOR"
         });
         //Link roles to users
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -178,6 +200,11 @@ public class Seeder{
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-400000000000",
                 RoleId = "00000000-0000-0000-0000-000000000063"
+            },
+            //consignors
+            new IdentityUserRole<string>{
+                UserId = "00000000-0000-0000-0000-500000000000",
+                RoleId = "00000000-0000-0000-0000-000000000064"
             }
         );
         
@@ -193,6 +220,10 @@ public class Seeder{
         consignees.ForEach(consignee => {
             consignee.PasswordHash = passwordHasher.HashPassword(consignee, "Consignee1234");
             modelBuilder.Entity<AppUser>().HasData(consignee);
+        });
+        consignors.ForEach(consignor => {
+            consignor.PasswordHash = passwordHasher.HashPassword(consignor, "1234");
+            modelBuilder.Entity<AppUser>().HasData(consignor);
         });
         modelBuilder.Entity($"{nameof(Cargo)}{nameof(Product)}").HasData(cargosProducts);
 
