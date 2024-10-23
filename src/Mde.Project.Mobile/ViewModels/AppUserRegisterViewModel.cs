@@ -12,7 +12,6 @@ public class AppUserRegisterViewModel: ObservableObject
 {
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
     private readonly IUiService uiService;
-    public ObservableCollection<AccessLevelType> AccessLevels { get; } = new ObservableCollection<AccessLevelType>();
 
 
     public ICommand RegisterCommand { get; }
@@ -22,6 +21,7 @@ public class AppUserRegisterViewModel: ObservableObject
         this.uiService = uiService;
         authenticationServiceMobile = authServiceMobile;
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
+        
     }
 
     private string username;
@@ -63,7 +63,29 @@ public class AppUserRegisterViewModel: ObservableObject
         get => email;
         set => SetProperty(ref email, value);
     }
+    
+    private ObservableCollection<Function> functions;
 
+    public ObservableCollection<Function> Functions
+    {
+        get { return functions; }
+        set { SetProperty(ref functions, value); }
+    }
+    
+    private string selectedFunction;
+
+    public string SelectedFunction{
+        get => selectedFunction;
+        set => SetProperty(ref selectedFunction, value);
+    }
+
+    public ICommand OnAppearingCommand => new Command(async () => await OnAppearingAsync());
+    
+    private async Task OnAppearingAsync()
+    {
+        Functions = new ObservableCollection<Function>(await authenticationServiceMobile.GetFunctionsAsync());
+        
+    }
     private async Task ExecuteRegisterCommand()
     {
         if (Password != ConfirmPassword)
@@ -72,7 +94,7 @@ public class AppUserRegisterViewModel: ObservableObject
             return;
         }
 
-        var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, FirstName, LastName);
+        var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, FirstName, LastName, selectedFunction);
         if (isRegistered)
         {
             await uiService.ShowSnackbarSuccessAsync("Registration successful. You can now log in.");

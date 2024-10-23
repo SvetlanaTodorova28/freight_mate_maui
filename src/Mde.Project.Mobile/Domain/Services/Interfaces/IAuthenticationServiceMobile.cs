@@ -1,4 +1,6 @@
-﻿namespace Mde.Project.Mobile.Core.Service.Interfaces
+﻿using Mde.Project.Mobile.Models;
+
+namespace Mde.Project.Mobile.Core.Service.Interfaces
 {
     public interface IAuthenticationServiceMobile
     {
@@ -7,5 +9,7 @@
        Task<bool> TryRegisterAsync(string username, string password, string firstname, string lastname, string function);
         Task<string> GetTokenAsync();
         bool Logout();
+
+        Task<IEnumerable<Function>> GetFunctionsAsync();
     }
 }
