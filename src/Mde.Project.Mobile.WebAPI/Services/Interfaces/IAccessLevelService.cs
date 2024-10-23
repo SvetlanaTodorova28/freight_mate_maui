@@ -3,7 +3,7 @@ using Mde.Project.Mobile.WebAPI.Services.Models;
 
 namespace Mde.Project.Mobile.WebAPI.Services.Interfaces;
 
-public interface IAccessLevelTypeService{
-    IQueryable<Function> GetAll();
-    Task<ResultModel<IEnumerable<Function>>> GetAllAsync();
+public interface IAccessLevelService{
+    IQueryable<AccessLevel> GetAll();
+    Task<ResultModel<IEnumerable<AccessLevel>>> GetAllAsync();
 }

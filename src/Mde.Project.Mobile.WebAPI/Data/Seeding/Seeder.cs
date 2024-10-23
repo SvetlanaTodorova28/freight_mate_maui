@@ -54,22 +54,18 @@ public class Seeder{
             new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
             new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") }
         };
-        var functions = new List<Function>{
-            new Function(){
+        var functions = new List<AccessLevel>{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000081"),
                 Name = "Admin"
             },
-            new Function(){
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000082"),
-                Name = "Driver"
+                Name = "Advanced"
             },
-            new Function(){
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000083"),
-                Name = "Consignee"
-            },
-            new Function(){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000084"),
-                Name = "Consignor"
+                Name = "Basic"
             }
         };
         
@@ -87,7 +83,7 @@ public class Seeder{
             EmailConfirmed = true,
             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
-            FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000081")
+            AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000081")
            
         };
         adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin1234");
@@ -105,7 +101,7 @@ public class Seeder{
                 ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1", 
                 FirstName = "Tom",
                 LastName = "Calme",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000083")
                
             },
             new(){
@@ -119,7 +115,7 @@ public class Seeder{
                 ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2", 
                 FirstName = "Sarah",
                 LastName = "Vrout",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000083")
               
             }
         };
@@ -135,10 +131,27 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stenis",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000082")
               
                 }
             };
+        var consignors = new List<AppUser>{
+            new(){
+                Id = "00000000-0000-0000-0000-500000000000",
+                UserName = "s@t.com",
+                NormalizedUserName = "S@T.COM",
+                Email = "s@t.com",
+                NormalizedEmail = "S@T.COM",
+                EmailConfirmed = true,
+                SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
+                ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
+                FirstName = "Sve",
+                LastName = "Tod",
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000082")
+
+            }
+        };
+        
         
         //Add admin  role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
@@ -157,6 +170,11 @@ public class Seeder{
             Id = "00000000-0000-0000-0000-000000000063",
             Name = "Consignee",
             NormalizedName = "CONSIGNEE"
+        });
+        modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
+            Id = "00000000-0000-0000-0000-000000000064",
+            Name = "Consignor",
+            NormalizedName = "CONSIGNOR"
         });
         //Link roles to users
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -178,13 +196,18 @@ public class Seeder{
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-400000000000",
                 RoleId = "00000000-0000-0000-0000-000000000063"
+            },
+            //consignors
+            new IdentityUserRole<string>{
+                UserId = "00000000-0000-0000-0000-500000000000",
+                RoleId = "00000000-0000-0000-0000-000000000064"
             }
         );
         
         modelBuilder.Entity<Category>().HasData(categories);
         modelBuilder.Entity<Product>().HasData(products);  
         modelBuilder.Entity<Cargo>().HasData(cargos);
-        modelBuilder.Entity<Function>().HasData(functions);
+        modelBuilder.Entity<AccessLevel>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
         drivers.ForEach(driver => {
             driver.PasswordHash = passwordHasher.HashPassword(driver, "Driver1234");
@@ -193,6 +216,10 @@ public class Seeder{
         consignees.ForEach(consignee => {
             consignee.PasswordHash = passwordHasher.HashPassword(consignee, "Consignee1234");
             modelBuilder.Entity<AppUser>().HasData(consignee);
+        });
+        consignors.ForEach(consignor => {
+            consignor.PasswordHash = passwordHasher.HashPassword(consignor, "1234");
+            modelBuilder.Entity<AppUser>().HasData(consignor);
         });
         modelBuilder.Entity($"{nameof(Cargo)}{nameof(Product)}").HasData(cargosProducts);
 

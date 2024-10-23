@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Mde.Project.Mobile.WebAPI.Data;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Mde.Project.Mobile.WebAPI.Services.Models;
@@ -12,12 +13,15 @@ public class AuthenticationService:IAuthenticationService{
          private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly ApplicationDbContext _applicationDbContext;
         
 
-        public AuthenticationService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService){
+        public AuthenticationService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService,
+            ApplicationDbContext applicationDbContext){
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _applicationDbContext = applicationDbContext;
         }
         //Het primaire doel van de registratie is het aanmaken van een nieuwe gebruikersaccount in het systeem.
         //Dit omvat het verzamelen van gebruikersgegevens, het aanmaken van een record in de database,
@@ -25,7 +29,15 @@ public class AuthenticationService:IAuthenticationService{
         //Rollen worden vaak toegevoegd om toegangsniveaus te bepalen, die bij latere interacties relevant zijn.
      public async Task<ResultModel<AppUser>> RegisterUserAsync(AppUser newUser, string password){
                
-            var result = await _userManager.CreateAsync(newUser, password);
+         var accessLevel = await _applicationDbContext.AccessLevels
+             .FindAsync(newUser.AccessLevelId);
+         if (accessLevel == null){
+             return new ResultModel<AppUser>{
+                 Errors = new List<string>{ $"No accessLevel with name{accessLevel.Name} exists." }
+             };
+         }
+
+         var result = await _userManager.CreateAsync(newUser, password);
             if (!result.Succeeded){
                 return new ResultModel<AppUser>{
                     Errors = new List<string>(result.Errors.Select(x => x.Description))
@@ -33,7 +45,7 @@ public class AuthenticationService:IAuthenticationService{
             }
 
             // Add role only if user creation is successful
-            var roleResult = await _userManager.AddToRoleAsync(newUser, GlobalConstants.AdminRoleName);
+            var roleResult = await _userManager.AddToRoleAsync(newUser, newUser.AccessLevel.Name);
             if (!roleResult.Succeeded){
                 // Optionally handle errors related to role assignment
                 return new ResultModel<AppUser>{

@@ -1,3 +1,5 @@
+using Mde.Project.Mobile.WebAPI.Dtos.Functions;
+
 namespace Mde.Project.Mobile.WebAPI.Api.Dtos.Users;
 
 public class UserCreateRequestDto{
@@ -7,9 +9,9 @@ public class UserCreateRequestDto{
     public string Email { get; set; }
     public string Password { get; set; }
     
-    public string AccessLevelType { get; set; }
+    public Guid AccessLevelTypeId { get; set; }
     
-    public string? ConfirmPassword { get; set; }
+    
 
 
 

@@ -144,7 +144,7 @@ public class AppUserController:ControllerBase{
             UserName = model.Email,
             FirstName = model.FirstName,
             LastName = model.LastName,
-            Function = (Function)Enum.Parse(typeof(Function), model.AccessLevelType)
+            AccessLevelId = model.AccessLevelTypeId
         };
         
         var result = await _userService.CreateUserAsync(user, model.Password);
@@ -230,8 +230,9 @@ public class AppUserController:ControllerBase{
         existingUser.Email = userUpdateRequestDto.Email;
         existingUser.FirstName = userUpdateRequestDto.FirstName;
         existingUser.LastName = userUpdateRequestDto.LastName;
-        existingUser.Function =
-            (Function)Enum.Parse(typeof(Function), userUpdateRequestDto.AccessLevelType);
+        existingUser.AccessLevelId = userUpdateRequestDto.AccessLevelTypeId;
+        
+           
     
 
         var updateResult = await _userManager.UpdateAsync(existingUser);

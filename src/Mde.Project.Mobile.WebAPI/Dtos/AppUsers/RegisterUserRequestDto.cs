@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Mde.Project.Mobile.WebAPI.Api.Dtos;
+using Mde.Project.Mobile.WebAPI.Dtos.Functions;
 
 namespace  Mde.Project.Mobile.WebAPI.Dtos;
 
@@ -25,7 +26,7 @@ public class RegisterUserRequestDto:LoginUserRequestDto{
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     
-    public string? Function { get; set; }
+    public Guid AccessLevelTypeId { get; set; }
     
     
     

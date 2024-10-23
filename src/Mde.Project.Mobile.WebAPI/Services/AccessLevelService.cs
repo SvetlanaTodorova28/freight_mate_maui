@@ -10,22 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mde.Project.Mobile.WebAPI.Core.Services;
 
-public class FunctionService:IAccessLevelTypeService{
+public class AccessLevelService:IAccessLevelService{
     private readonly ApplicationDbContext _applicationDbContext;
-    public FunctionService(ApplicationDbContext applicationDbContext){
+    public AccessLevelService(ApplicationDbContext applicationDbContext){
         _applicationDbContext = applicationDbContext;
        
        
     }
-    public IQueryable<Function> GetAll(){
-        return _applicationDbContext.Functions;
+    public IQueryable<AccessLevel> GetAll(){
+        return _applicationDbContext.AccessLevels;
     }
     
-    public async Task<ResultModel<IEnumerable<Function>>> GetAllAsync(){
+    public async Task<ResultModel<IEnumerable<AccessLevel>>> GetAllAsync(){
         var accessLevels = await _applicationDbContext
-            .Functions
+            .AccessLevels
             .ToListAsync();
-        var resultModel = new ResultModel<IEnumerable<Function>>
+        var resultModel = new ResultModel<IEnumerable<AccessLevel>>
         {
             Data = accessLevels
         };

@@ -71,9 +71,7 @@ public class AccountsController : ControllerBase{
             Email = registerUserRequestDto.Username,
             FirstName = registerUserRequestDto.FirstName?? "",
             LastName = registerUserRequestDto.LastName??"",
-            Function = new Function(){
-                Name = registerUserRequestDto.Function?? ""
-            }
+            AccessLevelId = registerUserRequestDto.AccessLevelTypeId
            
         };
 
