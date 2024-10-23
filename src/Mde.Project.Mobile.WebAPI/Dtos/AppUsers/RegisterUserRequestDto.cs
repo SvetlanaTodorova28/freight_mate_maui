@@ -18,10 +18,10 @@ public class RegisterUserRequestDto:LoginUserRequestDto{
     [Display(Name = "Confirm Password")]
     public string ConfirmPassword { get; set; }
     
-    [Required]
+    /*[Required]
     [EmailAddress]
     [Display(Name = "Email")]
-    public string Email { get; set; }
+    public string Email { get; set; }*/
     
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

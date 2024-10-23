@@ -115,10 +115,10 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             RegisterRequestDto registerRequestDto =  new RegisterRequestDto{
                 Username = username, 
                 Password = password,
-                Email = username,
                 FirstName = firstname,
+                ConfirmPassword = password,
                 LastName = lastname,
-                AccessLevelId = functionId
+                AccessLevelTypeId = functionId
             };
             var response = await _httpClient.PostAsJsonAsync("/api/accounts/register", registerRequestDto);
            
@@ -126,7 +126,8 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             {
                 return true;
             }
-
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Failed to register: " + errorContent);
             return false;
         }
 
