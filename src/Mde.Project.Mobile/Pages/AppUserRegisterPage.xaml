@@ -150,10 +150,9 @@
                                     IsPassword="True"
                                     Placeholder="CONFIRM PASSWORD"
                                     Text="{Binding ConfirmPassword}"/>
-                                <Label Text="Function" FontAttributes="Bold"></Label>
-                                <Picker ItemsSource="{Binding Functions}" SelectedItem="{Binding SelectedFunction}"></Picker>
                             </Grid>
-                            
+                            <Label Text="Function" FontAttributes="Bold"></Label>
+                            <Picker ItemsSource="{Binding Functions}" SelectedItem="{Binding SelectedFunction}"></Picker>
 
                             <Button
                                 StyleClass="baseButton"

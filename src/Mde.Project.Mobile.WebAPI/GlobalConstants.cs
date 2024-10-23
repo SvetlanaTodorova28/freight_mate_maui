@@ -22,7 +22,7 @@ public class GlobalConstants{
     public const string IssuerConfig = "JWTConfiguration:Issuer";
     public const string AudienceConfig = "JWTConfiguration:Audience";
     
-    public const string Base = "https://3724-81-82-247-212.ngrok-free.app";
+    public const string Base = "https://aade-81-82-247-212.ngrok-free.app";
     public const string HttpClient = "FrightMateClient";
     public const string Auth = Base + "accounts/login";
     public const string Cargos = Base + "cargos/";

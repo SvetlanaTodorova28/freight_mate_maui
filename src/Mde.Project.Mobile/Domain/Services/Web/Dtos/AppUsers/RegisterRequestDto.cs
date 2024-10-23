@@ -11,5 +11,5 @@ public class RegisterRequestDto:LoginRequestDto{
     public string FirstName { get; set; }
     public string LastName { get; set; }
     
-    public Guid FunctionId { get; set; }
+    public Guid AccessLevelId { get; set; }
 }

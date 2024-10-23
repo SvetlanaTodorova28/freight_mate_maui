@@ -72,9 +72,9 @@ public class AppUserRegisterViewModel: ObservableObject
         set { SetProperty(ref functions, value); }
     }
     
-    private string selectedFunction;
+    private Function selectedFunction;
 
-    public string SelectedFunction{
+    public Function SelectedFunction{
         get => selectedFunction;
         set => SetProperty(ref selectedFunction, value);
     }
@@ -98,7 +98,6 @@ public class AppUserRegisterViewModel: ObservableObject
         if (isRegistered)
         {
             await uiService.ShowSnackbarSuccessAsync("Registration successful. You can now log in.");
-            // Redirect naar de loginpagina of hoofdpagina
             Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile, this));
         }
         else

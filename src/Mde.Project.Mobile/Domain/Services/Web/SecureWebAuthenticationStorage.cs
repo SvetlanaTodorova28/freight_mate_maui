@@ -19,7 +19,8 @@ namespace Mde.Project.Mobile.Core.Service.Web;
     {
         private const string TokenKey = "token";
         private readonly HttpClient _httpClient;
-        private static Dictionary<Guid, Function> functionMappings = null;
+        private Dictionary<Function, Guid> functionMappings;
+
         public SecureWebAuthenticationStorage(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
@@ -50,7 +51,10 @@ namespace Mde.Project.Mobile.Core.Service.Web;
 
         public async Task<bool> TryLoginAsync(string username, string password)
         {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/accounts/login", new LoginRequestDto { Username = username, Password = password });
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/accounts/login", new LoginRequestDto{
+                Username = username, 
+                Password = password
+            });
 
             if (response.IsSuccessStatusCode)
             {
@@ -72,21 +76,21 @@ namespace Mde.Project.Mobile.Core.Service.Web;
         {
             if (functionMappings != null) return;
 
-            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/functions");
+            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/accesslevels");
 
-            Dictionary<Guid, Function> functionDictionary = new Dictionary<Guid, Function>();
+            Dictionary<Function, Guid> functionDictionary = new Dictionary<Function, Guid>();
             foreach (var functiondto in functionDtos)
             {
                 switch (functiondto.Name.ToLower())
                 {
                     case "admin":
-                        functionDictionary.Add(functiondto.Id, Function.Admin);
+                        functionDictionary.Add(Function.Admin,functiondto.Id);
                         break;
                     case "advanced":
-                        functionDictionary.Add(functiondto.Id, Function.Consignee);
+                        functionDictionary.Add( Function.Consignee,functiondto.Id);
                         break;
                     case "basic":
-                        functionDictionary.Add(functiondto.Id, Function.Driver);
+                        functionDictionary.Add(Function.Driver,functiondto.Id);
                         break;
                     default:
                         break;
@@ -96,25 +100,30 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             functionMappings = functionDictionary;
         }
         
-        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname, string function)
-        {
-            HttpResponseMessage response = await _httpClient
-                .PostAsJsonAsync("api/accounts/register", 
-                    new RegisterRequestDto{
-                        Username = username, 
-                        Password = password,
-                        Email = username,
-                        FirstName = firstname,
-                        LastName = lastname,
-                        FunctionId = functionMappings.FirstOrDefault(pair => pair.Value.ToString() == function).Key
-                    });
-            //  
-
+        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname, Function function){
+            Guid functionId;
+            try
+            {
+                functionId = await GetFunctionIdAsync(function);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false; // Of log de fout en behandel deze zoals vereist
+            }
+            
+            RegisterRequestDto registerRequestDto =  new RegisterRequestDto{
+                Username = username, 
+                Password = password,
+                Email = username,
+                FirstName = firstname,
+                LastName = lastname,
+                AccessLevelId = functionId
+            };
+            var response = await _httpClient.PostAsJsonAsync("/api/accounts/register", registerRequestDto);
+           
             if (response.IsSuccessStatusCode)
             {
-                LoginResponseDto loginResponseDto = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
-
-                await StoreToken(loginResponseDto.Token);
                 return true;
             }
 
@@ -126,5 +135,18 @@ namespace Mde.Project.Mobile.Core.Service.Web;
         {
             await SecureStorage.Default.SetAsync(TokenKey, token);
         }
+        
+        private async Task<Guid> GetFunctionIdAsync(Function function)
+        {
+            await EnsureFunctionMappings();
+
+            if (functionMappings.TryGetValue(function, out Guid functionId))
+            {
+                return functionId; 
+            }
+
+            throw new KeyNotFoundException($"Function {function} not found in function mappings.");
+        }
+
     }
 
