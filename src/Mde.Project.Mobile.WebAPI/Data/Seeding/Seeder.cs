@@ -54,22 +54,18 @@ public class Seeder{
             new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
             new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") }
         };
-        var functions = new List<Function>{
-            new Function(){
+        var functions = new List<AccessLevel>{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000081"),
                 Name = "Admin"
             },
-            new Function(){
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000082"),
-                Name = "Driver"
+                Name = "Advanced"
             },
-            new Function(){
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000083"),
-                Name = "Consignee"
-            },
-            new Function(){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000084"),
-                Name = "Consignor"
+                Name = "Basic"
             }
         };
         
@@ -87,7 +83,7 @@ public class Seeder{
             EmailConfirmed = true,
             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
             ConcurrencyStamp = "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a",
-            FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000081")
+            AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000081")
            
         };
         adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin1234");
@@ -105,7 +101,7 @@ public class Seeder{
                 ConcurrencyStamp = "1YET1ANOTHER1UNIQUE1STRING1", 
                 FirstName = "Tom",
                 LastName = "Calme",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000083")
                
             },
             new(){
@@ -119,7 +115,7 @@ public class Seeder{
                 ConcurrencyStamp = "2YET2ANOTHER2UNIQUE2STRING2", 
                 FirstName = "Sarah",
                 LastName = "Vrout",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000082")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000083")
               
             }
         };
@@ -135,7 +131,7 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3", 
                 FirstName = "Milka",
                 LastName = "Stenis",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000084")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000082")
               
                 }
             };
@@ -151,7 +147,7 @@ public class Seeder{
                 ConcurrencyStamp = "3YET3ANOTHER3UNIQUE3STRING3",
                 FirstName = "Sve",
                 LastName = "Tod",
-                FunctionId = Guid.Parse("00000000-0000-0000-0000-000000000083")
+                AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000082")
 
             }
         };
@@ -211,7 +207,7 @@ public class Seeder{
         modelBuilder.Entity<Category>().HasData(categories);
         modelBuilder.Entity<Product>().HasData(products);  
         modelBuilder.Entity<Cargo>().HasData(cargos);
-        modelBuilder.Entity<Function>().HasData(functions);
+        modelBuilder.Entity<AccessLevel>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
         drivers.ForEach(driver => {
             driver.PasswordHash = passwordHasher.HashPassword(driver, "Driver1234");

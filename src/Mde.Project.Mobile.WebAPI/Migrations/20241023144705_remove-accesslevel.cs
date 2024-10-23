@@ -8,11 +8,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class changename : Migration
+    public partial class removeaccesslevel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AccessLevels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessLevels", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -53,15 +65,37 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Functions",
+                name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccessLevelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Functions", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AccessLevels_AccessLevelId",
+                        column: x => x.AccessLevelId,
+                        principalTable: "AccessLevels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,64 +135,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FunctionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Functions_FunctionId",
-                        column: x => x.FunctionId,
-                        principalTable: "Functions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CargoProduct",
-                columns: table => new
-                {
-                    CargosId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CargoProduct", x => new { x.CargosId, x.ProductsId });
-                    table.ForeignKey(
-                        name: "FK_CargoProduct_Cargos_CargosId",
-                        column: x => x.CargosId,
-                        principalTable: "Cargos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CargoProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -248,6 +224,40 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CargoProduct",
+                columns: table => new
+                {
+                    CargosId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CargoProduct", x => new { x.CargosId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_CargoProduct_Cargos_CargosId",
+                        column: x => x.CargosId,
+                        principalTable: "Cargos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CargoProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AccessLevels",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000081"), "Admin" },
+                    { new Guid("00000000-0000-0000-0000-000000000082"), "Advanced" },
+                    { new Guid("00000000-0000-0000-0000-000000000083"), "Basic" }
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -255,7 +265,8 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 {
                     { "00000000-0000-0000-0000-000000000060", null, "Admin", "ADMIN" },
                     { "00000000-0000-0000-0000-000000000061", null, "Driver", "DRIVER" },
-                    { "00000000-0000-0000-0000-000000000063", null, "Consignee", "CONSIGNEE" }
+                    { "00000000-0000-0000-0000-000000000063", null, "Consignee", "CONSIGNEE" },
+                    { "00000000-0000-0000-0000-000000000064", null, "Consignor", "CONSIGNOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -278,25 +289,15 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Functions",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("00000000-0000-0000-0000-000000000081"), "Admin" },
-                    { new Guid("00000000-0000-0000-0000-000000000082"), "Driver" },
-                    { new Guid("00000000-0000-0000-0000-000000000083"), "Consignee" },
-                    { new Guid("00000000-0000-0000-0000-000000000084"), "Consignor" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "FunctionId", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "AccessLevelId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "00000000-0000-0000-0000-100000000000", 0, "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", new Guid("00000000-0000-0000-0000-000000000081"), null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAED+QLyexx6yVNpHqo+RZZTcyVMH3a2yVMS9BW2MMdnbnRhQRPX4JSP/XuQnQanzZnQ==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
-                    { "00000000-0000-0000-0000-200000000000", 0, "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", new Guid("00000000-0000-0000-0000-000000000082"), "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEIG3yYul7sg6jkuyqeJvLEHicoL4FHyGLeDnY8nlV6M3wLSGMBVmEfNK/Adxa9hOGw==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
-                    { "00000000-0000-0000-0000-300000000000", 0, "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", new Guid("00000000-0000-0000-0000-000000000082"), "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAEHZeGo/wqU0jo1f1ICz7b6M46y6DnngEPiU2t+6qRj/LUWZ8+4AJ+goR0SrjZ3LvKQ==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
-                    { "00000000-0000-0000-0000-400000000000", 0, "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", new Guid("00000000-0000-0000-0000-000000000083"), "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEBEfqKm4yxBkGgEchqarspBpg6Px8pQBAwj2ZIYmtxs/p4OwWdsjkfXfAJIAIgCYOw==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" }
+                    { "00000000-0000-0000-0000-100000000000", 0, new Guid("00000000-0000-0000-0000-000000000081"), "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAEGJndhXLMdcllyoDQ6OoL0pPhe0HoBZAFxrK0Ms5Xma6Kw5xTf900mbGdGGZq4/DNw==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
+                    { "00000000-0000-0000-0000-200000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEBVZSUbR2HB31VJVzWdA1fE2u2pM0hte7yF/6xat+1n6vMLwcZ7QcAxT3Y9v8mRxkQ==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
+                    { "00000000-0000-0000-0000-300000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAEAtLXT1H81qhPmxeZBWbSG7fq9mrvHncbM6DTVbFm/IncxVvpfzIHqWm9tVX1PVajA==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
+                    { "00000000-0000-0000-0000-400000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEOT9MyTbd/hhrpwmiqoU8KdxW590RgsyylHKPvgHixL+tpT6HtvVSfuTH19OcFkLZg==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" },
+                    { "00000000-0000-0000-0000-500000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "s@t.com", true, "Sve", "Tod", false, null, "S@T.COM", "S@T.COM", "AQAAAAIAAYagAAAAEIsHf5yOXuvfRzEXN3/aAzAHWW0mR285qahuOStUs2/Tml2cCS3eCnu6QQ8x4xKBdA==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "s@t.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -318,7 +319,8 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     { "00000000-0000-0000-0000-000000000060", "00000000-0000-0000-0000-100000000000" },
                     { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-200000000000" },
                     { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-300000000000" },
-                    { "00000000-0000-0000-0000-000000000063", "00000000-0000-0000-0000-400000000000" }
+                    { "00000000-0000-0000-0000-000000000063", "00000000-0000-0000-0000-400000000000" },
+                    { "00000000-0000-0000-0000-000000000064", "00000000-0000-0000-0000-500000000000" }
                 });
 
             migrationBuilder.InsertData(
@@ -365,9 +367,9 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_FunctionId",
+                name: "IX_AspNetUsers_AccessLevelId",
                 table: "AspNetUsers",
-                column: "FunctionId");
+                column: "AccessLevelId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -421,7 +423,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Functions");
+                name: "AccessLevels");
 
             migrationBuilder.DropTable(
                 name: "Categories");

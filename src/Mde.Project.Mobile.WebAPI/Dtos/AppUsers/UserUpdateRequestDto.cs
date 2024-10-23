@@ -1,5 +1,7 @@
 
 
+using Mde.Project.Mobile.WebAPI.Dtos.Functions;
+
 namespace Mde.Project.Mobile.WebAPI.Api.Dtos.Users;
 
 public class UserUpdateRequestDto{
@@ -8,7 +10,7 @@ public class UserUpdateRequestDto{
     public string? LastName { get; set; }
     public string? Email { get; set; }
     
-    public string? AccessLevelType { get; set; }
+    public Guid AccessLevelTypeId { get; set; }
    
     
 }

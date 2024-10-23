@@ -6,18 +6,18 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class FunctionsController:ControllerBase{
-    private readonly IFunctionService functionService;
+public class AccessLevelsController:ControllerBase{
+    private readonly IAccessLevelService _accessLevelService;
 
-    public FunctionsController(IFunctionService functionService){
-        this.functionService = functionService;
+    public AccessLevelsController(IAccessLevelService accessLevelService){
+        this._accessLevelService = accessLevelService;
     }
     
     [HttpGet]
     public async Task<IActionResult> Get(){
 
         // Calls the GetAllAsync method from the ICargoService interface
-        var result = await functionService.GetAllAsync();
+        var result = await _accessLevelService.GetAllAsync();
 
         // Checks if the operation was successful
         if (result.Success){
@@ -25,7 +25,7 @@ public class FunctionsController:ControllerBase{
             // Maps the Cargo entities to CargoResponseDto objects
             var cargosDtos = result
                 .Data
-                .Select(x => new FunctionResponseDto(){
+                .Select(x => new AccessLevelsResponseDto(){
                     Id = x.Id,
                    Name = x.Name,
                     }).ToList();

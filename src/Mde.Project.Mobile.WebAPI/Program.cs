@@ -73,7 +73,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICargoService, CargoService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IFunctionService, FunctionService>();
+builder.Services.AddScoped<IAccessLevelService, AccessLevelService>();
 
 
 
