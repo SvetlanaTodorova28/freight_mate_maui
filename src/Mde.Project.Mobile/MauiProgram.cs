@@ -57,7 +57,7 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<IWebCargoService, WebCargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
 
-            builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.Base));
+            builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));
 
 #if DEBUG
     		builder.Logging.AddDebug();

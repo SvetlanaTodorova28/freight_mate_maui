@@ -57,19 +57,14 @@ public class AppUserRegisterViewModel: ObservableObject
         set => SetProperty(ref confirmPassword, value);
     }
 
-    private string email;
-    public string Email
-    {
-        get => email;
-        set => SetProperty(ref email, value);
-    }
+   
     
     private ObservableCollection<Function> functions;
 
     public ObservableCollection<Function> Functions
     {
-        get { return functions; }
-        set { SetProperty(ref functions, value); }
+        get  =>  functions; 
+        set  => SetProperty(ref functions, value); 
     }
     
     private Function selectedFunction;
@@ -94,7 +89,7 @@ public class AppUserRegisterViewModel: ObservableObject
             return;
         }
 
-        var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, FirstName, LastName, selectedFunction);
+        var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, ConfirmPassword, FirstName, LastName, selectedFunction);
         if (isRegistered)
         {
             await uiService.ShowSnackbarSuccessAsync("Registration successful. You can now log in.");

@@ -69,8 +69,8 @@ namespace Mde.Project.Mobile.Core.Service.Web;
         public Task<IEnumerable<Function>> GetFunctionsAsync()
         {
            
-            var moods = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
-            return Task.FromResult(moods);
+            var functions = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
+            return Task.FromResult(functions);
         }
         private async Task EnsureFunctionMappings()
         {
@@ -100,7 +100,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             functionMappings = functionDictionary;
         }
         
-        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname, Function function){
+        public async Task<bool> TryRegisterAsync(string username, string password, string confirmPassword, string firstname, string lastname, Function function){
             Guid functionId;
             try
             {
@@ -116,7 +116,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
                 Username = username, 
                 Password = password,
                 FirstName = firstname,
-                ConfirmPassword = password,
+                ConfirmPassword = confirmPassword,
                 LastName = lastname,
                 AccessLevelTypeId = functionId
             };
@@ -126,8 +126,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             {
                 return true;
             }
-            var errorContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Failed to register: " + errorContent);
+           
             return false;
         }
 
