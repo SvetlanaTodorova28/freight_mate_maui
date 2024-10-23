@@ -162,19 +162,14 @@ public class Seeder{
         //Add  driver role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
             Id = "00000000-0000-0000-0000-000000000061",
-            Name = "Driver",
-            NormalizedName = "DRIVER"
+            Name = "Advanced",
+            NormalizedName = "ADVANCED"
         });
         //Add consignee role to database
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
-            Id = "00000000-0000-0000-0000-000000000063",
-            Name = "Consignee",
-            NormalizedName = "CONSIGNEE"
-        });
-        modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole{
-            Id = "00000000-0000-0000-0000-000000000064",
-            Name = "Consignor",
-            NormalizedName = "CONSIGNOR"
+            Id = "00000000-0000-0000-0000-000000000062",
+            Name = "BASIC",
+            NormalizedName = "BASIC"
         });
         //Link roles to users
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -186,21 +181,21 @@ public class Seeder{
             //drivers
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-300000000000",
-                RoleId = "00000000-0000-0000-0000-000000000061"
+                RoleId = "00000000-0000-0000-0000-000000000062"
             },
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-200000000000",
-                RoleId = "00000000-0000-0000-0000-000000000061"
+                RoleId = "00000000-0000-0000-0000-000000000062"
             },
             //consignees
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-400000000000",
-                RoleId = "00000000-0000-0000-0000-000000000063"
+                RoleId = "00000000-0000-0000-0000-000000000061"
             },
             //consignors
             new IdentityUserRole<string>{
                 UserId = "00000000-0000-0000-0000-500000000000",
-                RoleId = "00000000-0000-0000-0000-000000000064"
+                RoleId = "00000000-0000-0000-0000-000000000061"
             }
         );
         
@@ -210,11 +205,11 @@ public class Seeder{
         modelBuilder.Entity<AccessLevel>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
         drivers.ForEach(driver => {
-            driver.PasswordHash = passwordHasher.HashPassword(driver, "Driver1234");
+            driver.PasswordHash = passwordHasher.HashPassword(driver, "Basic1234");
             modelBuilder.Entity<AppUser>().HasData(driver);
         });
         consignees.ForEach(consignee => {
-            consignee.PasswordHash = passwordHasher.HashPassword(consignee, "Consignee1234");
+            consignee.PasswordHash = passwordHasher.HashPassword(consignee, "Advanced1234");
             modelBuilder.Entity<AppUser>().HasData(consignee);
         });
         consignors.ForEach(consignor => {

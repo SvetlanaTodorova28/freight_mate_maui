@@ -115,8 +115,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options => {
     options.AddPolicy(GlobalConstants.AdminRoleName, policy => policy.RequireRole(GlobalConstants.AdminRoleName));
-    options.AddPolicy(GlobalConstants.Driver, policy => policy.RequireRole(GlobalConstants.Driver));
-    options.AddPolicy(GlobalConstants.Consignee, policy => policy.RequireRole(GlobalConstants.Consignee));
+    options.AddPolicy(GlobalConstants.AdvancedRoleName, policy => policy.RequireRole(GlobalConstants.AdvancedRoleName));
+    options.AddPolicy(GlobalConstants.BasicRoleName, policy => policy.RequireRole(GlobalConstants.BasicRoleName));
     
 });
 
