@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class removeaccesslevel : Migration
+    public partial class changelevelsnames : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -264,9 +264,8 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 values: new object[,]
                 {
                     { "00000000-0000-0000-0000-000000000060", null, "Admin", "ADMIN" },
-                    { "00000000-0000-0000-0000-000000000061", null, "Driver", "DRIVER" },
-                    { "00000000-0000-0000-0000-000000000063", null, "Consignee", "CONSIGNEE" },
-                    { "00000000-0000-0000-0000-000000000064", null, "Consignor", "CONSIGNOR" }
+                    { "00000000-0000-0000-0000-000000000061", null, "Advanced", "ADVANCED" },
+                    { "00000000-0000-0000-0000-000000000062", null, "BASIC", "BASIC" }
                 });
 
             migrationBuilder.InsertData(
@@ -293,11 +292,11 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AccessLevelId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "00000000-0000-0000-0000-100000000000", 0, new Guid("00000000-0000-0000-0000-000000000081"), "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAEGJndhXLMdcllyoDQ6OoL0pPhe0HoBZAFxrK0Ms5Xma6Kw5xTf900mbGdGGZq4/DNw==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
-                    { "00000000-0000-0000-0000-200000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEBVZSUbR2HB31VJVzWdA1fE2u2pM0hte7yF/6xat+1n6vMLwcZ7QcAxT3Y9v8mRxkQ==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
-                    { "00000000-0000-0000-0000-300000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAEAtLXT1H81qhPmxeZBWbSG7fq9mrvHncbM6DTVbFm/IncxVvpfzIHqWm9tVX1PVajA==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
-                    { "00000000-0000-0000-0000-400000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEOT9MyTbd/hhrpwmiqoU8KdxW590RgsyylHKPvgHixL+tpT6HtvVSfuTH19OcFkLZg==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" },
-                    { "00000000-0000-0000-0000-500000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "s@t.com", true, "Sve", "Tod", false, null, "S@T.COM", "S@T.COM", "AQAAAAIAAYagAAAAEIsHf5yOXuvfRzEXN3/aAzAHWW0mR285qahuOStUs2/Tml2cCS3eCnu6QQ8x4xKBdA==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "s@t.com" }
+                    { "00000000-0000-0000-0000-100000000000", 0, new Guid("00000000-0000-0000-0000-000000000081"), "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAEISl88gn/5u/XKOkq6wDSS7oBYKC5Q149vGiC7pWHQDZ3auO15wbALUxgnQcfF+Akg==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
+                    { "00000000-0000-0000-0000-200000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEAdZtd2AwcHez/kz6fkyZ+k5UITqdDBhmyoh9AI9ISNR2SDmAfVxXz5OoIgZlf40Jg==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
+                    { "00000000-0000-0000-0000-300000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAEMx4BEunhDWVIOyeHoE/A/PBfnnzmKEJMINDlOKnbJq1DHE/jC0foVfSR/79/1Z+mQ==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
+                    { "00000000-0000-0000-0000-400000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEIQuTNOyXks6NVLBaE+emVN3wZMcJYjUIWDhXN/k7F1tZEfJLoCDfBIccbwyKWnmug==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" },
+                    { "00000000-0000-0000-0000-500000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "s@t.com", true, "Sve", "Tod", false, null, "S@T.COM", "S@T.COM", "AQAAAAIAAYagAAAAEJc2O05erBN6pSyKBvZedBoJ6Es/XjXmScBqLIGDM97lWm3zRKO6/BtLiAZAqaHZpg==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "s@t.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -317,10 +316,10 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 values: new object[,]
                 {
                     { "00000000-0000-0000-0000-000000000060", "00000000-0000-0000-0000-100000000000" },
-                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-200000000000" },
-                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-300000000000" },
-                    { "00000000-0000-0000-0000-000000000063", "00000000-0000-0000-0000-400000000000" },
-                    { "00000000-0000-0000-0000-000000000064", "00000000-0000-0000-0000-500000000000" }
+                    { "00000000-0000-0000-0000-000000000062", "00000000-0000-0000-0000-200000000000" },
+                    { "00000000-0000-0000-0000-000000000062", "00000000-0000-0000-0000-300000000000" },
+                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-400000000000" },
+                    { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-500000000000" }
                 });
 
             migrationBuilder.InsertData(
