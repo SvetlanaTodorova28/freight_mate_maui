@@ -10,4 +10,6 @@ public class RegisterRequestDto:LoginRequestDto{
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    
+    public Guid FunctionId { get; set; }
 }

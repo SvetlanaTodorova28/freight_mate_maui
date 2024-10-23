@@ -3,11 +3,14 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Mde.Project.Mobile.Core.Service.Interfaces;
 using Mde.Project.Mobile.Core.Service.Web.Dto;
+using Mde.Project.Mobile.Core.Service.Web.Dto.Functions;
 using Mde.Project.Mobile.Core.Service.Web.Dtos.AppUsers;
 using Mde.Project.Mobile.Core.Services.Web;
+using Mde.Project.Mobile.Models;
 using Microsoft.Maui.Storage;
 using Utilities;
 
@@ -16,6 +19,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
     {
         private const string TokenKey = "token";
         private readonly HttpClient _httpClient;
+        private static Dictionary<Guid, Function> functionMappings = null;
         public SecureWebAuthenticationStorage(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
@@ -58,8 +62,41 @@ namespace Mde.Project.Mobile.Core.Service.Web;
 
             return false;
         }
+        public Task<IEnumerable<Function>> GetFunctionsAsync()
+        {
+           
+            var moods = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
+            return Task.FromResult(moods);
+        }
+        private async Task EnsureFunctionMappings()
+        {
+            if (functionMappings != null) return;
+
+            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/functions");
+
+            Dictionary<Guid, Function> functionDictionary = new Dictionary<Guid, Function>();
+            foreach (var functiondto in functionDtos)
+            {
+                switch (functiondto.Name.ToLower())
+                {
+                    case "admin":
+                        functionDictionary.Add(functiondto.Id, Function.Admin);
+                        break;
+                    case "advanced":
+                        functionDictionary.Add(functiondto.Id, Function.Consignee);
+                        break;
+                    case "basic":
+                        functionDictionary.Add(functiondto.Id, Function.Driver);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            functionMappings = functionDictionary;
+        }
         
-        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname)
+        public async Task<bool> TryRegisterAsync(string username, string password,string firstname, string lastname, string function)
         {
             HttpResponseMessage response = await _httpClient
                 .PostAsJsonAsync("api/accounts/register", 
@@ -68,8 +105,10 @@ namespace Mde.Project.Mobile.Core.Service.Web;
                         Password = password,
                         Email = username,
                         FirstName = firstname,
-                        LastName = lastname
+                        LastName = lastname,
+                        FunctionId = functionMappings.FirstOrDefault(pair => pair.Value.ToString() == function).Key
                     });
+            //  
 
             if (response.IsSuccessStatusCode)
             {
