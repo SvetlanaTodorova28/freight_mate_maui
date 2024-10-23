@@ -99,7 +99,7 @@ public class AppUserRegisterViewModel: ObservableObject
         {
             await uiService.ShowSnackbarSuccessAsync("Registration successful. You can now log in.");
             // Redirect naar de loginpagina of hoofdpagina
-            Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile));
+            Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile, this));
         }
         else
         {

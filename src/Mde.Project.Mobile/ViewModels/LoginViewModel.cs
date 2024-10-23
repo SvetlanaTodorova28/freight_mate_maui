@@ -10,14 +10,17 @@ public class LoginViewModel : ObservableObject
 {
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
     private readonly IUiService uiService;
+    private readonly AppUserRegisterViewModel _userRegisterViewModel;
 
     public ICommand LoginCommand { get; }
 
-    public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile)
+    public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
+    AppUserRegisterViewModel userRegisterViewModel)
     {
        
         this.uiService = uiService;
         authenticationServiceMobile = authServiceMobile;
+        _userRegisterViewModel = userRegisterViewModel;
         LoginCommand = new Command(async () => await ExecuteLoginCommand());
     }
 
@@ -41,7 +44,7 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             // Redirect naar de hoofdpagina na succesvolle login
-            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService);
+            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else

@@ -150,11 +150,16 @@
                                     IsPassword="True"
                                     Placeholder="CONFIRM PASSWORD"
                                     Text="{Binding ConfirmPassword}"/>
+                                <Label Text="Function" FontAttributes="Bold"></Label>
+                                <Picker ItemsSource="{Binding Functions}" SelectedItem="{Binding SelectedFunction}"></Picker>
                             </Grid>
+                            
 
                             <Button
                                 StyleClass="baseButton"
-                                Text="Create your Account" />
+                                Text="Create your Account" 
+                                x:Name="createAccount"
+                                Clicked="CreateAccount_OnClicked"/>
                             
                             <Label  FontFamily="PlayBold"
                                     Text="Back to Welcome" 
