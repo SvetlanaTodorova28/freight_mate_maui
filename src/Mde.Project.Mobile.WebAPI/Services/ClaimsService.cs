@@ -29,7 +29,7 @@ public class ClaimsService:IClaimsService{
         claims.Add(new Claim("FirstName", user.FirstName ?? ""));
         claims.Add(new Claim("LastName", user.LastName ?? ""));
         var functionOfUser = await _applicationDbContext.AccessLevels.FirstOrDefaultAsync(f => f.Id == user.AccessLevelId);
-        claims.Add(new Claim("Function", functionOfUser.Name ?? ""));
+        claims.Add(new Claim("AccessLevel", functionOfUser.Name ?? ""));
        
         
         
