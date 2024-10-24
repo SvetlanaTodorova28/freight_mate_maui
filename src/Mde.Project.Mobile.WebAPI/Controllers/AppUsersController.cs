@@ -86,6 +86,7 @@ public class AppUserController:ControllerBase{
 
         var user = await _userManager
             .Users
+            .Include(u => u.AccessLevel)
             .Include(u => u.Cargos)
             .FirstOrDefaultAsync(u => u.Id == id.ToString());
 
@@ -101,7 +102,8 @@ public class AppUserController:ControllerBase{
             FirstName = user.FirstName,
             LastName = user.LastName,
             AccessLevelType = new AccessLevelsResponseDto{
-                Name = user.AccessLevel.Name
+                Name = user.AccessLevel.Name,
+                Id = user.AccessLevel.Id 
             },
             Cargos = user.Cargos.Select(c => new CargoResponseDto()
             {
