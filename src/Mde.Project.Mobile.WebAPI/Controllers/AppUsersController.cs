@@ -2,6 +2,8 @@
 using System.Text;
 using Mde.Project.Mobile.WebAPI.Api.Dtos;
 using Mde.Project.Mobile.WebAPI.Api.Dtos.Users;
+using Mde.Project.Mobile.WebAPI.Dtos.Cargos;
+using Mde.Project.Mobile.WebAPI.Dtos.Functions;
 using Mde.Project.Mobile.WebAPI.Entities;
 
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
@@ -82,7 +84,9 @@ public class AppUserController:ControllerBase{
     [HttpGet("{id}")]
     public async Task<ActionResult<UserResponsDto>> GetUserById(Guid id){
 
-        var user = await _userManager.Users
+        var user = await _userManager
+            .Users
+            .Include(u => u.Cargos)
             .FirstOrDefaultAsync(u => u.Id == id.ToString());
 
 
@@ -95,8 +99,18 @@ public class AppUserController:ControllerBase{
             Email = user.Email,
             UserName = user.Email,
             FirstName = user.FirstName,
-            LastName = user.LastName
-          
+            LastName = user.LastName,
+            AccessLevelType = new AccessLevelsResponseDto{
+                Name = user.AccessLevel.Name
+            },
+            Cargos = user.Cargos.Select(c => new CargoResponseDto()
+            {
+                Id = c.Id,
+                Destination = c.Destination,
+                TotalWeight = c.TotalWeight
+            }).ToList()
+            
+            
         };
         return Ok(userDto);
     }

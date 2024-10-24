@@ -1,5 +1,6 @@
 
 
+using Mde.Project.Mobile.WebAPI.Dtos.Cargos;
 using Mde.Project.Mobile.WebAPI.Dtos.Functions;
 
 namespace Mde.Project.Mobile.WebAPI.Api.Dtos;
@@ -11,9 +12,9 @@ public class UserResponsDto{
     public string FirstName { get; set; }
     public string LastName { get; set; }
     
-    public string AccessLevelType { get; set; }
+    public AccessLevelsResponseDto? AccessLevelType { get; set; }
     
-    public List<Guid> CargosIds { get; set; }
+    public List<CargoResponseDto>? Cargos { get; set; }
     
     
    

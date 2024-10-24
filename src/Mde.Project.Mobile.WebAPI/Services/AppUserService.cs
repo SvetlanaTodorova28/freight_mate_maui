@@ -36,11 +36,11 @@ public class AppUserService:IAppUserService{
                 Errors = new List<string>(result.Errors.Select(x => x.Description))
             };
         }
-       
-      
         
         return new ResultModel<AppUser>{
             Data = newUser
         };
     }
+
+   
 }
