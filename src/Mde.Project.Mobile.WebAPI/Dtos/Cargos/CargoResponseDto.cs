@@ -9,5 +9,8 @@ public class CargoResponseDto:BaseDto{
     
     public double TotalWeight { get; set; }
    
-    public List<ProductResponseDto> Products { get; set; }
+    public List<Guid> ProductsIds { get; set; }
+    
+    public List<Guid> AppUsersIds { get; set; }
+    
 }

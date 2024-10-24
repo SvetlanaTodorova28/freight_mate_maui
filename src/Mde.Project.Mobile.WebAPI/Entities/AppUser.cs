@@ -9,4 +9,6 @@ public class AppUser:IdentityUser{
     
     public AccessLevel? AccessLevel { get; set; }
     public Guid? AccessLevelId { get; set; }
+    
+    public List<Cargo>? Cargos { get; set; } = new List<Cargo>();
 }

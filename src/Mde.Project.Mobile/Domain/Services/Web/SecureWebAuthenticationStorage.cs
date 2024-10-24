@@ -76,7 +76,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
         {
             if (functionMappings != null) return;
 
-            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/accesslevels");
+            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/AccessLevels");
 
             Dictionary<Function, Guid> functionDictionary = new Dictionary<Function, Guid>();
             foreach (var functiondto in functionDtos)
@@ -87,7 +87,7 @@ namespace Mde.Project.Mobile.Core.Service.Web;
                         functionDictionary.Add(Function.Admin,functiondto.Id);
                         break;
                     case "advanced":
-                        functionDictionary.Add( Function.Consignee,functiondto.Id);
+                        functionDictionary.Add(Function.Consignee,functiondto.Id);
                         break;
                     case "basic":
                         functionDictionary.Add(Function.Driver,functiondto.Id);

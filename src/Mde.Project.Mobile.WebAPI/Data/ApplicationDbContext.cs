@@ -20,6 +20,8 @@ public class ApplicationDbContext:IdentityDbContext<AppUser>{
             .WithMany() // Assuming AccessLevel does not have a navigation collection property in ApplicationUser
             .HasForeignKey(p => p.AccessLevelId)
             .OnDelete(DeleteBehavior.SetNull); // Set 
+        
+       
         Seeder.Seed(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }

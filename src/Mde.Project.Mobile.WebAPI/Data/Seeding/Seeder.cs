@@ -14,22 +14,22 @@ public class Seeder{
             new Category{ Id = Guid.Parse("00000000-0000-0000-0000-000000000013"), Name = "Sportswear" }
         };
         var products = new List<Product>{
-            new Product{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000021"),
                 Name = "Smartphone",
                 CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000011")
             },
-            new Product{
+            new(){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000022"),
                 Name = "Toaster",
                 CategoryId =Guid.Parse("00000000-0000-0000-0000-000000000012")
             },
-            new Product{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000023"),
                 Name = "Sneakers",
                 CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000012")
             },
-            new Product{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000024"),
                 Name = "Training",
                 CategoryId = Guid.Parse("00000000-0000-0000-0000-000000000012")
@@ -37,15 +37,35 @@ public class Seeder{
 
         };
         var cargos = new List<Cargo>{
-            new Cargo{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000031"),
                 Destination = "Milan",
                 TotalWeight = 1500.5,
             },
-            new Cargo{
+            new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000032"),
                 Destination = "London",
-                TotalWeight = 2900.0,
+                TotalWeight = 2900.0
+            }
+            , new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000033"),
+                Destination = "Zeebrugge",
+                TotalWeight = 1500.5
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000034"),
+                Destination = "Sofia",
+                TotalWeight = 2900.0
+            },
+             new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000035"),
+                Destination = "Zeebrugge",
+                TotalWeight = 500.5
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000036"),
+                Destination = "Berlin",
+                TotalWeight = 900.0
             }
         };
         var cargosProducts = new[]{
@@ -102,6 +122,7 @@ public class Seeder{
                 FirstName = "Tom",
                 LastName = "Calme",
                 AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000083")
+                
                
             },
             new(){
@@ -150,6 +171,17 @@ public class Seeder{
                 AccessLevelId = Guid.Parse("00000000-0000-0000-0000-000000000082")
 
             }
+        };
+        
+        var appUsersCargos = new[]{
+            new{ AppUsersId ="00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031") },
+            new{ AppUsersId = "00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032") },
+            new{ AppUsersId = "00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000033") },
+            new{ AppUsersId = "00000000-0000-0000-0000-200000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032") },
+            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000033") },
+            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000034") },
+            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000035") },
+            
         };
         
         
@@ -204,6 +236,7 @@ public class Seeder{
         modelBuilder.Entity<Cargo>().HasData(cargos);
         modelBuilder.Entity<AccessLevel>().HasData(functions);
         modelBuilder.Entity<AppUser>().HasData(adminUser);
+        
         drivers.ForEach(driver => {
             driver.PasswordHash = passwordHasher.HashPassword(driver, "Basic1234");
             modelBuilder.Entity<AppUser>().HasData(driver);
@@ -217,6 +250,7 @@ public class Seeder{
             modelBuilder.Entity<AppUser>().HasData(consignor);
         });
         modelBuilder.Entity($"{nameof(Cargo)}{nameof(Product)}").HasData(cargosProducts);
+        modelBuilder.Entity($"{nameof(AppUser)}{nameof(Cargo)}").HasData(appUsersCargos);
 
     }
 }

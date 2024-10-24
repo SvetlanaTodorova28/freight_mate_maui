@@ -13,6 +13,8 @@ public class UserResponsDto{
     
     public string AccessLevelType { get; set; }
     
+    public List<Guid> CargosIds { get; set; }
+    
     
    
     

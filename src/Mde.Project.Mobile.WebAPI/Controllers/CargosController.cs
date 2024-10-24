@@ -52,14 +52,7 @@ public class CargosController : ControllerBase{
                    Destination = x.Destination,
                     TotalWeight = x.TotalWeight?? 0,
                     // Maps the Products of each Cargo to ProductResponseDto objects
-                    Products = x.Products.Select(p => new ProductResponseDto(){
-                        Id = p.Id,
-                        Name = p.Name,
-                        Category = new CategoryResponseDto(){
-                            Id = p.Category.Id,
-                            Name = p.Category.Name
-                        }
-                    }).ToList(),
+                    ProductsIds = x.Products.Select(p => p.Id).ToList()
                 });
 
             // Returns the list of CargoResponseDto objects as a successful HTTP response
@@ -107,15 +100,7 @@ public class CargosController : ControllerBase{
                 Destination = result.Data.Destination,
                 TotalWeight = result.Data.TotalWeight??0,
                 // Maps the Products of the Cargo to ProductResponseDto objects
-                Products = result.Data.Products.Select(p => new ProductResponseDto(){
-                    Id = p.Id,
-                    Name = p.Name,
-                    // Maps the Category of each Product to CategoryResponseDto object
-                    Category = new CategoryResponseDto(){
-                        Id = p.Category.Id,
-                        Name = p.Category.Name
-                    }
-                }).ToList(),
+                ProductsIds = result.Data.Products.Select(p => p.Id).ToList()
                
               
             };
@@ -191,7 +176,7 @@ public class CargosController : ControllerBase{
                    Name = p.Name,
                    Id = p.Id
                }).ToList();
-               cargoDto.Products = productsDtos;
+               cargoDto.ProductsIds = productsDtos.Select(p => p.Id).ToList();
             } else {
                 return BadRequest(resultProductsDto.Errors);
             }

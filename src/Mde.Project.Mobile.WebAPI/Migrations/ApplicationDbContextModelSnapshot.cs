@@ -22,6 +22,58 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppUserCargo", b =>
+                {
+                    b.Property<string>("AppUsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("CargosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppUsersId", "CargosId");
+
+                    b.HasIndex("CargosId");
+
+                    b.ToTable("AppUserCargo");
+
+                    b.HasData(
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-400000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000031")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-400000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000032")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-400000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000033")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-200000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000032")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-300000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000033")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-300000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000034")
+                        },
+                        new
+                        {
+                            AppUsersId = "00000000-0000-0000-0000-300000000000",
+                            CargosId = new Guid("00000000-0000-0000-0000-000000000035")
+                        });
+                });
+
             modelBuilder.Entity("CargoProduct", b =>
                 {
                     b.Property<Guid>("CargosId")
@@ -178,7 +230,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FEDEX.COM",
                             NormalizedUserName = "ADMIN@FEDEX.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEISl88gn/5u/XKOkq6wDSS7oBYKC5Q149vGiC7pWHQDZ3auO15wbALUxgnQcfF+Akg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBlob+lqyr6nlpIcciebWmJqdnXl5rqXnnBOobPoCzkTxhooiJJDP+gubJiRl9gfbw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "BABUNAPLANINAVHODCHETERI",
                             TwoFactorEnabled = false,
@@ -197,7 +249,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TOM@GMAIL.COM",
                             NormalizedUserName = "TOM@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAdZtd2AwcHez/kz6fkyZ+k5UITqdDBhmyoh9AI9ISNR2SDmAfVxXz5OoIgZlf40Jg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMtCVzXINhjd9dN9jFlxNbYbRZFfccs6EpLWDH0//JdAcaplXrrD2XJBlAByeVLeAg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1DIFFERENT1UNIQUE1STRING1",
                             TwoFactorEnabled = false,
@@ -216,7 +268,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SARAH@GMAIL.COM",
                             NormalizedUserName = "SARAH@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMx4BEunhDWVIOyeHoE/A/PBfnnzmKEJMINDlOKnbJq1DHE/jC0foVfSR/79/1Z+mQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEPCne9/153GCN/XSIDK4FmQt9qLwxjFJJfy2l1DnfT2O3O1xJsGIqN8U3SjFwgovA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "2DIFFERENT2UNIQUE2STRING2",
                             TwoFactorEnabled = false,
@@ -235,7 +287,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MILKA@SPEEDY.GR",
                             NormalizedUserName = "MILKA@SPEEDY.GR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIQuTNOyXks6NVLBaE+emVN3wZMcJYjUIWDhXN/k7F1tZEfJLoCDfBIccbwyKWnmug==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAnv615h6M90kJw51XuG6YXM7NAVURAwPUqqNg7OIwWpMQm+Wbzx2ee2ONDd3AwEeQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,
@@ -254,7 +306,7 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "S@T.COM",
                             NormalizedUserName = "S@T.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJc2O05erBN6pSyKBvZedBoJ6Es/XjXmScBqLIGDM97lWm3zRKO6/BtLiAZAqaHZpg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOd6s5u4JW++iSEay8p3tg5h3Q1B/+0fKwWSdyVjV2WL4AF6RlY+BuuPvfpmNxCmDg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3DIFFERENT3UNIQUE3STRING3",
                             TwoFactorEnabled = false,
@@ -291,6 +343,30 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000032"),
                             Destination = "London",
                             TotalWeight = 2900.0
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000033"),
+                            Destination = "Zeebrugge",
+                            TotalWeight = 1500.5
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000034"),
+                            Destination = "Sofia",
+                            TotalWeight = 2900.0
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000035"),
+                            Destination = "Zeebrugge",
+                            TotalWeight = 500.5
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000036"),
+                            Destination = "Berlin",
+                            TotalWeight = 900.0
                         });
                 });
 
@@ -557,6 +633,21 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AppUserCargo", b =>
+                {
+                    b.HasOne("Mde.Project.Mobile.WebAPI.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("AppUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mde.Project.Mobile.WebAPI.Entities.Cargo", null)
+                        .WithMany()
+                        .HasForeignKey("CargosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CargoProduct", b =>
