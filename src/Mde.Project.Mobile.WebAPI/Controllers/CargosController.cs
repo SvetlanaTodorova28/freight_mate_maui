@@ -113,6 +113,34 @@ public class CargosController : ControllerBase{
         return BadRequest(result.Errors);
     }
     
+    [HttpGet("GetCargosByUser/{userId}")]
+    public async Task<IActionResult> GetCargosByUser(Guid userId)
+    {
+        if (userId == Guid.Empty)
+        {
+            return BadRequest("Invalid user ID provided.");
+        }
+
+        var result = await _cargoService.GetCargosWithUserId(userId);
+
+        if (result.Errors != null && result.Errors.Any())
+        {
+            return NotFound(result.Errors);
+        }
+
+        var cargosDtos = result
+            .Data
+            .Select(x => new CargoResponseDto(){
+                Id = x.Id,
+                Destination = x.Destination,
+                TotalWeight = x.TotalWeight?? 0,
+                AppUsersIds = x.AppUsers.Select(u => Guid.Parse(u.Id)).Distinct().ToList(),
+                ProductsIds = x.Products.Select(p => p.Id).ToList()
+            });
+        return Ok(cargosDtos);
+    }
+
+    
     //========================================= POST REQUESTS ==============================================================
     
    

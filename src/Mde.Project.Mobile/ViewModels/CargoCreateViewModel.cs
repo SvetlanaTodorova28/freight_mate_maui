@@ -1,8 +1,8 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
-using Mde.Project.Mobile.Pages;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+
 
 namespace Mde.Project.Mobile.ViewModels;
 
@@ -11,7 +11,7 @@ namespace Mde.Project.Mobile.ViewModels;
 public class CargoCreateViewModel:ObservableObject{
     
     
-    private readonly IWebCargoService cargoService;
+    private readonly ICargoService cargoService;
     private readonly IUiService uiService;
     
 
@@ -86,7 +86,7 @@ public class CargoCreateViewModel:ObservableObject{
         }
         
         
-        public CargoCreateViewModel(IWebCargoService cargoService, IUiService uiService)
+        public CargoCreateViewModel(ICargoService cargoService, IUiService uiService)
         {
             this.cargoService = cargoService;
             this.uiService = uiService;

@@ -12,5 +12,6 @@ public interface ICargoService{
     Task<ResultModel<Cargo>> UpdateAsync(Cargo entity);
     Task<ResultModel<Cargo>> DeleteAsync(Cargo entity);
     Task<ResultModel<IEnumerable<Cargo>>> GetCargosWithCategoryId(Guid id);
+    Task<ResultModel<IEnumerable<Cargo>>> GetCargosWithUserId(Guid id);
     Task<bool> DoesCargoIdExistAsync(Guid id);
 }

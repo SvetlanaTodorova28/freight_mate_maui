@@ -1,10 +1,11 @@
 using System.Text.Json;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-namespace Mde.Project.Mobile.Core.Service;
 
-public class WebCargoService:IWebCargoService{
+namespace Mde.Project.Mobile.Domain.Services.Web;
+
+public class CargoService:ICargoService{
       private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
       
       

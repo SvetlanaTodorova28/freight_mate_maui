@@ -1,8 +1,8 @@
-using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Domain.Models;
 
-namespace Mde.Project.Mobile.Core.Service.Interfaces;
+namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
-public interface IWebCargoService{
+public interface ICargoService{
     
     public Task<Cargo> GetById(Guid id);
     public Task<ICollection<Cargo>> GetAll();

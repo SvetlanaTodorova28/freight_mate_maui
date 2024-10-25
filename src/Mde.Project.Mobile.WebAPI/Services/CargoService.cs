@@ -140,6 +140,37 @@ public class CargoService:ICargoService{
         return new ResultModel<IEnumerable<Cargo>> { Data = cargos };
     }
 
+    public async Task<ResultModel<IEnumerable<Cargo>>> GetCargosWithUserId(Guid userId){
+       
+        var guidId = userId.ToString(); 
+        var cargos = await _applicationDbContext
+            .Cargos
+            .Include(c => c.AppUsers)  // Ensure this relationship is correctly configured in the model
+            .Include(c => c.Products)  // Load related products data
+            .Where(c => c.AppUsers.Any(u =>u.Id.Equals(guidId))) // Assuming u.Id is a string in the database
+            .ToListAsync();
+
+        if (!cargos.Any()) {
+            return new ResultModel<IEnumerable<Cargo>>{
+                Errors = new List<string> { "No cargos found for this user." }
+            };
+        }
+
+        if (cargos == null || !cargos.Any()) {
+            return new ResultModel<IEnumerable<Cargo>>{
+                Errors = new List<string> { "No cargos found for this user." }
+            };
+        }
+
+
+        // Instead of treating no results as an error, simply return the empty list
+        return new ResultModel<IEnumerable<Cargo>> {
+            Data = cargos,
+            Errors = cargos.Count == 0 ? new List<string> { "No cargos with this user ID exist." } : null
+        };
+    }
+
+
     public async Task<bool> DoesCargoIdExistAsync(Guid id){
         return await _applicationDbContext
             .Cargos
