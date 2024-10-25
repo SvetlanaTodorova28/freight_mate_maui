@@ -14,7 +14,7 @@ public class CargoListViewModel:ObservableObject{
     private readonly ICargoService _cargoService;
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IUiService _uiService;
-    
+    private Function _userFunction;
     public ObservableCollection<Cargo> Cargos
     {
         get { return cargos; }
@@ -29,9 +29,26 @@ public class CargoListViewModel:ObservableObject{
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
+        LoadUserFunction();
     }
     
-    
+    public Function UserFunction
+    {
+        get => _userFunction;
+        set => SetProperty(ref _userFunction, value);
+    }
+
+    private async void LoadUserFunction()
+    {
+        try
+        {
+            UserFunction = await _authenticationService.GetUserFunctionFromTokenAsync();
+        }
+        catch (Exception ex)
+        {
+           
+        }
+    }
     
     //=========================== REFRESH =====================================
     public ICommand RefreshListCommand => new Command(async () =>
@@ -59,6 +76,7 @@ public class CargoListViewModel:ObservableObject{
             if (!modelCargos.Any()){
                 _uiService.ShowSnackbarWarning("You don't have any cargos available");
             }
+          
         }
         catch (Exception ex)
         {

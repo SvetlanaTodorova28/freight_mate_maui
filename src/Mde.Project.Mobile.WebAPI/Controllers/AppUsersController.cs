@@ -43,10 +43,8 @@ public class AppUserController:ControllerBase{
     /// An ActionResult containing a list of UserResponsDto objects representing the users.
     /// If the operation is successful, the HTTP status code will be 200 (Ok).
     /// </returns>
-    [HttpGet()]
-    [Authorize(Policy = GlobalConstants.AdminRoleName)] 
-    
-    public async Task<ActionResult<IEnumerable<UserResponsDto>>> GetUsers()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsers()
     {
         // Fetch all users from the database
         var users = await _userManager
@@ -55,7 +53,7 @@ public class AppUserController:ControllerBase{
         
         // Map the user entities to UserResponsDto objects
         var userDtos = users
-            .Select(user => new UserResponsDto {
+            .Select(user => new UserResponseDto {
                 Id = Guid.Parse(user.Id),
                 UserName = user.UserName,
                 FirstName = user.FirstName
@@ -64,6 +62,36 @@ public class AppUserController:ControllerBase{
         // Return the list of UserResponsDto objects as Ok result
         return Ok(userDtos);
     }
+    [HttpGet("users-with-roles")]
+    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsersWithAdvancedAndBasic()
+    {
+        
+        var result = await _userService.GetUsersByRoleAsync();
+
+       
+        if (result.Data == null || !result.Data.Any())
+        {
+            return NotFound("No users with the specified roles were found.");
+        }
+
+       
+        var userDtos = result.Data.Select(user => new UserResponseDto
+        {
+            Id = Guid.Parse(user.Id),   
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email ,
+            AccessLevelType = new AccessLevelsResponseDto{
+                Id = user.AccessLevel.Id,
+                Name = user.AccessLevel.Name,
+            }
+        }).ToList();
+
+        
+        return Ok(userDtos);
+    }
+
 
     /// <summary>
     /// Retrieves a AppUser entity by its unique identifier from the database.
@@ -82,7 +110,7 @@ public class AppUserController:ControllerBase{
     /// <param name="id">The unique identifier of the AppUser entity to retrieve.</param>
     /// <returns>An IActionResult containing a AppUserResponseDto object or an error message.</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserResponsDto>> GetUserById(Guid id){
+    public async Task<ActionResult<UserResponseDto>> GetUserById(Guid id){
 
         var user = await _userManager
             .Users
@@ -95,7 +123,7 @@ public class AppUserController:ControllerBase{
             return NotFound("User not found");
         }
 
-        var userDto = new UserResponsDto{
+        var userDto = new UserResponseDto{
             Id = Guid.Parse(user.Id),
             Email = user.Email,
             UserName = user.Email,

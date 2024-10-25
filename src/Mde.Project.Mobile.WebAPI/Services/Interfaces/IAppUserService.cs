@@ -5,5 +5,6 @@ namespace Mde.Project.Mobile.WebAPI.Services.Interfaces;
 
 public interface IAppUserService{
     Task<ResultModel<AppUser>> CreateUserAsync(AppUser user, string password);
-    
+    Task<ResultModel<IEnumerable<AppUser>>> GetUsersByRoleAsync();
+
 }

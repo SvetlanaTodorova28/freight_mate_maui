@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
@@ -53,6 +54,7 @@ namespace Mde.Project.Mobile
             
             
             builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
+            builder.Services.AddTransient<IAppUserService, AppUserService>();
             builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
 

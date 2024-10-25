@@ -146,7 +146,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             return userIdClaim.Value;
         }
         
-        private async Task<Guid> GetFunctionIdAsync(Function function)
+        public async Task<Guid> GetFunctionIdAsync(Function function)
         {
             await EnsureFunctionMappings();
 
@@ -157,6 +157,30 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
             throw new KeyNotFoundException($"Function {function} not found in function mappings.");
         }
+        
+        public async Task<Function> GetUserFunctionFromTokenAsync()
+        {
+            var token = await GetTokenAsync();
+            if (string.IsNullOrEmpty(token))
+                throw new InvalidOperationException("No token found");
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role); 
+
+            if (roleClaim == null)
+                throw new InvalidOperationException("Role claim not found in token");
+
+            // Map the role claim to the corresponding Function
+            return roleClaim.Value.ToLower() switch
+            {
+                "admin" => Function.Admin,
+                "advanced" => Function.Consignee,
+                "basic" => Function.Driver,
+                _ => throw new InvalidOperationException("Invalid role")
+            };
+        }
+
 
     }
 

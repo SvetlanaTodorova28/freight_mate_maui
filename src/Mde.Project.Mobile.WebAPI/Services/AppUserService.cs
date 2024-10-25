@@ -42,5 +42,22 @@ public class AppUserService:IAppUserService{
         };
     }
 
-   
+    public async Task<ResultModel<IEnumerable<AppUser>>> GetUsersByRoleAsync()
+    {
+        
+        var advancedUsers = await _userManager.GetUsersInRoleAsync("advanced");
+        var basicUsers = await _userManager.GetUsersInRoleAsync("basic");
+
+        
+        var allUsers = advancedUsers.Concat(basicUsers);
+
+        
+        var resultModel = new ResultModel<IEnumerable<AppUser>>()
+        {
+            Data = allUsers
+        };
+
+        return resultModel;
+    }
+
 }

@@ -5,7 +5,7 @@ using Mde.Project.Mobile.WebAPI.Dtos.Functions;
 
 namespace Mde.Project.Mobile.WebAPI.Api.Dtos;
 
-public class UserResponsDto{
+public class UserResponseDto{
     public Guid Id { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }

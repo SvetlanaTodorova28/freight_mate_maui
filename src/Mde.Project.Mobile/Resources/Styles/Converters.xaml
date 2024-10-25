@@ -8,6 +8,7 @@
     <converters:BoolToDangerousTextConverter x:Key="BoolToDangerousTextConverter"/>
     <converters:BoolToDangerousColorConverter x:Key="BoolToDangerousColorConverter"/>
     <converters:BoolToIconConverter x:Key="BoolToIconConverter"/>
+    <converters:FunctionToVisibilityConverter x:Key="FunctionToVisibilityConverter"/>
     
 
 </ResourceDictionary>

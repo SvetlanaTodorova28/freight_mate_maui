@@ -12,5 +12,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
         bool Logout();
 
         Task<IEnumerable<Function>> GetFunctionsAsync();
+
+        Task<Function> GetUserFunctionFromTokenAsync();
     }
 
