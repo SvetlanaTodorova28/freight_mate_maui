@@ -7,4 +7,6 @@ public class Cargo:BaseEntity {
     public List<Product> Products { get; set; } = new List<Product>();
     
     public List<AppUser>? AppUsers { get; set; } = new List<AppUser>();
+    
+    public bool IsDangerous { get; set; }
 }

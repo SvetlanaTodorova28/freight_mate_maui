@@ -41,12 +41,14 @@ public class CargoListViewModel:ObservableObject{
         {
             var userId = await _authenticationService.GetUserIdFromTokenAsync();
             var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
+            
 
             // Convert DTOs to Models
             var modelCargos = dtoCargos.Select(dto => new Cargo
             {
                 Id = dto.Id,
                 Destination = dto.Destination,
+                IsDangerous = dto.IsDangerous,
                 TotalWeight = dto.TotalWeight ?? 0
             }).ToList();
 

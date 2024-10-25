@@ -50,6 +50,7 @@ public class CargosController : ControllerBase{
                 .Select(x => new CargoResponseDto(){
                     Id = x.Id,
                    Destination = x.Destination,
+                   IsDangerous = x.IsDangerous,
                     TotalWeight = x.TotalWeight?? 0,
                     // Maps the Products of each Cargo to ProductResponseDto objects
                     ProductsIds = x.Products.Select(p => p.Id).ToList()
@@ -133,6 +134,7 @@ public class CargosController : ControllerBase{
             .Select(x => new CargoResponseDto(){
                 Id = x.Id,
                 Destination = x.Destination,
+                IsDangerous = x.IsDangerous,
                 TotalWeight = x.TotalWeight?? 0,
                 AppUsersIds = x.AppUsers.Select(u => Guid.Parse(u.Id)).Distinct().ToList(),
                 ProductsIds = x.Products.Select(p => p.Id).ToList()
@@ -177,7 +179,8 @@ public class CargosController : ControllerBase{
         // Create a new Cargo entity with the provided data
         var cargo = new Cargo{
             Destination = cargoRequestDto.Destination,
-            TotalWeight = cargoRequestDto.TotalWeight
+            TotalWeight = cargoRequestDto.TotalWeight,
+            IsDangerous = cargoRequestDto.IsDangerous
         };
 
         
@@ -269,6 +272,7 @@ public class CargosController : ControllerBase{
         var existingCargo = existingCargoResult.Data;
         existingCargo.Destination =  existingCargo.Destination;
         existingCargo.TotalWeight = existingCargo.TotalWeight;
+        existingCargo.IsDangerous = existingCargo.IsDangerous;
         existingCargo.Products.Clear();
        
         
@@ -321,6 +325,7 @@ public class CargosController : ControllerBase{
             var cargoDto = new CargoRequestDto(){
                 Id = result.Data.Id,
                 Destination = result.Data.Destination,
+                IsDangerous = result.Data.IsDangerous,
                 TotalWeight = result.Data.TotalWeight??0,
                 // Maps the Products of the Cargo to ProductResponseDto objects
                Products = result.Data.Products.Select(p => p.Id).ToList(),
