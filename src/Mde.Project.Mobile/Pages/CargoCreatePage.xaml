@@ -49,6 +49,12 @@
                                    Color="Red"
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center"/>
+                        <Label Text="Select a User:" />
+                        <Picker ItemsSource="{Binding Users}"
+                                ItemDisplayBinding="{Binding UserName}"
+                                SelectedItem="{Binding SelectedUser}"
+                                Title="Choose a User"/>
+
                     </Grid>
 
                     <Button Command="{Binding SaveCommand}"

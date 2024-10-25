@@ -7,7 +7,7 @@ public interface ICargoService{
     
    
     // Retrieves the cargos associated with the logged-in user
-    Task<CargoResponseDto[]> GetCargosForUser(Guid userId);
+    Task<List<CargoResponseDto>> GetCargosForUser(Guid userId);
     Task<bool> CreateCargo(Cargo cargo);
 
     Task<bool> UpdateCargo(Cargo cargo);

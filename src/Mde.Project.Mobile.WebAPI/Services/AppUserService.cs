@@ -3,16 +3,18 @@ using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Mde.Project.Mobile.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mde.Project.Mobile.WebAPI.Services;
 
 public class AppUserService:IAppUserService{
     private readonly UserManager<AppUser> _userManager;
+    private readonly ApplicationDbContext _applicationDbContext;
   
 
-    public AppUserService(UserManager<AppUser> userManager){
+    public AppUserService(UserManager<AppUser> userManager, ApplicationDbContext applicationDbContext){
         _userManager = userManager;
-      
+      _applicationDbContext = applicationDbContext;
     }
     public async Task<ResultModel<AppUser>> CreateUserAsync(AppUser user, string password){
         
@@ -44,20 +46,25 @@ public class AppUserService:IAppUserService{
 
     public async Task<ResultModel<IEnumerable<AppUser>>> GetUsersByRoleAsync()
     {
-        
-        var advancedUsers = await _userManager.GetUsersInRoleAsync("advanced");
-        var basicUsers = await _userManager.GetUsersInRoleAsync("basic");
+        // Gebruik de context om gebruikers op te halen en tegelijkertijd de AccessLevel te laden.
+        var advancedUsers = await _applicationDbContext.Users
+            .Include(u => u.AccessLevel)
+            .Where(u => u.AccessLevel.Name == "advanced")
+            .ToListAsync();
+    
+        var basicUsers = await _applicationDbContext.Users
+            .Include(u => u.AccessLevel)
+            .Where(u => u.AccessLevel.Name == "basic")
+            .ToListAsync();
 
-        
+        // Combineer de lijsten met Advanced en Basic gebruikers
         var allUsers = advancedUsers.Concat(basicUsers);
 
-        
-        var resultModel = new ResultModel<IEnumerable<AppUser>>()
+        return new ResultModel<IEnumerable<AppUser>>
         {
             Data = allUsers
         };
-
-        return resultModel;
     }
+
 
 }

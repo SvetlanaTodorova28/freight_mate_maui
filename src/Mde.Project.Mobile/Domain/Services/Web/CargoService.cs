@@ -18,14 +18,14 @@ public class CargoService:ICargoService{
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
     }
 
-    public async Task<CargoResponseDto[]> GetCargosForUser(Guid userId)
+    public async Task<List<CargoResponseDto>> GetCargosForUser(Guid userId)
     {
             //api/Cargos/GetCargosByUser/
-            var cargos = await _httpClient.GetFromJsonAsync<CargoResponseDto[]>($"/api/Cargos/GetCargosByUser/{userId}");
-            if (cargos.Any())
+            var cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
+            if (cargos != null && cargos.Any())
                 return cargos;
 
-            return new CargoResponseDto[0];
+            return new List<CargoResponseDto>();
 
     }
 

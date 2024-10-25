@@ -2,7 +2,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.Cargos;
 using Mde.Project.Mobile.Pages;
 
@@ -24,11 +26,14 @@ public class CargoListViewModel:ObservableObject{
         }
     }
     
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService)
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService,
+        AppUserService appUserService)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
+        _appUserService = appUserService;
+        LoadUsers();
         LoadUserFunction();
     }
     
@@ -133,5 +138,29 @@ public class CargoListViewModel:ObservableObject{
 
         await Shell.Current.GoToAsync($"{nameof(CargoDetailsPage)}", navigationParameter);
     });
+    
+    
+    private readonly IAppUserService _appUserService;
+
+    public ObservableCollection<AppUserResponseDto> Users { get; } = new ObservableCollection<AppUserResponseDto>();
+
+    private AppUserResponseDto _selectedUser;
+    public AppUserResponseDto SelectedUser
+    {
+        get => _selectedUser;
+        set => SetProperty(ref _selectedUser, value);
+    }
+    
+    private async void LoadUsers()
+    {
+        var users = await _appUserService.GetUsersWithFunctions();
+
+        Users.Clear();
+        foreach (var user in users)
+        {
+            Users.Add(user);
+        }
+    }
+
 
 }
