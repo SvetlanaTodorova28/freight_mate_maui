@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using Mde.Project.Mobile.Core.Service;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Core.Service.Web;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -54,7 +53,7 @@ namespace Mde.Project.Mobile
             
             
             builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
-            builder.Services.AddTransient<IWebCargoService, WebCargoService>();
+            builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
 
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));

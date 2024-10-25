@@ -1,9 +1,7 @@
 ﻿
 
 using System.ComponentModel.DataAnnotations;
-
-namespace Mde.Project.Mobile.Core.Services.Web
-{
+namespace Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
     public class LoginRequestDto
     {
         [Required]
@@ -11,4 +9,4 @@ namespace Mde.Project.Mobile.Core.Services.Web
         public string Username { get; set; }
         public string Password { get; set; }
     }
-}
+

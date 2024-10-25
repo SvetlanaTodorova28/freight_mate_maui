@@ -113,12 +113,12 @@ public class CargoCreateViewModel:ObservableObject{
 
             if (cargo.Id.Equals(Guid.Empty))
             {
-                await cargoService.Add(cargo);
+                await cargoService.CreateCargo(cargo);
                 await uiService.ShowSnackbarSuccessAsync("CARGO CREATED SUCCESSFULLY 📦");
             }
             else
             {
-                await cargoService.Update(cargo);
+                await cargoService.UpdateCargo(cargo);
                
             }
 

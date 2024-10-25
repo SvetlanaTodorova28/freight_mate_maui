@@ -2,8 +2,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;

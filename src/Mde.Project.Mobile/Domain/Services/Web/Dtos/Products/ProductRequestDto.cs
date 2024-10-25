@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mde.Project.Mobile.Core.Service.Web.Dto;
+namespace Mde.Project.Mobile.Domain.Services.Web.Dtos.Products;
 
 public class ProductRequestDto:BaseDto{
     

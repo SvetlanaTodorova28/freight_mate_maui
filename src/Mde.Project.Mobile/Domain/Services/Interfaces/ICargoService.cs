@@ -1,12 +1,17 @@
 using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.Cargos;
 
 namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public interface ICargoService{
     
-    public Task<Cargo> GetById(Guid id);
-    public Task<ICollection<Cargo>> GetAll();
-    public Task<Cargo> Add(Cargo cargo);
-    public Task<Cargo> Update(Cargo cargo);
-    public Task Delete(Cargo cargo);
+   
+    // Retrieves the cargos associated with the logged-in user
+    Task<CargoResponseDto[]> GetCargosForUser(Guid userId);
+    Task<bool> CreateCargo(Cargo cargo);
+
+    Task<bool> UpdateCargo(Cargo cargo);
+    Task<bool> Delete(Guid cargoId);
+
+
 }

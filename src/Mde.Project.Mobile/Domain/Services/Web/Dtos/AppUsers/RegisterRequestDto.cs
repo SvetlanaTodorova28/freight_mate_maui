@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Mde.Project.Mobile.Core.Services.Web;
 
-namespace Mde.Project.Mobile.Core.Service.Web.Dtos.AppUsers;
+
+namespace Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 
 public class RegisterRequestDto:LoginRequestDto{
     [Required]

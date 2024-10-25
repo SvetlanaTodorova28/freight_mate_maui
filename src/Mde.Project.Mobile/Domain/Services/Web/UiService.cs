@@ -1,8 +1,9 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-namespace Mde.Project.Mobile.Core.Service;
+
+namespace Mde.Project.Mobile.Domain.Services.Web;
 
 public class UiService : IUiService
 {

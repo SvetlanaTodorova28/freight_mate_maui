@@ -1,4 +1,4 @@
-namespace Mde.Project.Mobile.Models;
+namespace Mde.Project.Mobile.Domain.Models;
 
 public class AppUser{
     

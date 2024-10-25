@@ -1,9 +1,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
-using Mde.Project.Mobile.Pages;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+
 namespace Mde.Project.Mobile.ViewModels;
 
 public class LoginViewModel : ObservableObject

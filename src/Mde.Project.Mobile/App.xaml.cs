@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Windows.Input;
-using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 
@@ -8,10 +7,10 @@ namespace Mde.Project.Mobile;
 public partial class App : Application
 {
     private readonly IAuthenticationServiceMobile _authenticationService;
-    private readonly IWebCargoService _cargoService;
+    private readonly ICargoService _cargoService;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
-    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, IWebCargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel)
+    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, ICargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel)
     {
         InitializeComponent();
         _authenticationService = authenticationService;

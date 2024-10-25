@@ -1,4 +1,5 @@
-namespace Mde.Project.Mobile.Core.Service.Interfaces;
+
+namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public interface IUiService
 {

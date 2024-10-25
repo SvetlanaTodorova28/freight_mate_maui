@@ -1,4 +1,5 @@
-using Mde.Project.Mobile.Core.Service.Interfaces;
+
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
 
 namespace Mde.Project.Mobile.Pages;

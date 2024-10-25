@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Pages;
+﻿
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
+
 
 namespace Mde.Project.Mobile
 {

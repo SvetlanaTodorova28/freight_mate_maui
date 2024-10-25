@@ -1,20 +1,14 @@
 ﻿
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Core.Service.Web.Dto;
-using Mde.Project.Mobile.Core.Service.Web.Dto.Functions;
-using Mde.Project.Mobile.Core.Service.Web.Dtos.AppUsers;
-using Mde.Project.Mobile.Core.Services.Web;
-using Mde.Project.Mobile.Models;
-using Microsoft.Maui.Storage;
+using System.Security.Claims;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
 using Utilities;
 
-namespace Mde.Project.Mobile.Core.Service.Web;
+namespace Mde.Project.Mobile.Domain.Services.Web;
     public class SecureWebAuthenticationStorage : IAuthenticationServiceMobile
     {
         private const string TokenKey = "token";
@@ -108,8 +102,8 @@ namespace Mde.Project.Mobile.Core.Service.Web;
             }
             catch (KeyNotFoundException ex)
             {
-                Console.WriteLine(ex.Message);
-                return false; // Of log de fout en behandel deze zoals vereist
+               
+                return false; 
             }
             
             RegisterRequestDto registerRequestDto =  new RegisterRequestDto{
@@ -134,6 +128,22 @@ namespace Mde.Project.Mobile.Core.Service.Web;
         private async Task StoreToken(string token)
         {
             await SecureStorage.Default.SetAsync(TokenKey, token);
+        }
+        
+        public async Task<string> GetUserIdFromTokenAsync()
+        {
+            var token = await SecureStorage.GetAsync("token");
+            if (string.IsNullOrEmpty(token))
+                throw new InvalidOperationException("No token found");
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+                throw new InvalidOperationException("User ID claim not found in token");
+
+            return userIdClaim.Value;
         }
         
         private async Task<Guid> GetFunctionIdAsync(Function function)

@@ -1,106 +1,43 @@
+using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.Cargos;
+using Utilities;
 
 
 namespace Mde.Project.Mobile.Domain.Services.Web;
 
 public class CargoService:ICargoService{
-      private readonly string targetFile = $"{FileSystem.AppDataDirectory}/cargos.json";
-      
-      
-    public async Task<ICollection<Cargo>> GetAll()
-        {
-            EnsureFileExists(targetFile);
+    private readonly HttpClient _httpClient;
+   
 
-            string savedSerialized = await File.ReadAllTextAsync(targetFile);
-            List<Cargo> savedCargos = JsonSerializer.Deserialize<List<Cargo>>(savedSerialized);
-            Console.WriteLine($"Path to cargos.json: {FileSystem.AppDataDirectory}/cargos.json");
+    public CargoService(IHttpClientFactory httpClientFactory)
+    {
+        _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
+    }
 
-            return savedCargos.OrderByDescending(cargo => cargo.TotalWeight).ToList();
-        }
+    public async Task<CargoResponseDto[]> GetCargosForUser(Guid userId)
+    {
+            //api/Cargos/GetCargosByUser/
+            var cargos = await _httpClient.GetFromJsonAsync<CargoResponseDto[]>($"/api/Cargos/GetCargosByUser/{userId}");
+            if (cargos.Any())
+                return cargos;
 
-        public async Task<Cargo> GetById(Guid id)
-        {
-            List<Cargo> cargos = (await GetAll()).ToList();
-            Cargo existingCargo = cargos.FirstOrDefault(search =>
-            {
-                return search.Id == id;
-            });
+            return new CargoResponseDto[0];
 
-            return existingCargo;
-        }
-        public async Task<Cargo> Add(Cargo cargo)
-        {
-            List<Cargo> cargos = (await GetAll()).ToList();
-            bool cargoExists = cargos.Any(search => search.Id == cargo.Id);
+    }
 
-            if (!cargoExists)
-            {
-                cargo.Id = Guid.NewGuid();
-                cargos.Add(cargo);
-            }
-            else
-            {
-                throw new ArgumentException("The cargo you're trying to update already exists.");
-            }
+    public Task<bool> CreateCargo(Cargo cargo){
+        throw new NotImplementedException();
+    }
 
-            await WriteCargos(cargos);
-            return cargo;
-        }
+    public Task<bool> UpdateCargo(Cargo cargo){
+        throw new NotImplementedException();
+    }
 
-        public async Task<Cargo> Update(Cargo cargo)
-        {
-            List<Cargo> cargos = (await GetAll()).ToList();
-            Cargo existingCargo = cargos.FirstOrDefault(search =>
-            {
-                return search.Id == cargo.Id;
-            });
-
-            if (existingCargo != null){
-                cargos.Remove(existingCargo);
-                cargo.Id = existingCargo.Id;
-                cargos.Add(cargo);
-            }
-            else
-            {
-                throw new ArgumentException("The cargo you're trying to update does not have a correct id.");
-            }
-
-            await WriteCargos(cargos);
-            return cargo;
-        }
-        public async Task Delete(Cargo cargo)
-        {
-            List<Cargo> cargos = (await GetAll()).ToList();
-            Cargo existingCargo = cargos.FirstOrDefault(c => c.Id == cargo.Id);
-
-            if (existingCargo != null)
-            {
-                cargos.Remove(existingCargo);
-                await WriteCargos(cargos);
-            }
-            else
-            {
-                throw new ArgumentException("The cargo you're trying to delete doesn't exist.");
-            }
-        }
-
-
-
-        private void EnsureFileExists(string targetFile)
-        {
-            if (!File.Exists(targetFile))
-            {
-                File.WriteAllText(targetFile, JsonSerializer.Serialize(new List<Cargo>()));
-            }
-        }
-
-        private async Task WriteCargos(List<Cargo> cargos)
-        {
-            string serializedCargos = JsonSerializer.Serialize(cargos);
-            await File.WriteAllTextAsync(targetFile, serializedCargos);
-        }
-        
-        
+    public Task<bool> Delete(Guid cargoId){
+        throw new NotImplementedException();
+    }
 }

@@ -1,6 +1,6 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mde.Project.Mobile.Core.Service.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;

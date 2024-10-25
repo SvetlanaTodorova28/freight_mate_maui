@@ -1,4 +1,6 @@
-namespace Mde.Project.Mobile.Core.Service.Web.Dto.Functions;
+
+
+namespace Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
 
 public class FunctionDto:BaseDto{
     public string Name { get; set; }

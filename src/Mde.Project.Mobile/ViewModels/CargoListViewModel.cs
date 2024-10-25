@@ -1,8 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.Cargos;
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -10,8 +11,9 @@ namespace Mde.Project.Mobile.ViewModels;
 public class CargoListViewModel:ObservableObject{
     
     private ObservableCollection<Cargo> cargos;
-    private readonly IWebCargoService cargoService;
-    private readonly IUiService uiService;
+    private readonly ICargoService _cargoService;
+    private readonly IAuthenticationServiceMobile _authenticationService;
+    private readonly IUiService _uiService;
     
     public ObservableCollection<Cargo> Cargos
     {
@@ -22,10 +24,11 @@ public class CargoListViewModel:ObservableObject{
         }
     }
     
-    public CargoListViewModel(IWebCargoService cargoService, IUiService uiService)
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService)
     {
-        this.cargoService = cargoService;
-        this.uiService = uiService;
+        _cargoService = cargoService;
+        _uiService = uiService;
+        _authenticationService = authenticationService;
     }
     
     
@@ -33,8 +36,32 @@ public class CargoListViewModel:ObservableObject{
     //=========================== REFRESH =====================================
     public ICommand RefreshListCommand => new Command(async () =>
     {
-        var cargos = await cargoService.GetAll();
-        Cargos = new ObservableCollection<Cargo>(cargos);
+        
+        try
+        {
+            var userId = await _authenticationService.GetUserIdFromTokenAsync();
+            var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
+
+            // Convert DTOs to Models
+            var modelCargos = dtoCargos.Select(dto => new Cargo
+            {
+                Id = dto.Id,
+                Destination = dto.Destination,
+                TotalWeight = dto.TotalWeight ?? 0
+            }).ToList();
+
+            
+            Cargos = new ObservableCollection<Cargo>(modelCargos);
+
+            
+            if (!modelCargos.Any()){
+                _uiService.ShowSnackbarWarning("You don't have any cargos available");
+            }
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowSnackbarWarning("Contact your admin with explanation of the error");
+        }
     });
     
     //=========================== CREATE =====================================
@@ -65,9 +92,9 @@ public class CargoListViewModel:ObservableObject{
         
         if (cargo != null)
         {
-            await cargoService.Delete(cargo);
+            await _cargoService.Delete(cargo.Id);
             Cargos.Remove(cargo); 
-            await uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
+            await _uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
            
         }
         else

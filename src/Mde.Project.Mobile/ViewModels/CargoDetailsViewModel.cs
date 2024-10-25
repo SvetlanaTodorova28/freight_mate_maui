@@ -1,13 +1,14 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mde.Project.Mobile.Core.Service.Interfaces;
-using Mde.Project.Mobile.Models;
+using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+
 
 namespace Mde.Project.Mobile.ViewModels;
 
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
 public class CargoDetailsViewModel:ObservableObject{
-    private readonly IWebCargoService cargoService;
+    private readonly ICargoService cargoService;
     private readonly IUiService uiService;
     
     
