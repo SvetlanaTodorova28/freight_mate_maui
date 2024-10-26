@@ -25,7 +25,7 @@ public class CargoDetailsViewModel:ObservableObject{
             {
                
                 Destination = selectedCargo.Destination;
-                TotalWeight = selectedCargo.TotalWeight;
+                
                 IsDangerous = selectedCargo.IsDangerous;
             }
             else{

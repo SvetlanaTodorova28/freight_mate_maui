@@ -1,130 +1,184 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 
 namespace Mde.Project.Mobile.ViewModels;
 
-
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
-public class CargoCreateViewModel:ObservableObject{
-    
-    
-    private readonly ICargoService cargoService;
-    private readonly IUiService uiService;
-    
+public class CargoCreateViewModel : ObservableObject
+{
+    private readonly ICargoService _cargoService;
+    private readonly IUiService _uiService;
+    private readonly IAppUserService _appUserService;
 
-        private string pageTitle;
-        public string PageTitle
+    public CargoCreateViewModel(ICargoService cargoService, IUiService uiService, IAppUserService appUserService)
+    {
+        _cargoService = cargoService;
+        _uiService = uiService;
+        _appUserService = appUserService;
+        LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
+        SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
+    }
+
+    #region Bindable Properties
+
+    private string _pageTitle = "Add Cargo";
+    public string PageTitle
+    {
+        get => _pageTitle;
+        set => SetProperty(ref _pageTitle, value);
+    }
+
+    private Cargo _selectedCargo;
+    public Cargo SelectedCargo
+    {
+        get => _selectedCargo;
+        set
         {
-            get { return pageTitle; }
-            set
-            {
-                SetProperty(ref pageTitle, value);
-            }
+            SetProperty(ref _selectedCargo, value);
+            LoadSelectedCargoData();
+        }
+    }
+
+    private double _totalWeight;
+    public double TotalWeight
+    {
+        get => _totalWeight;
+        set => SetProperty(ref _totalWeight, value);
+    }
+
+    private bool _isDangerous;
+    public bool IsDangerous
+    {
+        get => _isDangerous;
+        set => SetProperty(ref _isDangerous, value);
+    }
+
+    private string _destination;
+    public string Destination
+    {
+        get => _destination;
+        set => SetProperty(ref _destination, value);
+    }
+
+    // Collection of available users
+    private ObservableCollection<AppUserResponseDto> _users;
+    public ObservableCollection<AppUserResponseDto> Users
+    {
+        get => _users;
+        set => SetProperty(ref _users, value);
+    }
+
+    // Track the selected user
+    private AppUserResponseDto _selectedUser;
+    public AppUserResponseDto SelectedUser
+    {
+        get => _selectedUser;
+        set => SetProperty(ref _selectedUser, value);
+    }
+
+    #endregion
+
+    #region Commands
+    
+    public ICommand LoadUsersCommand { get; }
+    public ICommand SaveCommand { get; }
+
+    #endregion
+
+    #region Methods
+
+    // Load available users for selection
+    private async Task LoadUsers()
+    {
+        var fetchedUsers = await _appUserService.GetUsersWithFunctions();
+        Users = new ObservableCollection<AppUserResponseDto>(fetchedUsers);
+    }
+    
+    public ICommand OnAppearingCommand => new Command(async () => await OnAppearingAsync());
+    
+    private async Task OnAppearingAsync()
+    {
+        await LoadUsers();
+        
+    }
+
+    private async Task SaveCargoAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Destination))
+        {
+            await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
+            return;
         }
 
-        private Cargo selectedCargo;
-        public Cargo SelectedCargo
+        if (SelectedUser == null)
         {
-            get { return selectedCargo; }
-            set
-            {
-                selectedCargo = value;
-
-                
-                if (selectedCargo != null)
-                {
-                    PageTitle = "Edit cargo";
-                    Destination = selectedCargo.Destination;
-                    TotalWeight = selectedCargo.TotalWeight;
-                    IsDangerous = selectedCargo.IsDangerous;
-                }
-                else
-                {
-                    PageTitle = "Add cargo";
-                    Destination = default;
-                    TotalWeight = default;
-                    IsDangerous = default;
-
-                }
-            }
+            await _uiService.ShowSnackbarWarning("Please select a user.");
+            return;
         }
-
 
        
-        private double totalWeight;
-        public double TotalWeight
+        var appUser = new AppUser
         {
-            get { return totalWeight; }
-            set{
-                SetProperty(ref totalWeight, value);
-            }
+            Id = SelectedUser.Id,
+            FirstName = SelectedUser.FirstName,
+            Function = Enum.TryParse(typeof(Function), SelectedUser.AccessLevelType.Name, true, out var parsedFunction)
+                ? (Function)parsedFunction
+                : Function.Default 
+        };
+
+
+        
+        Cargo cargo;
+        if (SelectedCargo == null)
+        {
+            cargo = new Cargo();
+        }
+        else
+        {
+            cargo = SelectedCargo;
         }
 
-        
+        // Stel de waarden in voor cargo
+        cargo.Destination = Destination;
+        cargo.TotalWeight = TotalWeight;
+        cargo.IsDangerous = IsDangerous;
+        cargo.User = appUser;
 
-        private bool isDangerous;
-        public bool IsDangerous
+        // Verwerk cargo door het door te geven aan de API-aanroep
+        var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
+        if (result.IsSuccess)
         {
-            get { return isDangerous; }
-            set{
-                SetProperty(ref isDangerous, value);
-
-            }
-        }
-        
-
-        private string destination;
-        public string Destination
-        {
-            get { return destination; }
-            set{
-                SetProperty(ref destination, value);
-            }
-        }
-        
-        
-        public CargoCreateViewModel(ICargoService cargoService, IUiService uiService)
-        {
-            this.cargoService = cargoService;
-            this.uiService = uiService;
-        }
-        
-        public ICommand SaveCommand => new Command(async () =>
-        {
-            //todo: validation
-            Cargo cargo;
-
-            if (selectedCargo == null)
-            {
-                cargo = new Cargo();
-            }
-            else
-            {
-                cargo = SelectedCargo;
-            }
-
-            cargo.TotalWeight = TotalWeight;
-            cargo.Destination = Destination;
-            cargo.IsDangerous = IsDangerous;
-            cargo.Destination = Destination;
-
-            if (cargo.Id.Equals(Guid.Empty))
-            {
-                await cargoService.CreateCargo(cargo);
-                await uiService.ShowSnackbarSuccessAsync("CARGO CREATED SUCCESSFULLY 📦");
-            }
-            else
-            {
-                await cargoService.UpdateCargo(cargo);
-               
-            }
-
+            await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
             await Shell.Current.GoToAsync("//CargoListPage");
-           
-
-        });
-
+        }
+        else
+        {
+            await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+        }
     }
+
+
+
+
+
+    // Sync selected cargo data if editing
+    private void LoadSelectedCargoData()
+    {
+        PageTitle = SelectedCargo != null ? "Edit Cargo" : "Add Cargo";
+        Destination = SelectedCargo?.Destination ?? string.Empty;
+        TotalWeight = SelectedCargo?.TotalWeight ?? 0;
+        IsDangerous = SelectedCargo?.IsDangerous ?? false;
+
+        if (SelectedCargo != null)
+        {
+            SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.User.Id);
+        }
+    }
+
+    #endregion
+}

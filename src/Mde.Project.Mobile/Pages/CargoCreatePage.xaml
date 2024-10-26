@@ -1,70 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
              x:DataType="viewmodels:CargoCreateViewModel"
              x:Class="Mde.Project.Mobile.Pages.CargoCreatePage"
              Style="{StaticResource CustomPageStyle}">
-    
-           <Border Grid.Row="1" Margin="0,25,0,12"
-                   StyleClass="baseBorder">
-           <ScrollView>
-            <Grid ColumnDefinitions="*"
-                  RowDefinitions="Auto,*"
-                  RowSpacing="0">
-                   
-                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Padding="15">
-                   
-                    <Label StyleClass="TitleLabel" Text="Create Cargo" Padding="0,20"></Label>
-                    <Grid ColumnDefinitions="100,*"
-                          RowDefinitions="Auto, Auto, Auto"
-                          RowSpacing="10">  
-                        <Label Grid.Row="0"
-                               Grid.Column="0"
-                               StyleClass="BaseLabel"
-                               Text="Weight" />
-                        <Entry Grid.Row="0"
-                               Grid.Column="1"
-                               Placeholder="12345"
-                               Text="{Binding TotalWeight}" />
 
-                        <Label Grid.Row="1"
-                               Grid.Column="0"
-                               StyleClass="BaseLabel"
-                               Text="Destination" />
-                        <Entry Grid.Row="1"
-                               Grid.Column="1"
-                               Placeholder="Antwerp"
-                               StyleClass="baseEntry"
-                               Text="{Binding Destination}" />
+    <Border StyleClass="baseBorder">
+        <ScrollView>
+            <VerticalStackLayout Padding="15">
+                <Label StyleClass="TitleLabel" Text="{Binding PageTitle}" Padding="0,20"/>
+                <Grid ColumnDefinitions="100,*"
+                      RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                      RowSpacing="10">
+                    <Label Grid.Row="0" Grid.Column="0" StyleClass="BaseLabel" Text="Weight" />
+                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="12345" Text="{Binding TotalWeight}" />
 
-                        <Label Grid.Row="2"
-                               Grid.Column="0"
-                               StyleClass="BaseLabel"
-                               Text="Is it dangerous?"></Label>
-                        <CheckBox  Grid.Row="2"
-                                   Grid.Column="1"
-                                   IsChecked="{Binding IsDangerous}"
-                                   Color="Red"
-                                   HorizontalOptions="Start"
-                                   VerticalOptions="Center"/>
-                        <Label Text="Select a User:" />
-                        <Picker ItemsSource="{Binding Users}"
-                                ItemDisplayBinding="{Binding UserName}"
-                                SelectedItem="{Binding SelectedUser}"
-                                Title="Choose a User"/>
+                    <Label Grid.Row="1" Grid.Column="0" StyleClass="BaseLabel" Text="Destination" />
+                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="Antwerp" StyleClass="baseEntry" Text="{Binding Destination}" />
 
-                    </Grid>
-
-                    <Button Command="{Binding SaveCommand}"
-                            Text="Save"
-                            StyleClass="baseButton"/>
-                </VerticalStackLayout>
-            </Grid>
+                    <Label Grid.Row="2" Grid.Column="0" StyleClass="BaseLabel" Text="Is it dangerous?" />
+                    <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding IsDangerous}" Color="Red" HorizontalOptions="Start" VerticalOptions="Center" />
+                    
+                </Grid>
+                <Label StyleClass="BaseLabel" Text="Choose user" />
+                <Picker ItemsSource="{Binding Users}"
+                        SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                        ItemDisplayBinding="{Binding ., Converter={StaticResource UserDisplayConverter}}" />
+                <Button Command="{Binding SaveCommand}" Text="Save" StyleClass="baseButton"/>
+            </VerticalStackLayout>
         </ScrollView>
-           
-
-   
-       </Border>
+    </Border>
 </ContentPage>

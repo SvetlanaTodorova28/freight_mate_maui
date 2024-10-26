@@ -13,7 +13,7 @@ public partial class AppUserRegisterPage : ContentPage{
         AppUserRegisterViewModel userRegisterViewModel){
         InitializeComponent();
         _uiService = uiService;
-       BindingContext =  _userRegisterViewModel = userRegisterViewModel;
+         BindingContext =  _userRegisterViewModel = userRegisterViewModel;
         this.authenticationServiceMobile = authenticationServiceMobile;
        
     }

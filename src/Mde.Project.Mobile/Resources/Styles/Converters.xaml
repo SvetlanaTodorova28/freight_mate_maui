@@ -9,6 +9,7 @@
     <converters:BoolToDangerousColorConverter x:Key="BoolToDangerousColorConverter"/>
     <converters:BoolToIconConverter x:Key="BoolToIconConverter"/>
     <converters:FunctionToVisibilityConverter x:Key="FunctionToVisibilityConverter"/>
+    <converters:UserDisplayConverter x:Key="UserDisplayConverter"/>
     
 
 </ResourceDictionary>

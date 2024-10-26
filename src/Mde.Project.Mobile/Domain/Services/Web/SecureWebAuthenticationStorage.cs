@@ -70,7 +70,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         {
             if (functionMappings != null) return;
 
-            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<FunctionDto>>("/api/AccessLevels");
+            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<AccessLevelsResponseDto>>("/api/AccessLevels");
 
             Dictionary<Function, Guid> functionDictionary = new Dictionary<Function, Guid>();
             foreach (var functiondto in functionDtos)
