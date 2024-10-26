@@ -6,7 +6,8 @@ public class Cargo:BaseEntity {
     public double? TotalWeight { get; set; }
     public List<Product> Products { get; set; } = new List<Product>();
     
-    public List<AppUser>? AppUsers { get; set; } = new List<AppUser>();
+    public Guid AppUserId { get; set; }
+    public AppUser AppUser { get; set; }
     
     public bool IsDangerous { get; set; }
 }

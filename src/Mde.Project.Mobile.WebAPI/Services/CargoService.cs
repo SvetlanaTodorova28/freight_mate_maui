@@ -23,7 +23,7 @@ public class CargoService:ICargoService{
     public async Task<ResultModel<IEnumerable<Cargo>>> GetAllAsync(){
         var cargos = await _applicationDbContext
             .Cargos
-            .Include(c => c.AppUsers)
+            .Include(c => c.AppUser)
             .Include(c => c.Products)
             .ThenInclude(p => p.Category)
             .ToListAsync();
@@ -52,7 +52,7 @@ public class CargoService:ICargoService{
     public async Task<ResultModel<Cargo>> GetByIdAsync(Guid id){
         var cargo = await _applicationDbContext
             .Cargos
-            .Include(c => c.AppUsers)
+            .Include(c => c.AppUser)
             .Include(c => c.Products)
             .ThenInclude(p => p.Category)
             .FirstOrDefaultAsync(c => c.Id == id);
@@ -124,7 +124,7 @@ public class CargoService:ICargoService{
         
       var cargos = await _applicationDbContext
           .Cargos
-          .Include(c => c.AppUsers)
+          .Include(c => c.AppUser)
           .Include(c => c.Products)
           .Where(c => c.Products.Any(p => p.CategoryId == id))
           .ToListAsync();
@@ -145,9 +145,9 @@ public class CargoService:ICargoService{
         var guidId = userId.ToString(); 
         var cargos = await _applicationDbContext
             .Cargos
-            .Include(c => c.AppUsers)  // Ensure this relationship is correctly configured in the model
+            .Include(c => c.AppUser)  // Ensure this relationship is correctly configured in the model
             .Include(c => c.Products)  // Load related products data
-            .Where(c => c.AppUsers.Any(u =>u.Id.Equals(guidId))) // Assuming u.Id is a string in the database
+            .Where(c => c.AppUserId == Guid.Parse(guidId)) // Assuming u.Id is a string in the database
             .ToListAsync();
 
         if (!cargos.Any()) {

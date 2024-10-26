@@ -36,48 +36,7 @@ public class Seeder{
             },
 
         };
-        var cargos = new List<Cargo>{
-            new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000031"),
-                Destination = "Milan",
-                TotalWeight = 1500.5,
-            },
-            new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000032"),
-                Destination = "London",
-                TotalWeight = 2900.0
-            }
-            , new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000033"),
-                Destination = "Zeebrugge",
-                TotalWeight = 1500.5
-            },
-            new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000034"),
-                Destination = "Sofia",
-                TotalWeight = 2900.0
-            },
-             new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000035"),
-                Destination = "Zeebrugge",
-                TotalWeight = 500.5,
-                IsDangerous = true
-            },
-            new (){
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000036"),
-                Destination = "Berlin",
-                TotalWeight = 900.0,
-                IsDangerous = true
-            }
-        };
-        var cargosProducts = new[]{
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") },
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") },
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000035"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000024") },
-            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000036"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000024") }
-        };
+      
         var functions = new List<AccessLevel>{
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000081"),
@@ -177,17 +136,7 @@ public class Seeder{
             }
         };
         
-        var appUsersCargos = new[]{
-            new{ AppUsersId ="00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031") },
-            new{ AppUsersId = "00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032") },
-            new{ AppUsersId = "00000000-0000-0000-0000-400000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000035") },
-            new{ AppUsersId = "00000000-0000-0000-0000-200000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032") },
-            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000033") },
-            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000034") },
-            new{ AppUsersId = "00000000-0000-0000-0000-300000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000035") },
-            new{ AppUsersId = "00000000-0000-0000-0000-500000000000", CargosId = Guid.Parse("00000000-0000-0000-0000-000000000036") }
-            
-        };
+       
         
         
         //Add admin  role to database
@@ -235,6 +184,54 @@ public class Seeder{
                 RoleId = "00000000-0000-0000-0000-000000000061"
             }
         );
+          var cargos = new List<Cargo>{
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000031"),
+                Destination = "Milan",
+                TotalWeight = 1500.5,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-200000000000")
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000032"),
+                Destination = "London",
+                TotalWeight = 2900.0,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-400000000000")
+            }
+            , new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000033"),
+                Destination = "Zeebrugge",
+                TotalWeight = 1500.5,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-400000000000")
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000034"),
+                Destination = "Sofia",
+                TotalWeight = 2900.0,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-400000000000")
+            },
+             new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000035"),
+                Destination = "Zeebrugge",
+                TotalWeight = 500.5,
+                IsDangerous = true,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-300000000000")
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000036"),
+                Destination = "Berlin",
+                TotalWeight = 900.0,
+                IsDangerous = true,
+                AppUserId = Guid.Parse("00000000-0000-0000-0000-300000000000")
+            }
+        };
+        var cargosProducts = new[]{
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000031"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000021") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000032"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000022") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000035"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000024") },
+            new{ CargosId = Guid.Parse("00000000-0000-0000-0000-000000000036"), ProductsId = Guid.Parse("00000000-0000-0000-0000-000000000024") }
+        };
         
         modelBuilder.Entity<Category>().HasData(categories);
         modelBuilder.Entity<Product>().HasData(products);  
@@ -255,7 +252,7 @@ public class Seeder{
             modelBuilder.Entity<AppUser>().HasData(consignor);
         });
         modelBuilder.Entity($"{nameof(Cargo)}{nameof(Product)}").HasData(cargosProducts);
-        modelBuilder.Entity($"{nameof(AppUser)}{nameof(Cargo)}").HasData(appUsersCargos);
+       
 
     }
 }

@@ -11,7 +11,7 @@ public class CargoResponseDto:BaseDto{
    
     public List<Guid> ProductsIds { get; set; }
     
-    public List<Guid> AppUsersIds { get; set; }
+    public Guid AppUserId { get; set; }
     
     public bool IsDangerous { get; set; }
     

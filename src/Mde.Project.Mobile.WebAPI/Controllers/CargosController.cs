@@ -136,7 +136,7 @@ public class CargosController : ControllerBase{
                 Destination = x.Destination,
                 IsDangerous = x.IsDangerous,
                 TotalWeight = x.TotalWeight?? 0,
-                AppUsersIds = x.AppUsers.Select(u => Guid.Parse(u.Id)).Distinct().ToList(),
+                AppUserId = x.AppUserId,
                 ProductsIds = x.Products.Select(p => p.Id).ToList()
             });
         return Ok(cargosDtos);
