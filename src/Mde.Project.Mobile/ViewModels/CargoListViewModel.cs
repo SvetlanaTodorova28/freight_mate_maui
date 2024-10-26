@@ -30,6 +30,7 @@ public class CargoListViewModel:ObservableObject{
         _uiService = uiService;
         _authenticationService = authenticationService;
         LoadUserFunction();
+      LoadUserFirstName();
     }
     
     public Function UserFunction
@@ -38,6 +39,7 @@ public class CargoListViewModel:ObservableObject{
         set => SetProperty(ref _userFunction, value);
     }
 
+    //nodig om te weten als de add button mag getoond worden
     private async void LoadUserFunction()
     {
         try
@@ -49,6 +51,26 @@ public class CargoListViewModel:ObservableObject{
            
         }
     }
+    
+    private string _userFirstName;
+    public string UserFirstName
+    {
+        get => _userFirstName;
+        set => SetProperty(ref _userFirstName, value);
+    }
+
+    private async void LoadUserFirstName()
+    {
+        try
+        {
+            UserFirstName = await _authenticationService.GetUserFirstNameFromTokenAsync();
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowSnackbarWarning("Could not load user first name.");
+        }
+    }
+    
     
     //=========================== REFRESH =====================================
     public ICommand RefreshListCommand => new Command(async () =>

@@ -23,8 +23,8 @@
                     <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding IsDangerous}" Color="Red" HorizontalOptions="Start" VerticalOptions="Center" />
                     
                 </Grid>
-                <Label StyleClass="BaseLabel" Text="Choose user" />
-                <Picker ItemsSource="{Binding Users}"
+                <Label StyleClass="BaseLabel" Text="Choose responsible for the cargo" />
+                <Picker FontFamily="PlayBold" FontSize="18" ItemsSource="{Binding Users}"
                         SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                         ItemDisplayBinding="{Binding ., Converter={StaticResource UserDisplayConverter}}" />
                 <Button Command="{Binding SaveCommand}" Text="Save" StyleClass="baseButton"/>

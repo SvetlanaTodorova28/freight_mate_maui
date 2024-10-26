@@ -19,14 +19,14 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AppUserController:ControllerBase{
+public class AppUsersController:ControllerBase{
    
     private readonly UserManager<AppUser> _userManager;
     private readonly IAppUserService _userService;
     
     
 
-    public AppUserController(IAppUserService userService , UserManager<AppUser> userManager) {
+    public AppUsersController(IAppUserService userService , UserManager<AppUser> userManager) {
     
         _userService = userService;
         _userManager = userManager;
@@ -44,7 +44,7 @@ public class AppUserController:ControllerBase{
     /// If the operation is successful, the HTTP status code will be 200 (Ok).
     /// </returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<AppUserResponseDto>>> GetUsers()
     {
         // Fetch all users from the database
         var users = await _userManager
@@ -53,7 +53,7 @@ public class AppUserController:ControllerBase{
         
         // Map the user entities to UserResponsDto objects
         var userDtos = users
-            .Select(user => new UserResponseDto {
+            .Select(user => new AppUserResponseDto {
                 Id = Guid.Parse(user.Id),
                 UserName = user.UserName,
                 FirstName = user.FirstName
@@ -63,7 +63,7 @@ public class AppUserController:ControllerBase{
         return Ok(userDtos);
     }
     [HttpGet("users-with-roles")]
-    public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsersWithAdvancedAndBasic()
+    public async Task<ActionResult<IEnumerable<AppUserResponseDto>>> GetUsersWithAdvancedAndBasic()
     {
         
         var result = await _userService.GetUsersByRoleAsync();
@@ -75,7 +75,7 @@ public class AppUserController:ControllerBase{
         }
 
        
-        var userDtos = result.Data.Select(user => new UserResponseDto
+        var userDtos = result.Data.Select(user => new AppUserResponseDto
         {
             Id = Guid.Parse(user.Id),   
             UserName = user.UserName,
@@ -116,7 +116,7 @@ public class AppUserController:ControllerBase{
     /// <param name="id">The unique identifier of the AppUser entity to retrieve.</param>
     /// <returns>An IActionResult containing a AppUserResponseDto object or an error message.</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserResponseDto>> GetUserById(Guid id){
+    public async Task<ActionResult<AppUserResponseDto>> GetUserById(Guid id){
 
         var user = await _userManager
             .Users
@@ -129,7 +129,7 @@ public class AppUserController:ControllerBase{
             return NotFound("User not found");
         }
 
-        var userDto = new UserResponseDto{
+        var userDto = new AppUserResponseDto{
             Id = Guid.Parse(user.Id),
             Email = user.Email,
             UserName = user.Email,

@@ -137,7 +137,7 @@ public class CargosController : ControllerBase{
                 IsDangerous = x.IsDangerous,
                 TotalWeight = x.TotalWeight?? 0,
                 AppUserId = x.AppUserId,
-                ProductsIds = x.Products.Select(p => p.Id).ToList()
+                ProductsIds = x.Products.Select(p => p.Id).ToList()?? new List<Guid>()
             });
         return Ok(cargosDtos);
     }
@@ -173,23 +173,24 @@ public class CargosController : ControllerBase{
     ///     }
     /// </remarks>
     /// <param name="cargoRequestDto">The CargoRequestDto object containing the data for the new Cargo entity.</param>
-    [HttpPost]
-    
+    [HttpPost("Add")]
     public async Task<IActionResult> Add([FromBody] CargoRequestDto cargoRequestDto){
         // Create a new Cargo entity with the provided data
         var cargo = new Cargo{
             Destination = cargoRequestDto.Destination,
             TotalWeight = cargoRequestDto.TotalWeight,
-            IsDangerous = cargoRequestDto.IsDangerous
+            IsDangerous = cargoRequestDto.IsDangerous,
+            AppUserId = cargoRequestDto.AppUserId
         };
 
         
         var resultProducts = await _productService.GetProductsByIdsAsync(cargoRequestDto.Products);
-        if (resultProducts.Success) {
+        /*if (resultProducts.Success) {
             cargo.Products.AddRange(resultProducts.Data);
         } else {
             return BadRequest(resultProducts.Errors);
-        }
+        }*/
+        cargo.Products.AddRange(resultProducts.Data);
         // Create the new Cargo entity in the database
         var result = await _cargoService.AddAsync(cargo);
 
@@ -199,6 +200,8 @@ public class CargosController : ControllerBase{
             var cargoDto = new CargoResponseDto{
                 Id = result.Data.Id,
                 Destination = result.Data.Destination,
+                IsDangerous = result.Data.IsDangerous,
+                AppUserId = result.Data.AppUserId,
                 TotalWeight = result.Data.TotalWeight ?? 0
             };
             var resultProductsDto = await _productService.GetProductsByIdsAsync(cargoRequestDto.Products);

@@ -15,6 +15,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+          
 
             <Image
                 Grid.Row="0"
@@ -29,16 +30,32 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
-                    <ImageButton Source="plus.png"
-                                 Grid.Row="0"
-                                 HeightRequest="100"
-                                 WidthRequest="100"
-                                 HorizontalOptions="Start"
-                                 IsVisible="{Binding UserFunction, Converter={StaticResource FunctionToVisibilityConverter},ConverterParameter='Consignee'}" 
-                                 Command="{Binding CreateCargoCommand}" 
-                                 Margin="0,0,20,0" />
-
+                   <Grid>
+                       <Grid.RowDefinitions>
+                           <RowDefinition Height="Auto" />
+                       </Grid.RowDefinitions>
+                       <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="Auto"/>
+                           <ColumnDefinition Width="Auto"/>
+                       </Grid.ColumnDefinitions>
+                       <ImageButton Source="plus.png"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    HeightRequest="100"
+                                    WidthRequest="100"
+                                    HorizontalOptions="Start"
+                                    IsVisible="{Binding UserFunction, Converter={StaticResource FunctionToVisibilityConverter},ConverterParameter='Consignee'}" 
+                                    Command="{Binding CreateCargoCommand}" 
+                                    Margin="0,12,20,0" />
+                       <Label
+                           Text="{Binding UserFirstName}"
+                           FontFamily="PlayBold"
+                           TextColor="White"
+                           FontSize="20"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           Margin="40,0" />
+                   </Grid>
 
                     <ListView Grid.Row="1"
                               x:Name="lstCargos"

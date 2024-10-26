@@ -151,8 +151,9 @@
                                     Placeholder="CONFIRM PASSWORD"
                                     Text="{Binding ConfirmPassword}"/>
                             </Grid>
-                            <Label Text="Function" FontAttributes="Bold"></Label>
-                            <Picker ItemsSource="{Binding Functions}" SelectedItem="{Binding SelectedFunction}"></Picker>
+                            <Label Text="Chose your function"  FontFamily="PlayBold"
+                                   TextColor="White"></Label>
+                            <Picker FontFamily="PlayBold" FontSize="18" ItemsSource="{Binding Functions}" SelectedItem="{Binding SelectedFunction}"></Picker>
 
                             <Button
                                 StyleClass="baseButton"

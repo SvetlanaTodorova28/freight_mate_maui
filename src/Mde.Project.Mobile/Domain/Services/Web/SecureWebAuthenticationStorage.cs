@@ -180,6 +180,22 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
                 _ => throw new InvalidOperationException("Invalid role")
             };
         }
+        
+        public async Task<string> GetUserFirstNameFromTokenAsync()
+        {
+            var token = await GetTokenAsync();
+            if (string.IsNullOrEmpty(token))
+                throw new InvalidOperationException("No token found");
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+    
+            // Haal de 'FirstName' claim op
+            var firstNameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "FirstName");
+
+            return firstNameClaim?.Value ?? "Unknown"; // Geeft "Unknown" terug als er geen voornaam is
+        }
+
 
 
     }

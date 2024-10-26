@@ -13,6 +13,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
         Task<IEnumerable<Function>> GetFunctionsAsync();
 
+       Task<string> GetUserFirstNameFromTokenAsync();
         Task<Function> GetUserFunctionFromTokenAsync();
     }
 

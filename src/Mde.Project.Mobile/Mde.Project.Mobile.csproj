@@ -100,10 +100,6 @@
 	  <None Include="Platforms\Tizen\Main.cs" />
 	  <None Include="Platforms\Windows\App.xaml" />
 	  <None Include="Platforms\Windows\App.xaml.cs" />
-	  <None Update="Platforms\iOS\Entitlements.plist">
-	    <Link>\Users\svetlanatodorova\Mde\st-1-h-ee-SvetlanaTodorova28\src\Mde.Project.Mobile\Platforms\iOS\Resources\Entitlements.plist</Link>
-	    <IsDefaultItem>true</IsDefaultItem>
-	  </None>
 	</ItemGroup>
 	
 

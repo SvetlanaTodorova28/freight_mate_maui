@@ -14,12 +14,11 @@ public class AppUserService:IAppUserService{
     }
     public async Task<List<AppUserResponseDto>> GetUsersWithFunctions()
     {
-        var appUsers = await _httpClient.GetFromJsonAsync<List<AppUserResponseDto>>("/api/AppUser/users-with-roles");
+        var appUsers = await _httpClient.GetFromJsonAsync<List<AppUserResponseDto>>("/api/AppUsers/users-with-roles");
 
         if (appUsers == null || !appUsers.Any())
             return new List<AppUserResponseDto>();
-
-        // Voor elke gebruiker de AccessLevelType.Name mappen naar Function
+        
         foreach (var user in appUsers)
         {
             if (user.AccessLevelType != null && !string.IsNullOrEmpty(user.AccessLevelType.Name))

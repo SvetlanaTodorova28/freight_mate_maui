@@ -74,11 +74,11 @@ public class CargoService:ICargoService{
             };
         }
         
-        if (!entity.Products.Any()){
+        /*if (!entity.Products.Any()){
             return new ResultModel<Cargo> {
                 Errors = new List<string> { "Cargo must contain at least one product." }
             };
-        }
+        }*/
         
         
         _applicationDbContext.Cargos.Add(entity);
