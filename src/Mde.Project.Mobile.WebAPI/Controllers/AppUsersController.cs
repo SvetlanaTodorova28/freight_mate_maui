@@ -82,6 +82,12 @@ public class AppUserController:ControllerBase{
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email ,
+            Cargos = user.Cargos?.Select(cargo => new CargoResponseDto
+            {
+                Destination = cargo.Destination,
+                TotalWeight = cargo.TotalWeight,
+                IsDangerous = cargo.IsDangerous,
+            }).ToList(),
             AccessLevelType = new AccessLevelsResponseDto{
                 Id = user.AccessLevel.Id,
                 Name = user.AccessLevel.Name,
