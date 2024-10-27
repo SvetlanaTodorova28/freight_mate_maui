@@ -95,9 +95,14 @@ public class AppUserRegisterViewModel: ObservableObject
             await uiService.ShowSnackbarWarning("Username can not be empty");
             return false;
         }
-        if (string.IsNullOrEmpty(Username) || !IsValidEmail(Username))
+        if (!IsValidEmail(Username))
         {
             await uiService.ShowSnackbarWarning("Please enter a valid email address.");
+            return false;
+        }
+        if (string.IsNullOrEmpty(Password))
+        {
+            await uiService.ShowSnackbarWarning("Password can not be empty.");
             return false;
         }
 
