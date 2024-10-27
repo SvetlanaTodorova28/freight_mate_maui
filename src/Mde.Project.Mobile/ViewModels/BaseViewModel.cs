@@ -10,14 +10,15 @@ public class BaseViewModel:ObservableObject
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
-
+    private readonly LoginViewModel _loginViewModel;
     
     public BaseViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel)
+    AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel)
     {
        
         this.uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
+        _loginViewModel = loginViewModel;
         authenticationServiceMobile = authServiceMobile;
         
     }
@@ -31,7 +32,7 @@ public class BaseViewModel:ObservableObject
         if(success)
         {
             Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile,
-                _userRegisterViewModel));
+                _userRegisterViewModel, _loginViewModel));
         }
     }
     

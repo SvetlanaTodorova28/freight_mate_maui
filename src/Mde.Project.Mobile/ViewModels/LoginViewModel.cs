@@ -42,7 +42,7 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             // Redirect naar de hoofdpagina na succesvolle login
-            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel);
+            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else

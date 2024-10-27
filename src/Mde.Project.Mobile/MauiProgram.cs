@@ -5,6 +5,7 @@ using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
 
 namespace Mde.Project.Mobile
@@ -16,6 +17,7 @@ namespace Mde.Project.Mobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
@@ -32,6 +34,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
             Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
             
             
            

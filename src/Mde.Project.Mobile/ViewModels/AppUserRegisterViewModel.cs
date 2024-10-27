@@ -82,24 +82,42 @@ public class AppUserRegisterViewModel: ObservableObject
         Functions = new ObservableCollection<Function>(await authenticationServiceMobile.GetFunctionsAsync());
         
     }
-    private async Task ExecuteRegisterCommand()
+    public async Task<bool> ExecuteRegisterCommand()
     {
+        
         if (Password != ConfirmPassword)
         {
             await uiService.ShowSnackbarWarning("Password and confirm password do not match.");
-            return;
+            return false;
+        }
+        if (string.IsNullOrEmpty(Username))
+        {
+            await uiService.ShowSnackbarWarning("Username can not be empty");
+            return false;
+        }
+        if (string.IsNullOrEmpty(Username) || !IsValidEmail(Username))
+        {
+            await uiService.ShowSnackbarWarning("Please enter a valid email address.");
+            return false;
         }
 
         var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, ConfirmPassword, FirstName, LastName, selectedFunction);
-        if (isRegistered)
+        return isRegistered; 
+    }
+    
+    private bool IsValidEmail(string email)
+    {
+        try
         {
-            await uiService.ShowSnackbarSuccessAsync("Registration successful. You can now log in.");
-            Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile, this));
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
         }
-        else
+        catch
         {
-            await uiService.ShowSnackbarWarning("Registration failed. Please try again.");
+            return false;
         }
     }
+
+    
 }
 

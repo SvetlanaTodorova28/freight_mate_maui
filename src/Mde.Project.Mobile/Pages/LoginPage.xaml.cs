@@ -8,6 +8,7 @@ public partial class LoginPage : ContentPage{
     private readonly IUiService _uiService;
     private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
+    private readonly LoginViewModel _loginViewModel;
 
     private readonly
         ICargoService _cargoService;
@@ -24,6 +25,7 @@ public partial class LoginPage : ContentPage{
     }
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
-        Navigation.PushAsync(new WelcomePage(_uiService, _authenticationServiceMobile, _userRegisterViewModel));
+        Navigation.PushAsync(new WelcomePage(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
+            _loginViewModel));
     }
 }

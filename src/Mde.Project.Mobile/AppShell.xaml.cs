@@ -11,14 +11,16 @@ namespace Mde.Project.Mobile
         private readonly IAuthenticationServiceMobile _authenticationService;
         private readonly IUiService uiService;
         private readonly AppUserRegisterViewModel _userRegisterViewModel;
+        private readonly LoginViewModel _loginViewModel;
         public AppShell( IAuthenticationServiceMobile authenticationService, IUiService uiService,
-        AppUserRegisterViewModel userRegisterViewModel)
+        AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel)
         {
             InitializeComponent();
             _authenticationService = authenticationService;
             _userRegisterViewModel = userRegisterViewModel;
+            _loginViewModel = loginViewModel;
             this.uiService = uiService;
-            BindingContext = new BaseViewModel(uiService, _authenticationService, _userRegisterViewModel);
+            BindingContext = new BaseViewModel(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel);
           
             
         }

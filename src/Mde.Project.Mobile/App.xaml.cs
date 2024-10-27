@@ -10,14 +10,17 @@ public partial class App : Application
     private readonly ICargoService _cargoService;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
-    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, ICargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel)
+    private readonly LoginViewModel _loginViewModel;
+    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, ICargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel,
+        LoginViewModel loginViewModel)
     {
         InitializeComponent();
         _authenticationService = authenticationService;
         _cargoService = cargoService;
         this.uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
-        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel);
+        _loginViewModel = loginViewModel;
+        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel);
     }
 
     protected async override void OnStart()
@@ -39,12 +42,12 @@ public partial class App : Application
         {
             Debug.WriteLine($"Authentication Service Initialized: {_authenticationService != null}");
 
-            MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel);
+            MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel, _loginViewModel);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
-            MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel));
+            MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel));
         }
     }
     
