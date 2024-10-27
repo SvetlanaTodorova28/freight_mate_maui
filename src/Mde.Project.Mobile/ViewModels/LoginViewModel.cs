@@ -38,10 +38,30 @@ public class LoginViewModel : ObservableObject
 
     private async Task ExecuteLoginCommand()
     {
+        
+        if (string.IsNullOrWhiteSpace(UserName))
+        {
+            await uiService.ShowSnackbarWarning("Username cannot be empty.");
+            return;
+        }
+    
+        if (string.IsNullOrWhiteSpace(Password))
+        {
+            await uiService.ShowSnackbarWarning("Password cannot be empty.");
+            return;
+        }
+
+        
+        if (!IsValidEmail(UserName))
+        {
+            await uiService.ShowSnackbarWarning("Please enter a valid email address.");
+            return;
+        }
+
         var isAuthenticated = await authenticationServiceMobile.TryLoginAsync(UserName, Password);
         if (isAuthenticated)
         {
-            // Redirect naar de hoofdpagina na succesvolle login
+            
             Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
@@ -50,6 +70,21 @@ public class LoginViewModel : ObservableObject
             await uiService.ShowSnackbarWarning("Login Failed. Please check your username and password and try again.");
         }
     }
+
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 }
 
   

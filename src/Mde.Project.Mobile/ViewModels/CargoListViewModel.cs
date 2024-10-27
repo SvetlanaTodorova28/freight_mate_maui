@@ -75,14 +75,18 @@ public class CargoListViewModel:ObservableObject{
     //=========================== REFRESH =====================================
     public ICommand RefreshListCommand => new Command(async () =>
     {
-        
         try
         {
             var userId = await _authenticationService.GetUserIdFromTokenAsync();
-            var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
-            
+            if (string.IsNullOrEmpty(userId))
+            {
+                _uiService.ShowSnackbarWarning("User ID is not available, please login again.");
+                return;
+            }
 
-            // Convert DTOs to Models
+            var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
+
+           
             var modelCargos = dtoCargos.Select(dto => new Cargo
             {
                 Id = dto.Id,
@@ -91,22 +95,14 @@ public class CargoListViewModel:ObservableObject{
                 TotalWeight = dto.TotalWeight ?? 0
             }).ToList();
 
-            
             Cargos = new ObservableCollection<Cargo>(modelCargos);
-
-            
-            if (!modelCargos.Any()){
-                _uiService.ShowSnackbarWarning("You don't have any cargos available");
-            }
-            if (!modelCargos.Any()){
-                _uiService.ShowSnackbarWarning("You don't have any cargos available");
-            }
         }
         catch (Exception ex)
         {
-            _uiService.ShowSnackbarWarning("Contact your admin with explanation of the error");
+            _uiService.ShowSnackbarWarning("You don't have any cargos available");
         }
     });
+
     
     //=========================== CREATE =====================================
     public ICommand CreateCargoCommand => new Command(async () =>

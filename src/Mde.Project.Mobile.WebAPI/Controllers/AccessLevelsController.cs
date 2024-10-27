@@ -16,13 +16,13 @@ public class AccessLevelsController:ControllerBase{
     [HttpGet]
     public async Task<IActionResult> Get(){
 
-        // Calls the GetAllAsync method from the ICargoService interface
+       
         var result = await _accessLevelService.GetAllAsync();
 
-        // Checks if the operation was successful
+        
         if (result.Success){
 
-            // Maps the Cargo entities to CargoResponseDto objects
+           
             var cargosDtos = result
                 .Data
                 .Select(x => new AccessLevelsResponseDto(){
