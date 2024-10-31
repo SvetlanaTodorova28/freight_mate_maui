@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Mde.Project.Mobile.WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class changerelationcargouse : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -217,18 +217,18 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalWeight = table.Column<double>(type: "float", nullable: true),
-                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AppUserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDangerous = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cargos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cargos_AspNetUsers_AppUserId1",
-                        column: x => x.AppUserId1,
+                        name: "FK_Cargos_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,19 +276,6 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Cargos",
-                columns: new[] { "Id", "AppUserId", "AppUserId1", "Destination", "IsDangerous", "TotalWeight" },
-                values: new object[,]
-                {
-                    { new Guid("00000000-0000-0000-0000-000000000031"), new Guid("00000000-0000-0000-0000-200000000000"), null, "Milan", false, 1500.5 },
-                    { new Guid("00000000-0000-0000-0000-000000000032"), new Guid("00000000-0000-0000-0000-400000000000"), null, "London", false, 2900.0 },
-                    { new Guid("00000000-0000-0000-0000-000000000033"), new Guid("00000000-0000-0000-0000-400000000000"), null, "Zeebrugge", false, 1500.5 },
-                    { new Guid("00000000-0000-0000-0000-000000000034"), new Guid("00000000-0000-0000-0000-400000000000"), null, "Sofia", false, 2900.0 },
-                    { new Guid("00000000-0000-0000-0000-000000000035"), new Guid("00000000-0000-0000-0000-300000000000"), null, "Zeebrugge", true, 500.5 },
-                    { new Guid("00000000-0000-0000-0000-000000000036"), new Guid("00000000-0000-0000-0000-300000000000"), null, "Berlin", true, 900.0 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -303,11 +290,11 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AccessLevelId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "00000000-0000-0000-0000-100000000000", 0, new Guid("00000000-0000-0000-0000-000000000081"), "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAEAef5qbOPo3HajY/yiJFzobyEROJoCmipDtxYAFmAx1D90dcpkd4/yRAt+mx7tyK7g==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
-                    { "00000000-0000-0000-0000-200000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEAYRYxVqZlTtBmpqI5dPFDinf+kleG+Kv+H+P2jJrkH3dl1WO4t4nGDaet5ZDjHVKg==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
-                    { "00000000-0000-0000-0000-300000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAELoiK4Mgkgtl9SR12k1nFOIOFv0ts3BLnXzNQrfaRWL0+PqOLwRh/iIRVjysRsvG5A==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
-                    { "00000000-0000-0000-0000-400000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEJdzw30NqIjoknGePDclit6UXmfRl7ABUfjssUHVAcHb5PtooxV/csGfpk+z83f8EQ==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" },
-                    { "00000000-0000-0000-0000-500000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "s@t.com", true, "Sve", "Tod", false, null, "S@T.COM", "S@T.COM", "AQAAAAIAAYagAAAAEAE21QZ1K+eOofr/uBf0zREpTCYMezbWzB3BmoMyJGlLztGGJPEa8/8PMHgOMh+SUQ==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "s@t.com" }
+                    { "00000000-0000-0000-0000-100000000000", 0, new Guid("00000000-0000-0000-0000-000000000081"), "4b277cc7-bcb0-4d91-8aab-08dc4b606f7a", "Admin@fedex.com", true, "Admin", null, false, null, "ADMIN@FEDEX.COM", "ADMIN@FEDEX.COM", "AQAAAAIAAYagAAAAEI9+Z0mTOYbXjekkEBajPam7V9D1SN54I92Qpqd3fad+tB2hSjr+S/NtkfadEglu/g==", null, false, "BABUNAPLANINAVHODCHETERI", false, "Admin@fedex.com" },
+                    { "00000000-0000-0000-0000-200000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "1YET1ANOTHER1UNIQUE1STRING1", "tom@gmail.com", true, "Tom", "Calme", false, null, "TOM@GMAIL.COM", "TOM@GMAIL.COM", "AQAAAAIAAYagAAAAEAMU0NpNyrZ9BkaCkstrtv8TIJU6bW23aZwYgzPFQA5RsvSRlp70QpuiAz/Dady70A==", null, false, "1DIFFERENT1UNIQUE1STRING1", false, "tom@gmail.com" },
+                    { "00000000-0000-0000-0000-300000000000", 0, new Guid("00000000-0000-0000-0000-000000000083"), "2YET2ANOTHER2UNIQUE2STRING2", "sarah@gmail.com", true, "Sarah", "Vrout", false, null, "SARAH@GMAIL.COM", "SARAH@GMAIL.COM", "AQAAAAIAAYagAAAAENru5gXiewzsThc1kAyZZq9LCPCu1HhYtoWU111w316q3jhOwHUSvU+Xsr/VAde2vg==", null, false, "2DIFFERENT2UNIQUE2STRING2", false, "sarah@gmail.com" },
+                    { "00000000-0000-0000-0000-400000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "milka@speedy.gr", true, "Milka", "Stenis", false, null, "MILKA@SPEEDY.GR", "MILKA@SPEEDY.GR", "AQAAAAIAAYagAAAAEDG2ab6ltBStYsB75R+QiSKgRXp7SaMejOGxT8hXds5ajs5gAdl/vCAFkMelSMxI/Q==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "milka@speedy.gr" },
+                    { "00000000-0000-0000-0000-500000000000", 0, new Guid("00000000-0000-0000-0000-000000000082"), "3YET3ANOTHER3UNIQUE3STRING3", "s@t.com", true, "Sve", "Tod", false, null, "S@T.COM", "S@T.COM", "AQAAAAIAAYagAAAAEKj13DLu0qE4Fj3jUgdBGIMcbmVrfTkvG8O+M916TNfyjilYlADVAkLcD3fpYVoqnA==", null, false, "3DIFFERENT3UNIQUE3STRING3", false, "s@t.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -331,6 +318,19 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                     { "00000000-0000-0000-0000-000000000062", "00000000-0000-0000-0000-300000000000" },
                     { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-400000000000" },
                     { "00000000-0000-0000-0000-000000000061", "00000000-0000-0000-0000-500000000000" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cargos",
+                columns: new[] { "Id", "AppUserId", "Destination", "IsDangerous", "TotalWeight" },
+                values: new object[,]
+                {
+                    { new Guid("00000000-0000-0000-0000-000000000031"), "00000000-0000-0000-0000-200000000000", "Milan", false, 1500.5 },
+                    { new Guid("00000000-0000-0000-0000-000000000032"), "00000000-0000-0000-0000-400000000000", "London", false, 2900.0 },
+                    { new Guid("00000000-0000-0000-0000-000000000033"), "00000000-0000-0000-0000-400000000000", "Zeebrugge", false, 1500.5 },
+                    { new Guid("00000000-0000-0000-0000-000000000034"), "00000000-0000-0000-0000-400000000000", "Sofia", false, 2900.0 },
+                    { new Guid("00000000-0000-0000-0000-000000000035"), "00000000-0000-0000-0000-300000000000", "Zeebrugge", true, 500.5 },
+                    { new Guid("00000000-0000-0000-0000-000000000036"), "00000000-0000-0000-0000-300000000000", "Berlin", true, 900.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -396,9 +396,9 @@ namespace Mde.Project.Mobile.WebAPI.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cargos_AppUserId1",
+                name: "IX_Cargos_AppUserId",
                 table: "Cargos",
-                column: "AppUserId1");
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

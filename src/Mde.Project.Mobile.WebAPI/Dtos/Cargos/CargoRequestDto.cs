@@ -13,7 +13,7 @@ public class CargoRequestDto:BaseDto{
    
     
     public List<Guid>? Products { get; set; }
-    public Guid AppUserId { get; set; }
+    public string AppUserId { get; set; }
     
     [Required(ErrorMessage = "{0} are required")]
     public bool IsDangerous { get; set; }

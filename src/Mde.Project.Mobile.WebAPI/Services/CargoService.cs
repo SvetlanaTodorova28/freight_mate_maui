@@ -93,11 +93,11 @@ public class CargoService:ICargoService{
                 Errors = new List<string> { $"No cargo with ID {entity.Id} exists." }
             };
         }
-        if (!entity.Products.Any()){
+        /*if (!entity.Products.Any()){
             return new ResultModel<Cargo> {
                 Errors = new List<string> { "Cargo must contain at least one product." }
             };
-        }
+        }*/
         _applicationDbContext.Cargos.Update(entity);
         await _applicationDbContext.SaveChangesAsync();
 
@@ -147,7 +147,7 @@ public class CargoService:ICargoService{
             .Cargos
             .Include(c => c.AppUser)  // Ensure this relationship is correctly configured in the model
             .Include(c => c.Products)  // Load related products data
-            .Where(c => c.AppUserId == Guid.Parse(guidId)) // Assuming u.Id is a string in the database
+            .Where(c => c.AppUserId ==guidId) // Assuming u.Id is a string in the database
             .ToListAsync();
 
         if (!cargos.Any()) {

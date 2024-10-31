@@ -13,7 +13,7 @@ public class CargoResponseDto:BaseDto{
    
    public List<Guid> ProductsIds { get; set; }
     
-    public Guid AppUserId { get; set; }
+    public string AppUserId { get; set; }
     
     public AppUserResponseDto AppAppUser { get; set; }
     

@@ -253,7 +253,7 @@ public class CargosController : ControllerBase{
     /// </remarks>
    
    
-    [HttpPut("{id}")]
+    [HttpPut("Update/{id}")]
     public async Task<IActionResult> Update([FromBody] CargoRequestDto cargoRequestDto){
         
         // Check if the Cargo entity with the given id exists in the database
@@ -262,10 +262,12 @@ public class CargosController : ControllerBase{
         }
         
 
+        /*
         var resultProducts = await _productService.GetProductsByIdsAsync(cargoRequestDto.Products);
         if (!resultProducts.Success){
             return BadRequest(resultProducts.Errors);
         }
+        */
         
         var existingCargoResult = await _cargoService.GetByIdAsync(cargoRequestDto.Id);
         if (!existingCargoResult.Success){
@@ -273,15 +275,16 @@ public class CargosController : ControllerBase{
         }
         
         var existingCargo = existingCargoResult.Data;
-        existingCargo.Destination =  existingCargo.Destination;
-        existingCargo.TotalWeight = existingCargo.TotalWeight;
-        existingCargo.IsDangerous = existingCargo.IsDangerous;
+        existingCargo.Destination =  cargoRequestDto.Destination;
+        existingCargo.TotalWeight = cargoRequestDto.TotalWeight;
+        existingCargo.IsDangerous = cargoRequestDto.IsDangerous;
+        existingCargo.AppUserId = cargoRequestDto.AppUserId;
         existingCargo.Products.Clear();
        
         
-        if (cargoRequestDto.Products != null && cargoRequestDto.Products.Any()){
+        /*if (cargoRequestDto.Products != null && cargoRequestDto.Products.Any()){
             existingCargo.Products.AddRange(resultProducts.Data);
-        }
+        }*/
        
         
         var result = await _cargoService.UpdateAsync(existingCargo);
