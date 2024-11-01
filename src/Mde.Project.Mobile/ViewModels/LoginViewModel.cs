@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -19,7 +20,7 @@ public class LoginViewModel : ObservableObject
         this.uiService = uiService;
         authenticationServiceMobile = authServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
-        LoginCommand = new Command(async () => await ExecuteLoginCommand());
+        LoginCommand = new RelayCommand(async () => await ExecuteLoginCommand());
     }
 
     private string username;
@@ -36,26 +37,26 @@ public class LoginViewModel : ObservableObject
         set => SetProperty(ref password, value);
     }
 
-    private async Task ExecuteLoginCommand()
+    public async Task<bool> ExecuteLoginCommand()
     {
         
         if (string.IsNullOrWhiteSpace(UserName))
         {
             await uiService.ShowSnackbarWarning("Username cannot be empty.");
-            return;
+            return false;
         }
     
         if (string.IsNullOrWhiteSpace(Password))
         {
             await uiService.ShowSnackbarWarning("Password cannot be empty.");
-            return;
+            return false;
         }
 
         
         if (!IsValidEmail(UserName))
         {
             await uiService.ShowSnackbarWarning("Please enter a valid email address.");
-            return;
+            return false;
         }
 
         var isAuthenticated = await authenticationServiceMobile.TryLoginAsync(UserName, Password);
@@ -69,6 +70,8 @@ public class LoginViewModel : ObservableObject
         {
             await uiService.ShowSnackbarWarning("Login Failed. Please check your username and password and try again.");
         }
+        var isLoggedIn = await authenticationServiceMobile.TryLoginAsync(username, Password);
+        return isLoggedIn; 
     }
 
 

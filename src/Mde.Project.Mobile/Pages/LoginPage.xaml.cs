@@ -17,15 +17,32 @@ public partial class LoginPage : ContentPage{
     AppUserRegisterViewModel userRegisterViewModel){
 
         InitializeComponent();
-        BindingContext = loginViewModel;
+        BindingContext = _loginViewModel = loginViewModel;
         _uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _authenticationServiceMobile = authenticationServiceMobile; 
        
     }
+    
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
         Navigation.PushAsync(new WelcomePage(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
             _loginViewModel));
+    }
+
+    private async void Login_OnClicked(object? sender, EventArgs e){
+        await Navigation.PushModalAsync(new LoadingPageBase());
+       
+        bool isLoggedIn = await _loginViewModel.ExecuteLoginCommand();
+        
+        await Navigation.PopModalAsync();
+
+        if (isLoggedIn){
+            _uiService.ShowSnackbarSuccessAsync("You are succefully logged in");
+            await Task.Delay(8000);
+           // Application.Current.MainPage = new NavigationPage(new CargoListPage));
+           
+        }
+
     }
 }

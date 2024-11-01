@@ -92,7 +92,7 @@
                         <Button
                             x:Name="Login"
                             StyleClass="baseButton"
-                            Command="{Binding LoginCommand}"
+                            Clicked="Login_OnClicked"
                             Text="Login" />
                         <Label
                             Margin="0,20,0,10"
