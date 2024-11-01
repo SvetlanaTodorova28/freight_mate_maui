@@ -132,25 +132,27 @@ public class CargoCreateViewModel : ObservableObject
                 await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
                 return;
             }
-            
+        
             var cargo = SelectedCargo ?? new Cargo();
             cargo.Destination = Destination;
             cargo.TotalWeight = TotalWeight;
             cargo.IsDangerous = IsDangerous;
-            if (SelectedCargo.Userid == null)
+
+           
+            if (SelectedUser != null)
+            {
+                cargo.Userid = SelectedUser.Id;
+            }
+            else if (SelectedCargo != null && SelectedCargo.Userid != null)
+            {
+                cargo.Userid = SelectedCargo.Userid;
+            }
+            else
             {
                 await _uiService.ShowSnackbarWarning("Please select a user.");
                 return;
             }
-
-            if (SelectedUser != null){
-                cargo.Userid = SelectedUser.Id;
-            }
-            else{
-                cargo.Userid = SelectedCargo.Userid;
-            }
-            
-           
+        
             var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
             if (result.IsSuccess)
             {
@@ -164,7 +166,6 @@ public class CargoCreateViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // Voeg hier de logging van de uitzondering toe
             await _uiService.ShowSnackbarWarning("An error occurred: " + ex.Message);
         }
     }
@@ -172,8 +173,8 @@ public class CargoCreateViewModel : ObservableObject
     
 
    
-    private void LoadSelectedCargoData()
-    {
+    private async Task LoadSelectedCargoData(){
+         await LoadUsers();
         PageTitle = SelectedCargo != null ? "Edit Cargo" : "Add Cargo";
         Destination = SelectedCargo?.Destination ?? string.Empty;
         TotalWeight = SelectedCargo?.TotalWeight ?? 0;
@@ -181,7 +182,7 @@ public class CargoCreateViewModel : ObservableObject
 
         if (SelectedCargo != null && Users != null)
         {
-            SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.User.Id);
+            SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.Userid);
         }
     }
     
