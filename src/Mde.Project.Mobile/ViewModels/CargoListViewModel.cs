@@ -30,7 +30,8 @@ public class CargoListViewModel:ObservableObject{
         _uiService = uiService;
         _authenticationService = authenticationService;
         LoadUserFunction();
-      LoadUserFirstName();
+        LoadUserFirstName();
+       
     }
     
     public Function UserFunction
@@ -92,7 +93,8 @@ public class CargoListViewModel:ObservableObject{
                 Id = dto.Id,
                 Destination = dto.Destination,
                 IsDangerous = dto.IsDangerous,
-                TotalWeight = dto.TotalWeight ?? 0
+                TotalWeight = dto.TotalWeight ?? 0,
+                Userid = Guid.Parse(userId)
             }).ToList();
 
             Cargos = new ObservableCollection<Cargo>(modelCargos);
@@ -132,7 +134,7 @@ public class CargoListViewModel:ObservableObject{
         
         if (cargo != null)
         {
-            await _cargoService.Delete(cargo.Id);
+            await _cargoService.DeleteCargo(cargo.Id);
             Cargos.Remove(cargo); 
             await _uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
            

@@ -17,12 +17,9 @@ public class CargoService : ICargoService
     }
 
     public async Task<List<CargoResponseDto>> GetCargosForUser(Guid userId){
-        //api/Cargos/GetCargosByUser/
-        var cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
-        if (cargos.Any())
-            return cargos;
-
-        return new List<CargoResponseDto>();
+        var cargos = new List<CargoResponseDto>();
+         cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
+        return cargos;
     }
 
     public async Task<(bool IsSuccess, string ErrorMessage)> CreateCargo(Cargo cargo)
@@ -34,18 +31,9 @@ public class CargoService : ICargoService
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
             Products = new List<Guid>(),
-            AppUserId = cargo.User.Id 
+            AppUserId = cargo.Userid
         };
-        // public string Destination { get; set; }
-        //    
-        //    public double? TotalWeight { get; set; }
-        //   
-        //    
-        //    public List<Guid>? Products { get; set; }
-        //    public Guid AppUserId { get; set; }
-        //    
-        //    [Required(ErrorMessage = "{0} are required")]
-        //    public bool IsDangerous { get; set; }
+       
 
         var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
         var responseContent = await response.Content.ReadAsStringAsync();
@@ -69,8 +57,9 @@ public class CargoService : ICargoService
             Destination = cargo.Destination,
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
+            Id = cargo.Id,
             Products = cargo.Products?.Select(p => p.Id).ToList(),
-            AppUserId = cargo.User.Id // Assign the selected user's ID
+            AppUserId = cargo.Userid // Assign the selected user's ID
         };
 
         var response = await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);
@@ -85,8 +74,25 @@ public class CargoService : ICargoService
         }
     }
 
-    public Task<bool> Delete(Guid cargoId)
+    public async Task<(bool IsSuccess, string ErrorMessage)> DeleteCargo(Guid cargoId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, string.Empty);  // Succesvol verwijderd
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return (false, $"Failed to delete cargo: {error}");  // Er ging iets mis tijdens het verwijderen
+            }
+        }
+        catch (Exception ex)
+        {
+            return (false, $"Exception when deleting cargo: {ex.Message}");  // Uitzondering gevangen
+        }
     }
+
 }

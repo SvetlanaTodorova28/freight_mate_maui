@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
+using Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
 
 namespace Mde.Project.Mobile.ViewModels;
 
@@ -14,14 +15,19 @@ public class CargoCreateViewModel : ObservableObject
     private readonly ICargoService _cargoService;
     private readonly IUiService _uiService;
     private readonly IAppUserService _appUserService;
+    private readonly IAuthenticationServiceMobile _authenticationService;
+   
 
-    public CargoCreateViewModel(ICargoService cargoService, IUiService uiService, IAppUserService appUserService)
+    public CargoCreateViewModel(ICargoService cargoService, IUiService uiService, IAppUserService appUserService,
+        IAuthenticationServiceMobile authenticationService)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _appUserService = appUserService;
+        _authenticationService = authenticationService;
         LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
         SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
+        LoadUsers().ConfigureAwait(false);
     }
 
     #region Bindable Properties
@@ -80,6 +86,16 @@ public class CargoCreateViewModel : ObservableObject
         get => _selectedUser;
         set => SetProperty(ref _selectedUser, value);
     }
+    private ObservableCollection<Cargo> cargos;
+    
+    public ObservableCollection<Cargo> Cargos
+    {
+        get { return cargos; }
+        set
+        {
+            SetProperty(ref cargos, value);
+        }
+    }
 
     #endregion
 
@@ -109,64 +125,53 @@ public class CargoCreateViewModel : ObservableObject
 
     private async Task SaveCargoAsync()
     {
-        if (string.IsNullOrWhiteSpace(Destination))
+        try
         {
-            await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
-            return;
+            if (string.IsNullOrWhiteSpace(Destination))
+            {
+                await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
+                return;
+            }
+            
+            var cargo = SelectedCargo ?? new Cargo();
+            cargo.Destination = Destination;
+            cargo.TotalWeight = TotalWeight;
+            cargo.IsDangerous = IsDangerous;
+            if (SelectedCargo.Userid == null)
+            {
+                await _uiService.ShowSnackbarWarning("Please select a user.");
+                return;
+            }
+
+            if (SelectedUser != null){
+                cargo.Userid = SelectedUser.Id;
+            }
+            else{
+                cargo.Userid = SelectedCargo.Userid;
+            }
+            
+           
+            var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
+            if (result.IsSuccess)
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+                await Shell.Current.GoToAsync("//CargoListPage");
+            }
+            else
+            {
+                await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+            }
         }
-
-        if (SelectedUser == null)
+        catch (Exception ex)
         {
-            await _uiService.ShowSnackbarWarning("Please select a user.");
-            return;
-        }
-
-       
-        var appUser = new AppUser
-        {
-            Id = SelectedUser.Id,
-            FirstName = SelectedUser.FirstName,
-            Function = Enum.TryParse(typeof(Function), SelectedUser.AccessLevelType.Name, true, out var parsedFunction)
-                ? (Function)parsedFunction
-                : Function.Default 
-        };
-
-
-        
-        Cargo cargo;
-        if (SelectedCargo == null)
-        {
-            cargo = new Cargo();
-        }
-        else
-        {
-            cargo = SelectedCargo;
-        }
-
-        // Stel de waarden in voor cargo
-        cargo.Destination = Destination;
-        cargo.TotalWeight = TotalWeight;
-        cargo.IsDangerous = IsDangerous;
-        cargo.User = appUser;
-
-        // Verwerk cargo door het door te geven aan de API-aanroep
-        var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
-        if (result.IsSuccess)
-        {
-            await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-            await Shell.Current.GoToAsync("//CargoListPage");
-        }
-        else
-        {
-            await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+            // Voeg hier de logging van de uitzondering toe
+            await _uiService.ShowSnackbarWarning("An error occurred: " + ex.Message);
         }
     }
 
+    
 
-
-
-
-    // Sync selected cargo data if editing
+   
     private void LoadSelectedCargoData()
     {
         PageTitle = SelectedCargo != null ? "Edit Cargo" : "Add Cargo";
@@ -174,11 +179,16 @@ public class CargoCreateViewModel : ObservableObject
         TotalWeight = SelectedCargo?.TotalWeight ?? 0;
         IsDangerous = SelectedCargo?.IsDangerous ?? false;
 
-        if (SelectedCargo != null)
+        if (SelectedCargo != null && Users != null)
         {
             SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.User.Id);
         }
     }
+    
+  
+
+
+
 
     #endregion
 }

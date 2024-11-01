@@ -10,8 +10,9 @@ public interface ICargoService{
     Task<List<CargoResponseDto>> GetCargosForUser(Guid userId);
     Task<(bool IsSuccess, string ErrorMessage)> CreateCargo(Cargo cargo);
     Task<(bool IsSuccess, string ErrorMessage)> UpdateCargo(Cargo cargo);
-    
-    Task<bool> Delete(Guid cargoId);
+    Task<(bool IsSuccess, string ErrorMessage)> DeleteCargo(Guid cargoId);
+
+
 
 
 }
