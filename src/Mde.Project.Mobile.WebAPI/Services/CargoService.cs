@@ -149,24 +149,9 @@ public class CargoService:ICargoService{
             .Include(c => c.Products)  // Load related products data
             .Where(c => c.AppUserId ==guidId) // Assuming u.Id is a string in the database
             .ToListAsync();
-
-        if (!cargos.Any()) {
-            return new ResultModel<IEnumerable<Cargo>>{
-                Errors = new List<string> { "No cargos found for this user." }
-            };
-        }
-
-        if (cargos == null || !cargos.Any()) {
-            return new ResultModel<IEnumerable<Cargo>>{
-                Errors = new List<string> { "No cargos found for this user." }
-            };
-        }
-
-
-        // Instead of treating no results as an error, simply return the empty list
+        
         return new ResultModel<IEnumerable<Cargo>> {
-            Data = cargos,
-            Errors = cargos.Count == 0 ? new List<string> { "No cargos with this user ID exist." } : null
+            Data = cargos
         };
     }
 

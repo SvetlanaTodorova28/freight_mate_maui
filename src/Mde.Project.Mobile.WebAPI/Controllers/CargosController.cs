@@ -129,6 +129,10 @@ public class CargosController : ControllerBase{
             return NotFound(result.Errors);
         }
 
+        if (!result.Data.Any() || result.Data == null){
+            return Ok(result.Data);
+        }
+
         var cargosDtos = result
             .Data
             .Select(x => new CargoResponseDto(){
@@ -366,7 +370,7 @@ public class CargosController : ControllerBase{
     /// If the Cargo entity does not exist, a NotFound result is returned.
     /// If the deletion operation fails, a BadRequest result with the error messages is returned.
     /// </returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("Delete/{id}")]
    
     public async Task<IActionResult> Delete(Guid id){
         // Check if the Cargo entity with the given id exists in the database
