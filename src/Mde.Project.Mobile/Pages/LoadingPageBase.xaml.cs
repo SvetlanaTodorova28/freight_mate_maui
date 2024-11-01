@@ -17,8 +17,8 @@ public partial class LoadingPageBase : ContentPage{
         {
             _angle += 5;
             if (_angle > 360) _angle = 0;
-            canvasView.InvalidateSurface(); // Forceer een her-tekening
-            return true; // Continue timing
+            canvasView.InvalidateSurface(); 
+            return true; 
         });
     }
 
@@ -39,7 +39,7 @@ public partial class LoadingPageBase : ContentPage{
             IsAntialias = true
         };
 
-        // Teken een marker
+        
         var markerPaint = new SKPaint
         {
             Style = SKPaintStyle.Fill,
@@ -49,11 +49,11 @@ public partial class LoadingPageBase : ContentPage{
         canvas.Translate(center.X, center.Y);
         canvas.RotateDegrees(_angle);
 
-        // Teken de hoofdcirkel
+       
         canvas.DrawCircle(0, 0, radius, paint);
 
-        // Teken de marker aan de rand van de cirkel
-        canvas.DrawCircle(radius, 0, 20, markerPaint); // 10 is de straal van de marker
+       
+        canvas.DrawCircle(radius, 0, 20, markerPaint); 
     }
 
 
