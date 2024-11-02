@@ -8,19 +8,24 @@ namespace Mde.Project.Mobile.ViewModels;
 public class LoginViewModel : ObservableObject
 {
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
+    private readonly IAuthFaceRecognition _authFaceRecognition;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
 
     public ICommand LoginCommand { get; }
+    public ICommand FaceLoginCommand { get; }
 
     public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel)
+    AppUserRegisterViewModel userRegisterViewModel, IAuthFaceRecognition authFaceRecognition)
     {
        
         this.uiService = uiService;
         authenticationServiceMobile = authServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
+        _authFaceRecognition = authFaceRecognition;
         LoginCommand = new RelayCommand(async () => await ExecuteLoginCommand());
+        FaceLoginCommand = new RelayCommand(async () => await ExecuteFaceLoginCommand());
+        
     }
 
     private string username;
@@ -63,7 +68,7 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             
-            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this);
+            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _authFaceRecognition);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -73,6 +78,38 @@ public class LoginViewModel : ObservableObject
         var isLoggedIn = await authenticationServiceMobile.TryLoginAsync(username, Password);
         return isLoggedIn; 
     }
+    
+    public async Task<bool> ExecuteFaceLoginCommand()
+    {
+        // Toon een laadindicator of iets dergelijks om de gebruiker te informeren dat het proces bezig is.
+       // uiService.ShowLoading("Authenticating...");
+
+        try
+        {
+            var isAuthenticated = await _authFaceRecognition.PromptLoginAsync("Please authenticate to proceed");
+            // Verberg de laadindicator zodra de authenticatiepoging is voltooid.
+            //uiService.HideLoading();
+            
+
+            if (isAuthenticated.Authenticated){
+                var username = "s@t.com"; // Of laad van Keychain
+                var password = "1234"; // Of laad van Keychain
+                var loginResult = await authenticationServiceMobile.TryLoginAsync(username, password);
+                if (loginResult) {
+                    Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _authFaceRecognition);
+                    await Shell.Current.GoToAsync("//CargoListPage");
+                } else {
+                    await uiService.ShowSnackbarWarning("Automatic login failed.");
+                }
+            } else {
+                await uiService.ShowSnackbarWarning("Face recognition login failed. Please try again.");
+            }
+        } catch (Exception ex) {
+            await uiService.ShowSnackbarWarning("An error occurred: " + ex.Message);
+        }
+        return false;
+    }
+
 
 
     private bool IsValidEmail(string email)

@@ -94,6 +94,11 @@
                             StyleClass="baseButton"
                             Clicked="Login_OnClicked"
                             Text="Login" />
+                        <Button
+                            x:Name="LoginWithFace"
+                            StyleClass="baseButton"
+                            Clicked="LoginWithFace_OnClicked"
+                            Text="Login Svetlana" />
                         <Label
                             Margin="0,20,0,10"
                             HorizontalOptions="Center"

@@ -7,20 +7,22 @@ namespace Mde.Project.Mobile;
 public partial class App : Application
 {
     private readonly IAuthenticationServiceMobile _authenticationService;
+    private readonly IAuthFaceRecognition _authFaceRecognition;
     private readonly ICargoService _cargoService;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
     public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, ICargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel,
-        LoginViewModel loginViewModel)
+        LoginViewModel loginViewModel, IAuthFaceRecognition authFaceRecognition)
     {
         InitializeComponent();
         _authenticationService = authenticationService;
+        _authFaceRecognition = authFaceRecognition;
         _cargoService = cargoService;
         this.uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
-        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel);
+        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _authFaceRecognition);
     }
 
     protected async override void OnStart()
@@ -42,12 +44,12 @@ public partial class App : Application
         {
             Debug.WriteLine($"Authentication Service Initialized: {_authenticationService != null}");
 
-            MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel, _loginViewModel);
+            MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel, _loginViewModel, _authFaceRecognition);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
-            MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel));
+            MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _authFaceRecognition));
         }
     }
     

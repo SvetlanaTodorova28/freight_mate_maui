@@ -60,6 +60,11 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
             return false;
         }
+
+        public Task<bool> AuthenticateWithFaceAsync(string reason){
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Function>> GetFunctionsAsync()
         {
            

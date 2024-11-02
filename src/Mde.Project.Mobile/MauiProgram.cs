@@ -3,10 +3,12 @@ using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
+using Mde.Project.Mobile.Platforms.iOS.Services;
 using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
+
 
 namespace Mde.Project.Mobile
 {
@@ -57,15 +59,23 @@ namespace Mde.Project.Mobile
             
             
             builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
+            builder.Services.AddTransient<IAuthFaceRecognition, FaceRecognitionService>();
             builder.Services.AddTransient<IAppUserService, AppUserService>();
+            
             builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
+            
+           
 
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));
 
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+#if IOS
+            builder.Services.AddSingleton<IAuthFaceRecognition, FaceRecognitionService>();
+#endif
+
 
             return builder.Build();
         }
