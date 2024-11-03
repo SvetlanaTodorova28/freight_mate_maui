@@ -96,16 +96,19 @@
 	</ItemGroup>
 	
 
-	<ItemGroup>
+<!--	<ItemGroup>
 	  <Content Include="Platforms\.DS_Store" />
-	</ItemGroup>
+	</ItemGroup>-->
 	
 
 	<ItemGroup>
 	  <None Include="Platforms\Tizen\Main.cs" />
 	  <None Include="Platforms\Windows\App.xaml" />
 	  <None Include="Platforms\Windows\App.xaml.cs" />
+	  <None Include="Platforms\iOS\Program.cs" />
+	  
 	</ItemGroup>
+	
 	
 
 	<ItemGroup>

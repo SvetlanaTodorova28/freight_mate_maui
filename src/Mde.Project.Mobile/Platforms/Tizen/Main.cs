@@ -2,7 +2,7 @@ using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace pfff;
+namespace Mde.Project.Mobile;
 
 class Program : MauiApplication{
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

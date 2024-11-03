@@ -1,11 +1,8 @@
-﻿
-using Foundation;
-using Mde.Project.Mobile;
+﻿using Foundation;
 
-namespace pfff;
+namespace Mde.Project.Mobile.Platforms;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate{
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-    
 }

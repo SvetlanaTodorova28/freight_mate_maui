@@ -1,8 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
-using Mde.Project.Mobile;
 
-namespace pfff;
+namespace Mde.Project.Mobile.Platforms;
 
 [Application]
 public class MainApplication : MauiApplication{

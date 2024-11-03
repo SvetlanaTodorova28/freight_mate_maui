@@ -1,6 +1,6 @@
 namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public interface IAuthFaceRecognition{
-     public bool IsSupported();
+     SupportStatus IsSupported();
      Task<NativeAuthResult> PromptLoginAsync(string prompt);
 }

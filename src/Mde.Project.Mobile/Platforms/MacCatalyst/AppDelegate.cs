@@ -1,8 +1,6 @@
-﻿
-using Foundation;
-using Mde.Project.Mobile;
+﻿using Foundation;
 
-namespace pfff;
+namespace Mde.Project.Mobile;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate{

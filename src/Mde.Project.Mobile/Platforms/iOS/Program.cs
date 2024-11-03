@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace pfff;
+namespace Mde.Project.Mobile.Platforms;
 
 public class Program{
     // This is the main entry point of the application.

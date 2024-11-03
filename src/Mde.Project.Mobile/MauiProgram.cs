@@ -3,8 +3,8 @@ using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
-using Mde.Project.Mobile.Platforms.iOS.Services;
 using Mde.Project.Mobile.ViewModels;
+using Mde.Project.Mobile.Platforms;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
@@ -30,7 +30,7 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("Cinzel-VariableFont_wght.ttf", "Cinzel");
                     fonts.AddFont("Play-Bold.ttf", "PlayBold");
                 });
-            Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
+           
             Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
             Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
             Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
@@ -72,9 +72,8 @@ namespace Mde.Project.Mobile
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-#if IOS
-            builder.Services.AddSingleton<IAuthFaceRecognition, FaceRecognitionService>();
-#endif
+
+
 
 
             return builder.Build();
