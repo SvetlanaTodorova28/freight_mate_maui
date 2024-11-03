@@ -8,7 +8,7 @@ namespace Mde.Project.Mobile.Pages;
 public partial class LoginPage : ContentPage{
     private readonly IUiService _uiService;
     private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
-    private readonly IAuthFaceRecognition _authFaceRecognition;
+    private readonly INativeAuthentication _nativeAuthentication;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
 
@@ -16,21 +16,21 @@ public partial class LoginPage : ContentPage{
         ICargoService _cargoService;
 
     public LoginPage(LoginViewModel loginViewModel, IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel, IAuthFaceRecognition authFaceRecognition){
+    AppUserRegisterViewModel userRegisterViewModel, INativeAuthentication nativeAuthentication){
 
         InitializeComponent();
         BindingContext = _loginViewModel = loginViewModel;
         _uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _authenticationServiceMobile = authenticationServiceMobile; 
-        _authFaceRecognition = authFaceRecognition;
+        _nativeAuthentication = nativeAuthentication;
        
     }
     
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
         Navigation.PushAsync(new WelcomePage(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
-            _loginViewModel, _authFaceRecognition ));
+            _loginViewModel, _nativeAuthentication ));
     }
 
     private async void Login_OnClicked(object? sender, EventArgs e){

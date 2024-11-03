@@ -8,20 +8,20 @@ namespace Mde.Project.Mobile.ViewModels;
 public class BaseViewModel:ObservableObject
 {
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
-    private readonly IAuthFaceRecognition _authFaceRecognition;
+    private readonly INativeAuthentication _nativeAuthentication;
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
     
     public BaseViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, IAuthFaceRecognition serviceAuthFaceRecognition)
+    AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication serviceNativeAuthentication)
     {
        
         this.uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
         authenticationServiceMobile = authServiceMobile;
-        _authFaceRecognition = serviceAuthFaceRecognition;
+        _nativeAuthentication = serviceNativeAuthentication;
         
     }
     
@@ -34,7 +34,7 @@ public class BaseViewModel:ObservableObject
         if(success)
         {
             Application.Current.MainPage = new NavigationPage(new WelcomePage(uiService, authenticationServiceMobile,
-                _userRegisterViewModel, _loginViewModel, _authFaceRecognition));
+                _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
         }
     }
     

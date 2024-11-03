@@ -5,6 +5,7 @@ using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Mde.Project.Mobile.Platforms;
+
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
@@ -59,7 +60,7 @@ namespace Mde.Project.Mobile
             
             
             builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
-            builder.Services.AddTransient<IAuthFaceRecognition, FaceRecognitionService>();
+            builder.Services.AddTransient<INativeAuthentication, NativeAuthentication>();
             builder.Services.AddTransient<IAppUserService, AppUserService>();
             
             builder.Services.AddTransient<ICargoService, CargoService>();

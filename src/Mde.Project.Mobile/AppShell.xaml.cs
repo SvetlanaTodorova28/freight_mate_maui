@@ -10,21 +10,21 @@ namespace Mde.Project.Mobile
     {
         
         private readonly IAuthenticationServiceMobile _authenticationService;
-        private readonly IAuthFaceRecognition _authFaceRecognition;
+        private readonly INativeAuthentication _nativeAuthentication;
         private readonly IUiService uiService;
         private readonly AppUserRegisterViewModel _userRegisterViewModel;
         private readonly LoginViewModel _loginViewModel;
         public AppShell( IAuthenticationServiceMobile authenticationService, IUiService uiService,
         AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel,
-        IAuthFaceRecognition authFaceRecognition)
+        INativeAuthentication nativeAuthentication)
         {
             InitializeComponent();
             _authenticationService = authenticationService;
             _userRegisterViewModel = userRegisterViewModel;
             _loginViewModel = loginViewModel;
-            _authFaceRecognition = authFaceRecognition;
+            _nativeAuthentication = nativeAuthentication;
             this.uiService = uiService;
-            BindingContext = new BaseViewModel(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _authFaceRecognition);
+            BindingContext = new BaseViewModel(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
           
             
         }
