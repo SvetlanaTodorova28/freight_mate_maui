@@ -114,7 +114,7 @@ public class LoginViewModel : ObservableObject
             }
             else
             {
-                await uiService.ShowSnackbarWarning($"Face recognition login failed. Error: {isAuthenticated.ErrorMessage}. Please try again.");
+                await uiService.ShowSnackbarWarning($"Authentication  failed. Error: {isAuthenticated.ErrorMessage}. Please try again.");
             }
         }
         catch (Exception ex)

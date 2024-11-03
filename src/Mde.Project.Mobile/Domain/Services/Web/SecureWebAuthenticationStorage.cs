@@ -12,6 +12,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
     public class SecureWebAuthenticationStorage : IAuthenticationServiceMobile
     {
         private const string TokenKey = "token";
+        private const string FcmTokenKey = "fcmToken";
         private readonly HttpClient _httpClient;
         private Dictionary<Function, Guid> functionMappings;
 
@@ -23,6 +24,15 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         public async Task<string> GetTokenAsync()
         {
             return await SecureStorage.Default.GetAsync(TokenKey);
+        }
+        public async Task StoreFcmToken(string token)
+        {
+            await SecureStorage.Default.SetAsync(FcmTokenKey, token);
+        }
+
+        public async Task<string> GetFcmTokenAsync()
+        {
+            return await SecureStorage.Default.GetAsync(FcmTokenKey);
         }
 
         public async Task<bool> IsAuthenticatedAsync()
@@ -61,9 +71,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             return false;
         }
 
-        public Task<bool> AuthenticateWithFaceAsync(string reason){
-            throw new NotImplementedException();
-        }
+      
 
         public Task<IEnumerable<Function>> GetFunctionsAsync()
         {
