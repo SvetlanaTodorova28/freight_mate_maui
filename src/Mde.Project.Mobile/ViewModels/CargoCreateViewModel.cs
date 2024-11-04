@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
-using Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
 
 namespace Mde.Project.Mobile.ViewModels;
 
@@ -189,30 +188,39 @@ public class CargoCreateViewModel : ObservableObject
     
     private async Task NotifyUserAsync(AppUserResponseDto user)
     {
-        //fetch logged user
+        // Fetch logged user ID
         var userId = await _authenticationService.GetUserIdFromTokenAsync();
-        if (user.Id != Guid.Parse(userId)){
+        if (user.Id == Guid.Parse(userId))
+        {
+            // Get the FCM token for the selected user
+            string userFcmToken = await _authenticationService.GetFcmTokenAsync();
 
-
-            string userFcmToken =
-                await _authenticationService.GetFcmTokenAsync(); // Get the FCM token for the selected user
-
-            if (!string.IsNullOrEmpty(userFcmToken)){
-                var message = new{
-                    to = userFcmToken,
-                    notification = new{
-                        title = "New Cargo Assignment",
-                        body = $"A new cargo has been assigned to you with destination {Destination}."
+            if (!string.IsNullOrEmpty(userFcmToken))
+            {
+                // Create the FCM message payload
+                var message = new
+                {
+                    message = new
+                    {
+                        token = userFcmToken,
+                        notification = new
+                        {
+                            title = "New Cargo Assignment",
+                            body = $"A new cargo has been assigned to you with destination {Destination}."
+                        }
                     }
                 };
 
+                // Send the notification
                 await _authenticationService.SendNotificationAsync(message);
             }
-            else{
+            else
+            {
                 await _uiService.ShowSnackbarWarning("No FCM token found for the selected user.");
             }
         }
     }
+
     
   
 

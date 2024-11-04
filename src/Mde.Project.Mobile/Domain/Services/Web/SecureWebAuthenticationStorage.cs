@@ -2,11 +2,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Security.Claims;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
+using Mde.Project.Mobile.Platforms;
 using Utilities;
 
 namespace Mde.Project.Mobile.Domain.Services.Web;
@@ -213,10 +215,12 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
         public async Task SendNotificationAsync(object message)
         {
-            var accessToken = "ya29.c.c0ASRK0GZDY2W7YcH9VHJj6zubKKVJHaByHLzKrzk9o2mFvUJxye43DgTADjtA-6iGSZXZ5FzVe2Bwl8RtfarsdhpGrxdTY_5VMGIqVSUDyPQVuUR2uyMkGLzH3tbMjDGZwTlakOpTmSC-WyZHatL0IhCttmOhy3SSfALxirSYs0uo1wnK-X4JlAa-Vjc1QOZYtc21Hmnp0uB-gBk450Kg-r36nHBLPFkc01ziUsgCE4spRKFBMh2XDIQG4aUF_WkGAwx_NUYnx05eQ_oF_Ha3yERl4MhCsLAPN3ooefAIcaBBt3EJ0wIsxrpRkCGDCL6xsVB6aUV0hGnhB3D6PIa_q1kGJX4xCGr5lU-nRMarGR8wqGymu47QPjHcM4r0aiIqK7sGTmMN400DQiOgj_lra2BueXd1d08QY7Yo8Z08wOujJRJow3SBda2w14i5bqfg80_OlruF57Fv_zn5s5Z2s45t-oRafSJWkbgmg44zxsyVXjp03baXlwdnjuWwjSfdxp6s_laX2ZI2SsR20XY3bvk9mdcWx5F1srnIJvtyzuMs3UR_nMimOX6bVt7S26vwSklSjWbIJ4v_6fl74lilikVJ4hk2ehiWJjQbIYk9zfnSaxhd5U0yQrJ_wm6Qr3o5v3i0OxF3f-1wYuUh2Msw08ROMS_6ORVazV-j2bUZZF9cFzf53jJVOY2xd9-Rc0R3q4J36OgvI24pgrSzQio1_W6Z_iIjbY2wfn2Jk54kn-f623cj351d3Rp1Zu818cb5WRpqx6Fib9cgV7099SqvVQmcXzl8B5Yefu29B82rc2554doYwcjamf314u9R7V2M4FXknS8k6aUyFV2Zt5on9YctvwVwdbMci_OJtxp5kipi4mjo6iXsfmtciW8OBggWhFp1dkW0ZypufR1fWem3fX1vle8YRa-poZauBj10pvbU2orrBWXQO-VUl0Ic-Qu_9RF_mfd8vM6nzYsgmyq1tyOabmiMum37XXeblX21MpdUbdmc387ikxq";
+            // Fetch a fresh access token if possible (replace with your token retrieval mechanism)
+            var accessToken = await GetAccessTokenAsync(); // Implement this to retrieve a valid token
     
             _firebaseHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
+            // Send the request
             var response = await _firebaseHttpClient.PostAsJsonAsync("https://fcm.googleapis.com/v1/projects/mde-project-mobile/messages:send", message);
 
             if (!response.IsSuccessStatusCode)
@@ -225,6 +229,36 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
                 throw new Exception($"Failed to send notification. Status: {response.StatusCode}, Error: {errorDetails}");
             }
         }
+        
+        private async Task<string> GetAccessTokenAsync()
+        {
+            var resourceName = "Mde.Project.Mobile.Resources.mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json";
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppDelegate)).Assembly;
+
+           
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                {
+                    throw new FileNotFoundException("The specified resource was not found.", resourceName);
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    var jsonContent = reader.ReadToEnd();
+                    
+                    var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromJson(jsonContent)
+                        .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
+
+                   
+                    var token = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
+                    return token;
+                }
+            }
+        }
+
+
+
 
 
 

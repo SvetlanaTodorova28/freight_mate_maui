@@ -74,6 +74,7 @@
 		<PackageReference Include="Bertuzzi.MAUI.MultiSelectListView" Version="1.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+		<PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
 
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
@@ -141,6 +142,7 @@
 	    <Link>Platforms\iOS\Resources\GoogleService-Info.plist</Link>
 	    <IsDefaultItem>true</IsDefaultItem>
 	  </BundleResource>
+	  <EmbeddedResource Include="Resources\mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json" />
 	</ItemGroup>
 
 </Project>
