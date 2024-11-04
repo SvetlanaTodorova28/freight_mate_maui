@@ -44,6 +44,14 @@ public class LoginViewModel : ObservableObject
         get => password;
         set => SetProperty(ref password, value);
     }
+    
+    private string fcm;
+    public string Fcm
+    {
+        get => fcm;
+        set => SetProperty(ref fcm, value);
+    }
+ 
 
     public async Task<bool> ExecuteLoginCommand()
     {
@@ -57,6 +65,7 @@ public class LoginViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(Password))
         {
             await uiService.ShowSnackbarWarning("Password cannot be empty.");
+            Fcm =  await authenticationServiceMobile.GetFcmTokenAsync();
             return false;
         }
 
@@ -72,8 +81,9 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             // Bij succes, navigeer naar de hoofdpagina
- string fcm = await authenticationServiceMobile.GetFcmTokenAsync();
- Console.WriteLine(fcm);
+ 
+ 
+
             Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
             return true;
@@ -89,6 +99,7 @@ public class LoginViewModel : ObservableObject
     
     public async Task<bool> ExecuteFaceLoginCommand()
     {
+        fcm = await authenticationServiceMobile.GetFcmTokenAsync();
         var isAuthenticated = new NativeAuthResult();
         try
         {
@@ -102,9 +113,12 @@ public class LoginViewModel : ObservableObject
             {
                 var username = "s@t.com";  // Verondersteld dat deze informatie veilig wordt opgeslagen of opgehaald
                 var password = "1234";  // Verondersteld dat deze veilig wordt behandeld
+               
                 var loginResult = await authenticationServiceMobile.TryLoginAsync(username, password);
                 if (loginResult)
                 {
+                    string fcm = await authenticationServiceMobile.GetFcmTokenAsync();
+                    Console.WriteLine(fcm);
                     Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
                     await Shell.Current.GoToAsync("//CargoListPage");
                     return true;

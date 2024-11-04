@@ -104,6 +104,13 @@
                             HorizontalOptions="Center"
                             FontFamily="PlayBold"
                             Text="Forgot your password?" />
+                        
+                        
+                        <Entry
+                            StyleClass="BaseEntry"
+                            Text="{Binding Fcm}"
+                            Placeholder="{Binding Fcm}"/>
+                        
                         <Label  FontFamily="PlayBold"
                                 Text="Back to Welcome" 
                                 TextColor="White"

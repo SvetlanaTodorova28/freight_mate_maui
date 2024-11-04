@@ -60,6 +60,7 @@ public class CargoListViewModel:ObservableObject{
         set => SetProperty(ref _userFirstName, value);
     }
 
+   
     private async void LoadUserFirstName()
     {
         try
