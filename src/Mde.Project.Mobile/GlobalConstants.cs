@@ -27,4 +27,7 @@ public class GlobalConstants{
     public const string HttpClient = "FrightMateClient";
     public const string Auth = Base + "accounts/login";
     public const string Cargos = Base + "cargos/";
+    
+    public const string BaseUrlFireBase = "https://fcm.googleapis.com/v1/projects/mde-project-mobile/messages:send";
+    public const string HttpClientFireBase = "FireBase";
 }

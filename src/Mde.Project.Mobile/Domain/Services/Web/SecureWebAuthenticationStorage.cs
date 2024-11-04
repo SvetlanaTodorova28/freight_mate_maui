@@ -1,5 +1,6 @@
 ﻿
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using Mde.Project.Mobile.Domain.Models;
@@ -13,12 +14,14 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
     {
         private const string TokenKey = "token";
         private const string FcmTokenKey = "fcmToken";
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _azureHttpClient;
+        private readonly HttpClient _firebaseHttpClient;
         private Dictionary<Function, Guid> functionMappings;
 
         public SecureWebAuthenticationStorage(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
+            _azureHttpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
+            _firebaseHttpClient = httpClientFactory.CreateClient(GlobalConstants.BaseUrlFireBase);
         }
 
         public async Task<string> GetTokenAsync()
@@ -55,7 +58,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
         public async Task<bool> TryLoginAsync(string username, string password)
         {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/accounts/login", new LoginRequestDto{
+            HttpResponseMessage response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/login", new LoginRequestDto{
                 Username = username, 
                 Password = password
             });
@@ -70,8 +73,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
             return false;
         }
-
-      
+        
 
         public Task<IEnumerable<Function>> GetFunctionsAsync()
         {
@@ -83,7 +85,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         {
             if (functionMappings != null) return;
 
-            var functionDtos = await _httpClient.GetFromJsonAsync<IEnumerable<AccessLevelsResponseDto>>("/api/AccessLevels");
+            var functionDtos = await _azureHttpClient.GetFromJsonAsync<IEnumerable<AccessLevelsResponseDto>>("/api/AccessLevels");
 
             Dictionary<Function, Guid> functionDictionary = new Dictionary<Function, Guid>();
             foreach (var functiondto in functionDtos)
@@ -127,7 +129,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
                 LastName = lastname,
                 AccessLevelTypeId = functionId
             };
-            var response = await _httpClient.PostAsJsonAsync("/api/accounts/register", registerRequestDto);
+            var response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/register", registerRequestDto);
            
             if (response.IsSuccessStatusCode)
             {
@@ -203,11 +205,27 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
     
-            // Haal de 'FirstName' claim op
+            
             var firstNameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "FirstName");
 
-            return firstNameClaim?.Value ?? "Unknown"; // Geeft "Unknown" terug als er geen voornaam is
+            return firstNameClaim?.Value ?? "Unknown"; 
         }
+
+        public async Task SendNotificationAsync(object message)
+        {
+            var accessToken = "ya29.c.c0ASRK0GZDY2W7YcH9VHJj6zubKKVJHaByHLzKrzk9o2mFvUJxye43DgTADjtA-6iGSZXZ5FzVe2Bwl8RtfarsdhpGrxdTY_5VMGIqVSUDyPQVuUR2uyMkGLzH3tbMjDGZwTlakOpTmSC-WyZHatL0IhCttmOhy3SSfALxirSYs0uo1wnK-X4JlAa-Vjc1QOZYtc21Hmnp0uB-gBk450Kg-r36nHBLPFkc01ziUsgCE4spRKFBMh2XDIQG4aUF_WkGAwx_NUYnx05eQ_oF_Ha3yERl4MhCsLAPN3ooefAIcaBBt3EJ0wIsxrpRkCGDCL6xsVB6aUV0hGnhB3D6PIa_q1kGJX4xCGr5lU-nRMarGR8wqGymu47QPjHcM4r0aiIqK7sGTmMN400DQiOgj_lra2BueXd1d08QY7Yo8Z08wOujJRJow3SBda2w14i5bqfg80_OlruF57Fv_zn5s5Z2s45t-oRafSJWkbgmg44zxsyVXjp03baXlwdnjuWwjSfdxp6s_laX2ZI2SsR20XY3bvk9mdcWx5F1srnIJvtyzuMs3UR_nMimOX6bVt7S26vwSklSjWbIJ4v_6fl74lilikVJ4hk2ehiWJjQbIYk9zfnSaxhd5U0yQrJ_wm6Qr3o5v3i0OxF3f-1wYuUh2Msw08ROMS_6ORVazV-j2bUZZF9cFzf53jJVOY2xd9-Rc0R3q4J36OgvI24pgrSzQio1_W6Z_iIjbY2wfn2Jk54kn-f623cj351d3Rp1Zu818cb5WRpqx6Fib9cgV7099SqvVQmcXzl8B5Yefu29B82rc2554doYwcjamf314u9R7V2M4FXknS8k6aUyFV2Zt5on9YctvwVwdbMci_OJtxp5kipi4mjo6iXsfmtciW8OBggWhFp1dkW0ZypufR1fWem3fX1vle8YRa-poZauBj10pvbU2orrBWXQO-VUl0Ic-Qu_9RF_mfd8vM6nzYsgmyq1tyOabmiMum37XXeblX21MpdUbdmc387ikxq";
+    
+            _firebaseHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await _firebaseHttpClient.PostAsJsonAsync("https://fcm.googleapis.com/v1/projects/mde-project-mobile/messages:send", message);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorDetails = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Failed to send notification. Status: {response.StatusCode}, Error: {errorDetails}");
+            }
+        }
+
 
 
 

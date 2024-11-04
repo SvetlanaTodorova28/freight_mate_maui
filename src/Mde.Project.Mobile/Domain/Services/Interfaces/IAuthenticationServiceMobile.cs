@@ -11,6 +11,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
        Task<string> GetUserIdFromTokenAsync();
        Task<string> GetFcmTokenAsync();
+       Task SendNotificationAsync(object message);
         bool Logout();
 
         Task<IEnumerable<Function>> GetFunctionsAsync();

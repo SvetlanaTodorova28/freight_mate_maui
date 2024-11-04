@@ -157,6 +157,7 @@ public class CargoCreateViewModel : ObservableObject
             if (result.IsSuccess)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+                await NotifyUserAsync(SelectedUser);
                 await Shell.Current.GoToAsync("//CargoListPage");
             }
             else
@@ -183,6 +184,33 @@ public class CargoCreateViewModel : ObservableObject
         if (SelectedCargo != null && Users != null)
         {
             SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.Userid);
+        }
+    }
+    
+    private async Task NotifyUserAsync(AppUserResponseDto user)
+    {
+        //fetch logged user
+        var userId = await _authenticationService.GetUserIdFromTokenAsync();
+        if (user.Id != Guid.Parse(userId)){
+
+
+            string userFcmToken =
+                await _authenticationService.GetFcmTokenAsync(); // Get the FCM token for the selected user
+
+            if (!string.IsNullOrEmpty(userFcmToken)){
+                var message = new{
+                    to = userFcmToken,
+                    notification = new{
+                        title = "New Cargo Assignment",
+                        body = $"A new cargo has been assigned to you with destination {Destination}."
+                    }
+                };
+
+                await _authenticationService.SendNotificationAsync(message);
+            }
+            else{
+                await _uiService.ShowSnackbarWarning("No FCM token found for the selected user.");
+            }
         }
     }
     
