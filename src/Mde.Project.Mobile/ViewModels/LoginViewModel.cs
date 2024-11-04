@@ -72,6 +72,8 @@ public class LoginViewModel : ObservableObject
         if (isAuthenticated)
         {
             // Bij succes, navigeer naar de hoofdpagina
+ string fcm = await authenticationServiceMobile.GetFcmTokenAsync();
+ Console.WriteLine(fcm);
             Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
             return true;
