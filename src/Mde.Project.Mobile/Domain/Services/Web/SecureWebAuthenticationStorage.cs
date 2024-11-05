@@ -233,9 +233,16 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         private async Task<string> GetAccessTokenAsync()
         {
             var resourceName = "Mde.Project.Mobile.Resources.mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json";
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppDelegate)).Assembly;
+            Assembly assembly; // Definieer de variabele buiten de preprocessordirectieven
 
-           
+#if __IOS__
+            // iOS-specifieke code, zoals toegang tot AppDelegate
+            assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppDelegate)).Assembly;
+#else
+    // Voor Android en andere platforms
+    assembly = IntrospectionExtensions.GetTypeInfo(typeof(MainApplication)).Assembly;
+#endif
+
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
@@ -246,16 +253,15 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
                 using (var reader = new StreamReader(stream))
                 {
                     var jsonContent = reader.ReadToEnd();
-                    
                     var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromJson(jsonContent)
                         .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
 
-                   
                     var token = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
                     return token;
                 }
             }
         }
+
 
 
 
