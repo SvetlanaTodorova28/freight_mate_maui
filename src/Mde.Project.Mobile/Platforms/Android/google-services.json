@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "318135606329",
+    "project_id": "mde-project-mobile",
+    "storage_bucket": "mde-project-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318135606329:android:addd6d86f5baf47b3f81e8",
+        "android_client_info": {
+          "package_name": "com.companyname.mde.project.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu0W2jszNETHjbb4uQHEfLzbOoGV3ZoSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
