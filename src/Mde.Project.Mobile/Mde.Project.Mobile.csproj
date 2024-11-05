@@ -127,21 +127,14 @@
 	
 	
 
-	<ItemGroup>
-	  <None Remove="Platforms\iOS\GoogleService-Info.plist" />
-	</ItemGroup>
 	
 	
 
 	<ItemGroup>
-	  <BundleResource Include="GoogleService-Info.plist">
-	    <Link>Platforms\iOS\Resources\GoogleService-Info.plist</Link>
-	    <IsDefaultItem>true</IsDefaultItem>
-	  </BundleResource>
-	  <BundleResource Include="Platforms\iOS\GoogleService-Info.plist">
-	    <Link>Platforms\iOS\Resources\GoogleService-Info.plist</Link>
-	    <IsDefaultItem>true</IsDefaultItem>
-	  </BundleResource>
+		<BundleResource Include="Platforms/iOS/Resources/GoogleService-Info.plist">
+			<LogicalName>GoogleService-Info.plist</LogicalName>
+		</BundleResource>
+	 
 	  <EmbeddedResource Include="Resources\mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json" />
 	</ItemGroup>
 
