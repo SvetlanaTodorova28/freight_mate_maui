@@ -12,6 +12,8 @@ public class AppUserResponseDto{
     public string FirstName { get; set; }
     public string LastName { get; set; }
     
+    public string FCMToken { get; set; }
+    
     public AccessLevelsResponseDto? AccessLevelType { get; set; }
     
     public List<CargoResponseDto>? Cargos { get; set; }
