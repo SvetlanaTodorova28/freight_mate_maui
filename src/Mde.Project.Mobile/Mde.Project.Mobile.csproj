@@ -76,7 +76,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
 		<PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-
+		<PackageReference Include="Plugin.Firebase.CloudMessaging" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -123,6 +123,8 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <PackageReference Include="Xamarin.AndroidX.Biometric" Version="1.1.0.18" />
 	  <PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.4.2.1" />
+		<PackageReference Include="Xamarin.AndroidX.Preference" Version="1.2.0.7" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="118.2.0.4" />
 	</ItemGroup>
 	
 	
@@ -137,5 +139,9 @@
 	 
 	  <EmbeddedResource Include="Resources\mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json" />
 	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+		<GoogleServicesJson Include="Platforms/Android/google-services.json" />
+	</ItemGroup>
+
 
 </Project>
