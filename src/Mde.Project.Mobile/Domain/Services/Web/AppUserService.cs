@@ -47,7 +47,7 @@ public class AppUserService:IAppUserService{
     
         if (!string.IsNullOrEmpty(userId))
         {
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", new { token = token });
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token );
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception("Failed to update FCM token.");
