@@ -1,12 +1,9 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.App;
 using AndroidX.Core.App;
-using Microsoft.Maui;
-using Microsoft.Maui.Platform;
+
 using Color = Android.Graphics.Color;
 
 namespace Mde.Project.Mobile.Platforms;
