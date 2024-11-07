@@ -98,7 +98,7 @@
                             x:Name="LoginWithFace"
                             StyleClass="baseButton"
                             Clicked="LoginWithFace_OnClicked"
-                            Text="Login Svetlana" />
+                            Text="Login with biometric" />
                         <Label
                             Margin="0,20,0,10"
                             HorizontalOptions="Center"

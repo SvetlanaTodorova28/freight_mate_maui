@@ -12,7 +12,7 @@ public class LoginViewModel : ObservableObject
     private readonly IAuthenticationServiceMobile authenticationServiceMobile;
     private readonly INativeAuthentication _nativeAuthentication;
     private readonly IUiService uiService;
-   // private readonly IAppUserService _appUserService;
+    // private readonly IAppUserService _appUserService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
    
 
@@ -20,8 +20,8 @@ public class LoginViewModel : ObservableObject
     public ICommand FaceLoginCommand { get; }
 
     public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel, INativeAuthentication nativeAuthentication 
-   // IAppUserService appUserService
+        AppUserRegisterViewModel userRegisterViewModel, INativeAuthentication nativeAuthentication 
+        // IAppUserService appUserService
     )
     {
        
@@ -29,7 +29,7 @@ public class LoginViewModel : ObservableObject
         authenticationServiceMobile = authServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
         _nativeAuthentication = nativeAuthentication;
-       // _appUserService = appUserService;
+        // _appUserService = appUserService;
         LoginCommand = new RelayCommand(async () => await ExecuteLoginCommand());
         FaceLoginCommand = new RelayCommand(async () => await ExecuteFaceLoginCommand());
         
@@ -109,13 +109,19 @@ public class LoginViewModel : ObservableObject
 #if __ANDROID__
             isAuthenticated = await _nativeAuthentication.PromptLoginAsync("Please authenticate to proceed");
 #elif __IOS__
-        isAuthenticated = await _nativeAuthentication.PromptLoginAsync("Please authenticate to proceed");
+            isAuthenticated = await _nativeAuthentication.PromptLoginAsync("Please authenticate to proceed");
 #endif
 
             if (isAuthenticated.Authenticated)
             {
-                var username = "s@t.com";  // Verondersteld dat deze informatie veilig wordt opgeslagen of opgehaald
-                var password = "1234";  // Verondersteld dat deze veilig wordt behandeld
+#if __ANDROID__
+            var username = "milka@speedy.gr";  
+                var password = "Advanced1234"; 
+#elif __IOS__
+                var username = "s@t.com";  
+                var password = "1234"; 
+#endif
+                
                
                 var loginResult = await authenticationServiceMobile.TryLoginAsync(username, password);
                 if (loginResult)
@@ -159,7 +165,3 @@ public class LoginViewModel : ObservableObject
     }
 
 }
-
-  
-    
-   
