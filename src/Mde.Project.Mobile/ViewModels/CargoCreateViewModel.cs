@@ -189,7 +189,7 @@ public class CargoCreateViewModel : ObservableObject
     private async Task NotifyUserAsync(AppUserResponseDto user)
     {
         // Fetch logged user ID
-        var userId = await _authenticationService.GetUserIdFromTokenAsync();
+      //  var userId = await _authenticationService.GetUserIdFromTokenAsync();
         
             // Get the FCM token for the selected user
             string userFcmToken = await _appUserService.GetFcmTokenAsync(user.Id.ToString());
@@ -206,9 +206,16 @@ public class CargoCreateViewModel : ObservableObject
                         {
                             title = "New Cargo Assignment",
                             body = $"A new cargo has been assigned to you with destination {Destination}."
+                        },
+                        android = new
+                        {
+                            notification = new
+                            {
+                                channel_id = "default_channel" // Zorg ervoor dat deze overeenkomt met de ID van je notificatiekanaal
+                            }
                         }
-                    }
-                };
+                        }
+                    };
 
                 // Send the notification
                 await _authenticationService.SendNotificationAsync(message);
