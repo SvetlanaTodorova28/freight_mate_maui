@@ -135,6 +135,7 @@ public class AppUsersController:ControllerBase{
             UserName = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
+            FCMToken = user.FCMToken,
             AccessLevelType = new AccessLevelsResponseDto{
                 Name = user.AccessLevel.Name,
                 Id = user.AccessLevel.Id 
@@ -308,6 +309,30 @@ public class AppUsersController:ControllerBase{
         }
         return BadRequest(result.Errors);
     }
+    
+    [HttpPut("update-fcm-token/{userId}")]
+    public async Task<IActionResult> UpdateUserFcmToken([FromRoute] string userId, [FromBody] string newToken)
+    {
+        var result = await _userService.UpdateUserFcmToken(userId, newToken);
+        if (!result.Success)
+        {
+            return BadRequest(result.Errors);
+        }
+        return Ok(result.Data);
+    }
+    [HttpGet("get-fcm-token/{userId}")]
+    public async Task<IActionResult> GetUserFcmToken([FromRoute] string userId)
+    {
+        var result = await _userService.GetUserFcmToken(userId);
+        if (!result.Success)
+        {
+            return NotFound(result.Errors);
+        }
+        return Ok(result.Data);
+    }
+
+
+
     
    
 

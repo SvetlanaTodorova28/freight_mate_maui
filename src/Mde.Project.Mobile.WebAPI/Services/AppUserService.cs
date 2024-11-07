@@ -66,5 +66,48 @@ public class AppUserService:IAppUserService{
         };
     }
 
+    public async Task<ResultModel<string>> UpdateUserFcmToken(string userId, string newToken)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+        {
+            return new ResultModel<string>
+            {
+                Errors = new List<string> { "User not found." }
+            };
+        }
+
+        user.FCMToken = newToken;
+        _applicationDbContext.Update(user);
+        await _applicationDbContext.SaveChangesAsync();
+        return new ResultModel<string>
+        {
+            Data = user.FCMToken,
+          
+        };
+    }
+
+
+    public async Task<ResultModel<string>> GetUserFcmToken(string userId)
+    {
+        var user = await _userManager.Users
+            .Where(u => u.Id == userId)
+            .Select(u => u.FCMToken)
+            .FirstOrDefaultAsync();
+
+        if (user == null)
+        {
+            return new ResultModel<string>
+            {
+                Errors = new List<string> { "User not found or no FCM token set." }
+            };
+        }
+
+        return new ResultModel<string>
+        {
+            Data = user
+        };
+    }
+
 
 }
