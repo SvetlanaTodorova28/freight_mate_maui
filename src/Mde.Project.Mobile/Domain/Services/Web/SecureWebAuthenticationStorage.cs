@@ -1,14 +1,21 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.Functions;
 using Mde.Project.Mobile.Platforms;
+using Microsoft.Maui.Storage;
 using Utilities;
 
 namespace Mde.Project.Mobile.Domain.Services.Web;
@@ -30,15 +37,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         {
             return await SecureStorage.Default.GetAsync(TokenKey);
         }
-        public async Task StoreFcmToken(string token)
-        {
-            await SecureStorage.Default.SetAsync(FcmTokenKey, token);
-        }
-
-        public async Task<string> GetFcmTokenAsync()
-        {
-            return await SecureStorage.Default.GetAsync(FcmTokenKey);
-        }
+       
 
         public async Task<bool> IsAuthenticatedAsync()
         {
@@ -213,6 +212,9 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             return firstNameClaim?.Value ?? "Unknown"; 
         }
 
+        
+        
+        
         public async Task SendNotificationAsync(object message)
         {
             // Fetch a fresh access token if possible (replace with your token retrieval mechanism)

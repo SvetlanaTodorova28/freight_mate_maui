@@ -10,7 +10,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
        Task<bool> TryRegisterAsync(string username, string password, string confirmPassword, string firstname, string lastname, Function function);
 
        Task<string> GetUserIdFromTokenAsync();
-       Task<string> GetFcmTokenAsync();
+    
        Task SendNotificationAsync(object message);
         bool Logout();
 

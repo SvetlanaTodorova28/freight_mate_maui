@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 using Utilities;
 
@@ -38,6 +39,40 @@ public class AppUserService:IAppUserService{
             "basic" => Function.Driver.ToString(),
             _ => throw new InvalidOperationException("Invalid access level name")
         };
+    }
+    
+    public async Task StoreFcmTokenAsync(string token){
+        var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
+        var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
+    
+        if (!string.IsNullOrEmpty(userId))
+        {
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", new { token = token });
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to update FCM token.");
+            }
+        }
+        else
+        {
+            throw new InvalidOperationException("User ID not found in token.");
+        }
+    }
+
+    
+    public async Task<string> GetFcmTokenAsync(string userId)
+    {
+        var response = await _httpClient.GetAsync($"/api/AppUsers/get-fcm-token/{userId}");
+        
+        if (response.IsSuccessStatusCode)
+        {
+            var token = await response.Content.ReadAsStringAsync();
+            return token;
+        }
+        else
+        {
+            throw new Exception("Failed to retrieve FCM token.");
+        }
     }
 
 }

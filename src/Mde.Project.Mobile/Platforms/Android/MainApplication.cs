@@ -3,6 +3,7 @@ using Android.Gms.Tasks;
 using Android.Runtime;
 using Firebase;
 using Firebase.Messaging;
+using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 
@@ -40,7 +41,7 @@ public class OnTokenSuccessListener : Java.Lang.Object, IOnSuccessListener
         Console.WriteLine($"Firebase registration token: {fcmToken}");
 
        
-        var authService = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
-        authService?.StoreFcmToken(fcmToken);
+        var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
+        userService?.StoreFcmTokenAsync(fcmToken);
     }
 }

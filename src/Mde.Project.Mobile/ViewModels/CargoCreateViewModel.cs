@@ -190,10 +190,9 @@ public class CargoCreateViewModel : ObservableObject
     {
         // Fetch logged user ID
         var userId = await _authenticationService.GetUserIdFromTokenAsync();
-        if (user.Id == Guid.Parse(userId))
-        {
+        
             // Get the FCM token for the selected user
-            string userFcmToken = await _authenticationService.GetFcmTokenAsync();
+            string userFcmToken = await _appUserService.GetFcmTokenAsync(user.Id.ToString());
 
             if (!string.IsNullOrEmpty(userFcmToken))
             {
@@ -228,4 +227,3 @@ public class CargoCreateViewModel : ObservableObject
 
 
     #endregion
-}

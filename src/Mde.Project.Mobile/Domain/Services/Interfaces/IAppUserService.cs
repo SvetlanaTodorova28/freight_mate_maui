@@ -4,4 +4,8 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public interface IAppUserService{
     Task<List<AppUserResponseDto>> GetUsersWithFunctions();
+
+    Task StoreFcmTokenAsync( string token);
+
+    Task<string> GetFcmTokenAsync(string userId);
 }
