@@ -113,8 +113,8 @@
                         >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer
-                                    x:Name="backToLogin"
-                                    Tapped="BackToLogin_OnTapped"
+                                    x:Name="backToWelcome"
+                                    Tapped="BackToWelcome_OnTapped"
                                     NumberOfTapsRequired="1"/>
                             </Label.GestureRecognizers>
                         </Label>

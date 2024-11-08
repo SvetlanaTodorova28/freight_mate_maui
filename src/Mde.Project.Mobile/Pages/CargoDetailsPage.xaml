@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CargoDetailsPage"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodels:CargoDetailsViewModel"
              Style="{StaticResource CustomPageStyle}">
     
@@ -17,14 +18,14 @@
                 <ScrollView>
                     <StackLayout Padding="20">
                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, *"
-                              ColumnDefinitions="*, Auto, 40"
+                              ColumnDefinitions="Auto,*"
                               RowSpacing="20">
                             
                             <!-- Dangerous Icon -->
                             <Image Grid.Column="0" Grid.Row="0" IsVisible="{Binding IsDangerous}"
                                    Source="danger_container.png" HeightRequest="100" WidthRequest="100"/>
                             <!-- Divider after icon -->
-                            <BoxView Grid.ColumnSpan="3" Grid.Row="1" HeightRequest="1" 
+                            <BoxView Grid.ColumnSpan="2" Grid.Row="1" HeightRequest="1" 
                                      BackgroundColor="Gray" HorizontalOptions="Fill" />
 
                             <!-- Total Weight Label -->
@@ -32,39 +33,38 @@
                             <Label Grid.Row="2" Grid.Column="1" StyleClass="BaseLabel" 
                                    Text="{Binding TotalWeight}" Grid.ColumnSpan="2"/>
                             <!-- Divider -->
-                            <BoxView Grid.ColumnSpan="3" Grid.Row="3" HeightRequest="1" 
+                            <BoxView Grid.ColumnSpan="2" Grid.Row="3" HeightRequest="1" 
                                      BackgroundColor="Gray" HorizontalOptions="Fill" />
 
                             <!-- Destination Label and Navigation Icon -->
-                            <StackLayout Orientation="Horizontal" Grid.Row="4" Grid.Column="0" 
-                                         Grid.ColumnSpan="2">
-                                <Label Text="Destination:" StyleClass="BaseLabel" />
-                                <ImageButton Source="gps_icon.png" 
-                                             Command="{Binding NavigateCommand}"
-                                             CommandParameter="{Binding Destination}"
-                                             WidthRequest="50" HeightRequest="50" 
-                                             BackgroundColor="Transparent" />
-                                <Label Text="{Binding Destination}" StyleClass="BaseLabel" MaxLines="1" LineBreakMode="TailTruncation">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowFullAddressCommand}" NumberOfTapsRequired="1"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
-                                
-                            </StackLayout>
+                            <Label  Grid.Row="4" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel" />
+                            <Label Grid.Row="4" Grid.Column="1" StyleClass="BaseLabel" 
+                                   Text="{Binding Destination}" 
+                                   LineBreakMode="TailTruncation"
+                                   MaxLines="1">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        x:Name="openFullAddress"
+                                        Tapped="OpenFullAddress_OnTapped"
+                                        NumberOfTapsRequired="1"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                                        
+                           
                             <!-- Divider -->
-                            <BoxView Grid.ColumnSpan="3" Grid.Row="5" HeightRequest="1" 
+                            <BoxView Grid.ColumnSpan="2" Grid.Row="5" HeightRequest="1" 
                                      BackgroundColor="Gray" HorizontalOptions="Fill" />
 
                             <!-- Is Dangerous Label -->
                             <Label Grid.Row="6" Grid.Column="0" Text="Is Dangerous:" 
                                    StyleClass="BaseLabel" TextColor="White"/>
-                            <Label Grid.Row="6" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
+                            <Label Grid.Row="6" Grid.Column="1" FontFamily="PlayBold" FontSize="20" Margin="10"
                                    HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                                    Text="{Binding IsDangerous, Converter={StaticResource BoolToDangerousTextConverter}}"
                                    TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"
                                    Grid.ColumnSpan="2"/>
                             <!-- Divider -->
-                            <BoxView Grid.ColumnSpan="3" Grid.Row="7" HeightRequest="1" 
+                            <BoxView Grid.ColumnSpan="2" Grid.Row="7" HeightRequest="1" 
                                      BackgroundColor="Gray" HorizontalOptions="Fill" />
                         </Grid>
                     </StackLayout>

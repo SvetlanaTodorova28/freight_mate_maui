@@ -39,7 +39,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
     }
 
 
-    // Firebase Messaging Delegate methods
+    
     [Export("messaging:didReceiveRegistrationToken:")]
     public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken){
 

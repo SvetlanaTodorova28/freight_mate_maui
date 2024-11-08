@@ -28,7 +28,7 @@ public partial class LoginPage : ContentPage{
     }
     
 
-    private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
+    private void BackToWelcome_OnTapped(object? sender, TappedEventArgs e){
         Navigation.PushAsync(new WelcomePage(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
             _loginViewModel, _nativeAuthentication ));
     }

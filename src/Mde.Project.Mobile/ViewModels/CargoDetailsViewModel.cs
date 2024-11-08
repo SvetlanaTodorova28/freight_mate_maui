@@ -1,9 +1,10 @@
 using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-
+using Mde.Project.Mobile.Pages;
 
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -13,6 +14,8 @@ public class CargoDetailsViewModel:ObservableObject{
     
     public CargoDetailsViewModel(){
         NavigateCommand = new AsyncRelayCommand<string>(OpenNavigationApp);
+       
+      
     }
 
     private Cargo selectedCargo;
@@ -66,11 +69,12 @@ public class CargoDetailsViewModel:ObservableObject{
         }
     }
     
-   
-  
-    public ICommand NavigateCommand { get; }
     
-       
+    public ICommand NavigateCommand { get; }
+    public ICommand ShowPopupCommand { get; }
+    
+   
+
 
     
     private async Task OpenNavigationApp(string destination)
@@ -102,31 +106,8 @@ public class CargoDetailsViewModel:ObservableObject{
                 $"An error occurred while trying to navigate: {ex.Message}", "OK");
         }
     }
-
-    /*private async Task OpenNavigationApp(string destination)
-    {
-        try
-        {
-            var locations = await Geocoding.GetLocationsAsync(destination);
-            var location = locations?.FirstOrDefault();
-            if (location != null)
-            {
-                var options = new MapLaunchOptions { NavigationMode = NavigationMode.Driving };
-                await Map.OpenAsync(location, options);
-            }
-            else
-            {
-                // Handle the case where the location isn't found
-                await App.Current.MainPage.DisplayAlert("Error", "Location not found.", "OK");
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle any errors that may have occurred
-            await App.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-        }
-    }*/
-
+  
+   
 
 
    
