@@ -26,6 +26,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        Margin="60"
+                       
                        SearchCommand="{Binding PerformSearchCommand}"
                        SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}">
                 <SearchBar.Behaviors>

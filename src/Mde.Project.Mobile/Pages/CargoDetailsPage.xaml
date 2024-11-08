@@ -13,42 +13,43 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <Image
-                Grid.Row="0"
-                Source="info_cargo.png"
-                Aspect="AspectFit"
-                HeightRequest="100"
-                HorizontalOptions="Center" />
             
-        <Border Grid.Row="1" Margin="0,55,0,0" StyleClass="baseBorder">
-        <Border StyleClass="cargosBorder" HeightRequest="400">
-            <ScrollView>
-            <StackLayout Padding="20" >
-            
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto, Auto, Auto, *" RowSpacing="10">
+            <Border StyleClass="cargosBorder" HeightRequest="400">
+    <ScrollView>
+        <StackLayout Padding="20">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, 1*" RowSpacing="10">
+                <!-- Dangerous Icon -->
                 <Image Grid.Column="0" Grid.Row="0" IsVisible="{Binding IsDangerous}" Source="danger_container.png"
-                                                       HeightRequest="100" WidthRequest="100"/>
-                <Label Grid.Row="1" Grid.Column="0" Text="Total Weight:" StyleClass="BaseLabel"/>
-                <Label Grid.Row="1" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding TotalWeight}"/>
-               
-                <Label Grid.Row="2" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel"  />
-                <Label Grid.Row="2" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding Destination}"/>
-                
-                <Label Grid.Row="3" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel" 
-                       TextColor="White"/>
-                <Label Grid.Row="3" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
+                       HeightRequest="100" WidthRequest="100"/>
+                <!-- Divider after icon, if needed -->
+                <BoxView Grid.ColumnSpan="2" Grid.Row="1" HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" />
+
+                <!-- Total Weight Label -->
+                <Label Grid.Row="2" Grid.Column="0" Text="Total Weight:" StyleClass="BaseLabel"/>
+                <Label Grid.Row="2" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding TotalWeight}"/>
+                <!-- Divider -->
+                <BoxView Grid.ColumnSpan="2" Grid.Row="3" HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" />
+
+                <!-- Destination Label -->
+                <Label Grid.Row="4" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel" />
+                <Label Grid.Row="4" Grid.Column="1" StyleClass="BaseLabel" Text="{Binding Destination}"/>
+                <!-- Divider -->
+                <BoxView Grid.ColumnSpan="2" Grid.Row="5" HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" />
+
+                <!-- Is Dangerous Label -->
+                <Label Grid.Row="6" Grid.Column="0" Text="Is Dangerous:" StyleClass="BaseLabel" TextColor="White"/>
+                <Label Grid.Row="6" Grid.Column="1" FontFamily="PlayBold" FontSize="20"
                        HorizontalOptions="FillAndExpand" VerticalOptions="Center"
                        Text="{Binding IsDangerous, Converter={StaticResource BoolToDangerousTextConverter}}"
-                       TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"
-                       />
-                
+                       TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"/>
+                <BoxView Grid.ColumnSpan="2" Grid.Row="7" HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" />
+                <!-- You can add more dividers after other rows as needed -->
             </Grid>
-            
         </StackLayout>
-            </ScrollView>
-        </Border>
-            </Border>
+    </ScrollView>
+</Border>
+
+            <!--</Border>-->
     </Grid>
         </ScrollView>
 </ContentPage>

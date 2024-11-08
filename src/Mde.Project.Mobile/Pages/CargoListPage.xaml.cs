@@ -29,4 +29,10 @@ public partial class CargoListPage : ContentPage{
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
         viewmodel.DetailsCargoCommand?.Execute(cargo);
     }
+
+    /*private void SearchBar_Focused(object sender, FocusEventArgs e)
+    {
+        SearchBar.Unfocus();
+    }*/
+
 }

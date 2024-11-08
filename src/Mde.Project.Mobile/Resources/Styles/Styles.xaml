@@ -136,6 +136,7 @@
     <Style Class="baseSearch" TargetType="SearchBar">
         <Setter Property="Margin" Value="60,10"/>
         <Setter Property="HeightRequest" Value="50"/>
+       
         
         <Setter Property="BackgroundColor" Value="#3B3131"/>
         <Setter Property="TextColor" Value="White"/>

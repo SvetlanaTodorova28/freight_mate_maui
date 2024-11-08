@@ -12,8 +12,8 @@ public class BoolToDangerousTextConverter:IValueConverter{
 
         bool dangerous = (bool)value;
 
-        if (!dangerous) return "The cargo does not contain dangerous products";
-        return "The cargo contains dangerous products";
+        if (!dangerous) return "No";
+        return "Yes";
     }
 
     public object ConvertBack(object value, Type targetType,

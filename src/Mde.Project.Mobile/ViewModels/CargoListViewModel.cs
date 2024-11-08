@@ -68,6 +68,8 @@ public class CargoListViewModel:ObservableObject{
     public ICommand DetailsCargoCommand { get; }
     public ICommand PerformSearchCommand { get; }
     public ICommand TextChangedCommand { get; }
+  
+
     #endregion
 
     # region methods
