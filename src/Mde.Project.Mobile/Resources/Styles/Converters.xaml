@@ -10,6 +10,7 @@
     <converters:BoolToIconConverter x:Key="BoolToIconConverter"/>
     <converters:FunctionToVisibilityConverter x:Key="FunctionToVisibilityConverter"/>
     <converters:UserDisplayConverter x:Key="UserDisplayConverter"/>
+    <converters:TextChangedEventArgsConverter x:Key="TextChangedEventArgsConverter"/>
     
 
 </ResourceDictionary>
