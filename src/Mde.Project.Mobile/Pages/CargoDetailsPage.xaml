@@ -44,8 +44,11 @@
                                              CommandParameter="{Binding Destination}"
                                              WidthRequest="50" HeightRequest="50" 
                                              BackgroundColor="Transparent" />
-                                <Label Text="{Binding Destination}" StyleClass="BaseLabel" 
-                                       MaxLines="1" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Destination}" StyleClass="BaseLabel" MaxLines="1" LineBreakMode="TailTruncation">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowFullAddressCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
                                 
                             </StackLayout>
                             <!-- Divider -->
