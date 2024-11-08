@@ -17,12 +17,13 @@
             </Grid.RowDefinitions>
           
 
-            <Image
+            <SearchBar
                 Grid.Row="0"
-                Source="pff1.png"
-                Aspect="AspectFit"
-                HeightRequest="100"
-                HorizontalOptions="Center" />
+                Placeholder="Zoek cargos..."
+                HeightRequest="50"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Center"
+                TextChanged="OnSearchTextChanged" />
 
             <Border Grid.Row="1" Margin="0,25,0,0" StyleClass="baseBorder">
                 <Grid>
