@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,14 @@ public partial class CargoDetailsPage : ContentPage{
         InitializeComponent();
         BindingContext = cargoDetailsViewModel;
     }
+    
+    public void OnImageButtonClicked(object sender, EventArgs e)
+    {
+       
+        CargoDetailsViewModel viewmodel = BindingContext as CargoDetailsViewModel;
+        viewmodel.NavigateCommand.Execute(null);
+    }
+
     
    
 }

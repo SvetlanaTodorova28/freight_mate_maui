@@ -18,7 +18,6 @@ public partial class CargoListPage : ContentPage{
     protected override void OnAppearing()
     {
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        /*LoginViewModel viewmodelLogin = BindingContext as LoginViewModel;*/
         viewmodel.RefreshListCommand?.Execute(null);
         base.OnAppearing();
     }
@@ -30,9 +29,6 @@ public partial class CargoListPage : ContentPage{
         viewmodel.DetailsCargoCommand?.Execute(cargo);
     }
 
-    /*private void SearchBar_Focused(object sender, FocusEventArgs e)
-    {
-        SearchBar.Unfocus();
-    }*/
+    
 
 }
