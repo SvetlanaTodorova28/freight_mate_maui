@@ -7,6 +7,7 @@
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     xmlns:models="clr-namespace:Mde.Project.Mobile.Domain.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    HideSoftInputOnTapped="True"
     x:DataType="viewmodels:CargoListViewModel"
     Style="{StaticResource CustomPageStyle}">
 
@@ -21,16 +22,11 @@
             <SearchBar Grid.Row="0"
                        StyleClass="baseSearch"
                        Placeholder="ZOEK CARGOS..."
-                       HeightRequest="50"
-                       WidthRequest="300"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       Margin="60"
-                       
                        SearchCommand="{Binding PerformSearchCommand}"
                        SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}">
                 <SearchBar.Behaviors>
                     <toolkit:EventToCommandBehavior EventName="TextChanged"
+                                                    
                                                     Command="{Binding TextChangedCommand}"
                                                     EventArgsConverter="{StaticResource TextChangedEventArgsConverter}"/>
                 </SearchBar.Behaviors>
@@ -59,14 +55,7 @@
                                      IsVisible="{Binding UserFunction, Converter={StaticResource FunctionToVisibilityConverter},ConverterParameter='Consignee'}"
                                      Command="{Binding CreateCargoCommand}"
                                      Margin="0,12,20,0" />
-                        <Label
-                            Text="{Binding UserFirstName}"
-                            FontFamily="PlayBold"
-                            TextColor="White"
-                            FontSize="20"
-                            Grid.Column="1"
-                            VerticalOptions="Center"
-                            Margin="40,0" />
+                       
                     </Grid>
 
                     <ListView Grid.Row="1"

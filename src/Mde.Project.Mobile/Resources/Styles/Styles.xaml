@@ -134,10 +134,11 @@
     </Style>
     <!-- ############################################# SEARCH BAR STYLE  ############################################# -->
     <Style Class="baseSearch" TargetType="SearchBar">
-        <Setter Property="Margin" Value="60,10"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="HeightRequest" Value="50"/>
-       
-        
+        <Setter Property="Margin" Value="30"/>
+        <Setter Property="WidthRequest" Value="280"/>
         <Setter Property="BackgroundColor" Value="#3B3131"/>
         <Setter Property="TextColor" Value="White"/>
         <Setter Property="FontSize" Value="14"/>

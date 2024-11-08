@@ -56,4 +56,6 @@ public class MainActivity : MauiAppCompatActivity
         var notificationManager = NotificationManagerCompat.From(context);
         notificationManager.Notify(0, notificationBuilder.Build());
     }
+    
+    
 }
