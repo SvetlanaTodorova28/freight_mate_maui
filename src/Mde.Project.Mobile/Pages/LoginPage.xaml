@@ -99,11 +99,6 @@
                             StyleClass="baseButton"
                             Clicked="LoginWithFace_OnClicked"
                             Text="Login with biometric" />
-                        <Label
-                            Margin="0,20,0,10"
-                            HorizontalOptions="Center"
-                            FontFamily="PlayBold"
-                            Text="Forgot your password?" />
                         
                         
                         <Label  FontFamily="PlayBold"
