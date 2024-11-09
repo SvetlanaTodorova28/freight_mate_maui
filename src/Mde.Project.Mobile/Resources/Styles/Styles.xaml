@@ -146,6 +146,21 @@
         <Setter Property="PlaceholderColor" Value="White"/>
         <Setter Property="CancelButtonColor" Value="OrangeRed"/>
     </Style>
+    
+    
+    <Style Class="borderImagesLogin" TargetType="Border">
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="10" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Stroke" Value="White" />  <!-- Zorg ervoor dat deze waarde zichtbaar is tegen je achtergrond -->
+        <Setter Property="StrokeThickness" Value="3" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
+    </Style>
     <!-- ############################################# END CUSTOM STYLES ############################################# -->
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />

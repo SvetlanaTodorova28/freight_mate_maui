@@ -22,9 +22,12 @@
                 </Grid.ColumnDefinitions>
 
                 <Image
+                    MaximumHeightRequest="80"
+                    MaximumWidthRequest="80"
                     Grid.Column="0"
                     Aspect="AspectFit"
-                    Source="truck_white.png" />
+                    Source="truck_white.png" 
+                    />
             </Grid>
 
             <Border Grid.Row="1"
@@ -37,7 +40,8 @@
                             FontFamily="PlayBold"
                             FontSize="Large"
                             HorizontalOptions="Center"
-                            TextColor="White" />
+                            TextColor="White" 
+                            Text="Login"/>
                        
                         <Grid Margin="0,30,0,0">
                             <Grid.ColumnDefinitions>
@@ -45,41 +49,43 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border StyleClass="LoginCreateIcons">
-                                <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
+                            <!-- Enkel een Border om de Image -->
+                            <Border  Grid.Column="0" StyleClass="borderImagesLogin" >
+                                <Image HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf0e0;"
-                                            Color="#4F3F9B" />
+                                            Color="White" />
                                     </Image.Source>
                                 </Image>
                             </Border>
-
+                            
                             <Entry
                                 StyleClass="BaseEntry"
                                 Grid.Column="1"
-                                Placeholder="EMAIL"
+                                IsPassword="True"
+                                Placeholder="USERNAME"
                                 Text="{Binding UserName}"/>
                         </Grid>
+
                         <Grid Margin="0,25,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border
-                                StyleClass="LoginCreateIcons">
-                                <Image HorizontalOptions="Center" VerticalOptions="Center" Margin="4">
+                            <Border  Grid.Column="0" StyleClass="borderImagesLogin">
+                                <Image HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource
                                             FontFamily="AwesomeSolid"
                                             Glyph="&#xf084;"
-                                            Color="#4F3F9B" />
+                                            Color="White" />
                                     </Image.Source>
                                 </Image>
-
                             </Border>
+                           
 
                             <Entry
                                 StyleClass="BaseEntry"

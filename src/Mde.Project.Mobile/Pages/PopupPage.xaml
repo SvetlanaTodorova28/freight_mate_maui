@@ -16,6 +16,6 @@
                      BackgroundColor="Transparent" />
         <Label Text="{Binding Destination}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"
                StyleClass="BaseLabel"/>
-        <Button Text="Close" Clicked="Button_Clicked"  TextColor="OrangeRed" FontFamily="PlayBold" FontSize="14"/>
+        <Button Text="Close" Clicked="Button_Clicked"  TextColor="OrangeRed" FontFamily="PlayBold" FontSize="16"/>
     </VerticalStackLayout>
 </mct:Popup>
