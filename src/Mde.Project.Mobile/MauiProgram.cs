@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Maui;
+using DotNetEnv;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Mde.Project.Mobile.Platforms;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
@@ -66,6 +67,19 @@ namespace Mde.Project.Mobile
             
             builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
+            builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
+            Env.Load();
+            var key = Environment.GetEnvironmentVariable("KEY_SPEECH_1");
+            builder.Services.AddSingleton<ISpeechService>(new SpeechService(key, "northeurope"));
+            builder.Services.AddHttpClient<ITranslationService, TranslationService>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.example.com/");
+            }).ConfigureHttpClient((serviceProvider, client) =>
+            {
+                var apiKey = serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TranslationAPIKey");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+            });
+
             
             
             
