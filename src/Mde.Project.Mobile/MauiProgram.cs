@@ -67,7 +67,7 @@ namespace Mde.Project.Mobile
             
             builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
-            builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
+            /*builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
             Env.Load();
             var key = Environment.GetEnvironmentVariable("KEY_SPEECH_1");
             builder.Services.AddSingleton<ISpeechService>(new SpeechService(key, "northeurope"));
@@ -78,7 +78,7 @@ namespace Mde.Project.Mobile
             {
                 var apiKey = serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TranslationAPIKey");
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-            });
+            });*/
 
             
             
