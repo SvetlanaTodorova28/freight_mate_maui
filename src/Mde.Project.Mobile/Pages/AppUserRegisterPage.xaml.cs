@@ -1,6 +1,7 @@
 
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
+using SkiaSharp;
 
 namespace Mde.Project.Mobile.Pages;
 
@@ -48,6 +49,29 @@ public partial class AppUserRegisterPage : ContentPage{
        
     }
 
-    
+    private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
+    {
+        var surface = e.Surface;
+        var canvas = surface.Canvas;
+
+        canvas.Clear();
+
+        using (var paint = new SKPaint())
+        {
+            paint.Style = SKPaintStyle.Fill;
+            paint.Color = SKColors.White;
+
+            var rect = new SKRect(0, 0, e.Info.Width, 100);
+            var path = new SKPath();
+            path.MoveTo(0, 100);
+            path.QuadTo(e.Info.Width / 2, 0, e.Info.Width, 100);
+            path.LineTo(e.Info.Width, 0);
+            path.LineTo(0, 0);
+            path.Close();
+
+            canvas.DrawPath(path, paint);
+        }
+    }
+
     
 }

@@ -1,4 +1,5 @@
 
+using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -20,10 +21,22 @@ public class SpeechViewModel{
         string speechText = await _speechService.RecognizeSpeechAsync();
         if (!string.IsNullOrEmpty(speechText))
         {
-            return await _translationService.TranslateTextAsync(speechText, targetLanguageCode);
+            string translatedText = await _translationService.TranslateTextAsync(speechText, targetLanguageCode);
+            // Opslaan van de vertaling
+            var translationModel = new TranslationSpeechModel
+            {
+                OriginalText = speechText,
+                TranslatedText = translatedText,
+                TargetLanguage = targetLanguageCode
+            };
+            await _translationStorageService.SaveTranslationAsync(translationModel);
+
+            // Optioneel: Converteer de vertaalde tekst naar spraak
+            // Dit zou een andere service kunnen zijn of een uitbreiding van je huidige diensten
+            /*await SpeakText(translatedText, targetLanguageCode);*/
+            return translatedText;
         }
         return "Speech not recognized or error.";
     }
-   
 
 }

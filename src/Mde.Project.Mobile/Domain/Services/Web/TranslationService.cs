@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 namespace Mde.Project.Mobile.Domain.Services.Web;
 
 public class TranslationService:ITranslationService{
+    
     private readonly HttpClient _httpClient;
     private readonly string _apiKey;
 

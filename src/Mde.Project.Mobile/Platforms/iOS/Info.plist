@@ -42,6 +42,9 @@
 	</dict>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Deze app vereist toegang tot de microfoon voor spraakherkenning.</string>
+
 
 
 </dict>
