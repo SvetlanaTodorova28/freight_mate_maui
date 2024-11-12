@@ -21,7 +21,7 @@ public class LoginViewModel : ObservableObject
 
     public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel, INativeAuthentication nativeAuthentication 
-        // IAppUserService appUserService
+        
     )
     {
        
@@ -29,7 +29,7 @@ public class LoginViewModel : ObservableObject
         authenticationServiceMobile = authServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
         _nativeAuthentication = nativeAuthentication;
-        // _appUserService = appUserService;
+        
         LoginCommand = new RelayCommand(async () => await ExecuteLoginCommand());
         FaceLoginCommand = new RelayCommand(async () => await ExecuteFaceLoginCommand());
         
@@ -79,21 +79,18 @@ public class LoginViewModel : ObservableObject
             return false;
         }
 
-        // Probeer in te loggen met de gevalideerde gegevens
+       
         var isAuthenticated = await authenticationServiceMobile.TryLoginAsync(UserName, Password);
         if (isAuthenticated)
         {
-            // Bij succes, navigeer naar de hoofdpagina
- 
- 
-
+            
             Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
             return true;
         }
         else
         {
-            // Bij mislukking, toon foutmelding
+           
             await uiService.ShowSnackbarWarning("Login Failed. Please check your username and password and try again.");
             return false;
         }

@@ -32,7 +32,7 @@
                 </SearchBar.Behaviors>
 
             </SearchBar>
-            <Border Grid.Row="1" Margin="0,25,0,0" StyleClass="baseBorder">
+            <Border Grid.Row="1" Margin="0,55,0,0" StyleClass="baseBorder">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -83,11 +83,12 @@
                                             </SwipeItems>
                                         </SwipeView.RightItems>
 
-                                        <Border StyleClass="cargosBorder" Opacity="0.7" Padding="10" Margin="10">
+                                        <Border StyleClass="cargosBorder" Opacity="0.7" MaximumWidthRequest="650">
                                             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
-                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Destination}"
-                                                       LineBreakMode="TailTruncation" MaximumWidthRequest="250"
-                                                       FontFamily="PlayBold" FontSize="22" Padding="10"
+                                                <Label Grid.Column="0" Grid.Row="0" 
+                                                       Text="{Binding Destination}"
+                                                       LineBreakMode="TailTruncation" 
+                                                       FontFamily="PlayBold" FontSize="22" 
                                                        TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"
                                                        VerticalOptions="Center" />
 

@@ -17,6 +17,7 @@
             <Picker Title="Input Language" 
                     FontFamily="PlayBold"
                     FontSize="14"
+                    TextColor="White"
                     ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedInputLanguage}" />
 
             <Label FontSize="16" FontFamily="PlayBold"
@@ -25,6 +26,7 @@
             <Picker Title="Target Language" 
                     FontFamily="PlayBold"
                     FontSize="14"
+                    TextColor="White"
                     ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedTargetLanguage}" />
 
            
@@ -52,7 +54,14 @@
                     FontSize="18"
                     HeightRequest="100"
                     Placeholder="Your translation will appear here..."
-                    IsReadOnly="True" />
+                    IsReadOnly="True" 
+                    Shadow="{StaticResource basicShadow}"/>
+            
+            <Button Text="Speak Translation" 
+                    FontFamily="PlayBold"
+                    FontSize="16"
+                    Command="{Binding SpeakTranslatedTextCommand}" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

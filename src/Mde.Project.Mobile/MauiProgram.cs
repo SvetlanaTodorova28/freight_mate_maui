@@ -81,26 +81,23 @@ namespace Mde.Project.Mobile
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
-
-
-            LoadAndStoreKeys(builder).GetAwaiter().GetResult();
-            return builder.Build();
-        }
-        private static async Task LoadAndStoreKeys(MauiAppBuilder builder){
-            string speechApiKey = await SecureStorageHelper.GetApiKeyAsync("KEY_SPEECH_1");
-            string translationApiKey = await SecureStorageHelper.GetApiKeyAsync("KEY_TRANSLATION_1");
-            string speechRegion = await SecureStorageHelper.GetApiKeyAsync("AZURE_REGION");
             
-
-            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, speechRegion));
+            string speechApiKey =
+                "";
+            string translationApiKey = ""; 
+            string region = "northeurope";
             
-
+            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, region));
+            builder.Services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(speechApiKey, region));
             builder.Services.AddHttpClient<ITranslationService, AzureTranslationService>((client) => {
                 client.BaseAddress = new Uri("https://api.cognitive.microsofttranslator.com");
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", translationApiKey);
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", speechRegion);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", region);
             });
+            return builder.Build();
+ 
+         
+            
 
         }
 

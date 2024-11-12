@@ -9,6 +9,7 @@ public partial class TranslateViewModel : ObservableObject
     private readonly ISpeechService _speechService;
     private readonly ITranslationService _translationService;
     private readonly ITranslationStorageService _translationStorageService;
+    private readonly ITextToSpeechService _textToSpeechService;
 
     [ObservableProperty]
     private List<LanguageOption> availableLanguages = new List<LanguageOption>
@@ -33,20 +34,23 @@ public partial class TranslateViewModel : ObservableObject
     private bool isListening;
 
     public TranslateViewModel(ISpeechService speechService, ITranslationService translationService, 
-                              ITranslationStorageService translationStorageService)
+                              ITranslationStorageService translationStorageService, ITextToSpeechService textToSpeechService)
     {
         _speechService = speechService;
         _translationService = translationService;
         _translationStorageService = translationStorageService;
-        
+        _textToSpeechService = textToSpeechService;
+
         StartListeningCommand = new AsyncRelayCommand(StartListeningAsync);
         StopListeningCommand = new RelayCommand(StopListening);
         TranslateCommand = new AsyncRelayCommand(TranslateSpeechAsync);
+        SpeakTranslatedTextCommand = new AsyncRelayCommand(SpeakTranslatedTextAsync);
     }
 
     public IAsyncRelayCommand StartListeningCommand { get; }
     public RelayCommand StopListeningCommand { get; }
     public IAsyncRelayCommand TranslateCommand { get; }
+    public IAsyncRelayCommand SpeakTranslatedTextCommand { get; }
 
     private async Task StartListeningAsync()
     {
@@ -89,6 +93,15 @@ public partial class TranslateViewModel : ObservableObject
         else
         {
             TranslatedText = "No text to translate.";
+        }
+    }
+    private async Task SpeakTranslatedTextAsync()
+    {
+        if (!string.IsNullOrEmpty(TranslatedText))
+        {
+            /*string targetLanguageCode = GetLanguageCode(selectedTargetLanguage);
+            _textToSpeechService.SetVoiceLanguage(targetLanguageCode);*/
+            await _textToSpeechService.SynthesizeSpeechAsync(TranslatedText);
         }
     }
 

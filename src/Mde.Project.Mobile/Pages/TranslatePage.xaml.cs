@@ -13,13 +13,15 @@ public partial class TranslatePage : ContentPage{
     private readonly ISpeechService _speechService;
     private readonly ITranslationService _translationService;
     private readonly ITranslationStorageService _translationStorageService;
+    private readonly ITextToSpeechService _textToSpeechService;
    
     public TranslatePage(TranslateViewModel translateViewModel, ISpeechService speechService, ITranslationService translationService,
-        ITranslationStorageService translationStorageService){
+        ITranslationStorageService translationStorageService, ITextToSpeechService textToSpeechService){
         _speechService = speechService;
         _translationService = translationService;
         _translationStorageService = translationStorageService;
+        _textToSpeechService = textToSpeechService; 
         InitializeComponent();
-    BindingContext = new TranslateViewModel(_speechService, _translationService, _translationStorageService);
+    BindingContext = new TranslateViewModel(_speechService, _translationService, _translationStorageService, _textToSpeechService);
     }
 }

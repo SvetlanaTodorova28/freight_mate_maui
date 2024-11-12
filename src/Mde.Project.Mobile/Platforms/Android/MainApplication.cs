@@ -20,7 +20,7 @@ public class MainApplication : MauiApplication{
     {
         base.OnCreate();
 
-        // Initialize Firebase for Android
+        
         FirebaseApp.InitializeApp(this);
         FirebaseMessaging.Instance.AutoInitEnabled = true;
         RetrieveFirebaseToken();

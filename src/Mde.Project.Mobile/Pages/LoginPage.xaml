@@ -41,7 +41,7 @@
                             Text="Login"
                             Margin="40"/>
                        
-                        <Grid Margin="0,30,0,0">
+                        <Grid Margin="0, 30, 0, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
@@ -63,10 +63,17 @@
                                 StyleClass="BaseEntry"
                                 Grid.Column="1"
                                 Placeholder="USERNAME"
+                                TextColor="White"
+                                FontFamily="PlayBold"
+                                BackgroundColor="Transparent"
                                 Text="{Binding UserName}"/>
+                           
                         </Grid>
+                        <BoxView 
+                            HeightRequest="1"
+                                 BackgroundColor="White" WidthRequest="340"  HorizontalOptions="End"/>
 
-                        <Grid Margin="0,25,0,50">
+                        <Grid Padding="0,20, 0, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
@@ -89,34 +96,45 @@
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"
+                                TextColor="White"
+                                FontFamily="PlayBold"
+                                BackgroundColor="Transparent"
                                 Text="{Binding Password}"/>
                         </Grid>
+                        <BoxView 
+                                 HeightRequest="1"
+                                 BackgroundColor="White" WidthRequest="340"  HorizontalOptions="End"/>
 
                         <Button
                             x:Name="Login"
                             StyleClass="baseButton"
                             Clicked="Login_OnClicked"
                             Text="Login" 
-                            WidthRequest="140"/>
+                            WidthRequest="140"
+                            HorizontalOptions="End"
+                            />
                         <Button
                             x:Name="LoginWithFace"
                             StyleClass="baseButton"
                             Clicked="LoginWithFace_OnClicked"
                             Text="Login with biometrics" 
-                            WidthRequest="230"
+                            WidthRequest="280"
+                            HorizontalOptions="End"
                             />
                         
                         
-                        <Label  FontFamily="PlayBold"
+                        <Label Padding="10"
+                            FontFamily="PlayBold"
                                 Text="Back to Welcome" 
                                 TextColor="White"
-                                HorizontalOptions="Center"
+                                HorizontalOptions="End"
                         >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer
                                     x:Name="backToWelcome"
                                     Tapped="BackToWelcome_OnTapped"
-                                    NumberOfTapsRequired="1"/>
+                                    NumberOfTapsRequired="1"
+                                    />
                             </Label.GestureRecognizers>
                         </Label>
                         

@@ -73,6 +73,7 @@ public class CargoListViewModel:ObservableObject{
     #endregion
 
     # region methods
+   
     private async Task RefreshListAsync()
     {
         try
@@ -86,7 +87,6 @@ public class CargoListViewModel:ObservableObject{
 
             var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
 
-           
             var modelCargos = dtoCargos.Select(dto => new Cargo
             {
                 Id = dto.Id,
@@ -100,9 +100,11 @@ public class CargoListViewModel:ObservableObject{
         }
         catch (Exception ex)
         {
-            _uiService.ShowSnackbarWarning("You don't have any cargos available");
+            
+            Cargos = new ObservableCollection<Cargo>(); 
         }
     }
+
 
     private async Task NavigateToCreateCargoAsync()
     {

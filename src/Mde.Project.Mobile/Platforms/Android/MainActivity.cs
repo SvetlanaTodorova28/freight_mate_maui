@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using AndroidX.Core.App;
 
+
 using Color = Android.Graphics.Color;
 
 namespace Mde.Project.Mobile.Platforms;
@@ -13,10 +14,23 @@ namespace Mde.Project.Mobile.Platforms;
                            ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
+    const int RequestMicrophonePermissionId = 10;
+    readonly string[] Permissions = { Android.Manifest.Permission.RecordAudio };
+
     protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
         CreateNotificationChannel();
+        if (CheckSelfPermission(Android.Manifest.Permission.RecordAudio) != Permission.Granted)
+        {
+            RequestPermissions(Permissions, RequestMicrophonePermissionId);
+        }
+
+        // Initialiseer SecureStorage en andere Essentials-functies voor MAUI
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+        {
+            Platform.Init(this, savedInstanceState); // Gebruik hier Platform.Init
+        }
     }
 
     private void CreateNotificationChannel()
@@ -32,9 +46,6 @@ public class MainActivity : MauiAppCompatActivity
             {
                 Description = channelDescription,
                 LightColor = Color.Beige
-               
-                
-                
             };
 
             var notificationManager = (NotificationManager)GetSystemService(NotificationService);
@@ -56,6 +67,11 @@ public class MainActivity : MauiAppCompatActivity
         var notificationManager = NotificationManagerCompat.From(context);
         notificationManager.Notify(0, notificationBuilder.Build());
     }
-    
-    
+
+    public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+    {
+        Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults); // Gebruik Platform hier ook
+
+        base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

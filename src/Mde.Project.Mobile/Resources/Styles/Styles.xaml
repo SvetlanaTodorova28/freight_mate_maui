@@ -51,11 +51,6 @@
     </LinearGradientBrush>
     <!-- ############################################# BASE BORDER STYLE  ############################################# -->
     <Style Class="baseBorder" TargetType="Border">
-        <Setter Property="StrokeShape">
-            <Setter.Value>
-                <RoundRectangle CornerRadius="22" />
-            </Setter.Value>
-        </Setter>
         <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="Background" Value="{StaticResource BackgroundFlyoutAndBaseBorder}" />
@@ -70,15 +65,15 @@
     </LinearGradientBrush>
     <!-- ############################################# CARGOS BORDER STYLE  ############################################# -->
     <Style Class="cargosBorder" TargetType="Border">
-        <Setter Property="StrokeShape">
+        <!--<Setter Property="StrokeShape">
             <Setter.Value>
                 <RoundRectangle CornerRadius="8" />
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
         <Setter Property="Opacity" Value="0.7" />
-        <Setter Property="Margin" Value="10" />
-        <Setter Property="Padding" Value="15" />
+        <Setter Property="Margin" Value="0, 5" />
+        <Setter Property="Padding" Value="20" />
         <Setter Property="Background" Value="{StaticResource GradientBackgroundCargos}" />
     </Style>
 

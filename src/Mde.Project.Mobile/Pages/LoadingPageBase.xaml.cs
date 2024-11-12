@@ -22,39 +22,57 @@ public partial class LoadingPageBase : ContentPage{
         });
     }
 
+  
+    
     private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
-        
         var width = e.Info.Width;
         var height = e.Info.Height;
-        var radius = Math.Min(width, height) / 8;
+        var radius = Math.Min(width, height) / 9.5f; 
 
         var center = new SKPoint(width / 2, height / 2);
-        var paint = new SKPaint
+        canvas.Translate(center.X, center.Y);
+        var canvasColor = SKColor.Parse("#3B3131");
+        canvas.Clear(canvasColor);
+
+        var segmentColor = SKColor.Parse("#4FB9FF"); 
+        var backgroundColor = SKColor.Parse("#D0D0D0"); 
+
+        int totalSegments = 24; 
+        float segmentDegrees = 360f / totalSegments; 
+
+        var backgroundPaint = new SKPaint
         {
             Style = SKPaintStyle.Stroke,
-            Color = SKColors.Blue,
-            StrokeWidth = 10,
+            StrokeWidth = 40,
+            Color = backgroundColor,
             IsAntialias = true
         };
 
-        
-        var markerPaint = new SKPaint
+        var progressPaint = new SKPaint
         {
-            Style = SKPaintStyle.Fill,
-            Color = SKColors.OrangeRed
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 40,
+            Color = segmentColor,
+            IsAntialias = true
         };
 
-        canvas.Translate(center.X, center.Y);
-        canvas.RotateDegrees(_angle);
+       
+        for (int i = 0; i < totalSegments; i++)
+        {
+            canvas.DrawArc(new SKRect(-radius, -radius, radius, radius), i * segmentDegrees, segmentDegrees - 4, false, backgroundPaint); 
+        }
 
        
-        canvas.DrawCircle(0, 0, radius, paint);
-
-       
-        canvas.DrawCircle(radius, 0, 20, markerPaint); 
+        int activeSegments = (int)(_angle / segmentDegrees);
+        
+        for (int i = 0; i < activeSegments; i++)
+        {
+            canvas.DrawArc(new SKRect(-radius, -radius, radius, radius), i * segmentDegrees, segmentDegrees - 4, false, progressPaint);
+        }
     }
+
 
 
 }
