@@ -2,8 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 public partial class TranslateViewModel : ObservableObject
 {
@@ -12,13 +11,20 @@ public partial class TranslateViewModel : ObservableObject
     private readonly ITranslationStorageService _translationStorageService;
 
     [ObservableProperty]
-    private List<string> availableLanguages = new List<string> { "en-US", "nl-NL", "fr-FR", "de-DE","bg-BG" }; 
+    private List<LanguageOption> availableLanguages = new List<LanguageOption>
+    {
+        LanguageOption.English,
+        LanguageOption.Dutch,
+        LanguageOption.French,
+        LanguageOption.German,
+        LanguageOption.Bulgarian
+    };
 
     [ObservableProperty]
-    private string selectedInputLanguage;
+    private LanguageOption selectedInputLanguage = LanguageOption.Dutch; // Standaard naar Dutch
 
     [ObservableProperty]
-    private string selectedTargetLanguage;
+    private LanguageOption selectedTargetLanguage = LanguageOption.French; 
 
     [ObservableProperty]
     private string translatedText;
@@ -32,9 +38,7 @@ public partial class TranslateViewModel : ObservableObject
         _speechService = speechService;
         _translationService = translationService;
         _translationStorageService = translationStorageService;
-
-        SelectedInputLanguage = "nl-NL"; 
-        SelectedTargetLanguage = "fr-FR"; 
+        
         StartListeningCommand = new AsyncRelayCommand(StartListeningAsync);
         StopListeningCommand = new RelayCommand(StopListening);
         TranslateCommand = new AsyncRelayCommand(TranslateSpeechAsync);
@@ -46,8 +50,9 @@ public partial class TranslateViewModel : ObservableObject
 
     private async Task StartListeningAsync()
     {
-        
-        _speechService.SetRecognitionLanguage(SelectedInputLanguage);
+        // Converteer geselecteerde invoertaal naar taalcode
+        string inputLanguageCode = GetLanguageCode(selectedInputLanguage);
+        _speechService.SetRecognitionLanguage(inputLanguageCode);
 
         IsListening = true;
         OnPropertyChanged(nameof(IsListening));
@@ -68,7 +73,6 @@ public partial class TranslateViewModel : ObservableObject
 
     private void StopListening()
     {
-       
         IsListening = false;
     }
 
@@ -76,7 +80,9 @@ public partial class TranslateViewModel : ObservableObject
     {
         if (!string.IsNullOrEmpty(TranslatedText))
         {
-            var translatedText = await _translationService.TranslateTextAsync(TranslatedText, SelectedTargetLanguage);
+            
+            string targetLanguageCode = GetLanguageCode(selectedTargetLanguage);
+            var translatedText = await _translationService.TranslateTextAsync(TranslatedText, targetLanguageCode);
             TranslatedText = translatedText;
             await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel { OriginalText = TranslatedText, TranslatedText = translatedText });
         }
@@ -84,5 +90,19 @@ public partial class TranslateViewModel : ObservableObject
         {
             TranslatedText = "No text to translate.";
         }
+    }
+
+    // Helper-methode om LanguageOption om te zetten naar taalcode
+    private string GetLanguageCode(LanguageOption language)
+    {
+        return language switch
+        {
+            LanguageOption.English => "en-US",
+            LanguageOption.Dutch => "nl-NL",
+            LanguageOption.French => "fr-FR",
+            LanguageOption.German => "de-DE",
+            LanguageOption.Bulgarian => "bg-BG",
+            _ => "en-US" // Fallback naar Engels
+        };
     }
 }
