@@ -21,7 +21,7 @@ public partial class TranslateViewModel : ObservableObject
     };
 
     [ObservableProperty]
-    private LanguageOption selectedInputLanguage = LanguageOption.Dutch; // Standaard naar Dutch
+    private LanguageOption selectedInputLanguage = LanguageOption.Dutch; 
 
     [ObservableProperty]
     private LanguageOption selectedTargetLanguage = LanguageOption.French; 
@@ -50,7 +50,7 @@ public partial class TranslateViewModel : ObservableObject
 
     private async Task StartListeningAsync()
     {
-        // Converteer geselecteerde invoertaal naar taalcode
+        
         string inputLanguageCode = GetLanguageCode(selectedInputLanguage);
         _speechService.SetRecognitionLanguage(inputLanguageCode);
 
@@ -92,7 +92,7 @@ public partial class TranslateViewModel : ObservableObject
         }
     }
 
-    // Helper-methode om LanguageOption om te zetten naar taalcode
+    
     private string GetLanguageCode(LanguageOption language)
     {
         return language switch
@@ -102,7 +102,7 @@ public partial class TranslateViewModel : ObservableObject
             LanguageOption.French => "fr-FR",
             LanguageOption.German => "de-DE",
             LanguageOption.Bulgarian => "bg-BG",
-            _ => "en-US" // Fallback naar Engels
+            _ => "en-US" 
         };
     }
 }
