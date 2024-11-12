@@ -5,22 +5,25 @@ namespace Mde.Project.Mobile.Domain.Services;
 
 public class AzureSpeechService : ISpeechService
 {
-    private readonly string subscriptionKey;
-    private readonly string region;
+    private SpeechConfig config;
 
     public AzureSpeechService(string subscriptionKey, string region)
     {
-        this.subscriptionKey = subscriptionKey;
-        this.region = region;
+        config = SpeechConfig.FromSubscription(subscriptionKey, region);
+        config.SpeechRecognitionLanguage = "nl-NL"; // Standaardtaal, kan worden overschreven
+    }
+
+    public void SetRecognitionLanguage(string languageCode)
+    {
+        config.SpeechRecognitionLanguage = languageCode;
     }
 
     public async Task<string> RecognizeSpeechAsync()
     {
-        var config = SpeechConfig.FromSubscription(subscriptionKey, region);
         using (var recognizer = new SpeechRecognizer(config))
         {
             var result = await recognizer.RecognizeOnceAsync();
-            return result.Reason == ResultReason.RecognizedSpeech ? result.Text : null;
+            return result.Reason == ResultReason.RecognizedSpeech ? result.Text : "Error: Speech not recognized";
         }
     }
 }

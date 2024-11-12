@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using DotNetEnv;
+using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
@@ -18,7 +19,12 @@ namespace Mde.Project.Mobile
     {
         public static MauiApp CreateMauiApp()
         {
+            /*Env.Load("Mde.Project.Mobile/.env");
+            Console.WriteLine($"API Key: {Environment.GetEnvironmentVariable("KEY_SPEECH_1")}");
+
+            var key = Environment.GetEnvironmentVariable("KEY_SPEECH_1");*/
             var builder = MauiApp.CreateBuilder();
+         
             builder
                 .UseMauiApp<App>()
                 .UseSkiaSharp()
@@ -39,9 +45,8 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
+            Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
             
-            
-           
             builder.Services.AddTransient<WelcomePage>();
             
             builder.Services.AddTransient<LoginViewModel>();
@@ -59,6 +64,8 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<AppUserRegisterPage>();
             builder.Services.AddTransient<AppUserRegisterViewModel>();
             
+            builder.Services.AddTransient<TranslatePage>();
+            builder.Services.AddTransient<TranslateViewModel>();
             
             builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
             builder.Services.AddTransient<INativeAuthentication, NativeAuthentication>();
@@ -67,20 +74,20 @@ namespace Mde.Project.Mobile
             
             builder.Services.AddTransient<ICargoService, CargoService>();
             builder.Services.AddTransient<IUiService, UiService>();
-            /*builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
-            Env.Load();
-            var key = Environment.GetEnvironmentVariable("KEY_SPEECH_1");
-            builder.Services.AddSingleton<ISpeechService>(new SpeechService(key, "northeurope"));
-            builder.Services.AddHttpClient<ITranslationService, TranslationService>(client =>
-            {
-                client.BaseAddress = new Uri("https://api.example.com/");
-            }).ConfigureHttpClient((serviceProvider, client) =>
-            {
-                var apiKey = serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TranslationAPIKey");
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-            });*/
+            builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
+           
+           
+            string speechApiKey = "CVI1N9lfQDaPfk10UqPIx3QdTecfFBzZcVqvaYXoaH2AN8QvCSYCJQQJ99AKACi5YpzXJ3w3AAAYACOGosGd";
+            string speechRegion = "northeurope";  // Zorg ervoor dat dit overeenkomt met je Azure configuratie
+            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, speechRegion));
 
-            
+            string translationApiKey = "C3Xb8vOoGNrTmxUsVGTepv85CpHsL2YHvLXBnMv1TlvOgMx7EPV5JQQJ99AKACi5YpzXJ3w3AAAbACOGxefW";
+            builder.Services.AddHttpClient<ITranslationService, AzureTranslationService>((client) =>
+            {
+                client.BaseAddress = new Uri("https://api.cognitive.microsofttranslator.com");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", translationApiKey);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", speechRegion);
+            });
             
             
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));

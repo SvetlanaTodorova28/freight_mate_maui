@@ -3,7 +3,8 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:Mde.Project.Mobile.Converters">
+    xmlns:converters="clr-namespace:Mde.Project.Mobile.Converters"
+    xmlns:global="clr-namespace:">
 
     <converters:BoolToDangerousTextConverter x:Key="BoolToDangerousTextConverter"/>
     <converters:BoolToDangerousColorConverter x:Key="BoolToDangerousColorConverter"/>
@@ -11,6 +12,7 @@
     <converters:FunctionToVisibilityConverter x:Key="FunctionToVisibilityConverter"/>
     <converters:UserDisplayConverter x:Key="UserDisplayConverter"/>
     <converters:TextChangedEventArgsConverter x:Key="TextChangedEventArgsConverter"/>
+    <global:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     
 
 </ResourceDictionary>

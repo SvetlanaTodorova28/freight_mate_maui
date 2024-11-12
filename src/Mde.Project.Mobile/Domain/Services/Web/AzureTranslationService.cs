@@ -6,32 +6,29 @@ namespace Mde.Project.Mobile.Domain;
 
 public class AzureTranslationService : ITranslationService
 {
-    private readonly string endpoint = "https://api.cognitive.microsofttranslator.com/";
-    private readonly string subscriptionKey;
-    private readonly string location;
+    private readonly HttpClient _httpClient;
 
-    public AzureTranslationService(string subscriptionKey, string location)
+    public AzureTranslationService(HttpClient httpClient)
     {
-        this.subscriptionKey = subscriptionKey;
-        this.location = location;
+        _httpClient = httpClient;
     }
 
     public async Task<string> TranslateTextAsync(string text, string targetLanguageCode)
     {
-        using (var client = new HttpClient())
+        var requestBody = new[] { new { Text = text } };
+        var jsonContent = JsonConvert.SerializeObject(requestBody);
+        Console.WriteLine($"Request JSON: {jsonContent}");
+        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync($"/translate?api-version=3.0&to={targetLanguageCode}", content);
+        Console.WriteLine($"Response Status Code: {response.StatusCode}");
+        if (response.IsSuccessStatusCode)
         {
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", location);
-
-            var requestBody = JsonConvert.SerializeObject(new[] { new { Text = text } });
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync($"{endpoint}translate?api-version=3.0&to={targetLanguageCode}", content);
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<List<TranslationResult>>(responseBody);
-
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<TranslationResult>>(json);
             return result?.FirstOrDefault()?.Translations?.FirstOrDefault()?.Text;
         }
+        return null;
     }
 
     private class TranslationResult

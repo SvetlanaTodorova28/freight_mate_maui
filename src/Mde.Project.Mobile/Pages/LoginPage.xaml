@@ -5,11 +5,16 @@
              x:Class="Mde.Project.Mobile.Pages.LoginPage"
              Style="{StaticResource CustomPageStyle}"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              x:DataType="viewmodels:LoginViewModel"
              NavigationPage.HasNavigationBar="False">
     
+    <Grid>
+        <!-- SkiaSharp Canvas for drawing the full-page background curve -->
+        <controls:SKCanvasView x:Name="canvasView" PaintSurface="OnCanvasViewPaintSurface"
+                               VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
     <ScrollView>
-        <Grid>
+        <Grid Padding="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -20,28 +25,21 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
-                <Image
-                    MaximumHeightRequest="80"
-                    MaximumWidthRequest="80"
-                    Grid.Column="0"
-                    Aspect="AspectFit"
-                    Source="truck_white.png" 
-                    />
+                
             </Grid>
 
-            <Border Grid.Row="1"
-                    StyleClass="baseBorder"
-                    Margin="0,5,0,12">
-                <Grid>
+           
+            <ScrollView>
+                <Grid  VerticalOptions="Center" Padding="5">
                     <VerticalStackLayout Padding="20" Spacing="10" >
                         <Label
                             FontAttributes="Bold"
                             FontFamily="PlayBold"
-                            FontSize="Large"
+                            FontSize="30"
                             HorizontalOptions="Center"
                             TextColor="White" 
-                            Text="Login"/>
+                            Text="Login"
+                            Margin="40"/>
                        
                         <Grid Margin="0,30,0,0">
                             <Grid.ColumnDefinitions>
@@ -64,12 +62,11 @@
                             <Entry
                                 StyleClass="BaseEntry"
                                 Grid.Column="1"
-                                IsPassword="True"
                                 Placeholder="USERNAME"
                                 Text="{Binding UserName}"/>
                         </Grid>
 
-                        <Grid Margin="0,25,0,0">
+                        <Grid Margin="0,25,0,50">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".2*" />
                                 <ColumnDefinition Width=".8*" />
@@ -99,12 +96,15 @@
                             x:Name="Login"
                             StyleClass="baseButton"
                             Clicked="Login_OnClicked"
-                            Text="Login" />
+                            Text="Login" 
+                            WidthRequest="140"/>
                         <Button
                             x:Name="LoginWithFace"
                             StyleClass="baseButton"
                             Clicked="LoginWithFace_OnClicked"
-                            Text="Login with biometric" />
+                            Text="Login with biometrics" 
+                            WidthRequest="230"
+                            />
                         
                         
                         <Label  FontFamily="PlayBold"
@@ -124,8 +124,9 @@
                     </VerticalStackLayout>
                    
                 </Grid>
-            </Border>
+            </ScrollView>
+           
         </Grid>
     </ScrollView>
-
+</Grid>
 </ContentPage>
