@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+           x:Class="Mde.Project.Mobile.Pages.BasicLoadingPopupPage"
+           xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+           x:DataType="viewmodels:CargoDetailsViewModel"
+           CanBeDismissedByTappingOutsideOfPopup="False"
+           Size="300, 150">
+    <VerticalStackLayout BackgroundColor="SteelBlue">
+        <ImageButton Source="gps_icon.png" 
+                     Command="{Binding NavigateCommand}"
+                     CommandParameter="{Binding Destination}"
+                     WidthRequest="50" HeightRequest="50" 
+                     BackgroundColor="Transparent" />
+        <Label Text="{Binding Destination}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"
+               StyleClass="BaseLabel"/>
+       
+    </VerticalStackLayout>
+</mct:Popup>

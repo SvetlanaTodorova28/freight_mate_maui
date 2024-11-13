@@ -211,8 +211,6 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 
             return firstNameClaim?.Value ?? "Unknown"; 
         }
-
-        
         
         
         public async Task SendNotificationAsync(object message)
