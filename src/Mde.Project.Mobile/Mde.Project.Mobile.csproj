@@ -99,9 +99,6 @@
 	  <MauiXaml Update="Pages\TranslatePage.xaml">
 	    <SubType>Designer</SubType>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\BasicLoadingPopupPage.xaml">
-	    <SubType>Designer</SubType>
-	  </MauiXaml>
 	</ItemGroup>
 	
 
@@ -156,12 +153,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Compile Update="Pages\BasicLoadingPopupPage.xaml.cs">
-	    <DependentUpon>BasicLoadingPopupPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </Compile>
 	</ItemGroup>
 
 

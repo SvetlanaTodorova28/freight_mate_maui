@@ -7,10 +7,12 @@
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     xmlns:models="clr-namespace:Mde.Project.Mobile.Domain.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
     HideSoftInputOnTapped="True"
     x:DataType="viewmodels:CargoListViewModel"
     Style="{StaticResource CustomPageStyle}">
 
+    
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -102,6 +104,27 @@
 
                 </Grid>
             </Border>
+            <Grid Grid.Row="2"
+                  IsVisible="{Binding IsLoading}"
+                  BackgroundColor="#3B3131"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+                
+                <Label Text="Cargos are loading..."
+                       TextColor="#4FB9FF"
+                       FontFamily="PlayBold" FontSize="14"
+                       HorizontalOptions="Center"
+                       VerticalOptions="CenterAndExpand"
+                       Margin="0,50,0,0" />
+
+                <controls:SKCanvasView x:Name="canvasView"
+                                       PaintSurface="OnCanvasViewPaintSurface"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       WidthRequest="600"  
+                                       HeightRequest="900" />
+            </Grid>
+
         </Grid>
     </ScrollView>
 </ContentPage>

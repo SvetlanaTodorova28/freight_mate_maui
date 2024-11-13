@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
@@ -57,6 +58,14 @@ public class CargoListViewModel:ObservableObject{
         get => _userFirstName;
         set => SetProperty(ref _userFirstName, value);
     }
+    
+    
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
 
     #endregion
   
@@ -73,11 +82,18 @@ public class CargoListViewModel:ObservableObject{
     #endregion
 
     # region methods
+    
+    public event EventHandler CargosLoaded;
+
+  
    
     private async Task RefreshListAsync()
     {
+        IsLoading = true;
+       //
         try
         {
+           await Task.Delay(9000) ; 
             var userId = await _authenticationService.GetUserIdFromTokenAsync();
             if (string.IsNullOrEmpty(userId))
             {
@@ -97,11 +113,16 @@ public class CargoListViewModel:ObservableObject{
             }).ToList();
 
             Cargos = new ObservableCollection<Cargo>(modelCargos);
+            CargosLoaded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
             
             Cargos = new ObservableCollection<Cargo>(); 
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
@@ -205,7 +226,7 @@ public class CargoListViewModel:ObservableObject{
     }
     private async Task ResetSearchAsync()
     {
-        // Eventuele aanvullende resetlogica kan hier worden toegevoegd
+       
         await RefreshListAsync();
     }
     #endregion

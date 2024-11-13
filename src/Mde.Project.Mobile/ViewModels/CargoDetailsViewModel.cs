@@ -71,7 +71,7 @@ public class CargoDetailsViewModel:ObservableObject{
     
     
     public ICommand NavigateCommand { get; }
-    public ICommand ShowPopupCommand { get; }
+  
     
    
 
