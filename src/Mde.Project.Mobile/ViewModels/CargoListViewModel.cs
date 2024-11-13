@@ -90,10 +90,9 @@ public class CargoListViewModel:ObservableObject{
     private async Task RefreshListAsync()
     {
         IsLoading = true;
-       //
+       
         try
         {
-           await Task.Delay(9000) ; 
             var userId = await _authenticationService.GetUserIdFromTokenAsync();
             if (string.IsNullOrEmpty(userId))
             {

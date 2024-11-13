@@ -26,7 +26,7 @@ public partial class CargoListPage : ContentPage{
         viewmodel.RefreshListCommand?.Execute(null);
        
         Device.StartTimer(TimeSpan.FromMilliseconds(100), () => {
-            _angle += 2;
+            _angle += 1;
             if (_angle > 360) _angle = 0;
             canvasView.InvalidateSurface();
             return true;
@@ -37,7 +37,7 @@ public partial class CargoListPage : ContentPage{
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        // Ensure we unsubscribe to avoid memory leaks
+       
         if (BindingContext is CargoListViewModel viewModel) {
             viewModel.CargosLoaded -= OnCargosLoaded;
         }
@@ -46,8 +46,7 @@ public partial class CargoListPage : ContentPage{
     private void OnCargosLoaded(object sender, EventArgs e)
     {
         Device.BeginInvokeOnMainThread(() => {
-            // Additional UI updates after loading can be handled here if necessary
-            canvasView.InvalidateSurface(); // Final redraw to ensure view updates
+            canvasView.InvalidateSurface(); 
         });
     }
    
@@ -69,22 +68,22 @@ public partial class CargoListPage : ContentPage{
         
 
         int numberOfDots = 5;
-        float baseRadius = 20; // Base radius for the dots
-        float padding = 40; // Space between dots
+        float baseRadius = 20; 
+        float padding = 40; 
 
         var paint = new SKPaint
         {
             Style = SKPaintStyle.Fill,
-            Color = SKColor.Parse("#4FB9FF"), // Bright color for visibility
-            IsAntialias = true // Ensuring edges are smooth
+            Color = SKColor.Parse("#4FB9FF"), 
+            IsAntialias = true 
         };
 
         float startX = (width - (numberOfDots - 1) * padding) / 2;
 
         for (int i = 0; i < numberOfDots; i++)
         {
-            float angleOffset = _angle + i * 72; // Offset for each dot to create phase difference
-            float scale = 0.5f + 0.5f * MathF.Sin(MathF.PI * angleOffset / 180); // Using MathF for float calculation
+            float angleOffset = _angle + i * 150; 
+            float scale = 0.5f + 0.5f * MathF.Sin(MathF.PI * angleOffset / 180); 
             float scaledRadius = baseRadius * scale;
             float x = startX + i * padding;
             float y = height / 2;
@@ -92,11 +91,11 @@ public partial class CargoListPage : ContentPage{
             canvas.DrawCircle(x, y, scaledRadius, paint);
         }
 
-        // Increment angle for animation
-        /*_angle += 7;
-        if (_angle >= 360) _angle = 0;*/
+       
+        _angle += 1;
+        if (_angle >= 360) _angle = 0;
 
-        canvasView.InvalidateSurface(); // Make sure to invalidate the surface to update the view
+        canvasView.InvalidateSurface();
     }
 
 
