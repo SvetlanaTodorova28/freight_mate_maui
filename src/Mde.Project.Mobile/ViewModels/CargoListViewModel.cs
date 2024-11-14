@@ -66,6 +66,13 @@ public class CargoListViewModel:ObservableObject{
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+    private bool _showAnimation;
+    public bool ShowAnimation
+    {
+        get => _showAnimation;
+        set => SetProperty(ref _showAnimation, value);
+    }
+
 
     #endregion
   
@@ -89,10 +96,9 @@ public class CargoListViewModel:ObservableObject{
    
     private async Task RefreshListAsync()
     {
-        IsLoading = true;
-       
         try
         {
+            IsLoading = true;  
             var userId = await _authenticationService.GetUserIdFromTokenAsync();
             if (string.IsNullOrEmpty(userId))
             {
@@ -100,6 +106,9 @@ public class CargoListViewModel:ObservableObject{
                 return;
             }
 
+            
+           
+          
             var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
 
             var modelCargos = dtoCargos.Select(dto => new Cargo
@@ -113,6 +122,7 @@ public class CargoListViewModel:ObservableObject{
 
             Cargos = new ObservableCollection<Cargo>(modelCargos);
             CargosLoaded?.Invoke(this, EventArgs.Empty);
+            ShowAnimation = false;
         }
         catch (Exception ex)
         {
@@ -122,6 +132,7 @@ public class CargoListViewModel:ObservableObject{
         finally
         {
             IsLoading = false;
+            
         }
     }
 

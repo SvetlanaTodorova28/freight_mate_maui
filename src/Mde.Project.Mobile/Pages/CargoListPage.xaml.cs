@@ -25,11 +25,12 @@ public partial class CargoListPage : ContentPage{
         viewmodel.CargosLoaded += OnCargosLoaded;  
         viewmodel.RefreshListCommand?.Execute(null);
        
-        Device.StartTimer(TimeSpan.FromMilliseconds(100), () => {
-            _angle += 1;
+        Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
+        {
+            _angle += 5;
             if (_angle > 360) _angle = 0;
-            canvasView.InvalidateSurface();
-            return true;
+            canvasView.InvalidateSurface(); 
+            return true; 
         });
         
     }
@@ -59,46 +60,52 @@ public partial class CargoListPage : ContentPage{
    
     
    
+  
+
+
+
     private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         var width = e.Info.Width;
         var height = e.Info.Height;
+    
+         
+       canvas.Clear(SKColors.Transparent); 
 
-        
-
-        int numberOfDots = 5;
-        float baseRadius = 20; 
-        float padding = 40; 
+        var baseRadius = 20f;  
+        var distance = 60f;  
+        var centerY = height / 2;
+        var centerX = width / 2;
 
         var paint = new SKPaint
         {
             Style = SKPaintStyle.Fill,
-            Color = SKColor.Parse("#4FB9FF"), 
-            IsAntialias = true 
+            Color =SKColor.Parse("#4FB9FF"), 
+            IsAntialias = true
         };
 
-        float startX = (width - (numberOfDots - 1) * padding) / 2;
-
-        for (int i = 0; i < numberOfDots; i++)
-        {
-            float angleOffset = _angle + i * 150; 
-            float scale = 0.5f + 0.5f * MathF.Sin(MathF.PI * angleOffset / 180); 
-            float scaledRadius = baseRadius * scale;
-            float x = startX + i * padding;
-            float y = height / 2;
-
-            canvas.DrawCircle(x, y, scaledRadius, paint);
-        }
+       
+        var centerX1 = centerX - distance;  
+        var centerX2 = centerX;             
+        var centerX3 = centerX + distance;  
 
        
-        _angle += 1;
+        var scale1 = 0.5f + 0.5f * MathF.Sin(MathF.PI * _angle / 180);
+        var scale2 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 120) / 180);  
+        var scale3 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 240) / 180);  
+
+        // Draw the dots
+        canvas.DrawCircle(centerX1, centerY, baseRadius * scale1, paint);
+        canvas.DrawCircle(centerX2, centerY, baseRadius * scale2, paint);
+        canvas.DrawCircle(centerX3, centerY, baseRadius * scale3, paint);
+
+        
+        _angle += 5;
         if (_angle >= 360) _angle = 0;
 
-        canvasView.InvalidateSurface();
+        canvasView.InvalidateSurface();  
     }
-
-
 
 
 

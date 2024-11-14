@@ -81,10 +81,9 @@ namespace Mde.Project.Mobile
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-            
-            string speechApiKey =
-                "";
-            string translationApiKey = ""; 
+
+            string speechApiKey = GlobalConstants.Key_Speech;
+            string translationApiKey = GlobalConstants.Key_Translation; 
             string region = "northeurope";
             
             builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, region));

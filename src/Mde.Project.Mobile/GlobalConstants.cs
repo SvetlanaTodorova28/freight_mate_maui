@@ -30,4 +30,10 @@ public class GlobalConstants{
     
     public const string BaseUrlFireBase = "https://fcm.googleapis.com/v1/projects/mde-project-mobile/messages:send";
     public const string HttpClientFireBase = "FireBase";
+
+    public const string Key_Speech =
+        "";
+
+    public const string Key_Translation =
+        "";
 }

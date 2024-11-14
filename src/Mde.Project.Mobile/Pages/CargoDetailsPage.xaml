@@ -40,9 +40,10 @@
                             <Label  Grid.Row="4" Grid.Column="0" Text="Destination:" StyleClass="BaseLabel" />
                             <Label Grid.Row="4" Grid.Column="1" 
                                    Text="see full address" StyleClass="LinkLabel"
-                                   TextColor="Aqua"
+                                   TextColor="#4FB9FF"
                                    LineBreakMode="TailTruncation"
-                                   MaxLines="1">
+                                   MaxLines="1"
+                                   Padding="10">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer
                                         x:Name="openFullAddress"
