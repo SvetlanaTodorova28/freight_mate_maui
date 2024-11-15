@@ -36,4 +36,11 @@ public class GlobalConstants{
 
     public const string Key_Translation =
         "";
+    
+    public const string Key_OCR =
+        "";
+
+    public const string EndPointOCR = "https://cargos.cognitiveservices.azure.com";
+
+
 }

@@ -84,6 +84,7 @@ namespace Mde.Project.Mobile
 
             string speechApiKey = GlobalConstants.Key_Speech;
             string translationApiKey = GlobalConstants.Key_Translation; 
+            string ocrApiKey = GlobalConstants.Key_OCR; 
             string region = "northeurope";
             
             builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, region));
@@ -93,6 +94,11 @@ namespace Mde.Project.Mobile
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", translationApiKey);
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", region);
             });
+            
+            builder.Services.AddSingleton<IOcrService>(new AzureOcrService(GlobalConstants.Key_OCR, ocrApiKey));
+            builder.Services.AddSingleton<IOcrTemplateProcessorService, OcrTemplateProcessorService>();
+        
+
             return builder.Build();
  
          
