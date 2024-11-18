@@ -28,6 +28,7 @@ public class CargoCreateViewModel : ObservableObject
         LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
         SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
         OnAppearingCommand = new AsyncRelayCommand(OnAppearingAsync);
+        CreateOrUpdateCargoFromPdfCommand = new AsyncRelayCommand(UploadAndProcessPdfAsync);
         //LoadUsers().ConfigureAwait(false);
     }
 
@@ -94,6 +95,9 @@ public class CargoCreateViewModel : ObservableObject
     public ICommand LoadUsersCommand { get; }
     public ICommand SaveCommand { get; }
     public ICommand OnAppearingCommand { get; }
+    
+    public ICommand CreateOrUpdateCargoFromPdfCommand { get; }
+
     
     #endregion
 
@@ -191,6 +195,25 @@ public class CargoCreateViewModel : ObservableObject
         else
         {
             await _uiService.ShowSnackbarWarning("No FCM token found for the selected user.");
+        }
+    }
+    private async Task UploadAndProcessPdfAsync()
+    {
+        Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
+
+        if (pdfStream != null)
+        {
+            var (IsSuccess, ErrorMessage) = await _cargoService.CreateCargoWithPdf(pdfStream);
+            if (IsSuccess)
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Cargo created from PDF successfully.");
+                await NotifyUserAsync(SelectedUser);
+                await Shell.Current.GoToAsync("//CargoListPage");
+            }
+            else
+            {
+                await _uiService.ShowSnackbarWarning($"Failed to create cargo from PDF: {ErrorMessage}");
+            }
         }
     }
     
