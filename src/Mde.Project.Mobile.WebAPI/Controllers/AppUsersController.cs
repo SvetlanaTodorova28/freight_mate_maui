@@ -99,22 +99,27 @@ public class AppUsersController:ControllerBase{
     }
 
 
-    /// <summary>
-    /// Retrieves a AppUser entity by its unique identifier from the database.
-    /// </summary>
-    /// <remarks>
-    ///GET api/cargos/{id}:
-    ///
-    /// 
-    ///     {
-    ///         "00000000-0000-0000-0000-200000000000"
-    ///         "00000000-0000-0000-0000-300000000000" 
-    ///         "00000000-0000-0000-0000-400000000000" 
-    ///     }
-    /// 
-    /// </remarks>
-    /// <param name="id">The unique identifier of the AppUser entity to retrieve.</param>
-    /// <returns>An IActionResult containing a AppUserResponseDto object or an error message.</returns>
+    [HttpGet("get-fcm-token/{userId}")]
+    public async Task<IActionResult> GetUserFcmToken([FromRoute] string userId)
+    {
+        var result = await _userService.GetUserFcmToken(userId);
+        if (!result.Success)
+        {
+            return NotFound(result.Errors);
+        }
+        return Ok(result.Data);
+    }
+
+    [HttpGet("get-user-by-email/{email}")]
+    public async Task<IActionResult> GetUserIdByEmail([FromRoute] string email){
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+        return Ok(user.Id);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<AppUserResponseDto>> GetUserById(Guid id){
 
@@ -320,16 +325,7 @@ public class AppUsersController:ControllerBase{
         }
         return Ok(result.Data);
     }
-    [HttpGet("get-fcm-token/{userId}")]
-    public async Task<IActionResult> GetUserFcmToken([FromRoute] string userId)
-    {
-        var result = await _userService.GetUserFcmToken(userId);
-        if (!result.Success)
-        {
-            return NotFound(result.Errors);
-        }
-        return Ok(result.Data);
-    }
+   
 
 
 
