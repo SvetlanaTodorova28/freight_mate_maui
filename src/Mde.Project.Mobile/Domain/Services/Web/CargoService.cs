@@ -62,12 +62,9 @@ public class CargoService : ICargoService
                 return (false, "OCR did not return any results.", Guid.Empty);
             }
 
-            // Verwerk de OCR-resultaten naar een Cargo object
+            
             CargoRequestDto cargoDto = await ParseExtractedTextToCargo(ocrResult);
-
-            // Maak de Cargo aan via de API
-           
-
+            
             var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
             if (response.IsSuccessStatusCode)
             {
@@ -171,17 +168,17 @@ public class CargoService : ICargoService
             var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
             if (response.IsSuccessStatusCode)
             {
-                return (true, string.Empty);  // Succesvol verwijderd
+                return (true, string.Empty);  
             }
             else
             {
                 var error = await response.Content.ReadAsStringAsync();
-                return (false, $"Failed to delete cargo: {error}");  // Er ging iets mis tijdens het verwijderen
+                return (false, $"Failed to delete cargo: {error}");  
             }
         }
         catch (Exception ex)
         {
-            return (false, $"Exception when deleting cargo: {ex.Message}");  // Uitzondering gevangen
+            return (false, $"Exception when deleting cargo: {ex.Message}");  
         }
     }
 

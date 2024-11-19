@@ -105,9 +105,6 @@ public class CargoListViewModel:ObservableObject{
                 _uiService.ShowSnackbarWarning("User ID is not available, please login again.");
                 return;
             }
-
-            
-           
           
             var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
 

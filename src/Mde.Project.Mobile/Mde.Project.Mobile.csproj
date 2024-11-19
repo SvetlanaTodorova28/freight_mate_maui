@@ -81,7 +81,7 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.4" />
 		<PackageReference Include="Plugin.Maui.Biometric" Version="0.0.3-pre" />
 		<PackageReference Include="SkiaSharp" Version="3.0.0-preview.5.4" />

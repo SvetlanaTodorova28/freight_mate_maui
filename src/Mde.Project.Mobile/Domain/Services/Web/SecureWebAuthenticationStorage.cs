@@ -140,7 +140,6 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             return false;
         }
 
-
         private async Task StoreToken(string token)
         {
             await SecureStorage.Default.SetAsync(TokenKey, token);

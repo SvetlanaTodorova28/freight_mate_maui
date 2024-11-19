@@ -87,7 +87,7 @@ public class AppUserService:IAppUserService{
            
             if (string.IsNullOrEmpty(userId))
             {
-                Console.WriteLine("User ID not found.");
+                
                 return null;
             }
 
@@ -95,12 +95,12 @@ public class AppUserService:IAppUserService{
         }
         catch (HttpRequestException ex)
         {
-            Console.WriteLine($"HTTP Request Error: {ex.Message}");
+            
             return null;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetUserIdByEmailAsync: {ex.Message}");
+           
             return null;
         }
     }

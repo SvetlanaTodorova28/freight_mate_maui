@@ -1,18 +1,17 @@
-using Microsoft.Maui.Storage;
-using System.Threading.Tasks;
 
 namespace Mde.Project.Mobile.Helpers
 {
     public static class SecureStorageHelper
     {
-        public static async Task SaveApiKeyAsync(string key, string value)
+        public static void SaveApiKey(string key, string value)
         {
-            await SecureStorage.SetAsync(key, value);
+            Task.Run(async () => await SecureStorage.SetAsync(key, value)).Wait();
         }
 
-        public static async Task<string> GetApiKeyAsync(string key)
+        public static string GetApiKey(string key)
         {
-            return await SecureStorage.GetAsync(key);
+            return Task.Run(async () => await SecureStorage.GetAsync(key)).Result;
         }
     }
+
 }

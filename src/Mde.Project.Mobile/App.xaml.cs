@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 
@@ -23,6 +24,7 @@ public partial class App : Application
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
         MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication);
+       // SaveApiKeys();
     }
 
     protected async override void OnStart()
@@ -50,6 +52,21 @@ public partial class App : Application
         else
         {
             MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
+        }
+    }
+    
+    private  void SaveApiKeys()
+    {
+        try
+        {
+             SecureStorageHelper.SaveApiKey("Key_Speech", "");
+             SecureStorageHelper.SaveApiKey("Key_Translation", "");
+             SecureStorageHelper.SaveApiKey("Key_OCR", "");
+        }
+        catch (Exception ex)
+        {
+           
+            Console.WriteLine($"Error saving API keys: {ex.Message}");
         }
     }
     

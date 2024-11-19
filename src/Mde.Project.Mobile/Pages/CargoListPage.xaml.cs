@@ -56,13 +56,6 @@ public partial class CargoListPage : ContentPage{
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
         viewmodel.DetailsCargoCommand?.Execute(cargo);
     }
-    
-   
-    
-   
-  
-
-
 
     private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
     {

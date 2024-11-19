@@ -3,6 +3,7 @@ using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Mde.Project.Mobile.Platforms;
@@ -71,6 +72,7 @@ namespace Mde.Project.Mobile
             builder.Services.AddTransient<IUiService, UiService>();
             builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
 
+            
 
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));
             builder.Services.AddHttpClient(GlobalConstants.HttpClientFireBase, config => config.BaseAddress = new Uri(GlobalConstants.BaseUrlFireBase));
@@ -79,23 +81,24 @@ namespace Mde.Project.Mobile
     		builder.Logging.AddDebug();
 #endif
 
-            string speechApiKey = GlobalConstants.Key_Speech;
-            string translationApiKey = GlobalConstants.Key_Translation; 
-            string ocrApiKey = GlobalConstants.Key_OCR; 
+           
+            var keySpeech =  SecureStorageHelper.GetApiKey("Key_Speech");
+            var keyTranslation =  SecureStorageHelper.GetApiKey("Key_Translation");
+            var keyOCR =  SecureStorageHelper.GetApiKey("Key_OCR");
             string region = "northeurope";
             
-            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(speechApiKey, region));
-            builder.Services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(speechApiKey, region));
+            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService(keySpeech, region));
+            builder.Services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(keySpeech, region));
             builder.Services.AddHttpClient<ITranslationService, AzureTranslationService>((client) => {
                 client.BaseAddress = new Uri("https://api.cognitive.microsofttranslator.com");
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", translationApiKey);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", keyTranslation);
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", region);
             });
             
             builder.Services.AddHttpClient<IOcrService, AzureOcrService>(client =>
             {
                 client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", GlobalConstants.Key_OCR);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", keyOCR);
             });
 
 

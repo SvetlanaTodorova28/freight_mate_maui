@@ -62,9 +62,9 @@ public partial class AppUserRegisterPage : ContentPage{
        {
            paint.Style = SKPaintStyle.Fill;
            var colors = new SKColor[] { SKColor.Parse("#1D3448"), SKColor.Parse("#35606E"), SKColor.Parse("#1D3448") };
-           var colorPositions = new float[] { 0.1f, 0.6f, 0.8f };  // Overeenkomstig met de offsets in je LinearGradientBrush
+           var colorPositions = new float[] { 0.1f, 0.6f, 0.8f };  
 
-           paint.IsAntialias = true;  // Voor gladde randen
+           paint.IsAntialias = true;  
            paint.Shader = SKShader.CreateLinearGradient(
                new SKPoint(0, 0),
                new SKPoint(e.Info.Width, e.Info.Height),
@@ -72,26 +72,25 @@ public partial class AppUserRegisterPage : ContentPage{
                colorPositions,
                SKShaderTileMode.Clamp);
 
-           /*// Vul het hele canvas met de gradiënt
-           canvas.DrawRect(0, 0, e.Info.Width, e.Info.Height, paint);*/
+          
 
            var path = new SKPath();
 
-           // Begin aan de rechterbovenhoek
+          
            path.MoveTo(e.Info.Width, 0);
 
-           // Eerste controlepunt dichtbij het beginpunt om de start van de curve te verzachten
-           float controlX1 = e.Info.Width - 1.1f * e.Info.Width; // Zeer dichtbij de start
-           float controlY1 = 0.1f * e.Info.Height; // Slechts een beetje naar beneden
+           
+           float controlX1 = e.Info.Width - 1.1f * e.Info.Width; 
+           float controlY1 = 0.1f * e.Info.Height; 
 
-           // Tweede controlepunt verder naar links dan voorheen voor een diepere boog
-           float controlX2 = -0.5f * e.Info.Width; // Veel verder naar links buiten het scherm
-           float controlY2 = e.Info.Height / 2; // Halverwege naar beneden
+          
+           float controlX2 = -0.5f * e.Info.Width; 
+           float controlY2 = e.Info.Height / 2; 
 
-           // Eindpunt blijft aan de rechteronderhoek
+          
            path.CubicTo(controlX1, controlY1, controlX2, controlY2, e.Info.Width, e.Info.Height);
 
-           // Sluit het pad door het terug naar het beginpunt te brengen
+          
            path.LineTo(e.Info.Width, 0);
 
            path.Close();

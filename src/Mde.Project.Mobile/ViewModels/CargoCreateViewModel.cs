@@ -28,8 +28,11 @@ public class CargoCreateViewModel : ObservableObject
         LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
         SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
         OnAppearingCommand = new AsyncRelayCommand(OnAppearingAsync);
-        CreateOrUpdateCargoFromPdfCommand = new AsyncRelayCommand(UploadAndProcessPdfAsync);
-        //LoadUsers().ConfigureAwait(false);
+        CreateOrUpdateCargoFromPdfCommand = new RelayCommand<Stream>(async (pdfStream) =>
+        {
+            await UploadAndProcessPdfAsync(pdfStream);
+        });
+
     }
 
     #region Bindable Properties
@@ -85,6 +88,19 @@ public class CargoCreateViewModel : ObservableObject
     {
         get => _selectedUser;
         set => SetProperty(ref _selectedUser, value);
+    }
+    
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
+    private bool _showAnimation;
+    public bool ShowAnimation
+    {
+        get => _showAnimation;
+        set => SetProperty(ref _showAnimation, value);
     }
     
 
@@ -160,62 +176,76 @@ public class CargoCreateViewModel : ObservableObject
             SelectedUser = Users.FirstOrDefault(u => u.Id == SelectedCargo.Userid);
         }
     }
-    
-    private async Task NotifyUserAsync(Guid userId)
-    {
-     
-        string userFcmToken = await _appUserService.GetFcmTokenAsync(userId.ToString());
 
-        if (!string.IsNullOrEmpty(userFcmToken))
-        {
-            // Create the FCM message payload
-            var message = new
-            {
-                message = new
-                {
-                    token = userFcmToken,
-                    notification = new
-                    {
-                        title = "New Cargo Assignment",
-                        body = $"A new cargo has been assigned to you with destination {Destination}."
-                    },
-                    android = new
-                    {
-                        notification = new
-                        {
-                            channel_id = "default_channel" // Zorg ervoor dat deze overeenkomt met de ID van je notificatiekanaal
+    private async Task NotifyUserAsync(Guid userId){
+        try{
+
+
+            string userFcmToken = await _appUserService.GetFcmTokenAsync(userId.ToString());
+
+            if (!string.IsNullOrEmpty(userFcmToken)){
+                var message = new{
+                    message = new{
+                        token = userFcmToken,
+                        notification = new{
+                            title = "New Cargo Assignment",
+                            body = $"A new cargo has been assigned to you with destination {Destination}."
+                        },
+                        android = new{
+                            notification = new{
+                                channel_id = "default_channel"
+                            }
                         }
                     }
-                }
-            };
-
-            // Send the notification
-            await _authenticationService.SendNotificationAsync(message);
+                };
+                
+                await _authenticationService.SendNotificationAsync(message);
+            }
+           
         }
-        else
-        {
-            await _uiService.ShowSnackbarWarning("No FCM token found for the selected user.");
+        catch (Exception ex){
+
+            await _uiService.ShowSnackbarWarning("Notification could not be sent as the user has no registered FCM token.");
         }
     }
-    private async Task UploadAndProcessPdfAsync()
-    {
-        Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
 
-        if (pdfStream != null)
+    public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream)
+    {
+       
+      
+        if (pdfStream == null)
+        {
+            await _uiService.ShowSnackbarWarning("No PDF file selected.");
+            return false;
+        }
+
+        try
         {
             var (IsSuccess, ErrorMessage, userId) = await _cargoService.CreateCargoWithPdf(pdfStream);
+
             if (IsSuccess)
             {
-                await _uiService.ShowSnackbarSuccessAsync("Cargo created from PDF successfully.");
-                await NotifyUserAsync(userId);
-                await Shell.Current.GoToAsync("//CargoListPage");
+                if (userId != Guid.Empty)
+                {
+                    await NotifyUserAsync(userId);
+                }
+                return true;
             }
             else
             {
                 await _uiService.ShowSnackbarWarning($"Failed to create cargo from PDF: {ErrorMessage}");
             }
         }
+        catch (Exception ex)
+        {
+            await _uiService.ShowSnackbarWarning($"Error processing PDF: {ex.Message}");
+        }
+
+        return false;
     }
+
+
+
     
     #endregion
 }
