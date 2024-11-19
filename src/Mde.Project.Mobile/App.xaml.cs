@@ -9,22 +9,21 @@ public partial class App : Application
 {
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly INativeAuthentication _nativeAuthentication;
-    private readonly ICargoService _cargoService;
+  
     private readonly IUiService uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
-    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, ICargoService cargoService,  AppUserRegisterViewModel userRegisterViewModel,
+    public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, AppUserRegisterViewModel userRegisterViewModel,
         LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication)
     {
         InitializeComponent();
         _authenticationService = authenticationService;
         _nativeAuthentication = nativeAuthentication;
-        _cargoService = cargoService;
         this.uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
         MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication);
-       // SaveApiKeys();
+       //SaveApiKeys();
     }
 
     protected async override void OnStart()

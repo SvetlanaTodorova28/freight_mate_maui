@@ -34,7 +34,7 @@ public partial class CargoCreatePage : ContentPage{
     {
         try
         {
-            // Vraag de gebruiker om een PDF te selecteren
+            
             Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
 
             if (pdfStream == null)
@@ -71,5 +71,59 @@ public partial class CargoCreatePage : ContentPage{
     }
 
 
+    private async void ScanCargoDocument_OnClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            // Activeer de camera om het document te scannen
+            Stream documentStream = await CaptureDocumentFromCameraAsync();
 
+            if (documentStream == null)
+            {
+                await _uiService.ShowSnackbarWarning("No document scanned.");
+                return;
+            }
+
+            // Toon een loading-indicator
+            await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
+
+            // Verwerk het gescande document via de ViewModel
+            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream);
+
+            if (isCreated)
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
+                await Shell.Current.GoToAsync("//CargoListPage");
+            }
+            else
+            {
+                await _uiService.ShowSnackbarWarning("Failed to create cargo from the scanned document.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            // Verwijder de loading-indicator, ongeacht succes of fout
+            await Navigation.PopModalAsync(true);
+        }
+    
+    }
+    
+    public async Task<Stream> CaptureDocumentFromCameraAsync()
+    {
+        var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+        {
+            Title = "Please scan the document"
+        });
+
+        if (photo != null)
+        {
+            var stream = await photo.OpenReadAsync();
+            return stream;
+        }
+        return null;
+    }
 }

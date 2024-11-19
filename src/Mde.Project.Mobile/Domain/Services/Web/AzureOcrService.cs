@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 using Microsoft.Extensions.Logging;
 using Utilities;
 
@@ -77,7 +78,7 @@ public class AzureOcrService : IOcrService
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, operationLocation);
-                request.Headers.Add("Ocp-Apim-Subscription-Key", GlobalConstants.Key_OCR);
+                request.Headers.Add("Ocp-Apim-Subscription-Key", SecureStorageHelper.GetApiKey("Key_OCR"));
 
                 var response = await _httpClient.SendAsync(request);
 

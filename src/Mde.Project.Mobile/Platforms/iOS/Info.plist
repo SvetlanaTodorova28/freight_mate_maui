@@ -50,5 +50,10 @@
 	<string>Access to the photo library to save files.</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.mde.project.mobile</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera to scan documents.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to select images.</string>
+
 </dict>
 </plist>

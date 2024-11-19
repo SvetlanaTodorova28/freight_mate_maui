@@ -10,7 +10,7 @@ public class AzureSpeechService : ISpeechService
     public AzureSpeechService(string subscriptionKey, string region)
     {
         config = SpeechConfig.FromSubscription(subscriptionKey, region);
-        config.SpeechRecognitionLanguage = "nl-NL"; // Standaardtaal, kan worden overschreven
+        config.SpeechRecognitionLanguage = "nl-NL"; 
     }
 
     public void SetRecognitionLanguage(string languageCode)

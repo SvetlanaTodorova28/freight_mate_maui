@@ -32,6 +32,8 @@ public class CargoCreateViewModel : ObservableObject
         {
             await UploadAndProcessPdfAsync(pdfStream);
         });
+        ScanDocumentCommand = new RelayCommand(async () => await ScanAndProcessDocument());
+        
 
     }
 
@@ -111,8 +113,10 @@ public class CargoCreateViewModel : ObservableObject
     public ICommand LoadUsersCommand { get; }
     public ICommand SaveCommand { get; }
     public ICommand OnAppearingCommand { get; }
-    
     public ICommand CreateOrUpdateCargoFromPdfCommand { get; }
+    
+    public ICommand ScanDocumentCommand { get; }
+
 
     
     #endregion
@@ -244,7 +248,19 @@ public class CargoCreateViewModel : ObservableObject
         return false;
     }
 
-
+    private async Task ScanAndProcessDocument()
+    {
+        var documentStream = await CaptureDocumentFromCameraAsync();
+        if (documentStream != null)
+        {
+            var text = await _cargoService.CreateCargoWithPdf(documentStream);
+            
+        }
+        else
+        {
+            // Toon foutmelding indien geen document gescand
+        }
+    }
 
     
     #endregion
