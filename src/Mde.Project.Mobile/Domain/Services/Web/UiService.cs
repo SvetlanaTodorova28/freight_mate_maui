@@ -48,6 +48,27 @@ public class UiService : IUiService
         var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
         await snackbar.Show();
     }
-    
-    
-}
+
+    public async Task<Stream> PickAndOpenFileAsync(string fileFilter){
+        try
+        {
+            var fileResult = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Please select a PDF file",
+                FileTypes = FilePickerFileType.Pdf
+            });
+
+            if (fileResult != null)
+            {
+                return await fileResult.OpenReadAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log or handle exceptions as necessary
+            Console.WriteLine("Error accessing file: " + ex.Message);
+        }
+        return null;
+    }
+    }
+

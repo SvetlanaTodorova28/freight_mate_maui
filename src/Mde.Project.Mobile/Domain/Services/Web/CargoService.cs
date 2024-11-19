@@ -1,6 +1,4 @@
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.Cargos;
@@ -11,14 +9,15 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 public class CargoService : ICargoService
 {
     private readonly HttpClient _httpClient;
-   
-    private readonly AzureOcrService _azureOcrService;
+    private readonly IOcrService _azureOcrService;
+    private readonly IAppUserService _appUserService;
 
     public CargoService(IHttpClientFactory httpClientFactory,
-        AzureOcrService azureOcrService)
+        IOcrService azureOcrService, IAppUserService appUserService)
     {
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
         _azureOcrService = azureOcrService;  
+        _appUserService = appUserService;
     }
 
     public async Task<List<CargoResponseDto>> GetCargosForUser(Guid userId){
@@ -52,78 +51,92 @@ public class CargoService : ICargoService
             return (false, errorMessage);
         }
     }
-    public async Task<(bool IsSuccess, string ErrorMessage)> CreateCargoWithPdf(Stream pdfStream)
+    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId)> CreateCargoWithPdf(Stream pdfStream)
     {
         try
         {
-            string extractedText = await _azureOcrService.ExtractTextFromPdfAsync(pdfStream);
-            Cargo cargo = ParseExtractedTextToCargo(extractedText);  // Verwerk de tekst naar Cargo
-
-            var cargoDto = new CargoRequestDto
+           
+            string ocrResult = await _azureOcrService.ExtractTextFromPdfAsync(pdfStream);
+            if (string.IsNullOrWhiteSpace(ocrResult))
             {
-                Destination = cargo.Destination,
-                TotalWeight = cargo.TotalWeight,
-                IsDangerous = cargo.IsDangerous,
-                Products = cargo.Products?.Select(p => p.Id).ToList(),
-                AppUserId = cargo.Userid 
-            };
+                return (false, "OCR did not return any results.", Guid.Empty);
+            }
+
+            // Verwerk de OCR-resultaten naar een Cargo object
+            CargoRequestDto cargoDto = await ParseExtractedTextToCargo(ocrResult);
+
+            // Maak de Cargo aan via de API
+           
 
             var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
             if (response.IsSuccessStatusCode)
             {
-                return (true, null);
+                return (true, null, cargoDto.AppUserId);
             }
             else
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
-                return (false, errorMessage);
+                return (false, errorMessage, cargoDto.AppUserId);
             }
         }
         catch (Exception ex)
         {
-            return (false, $"Exception when creating cargo with PDF: {ex.Message}");
+            return (false, $"Exception when creating cargo with PDF: {ex.Message}", Guid.Empty);
         }
     }
 
-    private Cargo ParseExtractedTextToCargo(string text)
+
+    private async Task<CargoRequestDto> ParseExtractedTextToCargo(string text)
     {
-        var cargo = new Cargo();
-        
-        var destinationPattern = new Regex(@"Destination:\s*(.*)", RegexOptions.IgnoreCase);
-        var weightPattern = new Regex(@"Total weight:\s*(\d+) kg", RegexOptions.IgnoreCase);
-        var dangerousPattern = new Regex(@"Dangerous:\s*(Yes|No)", RegexOptions.IgnoreCase);
-        var responsiblePattern = new Regex(@"Responsible:\s*(.*)", RegexOptions.IgnoreCase);
+        var cargo = new CargoRequestDto();
 
-        // Extracting Destination
-        var destinationMatch = destinationPattern.Match(text);
-        if (destinationMatch.Success)
+        try
         {
-            cargo.Destination = destinationMatch.Groups[1].Value.Trim();
-        }
+            var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-        // Extracting Total Weight
-        var weightMatch = weightPattern.Match(text);
-        if (weightMatch.Success && int.TryParse(weightMatch.Groups[1].Value, out var weight))
-        {
-            cargo.TotalWeight = weight;
-        }
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
+                {
+                    cargo.Destination = line.Substring("Destination:".Length).Trim();
+                }
+                else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
+                {
+                    cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
+                }
+                else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
+                {
+                    cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                }
+                else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
+                {
+                    var emailUser = line.Substring("Responsible:".Length).Trim();
+                    var userId = await _appUserService.GetUserIdByEmailAsync(emailUser);
+                    cargo.AppUserId = Guid.Parse(userId);
+                }
+               
+               
+            }
 
-        // Extracting IsDangerous
-        var dangerousMatch = dangerousPattern.Match(text);
-        if (dangerousMatch.Success)
-        {
-            cargo.IsDangerous = dangerousMatch.Groups[1].Value.Equals("Ja", StringComparison.OrdinalIgnoreCase);
+            return cargo;
         }
-        
-        // Extracting Responsible
-        var responsibleMatch = responsiblePattern.Match(text);
-        if (responsibleMatch.Success)
+        catch (Exception ex)
         {
-            cargo.Destination = responsibleMatch.Groups[1].Value.Trim();
+            Console.WriteLine($"Error while parsing text to Cargo: {ex.Message}");
+            return null;
         }
-
-        return cargo;
     }
+
+    private double ParseWeight(string weightText)
+    {
+        var weight = weightText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (weight.Length > 0 && double.TryParse(weight[0], out var result))
+        {
+            return result;
+        }
+        return 0;
+    }
+
 
 
 

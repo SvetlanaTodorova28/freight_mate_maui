@@ -139,7 +139,7 @@ public class CargoCreateViewModel : ObservableObject
         if (result.IsSuccess)
         {
             await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-            await NotifyUserAsync(SelectedUser);
+            await NotifyUserAsync(SelectedUser.Id);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -161,10 +161,10 @@ public class CargoCreateViewModel : ObservableObject
         }
     }
     
-    private async Task NotifyUserAsync(AppUserResponseDto user)
+    private async Task NotifyUserAsync(Guid userId)
     {
      
-        string userFcmToken = await _appUserService.GetFcmTokenAsync(user.Id.ToString());
+        string userFcmToken = await _appUserService.GetFcmTokenAsync(userId.ToString());
 
         if (!string.IsNullOrEmpty(userFcmToken))
         {
@@ -203,11 +203,11 @@ public class CargoCreateViewModel : ObservableObject
 
         if (pdfStream != null)
         {
-            var (IsSuccess, ErrorMessage) = await _cargoService.CreateCargoWithPdf(pdfStream);
+            var (IsSuccess, ErrorMessage, userId) = await _cargoService.CreateCargoWithPdf(pdfStream);
             if (IsSuccess)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Cargo created from PDF successfully.");
-                await NotifyUserAsync(SelectedUser);
+                await NotifyUserAsync(userId);
                 await Shell.Current.GoToAsync("//CargoListPage");
             }
             else

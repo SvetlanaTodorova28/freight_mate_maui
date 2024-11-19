@@ -6,4 +6,5 @@ public interface IUiService
     Task ShowSnackbarSuccessAsync(string message);
     Task ShowSnackbarDeleteAsync(string message);
     Task ShowSnackbarWarning(string message);
+    Task<Stream> PickAndOpenFileAsync(string fileFilter);
 }

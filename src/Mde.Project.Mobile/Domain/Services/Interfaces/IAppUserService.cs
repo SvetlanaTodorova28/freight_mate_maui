@@ -8,4 +8,6 @@ public interface IAppUserService{
     Task StoreFcmTokenAsync( string token);
 
     Task<string> GetFcmTokenAsync(string userId);
+
+    Task<string> GetUserIdByEmailAsync(string email);
 }

@@ -58,7 +58,6 @@ public class AppUserService:IAppUserService{
             throw new InvalidOperationException("User ID not found in token.");
         }
     }
-
     
     public async Task<string> GetFcmTokenAsync(string userId)
     {
@@ -72,6 +71,37 @@ public class AppUserService:IAppUserService{
         else
         {
             throw new Exception("Failed to retrieve FCM token.");
+        }
+    }
+
+    public async Task<string> GetUserIdByEmailAsync(string email)
+    {
+        try
+        {
+            
+            string endpoint = $"/api/AppUsers/get-user-by-email/{email}";
+
+           
+            var userId = await _httpClient.GetStringAsync(endpoint);
+
+           
+            if (string.IsNullOrEmpty(userId))
+            {
+                Console.WriteLine("User ID not found.");
+                return null;
+            }
+
+            return userId;
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"HTTP Request Error: {ex.Message}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetUserIdByEmailAsync: {ex.Message}");
+            return null;
         }
     }
 

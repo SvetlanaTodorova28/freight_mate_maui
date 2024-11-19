@@ -28,6 +28,8 @@
                         SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                         ItemDisplayBinding="{Binding ., Converter={StaticResource UserDisplayConverter}}" />
                 <Button Command="{Binding SaveCommand}" Text="Save" StyleClass="baseButton"/>
+                
+                <Button Command="{Binding CreateOrUpdateCargoFromPdfCommand}" Text="Open pdf file" StyleClass="baseButton"/>
             </VerticalStackLayout>
         </ScrollView>
     </Border>

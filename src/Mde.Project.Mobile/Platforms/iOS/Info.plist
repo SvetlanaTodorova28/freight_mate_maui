@@ -42,10 +42,13 @@
 	</dict>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Deze app vereist toegang tot de microfoon voor spraakherkenning.</string>
-
-
-
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to the photo library to select files.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access to the camera to scan documents.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access to the photo library to save files.</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.companyname.mde.project.mobile</string>
 </dict>
 </plist>

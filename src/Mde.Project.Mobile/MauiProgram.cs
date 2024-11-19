@@ -1,14 +1,11 @@
 ﻿using CommunityToolkit.Maui;
-using DotNetEnv;
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
-using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 using Mde.Project.Mobile.Platforms;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
@@ -95,9 +92,13 @@ namespace Mde.Project.Mobile
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Region", region);
             });
             
-            builder.Services.AddSingleton<IOcrService>(new AzureOcrService(GlobalConstants.Key_OCR, ocrApiKey));
-            builder.Services.AddSingleton<IOcrTemplateProcessorService, OcrTemplateProcessorService>();
-        
+            builder.Services.AddHttpClient<IOcrService, AzureOcrService>(client =>
+            {
+                client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", GlobalConstants.Key_OCR);
+            });
+
+
 
             return builder.Build();
  
