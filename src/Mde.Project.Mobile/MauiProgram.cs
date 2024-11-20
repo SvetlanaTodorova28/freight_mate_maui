@@ -82,7 +82,7 @@ namespace Mde.Project.Mobile
 #endif
 
            
-            
+        
             var keySpeech =  SecureStorageHelper.GetApiKey("Key_Speech");
             var keyTranslation =  SecureStorageHelper.GetApiKey("Key_Translation");
             var keyOCR =  SecureStorageHelper.GetApiKey("Key_OCR");

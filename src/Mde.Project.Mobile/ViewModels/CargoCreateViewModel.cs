@@ -207,7 +207,7 @@ public class CargoCreateViewModel : ObservableObject
         }
     }
 
-    public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream)
+    public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream,string fileExtension = "pdf")
     {
         if (pdfStream == null)
         {
@@ -217,7 +217,7 @@ public class CargoCreateViewModel : ObservableObject
 
         try
         {
-            var (IsSuccess, ErrorMessage, userId) = await _cargoService.CreateCargoWithPdf(pdfStream);
+            var (IsSuccess, ErrorMessage, userId) = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
 
             if (IsSuccess)
             {

@@ -65,25 +65,21 @@ public partial class CargoCreatePage : ContentPage{
     {
         try
         {
-            // Aangepaste methode om de camera te openen en een foto vast te leggen
             var documentStream = await CaptureDocumentFromCameraAsync();
-
             if (documentStream == null)
             {
                 await _uiService.ShowSnackbarWarning("No document scanned or failed to read the document stream.");
                 return;
             }
 
-           
-            /*await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);*/
+            // Optionally check if modal is already present before pushing
+            if (Application.Current.MainPage.Navigation.ModalStack.Count == 0)
+            {
+                await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
+            }
 
-            // Verwerk het document via de ViewModel
-            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream);
+            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
 
-            // Verwijder het laadscherm
-            /*await Navigation.PopModalAsync(true);*/
-
-            // Toon het resultaat van het verwerken van het document
             if (isCreated)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
@@ -96,10 +92,23 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
-            await Navigation.PopModalAsync(true);
+            // Ensure to pop only if a modal was pushed
+            if (Application.Current.MainPage.Navigation.ModalStack.Count > 0)
+            {
+                await Navigation.PopModalAsync(true);
+            }
             await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
         }
+        finally
+        {
+            // Clean up any remaining modals to ensure consistency
+            while (Application.Current.MainPage.Navigation.ModalStack.Count > 0)
+            {
+                await Navigation.PopModalAsync(true);
+            }
+        }
     }
+
 
 // Aparte methode om de camera te gebruiken en een foto vast te leggen
     public async Task<Stream> CaptureDocumentFromCameraAsync()

@@ -51,18 +51,20 @@ public class CargoService : ICargoService
             return (false, errorMessage);
         }
     }
-    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId)> CreateCargoWithPdf(Stream pdfStream)
+    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId)> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
         try
         {
            
-            string ocrResult = await _azureOcrService.ExtractTextFromPdfAsync(pdfStream);
+            string ocrResult = fileExtension.Equals("pdf")?
+                await _azureOcrService.ExtractTextFromPdfAsync(stream) : 
+                await _azureOcrService.ExtractTextFromImageAsync(stream);
             if (string.IsNullOrWhiteSpace(ocrResult))
             {
                 return (false, "OCR did not return any results.", Guid.Empty);
             }
 
-            
+            Console.WriteLine($"Parsed text: {ocrResult}");
             CargoRequestDto cargoDto = await ParseExtractedTextToCargo(ocrResult);
             
             var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);

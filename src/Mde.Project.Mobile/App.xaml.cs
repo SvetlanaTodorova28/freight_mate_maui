@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using DotNetEnv;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
@@ -23,7 +24,7 @@ public partial class App : Application
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
         MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication);
-       //SaveApiKeys();
+      // SaveApiKeys();
     }
 
     protected async override void OnStart()
@@ -54,13 +55,11 @@ public partial class App : Application
         }
     }
     
-    private  void SaveApiKeys()
-    {
+    private  void SaveApiKeys(){
+       
         try
         {
-             SecureStorageHelper.SaveApiKey("Key_Speech", "");
-             SecureStorageHelper.SaveApiKey("Key_Translation", "");
-             SecureStorageHelper.SaveApiKey("Key_OCR", "");
+           
         }
         catch (Exception ex)
         {
