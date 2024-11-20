@@ -32,9 +32,6 @@ public class CargoCreateViewModel : ObservableObject
         {
             await UploadAndProcessPdfAsync(pdfStream);
         });
-        ScanDocumentCommand = new RelayCommand(async () => await ScanAndProcessDocument());
-        
-
     }
 
     #region Bindable Properties
@@ -117,7 +114,6 @@ public class CargoCreateViewModel : ObservableObject
     
     public ICommand ScanDocumentCommand { get; }
 
-
     
     #endregion
 
@@ -132,7 +128,6 @@ public class CargoCreateViewModel : ObservableObject
     private async Task OnAppearingAsync()
     {
         await LoadUsers();
-        
     }
 
     private async Task SaveCargoAsync()
@@ -205,7 +200,6 @@ public class CargoCreateViewModel : ObservableObject
                 
                 await _authenticationService.SendNotificationAsync(message);
             }
-           
         }
         catch (Exception ex){
 
@@ -215,8 +209,6 @@ public class CargoCreateViewModel : ObservableObject
 
     public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream)
     {
-       
-      
         if (pdfStream == null)
         {
             await _uiService.ShowSnackbarWarning("No PDF file selected.");
@@ -244,23 +236,10 @@ public class CargoCreateViewModel : ObservableObject
         {
             await _uiService.ShowSnackbarWarning($"Error processing PDF: {ex.Message}");
         }
-
         return false;
     }
 
-    private async Task ScanAndProcessDocument()
-    {
-        var documentStream = await CaptureDocumentFromCameraAsync();
-        if (documentStream != null)
-        {
-            var text = await _cargoService.CreateCargoWithPdf(documentStream);
-            
-        }
-        else
-        {
-            // Toon foutmelding indien geen document gescand
-        }
-    }
+  
 
     
     #endregion

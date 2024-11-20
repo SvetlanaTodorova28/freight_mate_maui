@@ -1,14 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Alerts;
-using Font = Microsoft.Maui.Font;
-using CommunityToolkit.Maui.Core;
+
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
 
@@ -43,10 +33,10 @@ public partial class CargoCreatePage : ContentPage{
                 return;
             }
 
-            // Toon een loading-indicator
+           
             await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
 
-            // Verwerk het bestand via de ViewModel
+          
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
 
             if (isCreated)
@@ -65,7 +55,7 @@ public partial class CargoCreatePage : ContentPage{
         }
         finally
         {
-            // Verwijder de loading-indicator, ongeacht succes of fout
+           
             await Navigation.PopModalAsync(true);
         }
     }
@@ -75,21 +65,25 @@ public partial class CargoCreatePage : ContentPage{
     {
         try
         {
-            // Activeer de camera om het document te scannen
-            Stream documentStream = await CaptureDocumentFromCameraAsync();
+            // Aangepaste methode om de camera te openen en een foto vast te leggen
+            var documentStream = await CaptureDocumentFromCameraAsync();
 
             if (documentStream == null)
             {
-                await _uiService.ShowSnackbarWarning("No document scanned.");
+                await _uiService.ShowSnackbarWarning("No document scanned or failed to read the document stream.");
                 return;
             }
 
-            // Toon een loading-indicator
-            await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
+           
+            /*await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);*/
 
-            // Verwerk het gescande document via de ViewModel
+            // Verwerk het document via de ViewModel
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream);
 
+            // Verwijder het laadscherm
+            /*await Navigation.PopModalAsync(true);*/
+
+            // Toon het resultaat van het verwerken van het document
             if (isCreated)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
@@ -102,16 +96,12 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
+            await Navigation.PopModalAsync(true);
             await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
         }
-        finally
-        {
-            // Verwijder de loading-indicator, ongeacht succes of fout
-            await Navigation.PopModalAsync(true);
-        }
-    
     }
-    
+
+// Aparte methode om de camera te gebruiken en een foto vast te leggen
     public async Task<Stream> CaptureDocumentFromCameraAsync()
     {
         var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
@@ -121,9 +111,10 @@ public partial class CargoCreatePage : ContentPage{
 
         if (photo != null)
         {
-            var stream = await photo.OpenReadAsync();
-            return stream;
+            return await photo.OpenReadAsync();
         }
         return null;
     }
+
+
 }
