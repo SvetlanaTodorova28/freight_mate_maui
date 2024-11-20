@@ -164,31 +164,24 @@ public class AzureOcrService : IOcrService
 
         var response = await _httpClient.PostAsync(requestUrl, content);
         var responseBody = await response.Content.ReadAsStringAsync();
-       Console.WriteLine("OCR request response body: {ResponseBody}", responseBody);
 
-        if (!response.IsSuccessStatusCode){
-            return responseBody;
-            //  throw new HttpRequestException($"OCR image request failed: {response.StatusCode}, Response: {responseBody}");
-        }
-        if (!response.IsSuccessStatusCode)
-        {
-            
-            throw new HttpRequestException($"OCR image request failed: {response.StatusCode}");
-        }
         
-        return ParseOcrImageResponse(responseBody); // Parse de directe verwerking van het antwoord
+        if (response.IsSuccessStatusCode)
+        {
+            string extractedText = ParseOcrImageResponse(responseBody);
+            return extractedText;
+            
+            
+        }
+        throw new HttpRequestException($"OCR image request failed: {response.StatusCode}");
+        
     }
     catch (HttpRequestException ex)
     {
-        
         throw;
     }
-    catch (Exception ex)
-    {
-        
-        throw;
+
     }
-}
 
     private Stream ResizeImage(Stream inputImageStream, int targetWidth, int targetHeight)
     {
@@ -220,8 +213,7 @@ public class AzureOcrService : IOcrService
     }
 
 
-    private string ParseOcrImageResponse(string responseBody)
-{
+    private string ParseOcrImageResponse(string responseBody){
     var extractedText = new StringBuilder();
     var jsonDoc = JsonDocument.Parse(responseBody);
 

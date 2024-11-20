@@ -1,6 +1,7 @@
 
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
+using SkiaSharp;
 
 namespace Mde.Project.Mobile.Pages;
 
@@ -8,6 +9,7 @@ public partial class CargoCreatePage : ContentPage{
 
     private readonly CargoCreateViewModel _cargoCreateViewModel;
     private readonly IUiService _uiService;
+    private float _angle;
     
     public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService){ 
         InitializeComponent();
@@ -17,6 +19,13 @@ public partial class CargoCreatePage : ContentPage{
 
     protected override void OnAppearing(){
         _cargoCreateViewModel?.OnAppearingCommand.Execute(null);
+        Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
+        {
+            _angle += 5;
+            if (_angle > 360) _angle = 0;
+            canvasView.InvalidateSurface(); 
+            return true; 
+        });
     }
     
 
@@ -34,11 +43,11 @@ public partial class CargoCreatePage : ContentPage{
             }
 
            
-            await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
-
-          
+            await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf());
+            
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
 
+           await Navigation.PopModalAsync(true);
             if (isCreated)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
@@ -53,12 +62,10 @@ public partial class CargoCreatePage : ContentPage{
         {
             await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
         }
-        finally
-        {
-           
-            await Navigation.PopModalAsync(true);
-        }
+       
     }
+   
+
 
 
     private async void ScanCargoDocument_OnClicked(object sender, EventArgs e)
@@ -72,13 +79,16 @@ public partial class CargoCreatePage : ContentPage{
                 return;
             }
 
-            // Optionally check if modal is already present before pushing
-            if (Application.Current.MainPage.Navigation.ModalStack.Count == 0)
-            {
-                await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf(), true);
-            }
+            
+            Device.BeginInvokeOnMainThread(() => {
+                canvasView.InvalidateSurface(); // Start de animatie
+            });
+
 
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
+            Device.BeginInvokeOnMainThread(() => {
+                canvasView.InvalidateSurface(); // Stop of reset de animatie
+            });
 
             if (isCreated)
             {
@@ -92,22 +102,15 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
-            // Ensure to pop only if a modal was pushed
-            if (Application.Current.MainPage.Navigation.ModalStack.Count > 0)
-            {
-                await Navigation.PopModalAsync(true);
-            }
+          
             await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
         }
-        finally
-        {
-            // Clean up any remaining modals to ensure consistency
-            while (Application.Current.MainPage.Navigation.ModalStack.Count > 0)
-            {
-                await Navigation.PopModalAsync(true);
-            }
-        }
+       
     }
+ 
+
+
+
 
 
 // Aparte methode om de camera te gebruiken en een foto vast te leggen
@@ -125,5 +128,46 @@ public partial class CargoCreatePage : ContentPage{
         return null;
     }
 
+    private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
+    {
+        var canvas = e.Surface.Canvas;
+        var width = e.Info.Width;
+        var height = e.Info.Height;
+    
+         
+        canvas.Clear(SKColors.Transparent); 
 
+        var baseRadius = 20f;  
+        var distance = 60f;  
+        var centerY = height / 2;
+        var centerX = width / 2;
+
+        var paint = new SKPaint
+        {
+            Style = SKPaintStyle.Fill,
+            Color =SKColor.Parse("#4FB9FF"), 
+            IsAntialias = true
+        };
+
+       
+        var centerX1 = centerX - distance;  
+        var centerX2 = centerX;             
+        var centerX3 = centerX + distance;  
+
+       
+        var scale1 = 0.5f + 0.5f * MathF.Sin(MathF.PI * _angle / 180);
+        var scale2 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 120) / 180);  
+        var scale3 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 240) / 180);  
+
+        // Draw the dots
+        canvas.DrawCircle(centerX1, centerY, baseRadius * scale1, paint);
+        canvas.DrawCircle(centerX2, centerY, baseRadius * scale2, paint);
+        canvas.DrawCircle(centerX3, centerY, baseRadius * scale3, paint);
+
+        
+        _angle += 5;
+        if (_angle >= 360) _angle = 0;
+
+        canvasView.InvalidateSurface();  
+    }
 }
