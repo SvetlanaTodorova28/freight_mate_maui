@@ -81,7 +81,10 @@ namespace Mde.Project.Mobile
     		builder.Logging.AddDebug();
 #endif
 
-           
+            SecureStorageHelper.SaveApiKey("Key_Speech", "19FAby1zaOnAofcJFSGa08NXavbxT16JesvffFLL5GFCUnSejrbSJQQJ99AKACi5YpzXJ3w3AAAYACOGIF5x");
+            SecureStorageHelper.SaveApiKey("Key_Translation", "GFS6lUgdCNMUwrDmNK6NdiuAIK4RbN7YlpkkYkCpfpOLIKPotjDMJQQJ99AKACi5YpzXJ3w3AAAbACOGRwSk");
+            SecureStorageHelper.SaveApiKey("Key_OCR", "4EhShtEPHPqmLLtfkdqHpIJKkX4jJ27Tu2Qfck91d5PS9xk0HjGAJQQJ99AKACi5YpzXJ3w3AAAFACOG310F");
+
             
             var keySpeech =  SecureStorageHelper.GetApiKey("Key_Speech");
             var keyTranslation =  SecureStorageHelper.GetApiKey("Key_Translation");

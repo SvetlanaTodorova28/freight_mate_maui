@@ -41,22 +41,23 @@ public partial class CargoCreatePage : ContentPage{
                 await _uiService.ShowSnackbarWarning("No PDF file selected.");
                 return;
             }
-
-           
-            await Navigation.PushModalAsync(new LoadingPageCreateCargoFromPdf());
             
+            
+            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); // Start animatie
+        
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
-
-           await Navigation.PopModalAsync(true);
             if (isCreated)
             {
-                await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
-                await Shell.Current.GoToAsync("//CargoListPage");
+                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
             else
             {
-                await _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.");
+                Device.BeginInvokeOnMainThread(() => 
+                    _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
+                );
             }
+
+          
         }
         catch (Exception ex)
         {
@@ -85,19 +86,20 @@ public partial class CargoCreatePage : ContentPage{
             });
 
 
-            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
+           
             Device.BeginInvokeOnMainThread(() => {
                 canvasView.InvalidateSurface(); // Stop of reset de animatie
             });
-
+            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
-                await _uiService.ShowSnackbarSuccessAsync("Your cargo is successfully created.");
-                await Shell.Current.GoToAsync("//CargoListPage");
+                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
             else
             {
-                await _uiService.ShowSnackbarWarning("Failed to create cargo from the scanned document.");
+                Device.BeginInvokeOnMainThread(() => 
+                    _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
+                );
             }
         }
         catch (Exception ex)

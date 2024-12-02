@@ -21,10 +21,22 @@ public partial class CargoListPage : ContentPage{
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        MessagingCenter.Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
+        {
+            // Vernieuw de lijst
+            var viewModel = BindingContext as CargoListViewModel;
+            viewModel?.RefreshListCommand.Execute(null);
+
+            // Wacht tot de lijst vernieuwd is
+            await Task.Delay(1000); // Verstelbare delay voor het geval de lijst vernieuwen tijd nodig heeft
+
+            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); // Stop de animatie
+        });
+       
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
         viewmodel.CargosLoaded += OnCargosLoaded;  
         viewmodel.RefreshListCommand?.Execute(null);
-       
+        
         Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
         {
             _angle += 5;
@@ -38,7 +50,7 @@ public partial class CargoListPage : ContentPage{
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-       
+        MessagingCenter.Unsubscribe<CargoCreatePage>(this, "CargoUpdated");
         if (BindingContext is CargoListViewModel viewModel) {
             viewModel.CargosLoaded -= OnCargosLoaded;
         }
