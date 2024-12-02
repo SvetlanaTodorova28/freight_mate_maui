@@ -207,7 +207,7 @@ public class AzureOcrService : IOcrService
         {
             using var skImage = SKImage.FromBitmap(image);
             skImage.Encode(SKEncodedImageFormat.Jpeg, 90).SaveTo(resizedStream);
-            resizedStream.Position = 0;  // Reset the stream position to the beginning
+            resizedStream.Position = 0;  
         }
         return resizedStream;
     }
