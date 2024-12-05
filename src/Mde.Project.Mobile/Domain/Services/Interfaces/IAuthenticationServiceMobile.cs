@@ -7,7 +7,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
         Task<bool> IsAuthenticatedAsync();
         Task<bool> TryLoginAsync(string email, string password);
      
-       Task<bool> TryRegisterAsync(string username, string password, string confirmPassword, string firstname, string lastname, Function function);
+       Task<bool> TryRegisterAsync(AppUser appUser);
 
        Task<string> GetUserIdFromTokenAsync();
     

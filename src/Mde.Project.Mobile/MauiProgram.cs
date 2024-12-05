@@ -80,8 +80,7 @@ namespace Mde.Project.Mobile
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
-       
+            
 
             
             var keySpeech =  SecureStorageHelper.GetApiKey("Key_Speech");

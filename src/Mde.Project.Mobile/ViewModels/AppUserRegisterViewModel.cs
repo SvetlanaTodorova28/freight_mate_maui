@@ -106,8 +106,17 @@ public class AppUserRegisterViewModel: ObservableObject
             return false;
         }
 
-        var isRegistered = await authenticationServiceMobile.TryRegisterAsync(Username, Password, ConfirmPassword, FirstName, LastName, selectedFunction);
-        return isRegistered; 
+        AppUser user = new AppUser(){
+            Username = Username,
+            FirstName = FirstName,
+            LastName = LastName,
+            Password = Password,
+            ConfirmPassword = ConfirmPassword,
+            Function = SelectedFunction
+        };
+
+        return await authenticationServiceMobile.TryRegisterAsync(user);
+        
     }
     
     private bool IsValidEmail(string email)

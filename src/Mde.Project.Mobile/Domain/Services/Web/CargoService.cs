@@ -147,8 +147,7 @@ public class CargoService : ICargoService
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
             Id = cargo.Id,
-            Products = cargo.Products?.Select(p => p.Id).ToList(),
-            AppUserId = cargo.Userid // Assign the selected user's ID
+            AppUserId = cargo.Userid 
         };
 
         var response = await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);

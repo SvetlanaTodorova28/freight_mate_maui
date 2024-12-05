@@ -6,8 +6,9 @@ public class AppUser{
     public string FirstName { get; set; }
     public string Username { get; set; }
     public string LastName { get; set; }
-    public List<Cargo> Cargos { get; set; }
     public Function Function { get; set; }
+    public string Password { get; set; }
+    public string ConfirmPassword { get; set; }
 }
 
 public enum Function {

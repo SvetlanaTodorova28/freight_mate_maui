@@ -110,11 +110,11 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             functionMappings = functionDictionary;
         }
         
-        public async Task<bool> TryRegisterAsync(string username, string password, string confirmPassword, string firstname, string lastname, Function function){
+        public async Task<bool> TryRegisterAsync(AppUser appUser){
             Guid functionId;
             try
             {
-                functionId = await GetFunctionIdAsync(function);
+                functionId = await GetFunctionIdAsync(appUser.Function);
             }
             catch (KeyNotFoundException ex)
             {
@@ -123,11 +123,11 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             }
             
             RegisterRequestDto registerRequestDto =  new RegisterRequestDto{
-                Username = username, 
-                Password = password,
-                FirstName = firstname,
-                ConfirmPassword = confirmPassword,
-                LastName = lastname,
+                Username = appUser.Username, 
+                Password = appUser.Password,
+                FirstName = appUser.FirstName,
+                ConfirmPassword = appUser.ConfirmPassword,
+                LastName = appUser.LastName,
                 AccessLevelTypeId = functionId
             };
             var response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/register", registerRequestDto);
@@ -214,8 +214,8 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         
         public async Task SendNotificationAsync(object message)
         {
-            // Fetch a fresh access token if possible (replace with your token retrieval mechanism)
-            var accessToken = await GetAccessTokenAsync(); // Implement this to retrieve a valid token
+           
+            var accessToken = await GetAccessTokenAsync(); 
     
             _firebaseHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -232,7 +232,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
         private async Task<string> GetAccessTokenAsync()
         {
             var resourceName = "Mde.Project.Mobile.Resources.mde-project-mobile-firebase-adminsdk-vp4ii-a5f3027e90.json";
-            Assembly assembly; // Definieer de variabele buiten de preprocessordirectieven
+            Assembly assembly; 
 
 #if __IOS__
             // iOS-specifieke code, zoals toegang tot AppDelegate
