@@ -43,9 +43,12 @@ public partial class AppUserRegisterPage : ContentPage{
         await Navigation.PopModalAsync();
 
         if (isRegistered){
-            _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now");
+            await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
             Application.Current.MainPage = new NavigationPage(new LoginPage(_loginViewModel,_uiService, 
                 authenticationServiceMobile,_userRegisterViewModel, _nativeAuthentication));
+        }
+        else{
+            await _uiService.ShowSnackbarWarning("Register failed. Please try again");
         }
        
     }

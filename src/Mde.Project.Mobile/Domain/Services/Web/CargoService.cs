@@ -34,7 +34,6 @@ public class CargoService : ICargoService
             Destination = cargo.Destination,
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
-            Products = new List<Guid>(),
             AppUserId = cargo.Userid
         };
        

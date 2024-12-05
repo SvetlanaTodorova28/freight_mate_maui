@@ -22,7 +22,6 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
     public class SecureWebAuthenticationStorage : IAuthenticationServiceMobile
     {
         private const string TokenKey = "token";
-        private const string FcmTokenKey = "fcmToken";
         private readonly HttpClient _azureHttpClient;
         private readonly HttpClient _firebaseHttpClient;
         private Dictionary<Function, Guid> functionMappings;

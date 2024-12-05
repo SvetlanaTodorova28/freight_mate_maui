@@ -114,8 +114,7 @@ public class AppUserRegisterViewModel: ObservableObject
             ConfirmPassword = ConfirmPassword,
             Function = SelectedFunction
         };
-
-        return await authenticationServiceMobile.TryRegisterAsync(user);
+        return  await authenticationServiceMobile.TryRegisterAsync(user);
         
     }
     
