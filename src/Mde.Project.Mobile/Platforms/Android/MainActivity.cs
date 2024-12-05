@@ -26,10 +26,10 @@ public class MainActivity : MauiAppCompatActivity
             RequestPermissions(Permissions, RequestMicrophonePermissionId);
         }
 
-        // Initialiseer SecureStorage en andere Essentials-functies voor MAUI
+        
         if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
         {
-            Platform.Init(this, savedInstanceState); // Gebruik hier Platform.Init
+            Platform.Init(this, savedInstanceState); 
         }
     }
 
@@ -70,7 +70,7 @@ public class MainActivity : MauiAppCompatActivity
 
     public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
     {
-        Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults); // Gebruik Platform hier ook
+        Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults); 
 
         base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
     }

@@ -102,7 +102,6 @@
                                     Placeholder="PASSWORD"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
-                                    Keyboard="Email"
                                     Text="{Binding Password}" />
                                 
                                 <BoxView HeightRequest="1"
@@ -120,7 +119,6 @@
                                     Placeholder="CONFIRM PASSWORD"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
-                                    Keyboard="Email"
                                     Text="{Binding ConfirmPassword}" />
                                 
                                 <BoxView HeightRequest="1"

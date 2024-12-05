@@ -75,11 +75,8 @@ public partial class AppUserRegisterPage : ContentPage{
                colorPositions,
                SKShaderTileMode.Clamp);
 
-          
-
            var path = new SKPath();
-
-          
+           
            path.MoveTo(e.Info.Width, 0);
 
            

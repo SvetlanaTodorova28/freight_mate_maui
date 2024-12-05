@@ -10,7 +10,6 @@
              NavigationPage.HasNavigationBar="False">
     
     <Grid>
-        <!-- SkiaSharp Canvas for drawing the full-page background curve -->
         <controls:SKCanvasView x:Name="canvasView" PaintSurface="OnCanvasViewPaintSurface"
                                VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
     <ScrollView>
@@ -60,10 +59,9 @@
                             </Border>
                             
                             <Entry
-                                StyleClass="BaseEntry"
                                 Grid.Column="1"
-                                Placeholder="USERNAME"
                                 TextColor="White"
+                                Placeholder="USERNAME"
                                 FontFamily="PlayBold"
                                 BackgroundColor="Transparent"
                                 Text="{Binding UserName}"/>
@@ -92,7 +90,6 @@
                            
 
                             <Entry
-                                StyleClass="BaseEntry"
                                 Grid.Column="1"
                                 IsPassword="True"
                                 Placeholder="PASSWORD"

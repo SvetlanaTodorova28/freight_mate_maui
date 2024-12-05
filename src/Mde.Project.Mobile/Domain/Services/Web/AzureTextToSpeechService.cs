@@ -12,11 +12,7 @@ namespace Mde.Project.Mobile.Domain.Services
         {
             _config = SpeechConfig.FromSubscription(subscriptionKey, region);
         }
-
-        public void SetVoiceLanguage(string languageCode)
-        {
-            _config.SpeechSynthesisLanguage = languageCode;
-        }
+        
 
         public async Task SynthesizeSpeechAsync(string text)
         {

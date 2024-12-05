@@ -134,9 +134,7 @@ public class CargoService : ICargoService
         }
         return 0;
     }
-
-
-
+    
 
     public async Task<(bool IsSuccess, string ErrorMessage)> UpdateCargo(Cargo cargo)
     {

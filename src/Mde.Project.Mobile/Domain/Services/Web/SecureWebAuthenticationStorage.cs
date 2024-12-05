@@ -101,8 +101,6 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
                     case "basic":
                         functionDictionary.Add(Function.Driver,functiondto.Id);
                         break;
-                    default:
-                        break;
                 }
             }
 
@@ -117,7 +115,6 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
             }
             catch (KeyNotFoundException ex)
             {
-               
                 return false; 
             }
             

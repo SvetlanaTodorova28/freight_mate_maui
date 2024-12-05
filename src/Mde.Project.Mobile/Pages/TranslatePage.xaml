@@ -3,15 +3,17 @@
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     xmlns:global="clr-namespace:"
     x:DataType="global:TranslateViewModel"
     Style="{StaticResource CustomPageStyle}">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Label FontSize="16" FontFamily="PlayBold"
-                   HorizontalOptions="Center" Text="Select the language to speak " TextColor="White" />
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label FontSize="18" 
+                   FontFamily="PlayBold"
+                   HorizontalOptions="Center"
+                   Text="Select the language to speak" 
+                   TextColor="White" />
 
           
             <Picker Title="Input Language" 
@@ -20,7 +22,7 @@
                     TextColor="White"
                     ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedInputLanguage}" />
 
-            <Label FontSize="16" FontFamily="PlayBold"
+            <Label FontSize="18" FontFamily="PlayBold"
                    HorizontalOptions="Center" Text="Select the language for translation " TextColor="White" />
            
             <Picker Title="Target Language" 
@@ -31,20 +33,20 @@
 
            
             <Button Text="Start Speaking"
-                    FontFamily="PlayBold"
+                    StyleClass="baseButton"
                     FontSize="16"
                     Command="{Binding StartListeningCommand}"
                     IsVisible="{Binding IsListening, Converter={StaticResource InverseBooleanConverter}}" />
                     
             <Button Text="Stop"
-                    FontFamily="PlayBold"
+                    StyleClass="baseButton"
                     FontSize="16"
                     Command="{Binding StopListeningCommand}"
                     IsVisible="{Binding IsListening}" />
 
-            <!-- Vertaal Knop -->
+           
             <Button Text="Translate"
-                    FontFamily="PlayBold"
+                    StyleClass="baseButton"
                     FontSize="16"
                     Command="{Binding TranslateCommand}" />
 
@@ -52,13 +54,15 @@
             <Editor Text="{Binding TranslatedText}"
                     BackgroundColor="#E8E8E8"
                     FontSize="18"
+                    TextColor="OrangeRed"
                     HeightRequest="100"
                     Placeholder="Your translation will appear here..."
+                    PlaceholderColor="SlateGray"
                     IsReadOnly="True" 
                     Shadow="{StaticResource basicShadow}"/>
             
             <Button Text="Speak Translation" 
-                    FontFamily="PlayBold"
+                    StyleClass="baseButton"
                     FontSize="16"
                     Command="{Binding SpeakTranslatedTextCommand}" />
 

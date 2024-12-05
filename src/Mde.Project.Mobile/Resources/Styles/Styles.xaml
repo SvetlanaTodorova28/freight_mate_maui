@@ -61,15 +61,10 @@
         <GradientStop Color="#1E1E1E"
                       Offset="0.1" />
         <GradientStop Color="#505050"
-                      Offset="1.0" /> <!-- Zeer donkere kleur aan de bovenkant -->
+                      Offset="1.0" /> 
     </LinearGradientBrush>
     <!-- ############################################# CARGOS BORDER STYLE  ############################################# -->
     <Style Class="cargosBorder" TargetType="Border">
-        <!--<Setter Property="StrokeShape">
-            <Setter.Value>
-                <RoundRectangle CornerRadius="8" />
-            </Setter.Value>
-        </Setter>-->
         <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
         <Setter Property="Opacity" Value="0.7" />
         <Setter Property="Margin" Value="0, 5" />
@@ -88,7 +83,6 @@
 
     <!-- ############################################# ENTRY STYLE  ############################################# -->
     <Style Class="BaseEntry" TargetType="Entry">
-        <Setter Property="Shadow" Value="{StaticResource basicShadow}" />
         <Setter Property="Margin" Value="0,0,0,5"></Setter>
         <Setter Property="VerticalOptions" Value="Center"></Setter>
         <Setter Property="BackgroundColor" Value="White"></Setter>
@@ -149,7 +143,7 @@
                 <RoundRectangle CornerRadius="10" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Stroke" Value="White" />  <!-- Zorg ervoor dat deze waarde zichtbaar is tegen je achtergrond -->
+        <Setter Property="Stroke" Value="White" />  
         <Setter Property="StrokeThickness" Value="3" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="10" />

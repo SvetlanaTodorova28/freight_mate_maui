@@ -80,6 +80,12 @@ namespace Mde.Project.Mobile
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+            });
             
 
             
@@ -101,14 +107,9 @@ namespace Mde.Project.Mobile
                 client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", keyOCR);
             });
-
-
-
-            return builder.Build();
- 
-         
             
-
+            return builder.Build();
+            
         }
 
     }
