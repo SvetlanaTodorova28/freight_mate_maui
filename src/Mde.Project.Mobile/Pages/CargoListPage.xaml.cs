@@ -27,8 +27,8 @@ public partial class CargoListPage : ContentPage{
             var viewModel = BindingContext as CargoListViewModel;
             viewModel?.RefreshListCommand.Execute(null);
 
-            // Wacht tot de lijst vernieuwd is
-            await Task.Delay(1000); // Verstelbare delay voor het geval de lijst vernieuwen tijd nodig heeft
+          
+            await Task.Delay(1000); 
 
             Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); // Stop de animatie
         });

@@ -87,9 +87,7 @@ public partial class CargoCreatePage : ContentPage{
 
 
            
-            Device.BeginInvokeOnMainThread(() => {
-                canvasView.InvalidateSurface(); // Stop of reset de animatie
-            });
+          
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
