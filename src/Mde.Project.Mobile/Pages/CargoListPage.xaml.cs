@@ -23,14 +23,10 @@ public partial class CargoListPage : ContentPage{
         base.OnAppearing();
         MessagingCenter.Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
         {
-            // Vernieuw de lijst
             var viewModel = BindingContext as CargoListViewModel;
             viewModel?.RefreshListCommand.Execute(null);
-
-          
             await Task.Delay(1000); 
-
-            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); // Stop de animatie
+            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); 
         });
        
         CargoListViewModel viewmodel = BindingContext as CargoListViewModel;

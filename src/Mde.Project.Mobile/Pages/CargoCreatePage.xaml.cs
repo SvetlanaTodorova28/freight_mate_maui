@@ -82,15 +82,13 @@ public partial class CargoCreatePage : ContentPage{
 
             
             Device.BeginInvokeOnMainThread(() => {
-                canvasView.InvalidateSurface(); // Start de animatie
+                canvasView.InvalidateSurface(); 
             });
 
-
-           
-          
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
+                await _uiService.ShowSnackbarWarning("Cargo created successfully!");
                 MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
             else

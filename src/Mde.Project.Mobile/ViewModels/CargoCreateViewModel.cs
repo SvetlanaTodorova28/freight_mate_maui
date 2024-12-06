@@ -149,7 +149,7 @@ public class CargoCreateViewModel : ObservableObject
             if (result.IsSuccess)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                await NotifyUserAsync(SelectedUser.Id);
+                await NotifyUserAsync(SelectedUser.Id,Destination);
                 await Shell.Current.GoToAsync("//CargoListPage");
             }
             else
@@ -176,7 +176,7 @@ public class CargoCreateViewModel : ObservableObject
         }
     }
 
-    private async Task NotifyUserAsync(Guid userId){
+    private async Task NotifyUserAsync(Guid userId, string destination){
         try{
 
 
@@ -188,7 +188,7 @@ public class CargoCreateViewModel : ObservableObject
                         token = userFcmToken,
                         notification = new{
                             title = "New Cargo Assignment",
-                            body = $"A new cargo has been assigned to you with destination {Destination}."
+                            body = $"A new cargo has been assigned to you with destination {destination}."
                         },
                         android = new{
                             notification = new{
@@ -217,13 +217,13 @@ public class CargoCreateViewModel : ObservableObject
 
         try
         {
-            var (IsSuccess, ErrorMessage, userId) = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+            var (IsSuccess, ErrorMessage, userId, destination) = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
 
             if (IsSuccess)
             {
                 if (userId != Guid.Empty)
                 {
-                    await NotifyUserAsync(userId);
+                    await NotifyUserAsync(userId,destination );
                 }
                 return true;
             }

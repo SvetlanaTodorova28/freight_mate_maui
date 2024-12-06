@@ -50,7 +50,7 @@ public class CargoService : ICargoService
             return (false, errorMessage);
         }
     }
-    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId)> CreateCargoWithPdf(Stream stream, string fileExtension)
+    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId, string destination)> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
         try
         {
@@ -60,30 +60,29 @@ public class CargoService : ICargoService
                 await _azureOcrService.ExtractTextFromImageAsync(stream);
             if (string.IsNullOrWhiteSpace(ocrResult))
             {
-                return (false, "OCR did not return any results.", Guid.Empty);
+                return (false, "OCR did not return any results.", Guid.Empty, string.Empty);
             }
 
-            Console.WriteLine($"Parsed text: {ocrResult}");
+           
             CargoRequestDto cargoDto = await ParseExtractedTextToCargo(ocrResult);
             
             var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
             if (response.IsSuccessStatusCode)
             {
-                return (true, null, cargoDto.AppUserId);
+                return (true, null, cargoDto.AppUserId, cargoDto.Destination);
             }
             else
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
-                return (false, errorMessage, cargoDto.AppUserId);
+                return (false, errorMessage, Guid.Empty, string.Empty);
             }
         }
         catch (Exception ex)
         {
-            return (false, $"Exception when creating cargo with PDF: {ex.Message}", Guid.Empty);
+            return (false, $"Exception when creating cargo with PDF: {ex.Message}", Guid.Empty, string.Empty);
         }
     }
-
-
+    
     private async Task<CargoRequestDto> ParseExtractedTextToCargo(string text)
     {
         var cargo = new CargoRequestDto();
@@ -134,7 +133,6 @@ public class CargoService : ICargoService
         }
         return 0;
     }
-    
 
     public async Task<(bool IsSuccess, string ErrorMessage)> UpdateCargo(Cargo cargo)
     {
