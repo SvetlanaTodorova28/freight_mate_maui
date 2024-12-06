@@ -14,12 +14,27 @@
                 <Grid ColumnDefinitions="100,*"
                       RowDefinitions="Auto, Auto, Auto, Auto, Auto"
                       RowSpacing="10">
+                  
                     <Label Grid.Row="0" Grid.Column="0" StyleClass="BaseLabel" Text="Weight" />
                     <Entry Grid.Row="0" Grid.Column="1" Placeholder="12345" Text="{Binding TotalWeight}" />
+                    <BoxView Grid.Row="0" Grid.Column="1" 
+                             HeightRequest="1"
+                             BackgroundColor="White" 
+                             WidthRequest="220"  
+                             HorizontalOptions="FillAndExpand"
+                             Margin="0,45,15,0"/>
 
+                   
                     <Label Grid.Row="1" Grid.Column="0" StyleClass="BaseLabel" Text="Destination" />
-                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="Antwerp" StyleClass="baseEntry" Text="{Binding Destination}" />
+                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="Antwerp" Text="{Binding Destination}" />
+                    <BoxView Grid.Row="1" Grid.Column="1" 
+                             HeightRequest="1"
+                             BackgroundColor="White" 
+                             WidthRequest="220"  
+                             HorizontalOptions="FillAndExpand"
+                             Margin="0,45,15,0"/>
 
+                  
                     <Label Grid.Row="2" Grid.Column="0" StyleClass="BaseLabel" Text="Is it dangerous?" />
                     <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding IsDangerous}" Color="Red" HorizontalOptions="Start" VerticalOptions="Center" />
                     
@@ -36,8 +51,8 @@
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        WidthRequest="600"  
-                                       HeightRequest="600" 
-                />
+                                       HeightRequest="600"
+                                       IsVisible="{Binding IsLoading}" />
             </VerticalStackLayout>
         </ScrollView>
     </Border>

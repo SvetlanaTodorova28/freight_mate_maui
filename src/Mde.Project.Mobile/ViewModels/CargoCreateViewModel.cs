@@ -95,12 +95,6 @@ public class CargoCreateViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
-    private bool _showAnimation;
-    public bool ShowAnimation
-    {
-        get => _showAnimation;
-        set => SetProperty(ref _showAnimation, value);
-    }
     
 
     #endregion
@@ -112,7 +106,6 @@ public class CargoCreateViewModel : ObservableObject
     public ICommand OnAppearingCommand { get; }
     public ICommand CreateOrUpdateCargoFromPdfCommand { get; }
     
-    public ICommand ScanDocumentCommand { get; }
 
     
     #endregion
@@ -132,35 +125,42 @@ public class CargoCreateViewModel : ObservableObject
 
     private async Task SaveCargoAsync()
     {
-        if (string.IsNullOrWhiteSpace(Destination))
-        {
-            await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
-            return;
-        }
+        IsLoading = true;
+        try{
+            if (string.IsNullOrWhiteSpace(Destination))
+            {
+                await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
+                return;
+            }
 
-        var cargo = SelectedCargo ?? new Cargo();
-        cargo.Destination = Destination;
-        cargo.TotalWeight = TotalWeight;
-        cargo.IsDangerous = IsDangerous;
-        cargo.Userid = SelectedUser?.Id ?? Guid.Empty;
+            var cargo = SelectedCargo ?? new Cargo();
+            cargo.Destination = Destination;
+            cargo.TotalWeight = TotalWeight;
+            cargo.IsDangerous = IsDangerous;
+            cargo.Userid = SelectedUser?.Id ?? Guid.Empty;
 
-        if (cargo.Userid == Guid.Empty)
-        {
-            await _uiService.ShowSnackbarWarning("Please select a user.");
-            return;
-        }
+            if (cargo.Userid == Guid.Empty)
+            {
+                await _uiService.ShowSnackbarWarning("Please select a user.");
+                return;
+            }
 
-        var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
-        if (result.IsSuccess)
-        {
-            await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-            await NotifyUserAsync(SelectedUser.Id);
-            await Shell.Current.GoToAsync("//CargoListPage");
+            var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
+            if (result.IsSuccess)
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+                await NotifyUserAsync(SelectedUser.Id);
+                await Shell.Current.GoToAsync("//CargoListPage");
+            }
+            else
+            {
+                await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+            }
         }
-        else
-        {
-            await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+        finally{
+            IsLoading = false;
         }
+      
     }
     
     private async Task LoadSelectedCargoData(){

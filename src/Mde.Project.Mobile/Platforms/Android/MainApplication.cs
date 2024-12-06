@@ -20,7 +20,6 @@ public class MainApplication : MauiApplication{
             if (view is Entry)
             {
                 handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
-             
             }
         });
     }

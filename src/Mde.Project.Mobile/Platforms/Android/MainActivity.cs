@@ -58,11 +58,11 @@ public class MainActivity : MauiAppCompatActivity
         var channelId = "default_channel";
 
         var notificationBuilder = new NotificationCompat.Builder(context, channelId)
-            .SetSmallIcon(Resource.Drawable.cargos)  // Zorg dat deze resource bestaat in je Drawable map
-            .SetContentTitle("Nieuwe Melding")
+            .SetSmallIcon(Resource.Drawable.cargos) 
+            .SetContentTitle("New Message Received")
             .SetContentText(messageBody)
             .SetAutoCancel(true)
-            .SetVisibility(NotificationCompat.VisibilityPublic); // Voor heads-up notificatie
+            .SetVisibility(NotificationCompat.VisibilityPublic); 
 
         var notificationManager = NotificationManagerCompat.From(context);
         notificationManager.Notify(0, notificationBuilder.Build());

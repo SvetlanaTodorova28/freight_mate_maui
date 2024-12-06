@@ -107,13 +107,7 @@ public partial class CargoCreatePage : ContentPage{
         }
        
     }
- 
-
-
-
-
-
-// Aparte methode om de camera te gebruiken en een foto vast te leggen
+    
     public async Task<Stream> CaptureDocumentFromCameraAsync()
     {
         var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
