@@ -64,15 +64,12 @@ public class CargoCreateViewModel : ObservableObject
             {
                 TotalWeight = parsedValue;
             }
-            else if (string.IsNullOrWhiteSpace(value))
-            {
-                TotalWeight = 0;
-            }
+           
             else
             {
                 _uiService.ShowSnackbarWarning("Please enter a valid number.");
             }
-            OnPropertyChanged(nameof(TotalWeightText));
+           
         }
     }
 
