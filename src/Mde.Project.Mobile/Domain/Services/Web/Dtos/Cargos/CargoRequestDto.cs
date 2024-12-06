@@ -10,7 +10,9 @@ public class CargoRequestDto:BaseDto{
     public string Destination { get; set; }
     
     public double? TotalWeight { get; set; }
-    
+   
+   
+    public List<Guid>? Products { get; set; } = new List<Guid>();
    
     public Guid AppUserId { get; set; }
     
