@@ -54,6 +54,28 @@ public class CargoCreateViewModel : ObservableObject
         }
     }
     
+    private string _totalWeightText;
+    public string TotalWeightText
+    {
+        get => _totalWeight.ToString();
+        set
+        {
+            if (double.TryParse(value, out double parsedValue))
+            {
+                TotalWeight = parsedValue;
+            }
+            else if (string.IsNullOrWhiteSpace(value))
+            {
+                TotalWeight = 0;
+            }
+            else
+            {
+                _uiService.ShowSnackbarWarning("Please enter a valid number.");
+            }
+            OnPropertyChanged(nameof(TotalWeightText));
+        }
+    }
+
     private double _totalWeight;
     public double TotalWeight
     {
@@ -132,6 +154,7 @@ public class CargoCreateViewModel : ObservableObject
                 await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
                 return;
             }
+            
 
             var cargo = SelectedCargo ?? new Cargo();
             cargo.Destination = Destination;

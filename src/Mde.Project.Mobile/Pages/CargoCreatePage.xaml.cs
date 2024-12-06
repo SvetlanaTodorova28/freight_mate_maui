@@ -33,7 +33,6 @@ public partial class CargoCreatePage : ContentPage{
     {
         try
         {
-            
             Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
 
             if (pdfStream == null)
@@ -65,9 +64,7 @@ public partial class CargoCreatePage : ContentPage{
         }
        
     }
-   
-
-
+    
 
     private async void ScanCargoDocument_OnClicked(object sender, EventArgs e)
     {

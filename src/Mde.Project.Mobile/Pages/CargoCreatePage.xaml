@@ -16,7 +16,7 @@
                       RowSpacing="10">
                   
                     <Label Grid.Row="0" Grid.Column="0" StyleClass="BaseLabel" Text="Weight" />
-                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="12345" Text="{Binding TotalWeight}" />
+                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="12345" Text="{Binding TotalWeightText}" />
                     <BoxView Grid.Row="0" Grid.Column="1" 
                              HeightRequest="1"
                              BackgroundColor="White" 

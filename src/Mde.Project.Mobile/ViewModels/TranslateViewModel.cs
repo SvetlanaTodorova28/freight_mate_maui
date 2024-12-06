@@ -99,8 +99,6 @@ public partial class TranslateViewModel : ObservableObject
     {
         if (!string.IsNullOrEmpty(TranslatedText))
         {
-            /*string targetLanguageCode = GetLanguageCode(selectedTargetLanguage);
-            _textToSpeechService.SetVoiceLanguage(targetLanguageCode);*/
             await _textToSpeechService.SynthesizeSpeechAsync(TranslatedText);
         }
     }

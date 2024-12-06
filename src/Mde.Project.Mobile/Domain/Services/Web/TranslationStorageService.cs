@@ -12,7 +12,7 @@ public class TranslationStorageService : ITranslationStorageService
     {
         string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string translationsFolder = Path.Combine(folderPath, "Translations");
-        Directory.CreateDirectory(translationsFolder); // Zorgt ervoor dat de map bestaat
+        Directory.CreateDirectory(translationsFolder); 
 
         string fileName = $"Translation_{DateTime.UtcNow.Ticks}.json";
         var filePath = Path.Combine(folderPath, fileName);
