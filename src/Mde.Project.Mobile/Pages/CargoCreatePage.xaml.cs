@@ -88,7 +88,6 @@ public partial class CargoCreatePage : ContentPage{
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
-                await _uiService.ShowSnackbarWarning("Cargo created successfully!");
                 MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
             else

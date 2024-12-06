@@ -58,7 +58,6 @@ public class MainActivity : MauiAppCompatActivity
         var channelId = "default_channel";
 
         var notificationBuilder = new NotificationCompat.Builder(context, channelId)
-            .SetSmallIcon(Resource.Drawable.cargos) 
             .SetContentTitle("New Message Received")
             .SetContentText(messageBody)
             .SetAutoCancel(true)

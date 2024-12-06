@@ -47,7 +47,7 @@
                                 <ColumnDefinition Width=".8*" />
                             </Grid.ColumnDefinitions>
 
-                            <!-- Enkel een Border om de Image -->
+                           
                             <Border  Grid.Column="0" StyleClass="borderImagesLogin" >
                                 <Image HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
