@@ -16,7 +16,6 @@ public class FunctionAccessService:IFunctionAccessService{
     public FunctionAccessService(IHttpClientFactory httpClientFactory)
     {
         _azureHttpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
-        
     }
     public Task<IEnumerable<Function>> GetFunctionsAsync()
     {

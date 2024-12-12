@@ -26,30 +26,39 @@ public class CargoService : ICargoService
         return cargos;
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage)> CreateCargo(Cargo cargo)
+    public async Task<ServiceResult<string>> CreateCargo(Cargo cargo)
     {
         var cargoDto = new CargoRequestDto
         {
-            Id = Guid.Empty,
+            Id = Guid.Empty, // Typically, the ID should be set by the backend if creating a new cargo
             Destination = cargo.Destination,
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
             AppUserId = cargo.Userid
         };
-       
 
-        var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return (true, null); 
+            var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Optionally retrieve the ID or any other data of the newly created cargo from the response
+                return ServiceResult<string>.Success("Cargo created successfully");
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return ServiceResult<string>.Failure(errorMessage);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            return (false, errorMessage);
+            // Handle exceptions that occur during the HTTP request
+            return ServiceResult<string>.Failure($"An error occurred while creating the cargo: {ex.Message}");
         }
     }
+
     public async Task<(bool IsSuccess, string ErrorMessage, Guid userId, string destination)> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
         try
@@ -108,11 +117,14 @@ public class CargoService : ICargoService
                 else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
                 {
                     var emailUser = line.Substring("Responsible:".Length).Trim();
-                    var userId = await _appUserService.GetUserIdByEmailAsync(emailUser);
-                    cargo.AppUserId = Guid.Parse(userId);
+                    
+                    var result = await _appUserService.GetUserIdByEmailAsync(emailUser);
+                    if (result.IsSuccess)
+                    {
+                        cargo.AppUserId = Guid.Parse(result.Data);
+                    }
                 }
-               
-               
+                
             }
 
             return cargo;
@@ -134,7 +146,7 @@ public class CargoService : ICargoService
         return 0;
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage)> UpdateCargo(Cargo cargo)
+    public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
     {
         var cargoDto = new CargoRequestDto
         {
@@ -145,15 +157,22 @@ public class CargoService : ICargoService
             AppUserId = cargo.Userid 
         };
 
-        var response = await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return (true, string.Empty);
-        }
-        else
+            var response = await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return ServiceResult<string>.Success("Cargo updated successfully");
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return ServiceResult<string>.Failure(errorMessage);
+            }
+        }catch (Exception ex)
         {
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            return (false, errorMessage);
+            return ServiceResult<string>.Failure($"An error occurred while updating the cargo: {ex.Message}");
         }
     }
 

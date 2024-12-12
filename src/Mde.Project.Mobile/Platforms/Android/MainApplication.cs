@@ -47,9 +47,6 @@ public class OnTokenSuccessListener : Java.Lang.Object, IOnSuccessListener
     public void OnSuccess(Java.Lang.Object result)
     {
         string fcmToken = result.ToString();
-        Console.WriteLine($"Firebase registration token: {fcmToken}");
-
-       
         var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
         userService?.StoreFcmTokenAsync(fcmToken);
     }

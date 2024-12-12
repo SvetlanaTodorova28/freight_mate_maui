@@ -15,7 +15,6 @@ public class AzureTranslationService : ITranslationService
     public AzureTranslationService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-       
     }
 
     private async Task InitializeAsync()

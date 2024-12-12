@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.ViewModels;
 
@@ -11,12 +12,11 @@ public class AppUserRegisterViewModel: ObservableObject
 {
     private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly IFunctionAccessService _functionAccessService;
-    private readonly IUiService uiService;
-    
+    private readonly IUiService _uiService;
 
     public AppUserRegisterViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile, IFunctionAccessService functionAccessService)
     {
-        this.uiService = uiService;
+        _uiService = uiService;
         _authenticationServiceMobile = authServiceMobile;
         _functionAccessService = functionAccessService;
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
@@ -83,30 +83,29 @@ public class AppUserRegisterViewModel: ObservableObject
     }
     public async Task<bool> ExecuteRegisterCommand()
     {
-        
         if (Password != ConfirmPassword)
         {
-            await uiService.ShowSnackbarWarning("Password and confirm password do not match.");
+            await _uiService.ShowSnackbarWarning("Password and confirm password do not match.");
             return false;
         }
         if (string.IsNullOrEmpty(Username))
         {
-            await uiService.ShowSnackbarWarning("Username can not be empty");
+            await _uiService.ShowSnackbarWarning("Username can not be empty");
             return false;
         }
-        if (!IsValidEmail(Username))
+        if (!EmailValidator.IsValidEmail(Username))
         {
-            await uiService.ShowSnackbarWarning("Please enter a valid email address.");
+            await _uiService.ShowSnackbarWarning("Please enter a valid email address.");
             return false;
         }
         if (string.IsNullOrEmpty(Password))
         {
-            await uiService.ShowSnackbarWarning("Password can not be empty.");
+            await _uiService.ShowSnackbarWarning("Password can not be empty.");
             return false;
         }
         if (selectedFunction == null)
         {
-            await uiService.ShowSnackbarWarning("Function can not be empty.");
+            await _uiService.ShowSnackbarWarning("Function can not be empty.");
             return false;
         }
         
@@ -123,18 +122,6 @@ public class AppUserRegisterViewModel: ObservableObject
         
     }
     
-    private bool IsValidEmail(string email)
-    {
-        try
-        {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == email;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     
 }

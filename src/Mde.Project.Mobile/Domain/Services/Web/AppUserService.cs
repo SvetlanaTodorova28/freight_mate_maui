@@ -37,72 +37,95 @@ public class AppUserService:IAppUserService{
             "admin" => Function.Admin.ToString(),
             "advanced" => Function.Consignee.ToString(),
             "basic" => Function.Driver.ToString(),
-            _ => throw new InvalidOperationException("Invalid access level name")
+            _ => "Unknown" 
         };
     }
     
-    public async Task StoreFcmTokenAsync(string token){
-        var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
-        var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
-    
-        if (!string.IsNullOrEmpty(userId))
-        {
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token );
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Failed to update FCM token.");
-            }
-        }
-        else
-        {
-            throw new InvalidOperationException("User ID not found in token.");
-        }
-    }
-    
-    public async Task<string> GetFcmTokenAsync(string userId)
-    {
-        var response = await _httpClient.GetAsync($"/api/AppUsers/get-fcm-token/{userId}");
-        
-        if (response.IsSuccessStatusCode)
-        {
-            var token = await response.Content.ReadAsStringAsync();
-            return token;
-        }
-        else
-        {
-            throw new Exception("Failed to retrieve FCM token.");
-        }
-    }
-
-    public async Task<string> GetUserIdByEmailAsync(string email)
+    public async Task<ServiceResult<string>> StoreFcmTokenAsync(string token)
     {
         try
         {
-            
-            string endpoint = $"/api/AppUsers/get-user-by-email/{email}";
+            var authenticationService = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
+            var userId = await authenticationService?.GetUserIdFromTokenAsync();
 
-           
-            var userId = await _httpClient.GetStringAsync(endpoint);
-
-           
-            if (string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(userId))
             {
-                
-                return null;
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
+                if (response.IsSuccessStatusCode)
+                {
+                    return ServiceResult<string>.Success("FCM token updated successfully.");
+                }
+                else
+                {
+                    return ServiceResult<string>.Failure("Failed to update FCM token due to server error.");
+                }
             }
-
-            return userId;
-        }
-        catch (HttpRequestException ex)
-        {
-            
-            return null;
+            else
+            {
+                return ServiceResult<string>.Failure("User ID not found in token.");
+            }
         }
         catch (Exception ex)
         {
-           
-            return null;
+            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
         }
     }
+
+    
+    public async Task<ServiceResult<string>> GetFcmTokenAsync(string userId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"/api/AppUsers/get-fcm-token/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await response.Content.ReadAsStringAsync();
+                return ServiceResult<string>.Success(token);
+            }
+            else
+            {
+                return ServiceResult<string>.Failure("Failed to retrieve FCM token.");
+            }
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<string>> GetUserIdByEmailAsync(string email)
+    {
+        try
+        {
+            string endpoint = $"/api/AppUsers/get-user-by-email/{email}";
+            var response = await _httpClient.GetAsync(endpoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var userId = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    return ServiceResult<string>.Success(userId);
+                }
+                else
+                {
+                    return ServiceResult<string>.Failure("User ID not found.");
+                }
+            }
+            else
+            {
+                return ServiceResult<string>.Failure("Failed to retrieve user ID from server.");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            return ServiceResult<string>.Failure($"HTTP request error: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
+        }
+    }
+
 
 }

@@ -64,7 +64,6 @@ public class CargoCreateViewModel : ObservableObject
             {
                 TotalWeight = parsedValue;
             }
-           
             else
             {
                 _uiService.ShowSnackbarWarning("Please enter a valid number.");
@@ -197,11 +196,18 @@ public class CargoCreateViewModel : ObservableObject
     }
 
     private async Task NotifyUserAsync(Guid userId, string destination){
+        var userFcmToken = string.Empty;
+        string errorMessage = "";
         try{
-
-
-            string userFcmToken = await _appUserService.GetFcmTokenAsync(userId.ToString());
-
+            var  result = await _appUserService.GetFcmTokenAsync(userId.ToString());
+            if (result.IsSuccess)
+            {
+               
+                 userFcmToken = result.Data;
+            }
+            else{
+                errorMessage = result.ErrorMessage;
+            }
             if (!string.IsNullOrEmpty(userFcmToken)){
                 var message = new{
                     message = new{
@@ -220,10 +226,15 @@ public class CargoCreateViewModel : ObservableObject
                 
                 await _authenticationService.SendNotificationAsync(message);
             }
+            else if (!string.IsNullOrEmpty(errorMessage))
+            {
+                
+                await _uiService.ShowSnackbarWarning(errorMessage);
+            }
+
         }
         catch (Exception ex){
-
-            await _uiService.ShowSnackbarWarning("Notification could not be sent as the user has no registered FCM token.");
+            await _uiService.ShowSnackbarWarning("An unexpected error occurred while sending the notification.");
         }
     }
 
@@ -259,10 +270,6 @@ public class CargoCreateViewModel : ObservableObject
         }
         return false;
     }
-
-  
-
-    
     #endregion
 }
  
