@@ -6,6 +6,8 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
     {
         Task<bool> IsAuthenticatedAsync();
         Task<bool> TryLoginAsync(string email, string password);
+
+        public Task<string> GetTokenAsync();
      
        Task<bool> TryRegisterAsync(AppUser appUser);
 
@@ -13,11 +15,8 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces;
     
        Task SendNotificationAsync(object message);
         bool Logout();
-
-        Task<IEnumerable<Function>> GetFunctionsAsync();
-
+        
        Task<string> GetUserFirstNameFromTokenAsync();
        
-        Task<Function> GetUserFunctionFromTokenAsync();
     }
 

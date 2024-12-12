@@ -14,14 +14,17 @@ public class CargoListViewModel:ObservableObject{
    
     private readonly ICargoService _cargoService;
     private readonly IAuthenticationServiceMobile _authenticationService;
+    private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
    
    
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService)
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService,
+        IFunctionAccessService functionAccessService)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
+        _functionAccessService = functionAccessService;
         RefreshListCommand = new AsyncRelayCommand(RefreshListAsync);
         CreateCargoCommand = new AsyncRelayCommand(NavigateToCreateCargoAsync);
         EditCargoCommand = new AsyncRelayCommand<Cargo>(NavigateToEditCargoAsync);
@@ -210,7 +213,7 @@ public class CargoListViewModel:ObservableObject{
     {
         try
         {
-            UserFunction = await _authenticationService.GetUserFunctionFromTokenAsync();
+            UserFunction = await _functionAccessService.GetUserFunctionFromTokenAsync();
         }
         catch (Exception ex)
         {

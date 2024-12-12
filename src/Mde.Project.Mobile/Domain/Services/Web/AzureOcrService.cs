@@ -11,16 +11,26 @@ namespace Mde.Project.Mobile.Domain.Services.Web;
 public class AzureOcrService : IOcrService
 {
     private readonly HttpClient _httpClient;
-   
+    private bool _initialized = false;
 
     public AzureOcrService(HttpClient httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         
     }
+    private async Task InitializeAsync()
+    {
+        if (!_initialized)
+        {
+            var keyOCR = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", keyOCR);
+            _initialized = true;
+        }
+    }
 
     public async Task<string> ExtractTextFromPdfAsync(Stream pdfStream)
     {
+        await InitializeAsync();
         if (pdfStream == null) throw new ArgumentNullException(nameof(pdfStream));
 
         if (pdfStream.CanSeek)
@@ -74,12 +84,12 @@ public class AzureOcrService : IOcrService
             throw new ArgumentException("Operation location cannot be null or empty.", nameof(operationLocation));
         }
 
-        for (int i = 0; i < 10; i++) // Max attempts
+        for (int i = 0; i < 10; i++) 
         {
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, operationLocation);
-                request.Headers.Add("Ocp-Apim-Subscription-Key", SecureStorageHelper.GetApiKey("Key_OCR"));
+                request.Headers.Add("Ocp-Apim-Subscription-Key", await SecureStorageHelper.GetApiKeyAsync("Key_OCR"));
 
                 var response = await _httpClient.SendAsync(request);
 

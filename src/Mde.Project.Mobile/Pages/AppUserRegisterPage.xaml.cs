@@ -47,10 +47,7 @@ public partial class AppUserRegisterPage : ContentPage{
             Application.Current.MainPage = new NavigationPage(new LoginPage(_loginViewModel,_uiService, 
                 authenticationServiceMobile,_userRegisterViewModel, _nativeAuthentication));
         }
-        else{
-            await _uiService.ShowSnackbarWarning("Register failed. Please try again");
-        }
-       
+        
     }
  
   
@@ -89,7 +86,6 @@ public partial class AppUserRegisterPage : ContentPage{
 
           
            path.CubicTo(controlX1, controlY1, controlX2, controlY2, e.Info.Width, e.Info.Height);
-
           
            path.LineTo(e.Info.Width, 0);
 
@@ -99,23 +95,5 @@ public partial class AppUserRegisterPage : ContentPage{
        }
    }
  
-
-
-
-
-
-
-
- 
    
-
-
-
-
-
-
-  
-   
-
-    
 }

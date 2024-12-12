@@ -5,22 +5,20 @@ using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-using Mde.Project.Mobile.Pages;
-
 namespace Mde.Project.Mobile.ViewModels;
 
 public class AppUserRegisterViewModel: ObservableObject
 {
-    private readonly IAuthenticationServiceMobile authenticationServiceMobile;
+    private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
+    private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService uiService;
+    
 
-
-    public ICommand RegisterCommand { get; }
-
-    public AppUserRegisterViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile)
+    public AppUserRegisterViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile, IFunctionAccessService functionAccessService)
     {
         this.uiService = uiService;
-        authenticationServiceMobile = authServiceMobile;
+        _authenticationServiceMobile = authServiceMobile;
+        _functionAccessService = functionAccessService;
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
         
     }
@@ -74,12 +72,13 @@ public class AppUserRegisterViewModel: ObservableObject
         get => selectedFunction;
         set => SetProperty(ref selectedFunction, value);
     }
+    public ICommand RegisterCommand { get; }
 
     public ICommand OnAppearingCommand => new Command(async () => await OnAppearingAsync());
     
     private async Task OnAppearingAsync()
     {
-        Functions = new ObservableCollection<Function>(await authenticationServiceMobile.GetFunctionsAsync());
+        Functions = new ObservableCollection<Function>(await _functionAccessService.GetFunctionsAsync());
         
     }
     public async Task<bool> ExecuteRegisterCommand()
@@ -105,6 +104,12 @@ public class AppUserRegisterViewModel: ObservableObject
             await uiService.ShowSnackbarWarning("Password can not be empty.");
             return false;
         }
+        if (selectedFunction == null)
+        {
+            await uiService.ShowSnackbarWarning("Function can not be empty.");
+            return false;
+        }
+        
 
         AppUser user = new AppUser(){
             Username = Username,
@@ -114,7 +119,7 @@ public class AppUserRegisterViewModel: ObservableObject
             ConfirmPassword = ConfirmPassword,
             Function = SelectedFunction
         };
-        return  await authenticationServiceMobile.TryRegisterAsync(user);
+        return  await _authenticationServiceMobile.TryRegisterAsync(user);
         
     }
     
