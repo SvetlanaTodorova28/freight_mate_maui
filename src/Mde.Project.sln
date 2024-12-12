@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mde.Project.Mobile", "Mde.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mde.Project.Mobile.WebAPI", "Mde.Project.Mobile.WebAPI\Mde.Project.Mobile.WebAPI.csproj", "{87320CF4-AE0D-4A80-9AF2-286B653415D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mde.Project.Mobile.Utilities", "Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj", "{86928111-F1C6-4005-8BB8-78E0BF8BB16E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87320CF4-AE0D-4A80-9AF2-286B653415D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86928111-F1C6-4005-8BB8-78E0BF8BB16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86928111-F1C6-4005-8BB8-78E0BF8BB16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86928111-F1C6-4005-8BB8-78E0BF8BB16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86928111-F1C6-4005-8BB8-78E0BF8BB16E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

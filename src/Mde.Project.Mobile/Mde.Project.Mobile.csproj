@@ -117,12 +117,6 @@
 	
 	
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj" />
-	</ItemGroup>
-	
-	
-
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <PackageReference Include="Xamarin.AndroidX.Biometric" Version="1.1.0.18" />
 	  <PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.4.2.1" />
