@@ -42,11 +42,5 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Roles\Consignee.json" />
     </ItemGroup>
-   
-
-
-    <ItemGroup>
-      <ProjectReference Include="..\Mde.Project.Mobile.Utilities\Mde.Project.Mobile.Utilities.csproj" />
-    </ItemGroup>
 
 </Project>
