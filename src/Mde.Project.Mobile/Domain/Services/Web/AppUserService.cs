@@ -13,23 +13,33 @@ public class AppUserService:IAppUserService{
     public AppUserService(IHttpClientFactory httpClientFactory){
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
     }
-    public async Task<List<AppUserResponseDto>> GetUsersWithFunctions()
+    public async Task<ServiceResult<List<AppUserResponseDto>>> GetUsersWithFunctions()
     {
-        var appUsers = await _httpClient.GetFromJsonAsync<List<AppUserResponseDto>>("/api/AppUsers/users-with-roles");
-
-        if (appUsers == null || !appUsers.Any())
-            return new List<AppUserResponseDto>();
-        
-        foreach (var user in appUsers)
+        try
         {
-            if (user.AccessLevelType != null && !string.IsNullOrEmpty(user.AccessLevelType.Name))
-            {
-                user.AccessLevelType.Name = MapAccessLevelToFunction(user.AccessLevelType.Name);
-            }
-        }
+            var appUsers = await _httpClient.GetFromJsonAsync<List<AppUserResponseDto>>("/api/AppUsers/users-with-roles");
 
-        return appUsers;
+            if (appUsers == null || !appUsers.Any())
+            {
+                return ServiceResult<List<AppUserResponseDto>>.Failure("No users found with assigned roles.");
+            }
+
+            foreach (var user in appUsers)
+            {
+                if (user.AccessLevelType != null && !string.IsNullOrEmpty(user.AccessLevelType.Name))
+                {
+                    user.AccessLevelType.Name = MapAccessLevelToFunction(user.AccessLevelType.Name);
+                }
+            }
+
+            return ServiceResult<List<AppUserResponseDto>>.Success(appUsers);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<List<AppUserResponseDto>>.Failure($"Error fetching users: {ex.Message}");
+        }
     }
+
     private string MapAccessLevelToFunction(string accessLevelName)
     {
         return accessLevelName.ToLower() switch
@@ -41,23 +51,37 @@ public class AppUserService:IAppUserService{
         };
     }
     
-    public async Task StoreFcmTokenAsync(string token){
-        var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
-        var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
-    
-        if (!string.IsNullOrEmpty(userId))
+    public async Task<ServiceResult<bool>> StoreFcmTokenAsync(string token)
+    {
+        try
         {
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token );
-            if (!response.IsSuccessStatusCode)
+            var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
+            var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
+
+            if (!string.IsNullOrEmpty(userId))
             {
-                throw new Exception("Failed to update FCM token.");
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
+                if (response.IsSuccessStatusCode)
+                {
+                    return ServiceResult<bool>.Success(true);
+                }
+                else
+                {
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    return ServiceResult<bool>.Failure($"Failed to update FCM token. Details: {errorDetails}");
+                }
+            }
+            else
+            {
+                return ServiceResult<bool>.Failure("User ID not found in token.");
             }
         }
-        else
+        catch (Exception ex)
         {
-            throw new InvalidOperationException("User ID not found in token.");
+            return ServiceResult<bool>.Failure($"Unexpected error: {ex.Message}");
         }
     }
+
 
     
     public async Task<ServiceResult<string>> GetFcmTokenAsync(string userId)

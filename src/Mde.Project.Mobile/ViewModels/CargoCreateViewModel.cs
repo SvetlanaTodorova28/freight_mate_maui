@@ -133,7 +133,7 @@ public class CargoCreateViewModel : ObservableObject
     private async Task LoadUsers()
     {
         var fetchedUsers = await _appUserService.GetUsersWithFunctions();
-        Users = new ObservableCollection<AppUserResponseDto>(fetchedUsers);
+        Users = new ObservableCollection<AppUserResponseDto>(fetchedUsers.Data);
     }
     
     private async Task OnAppearingAsync()
@@ -258,7 +258,7 @@ public class CargoCreateViewModel : ObservableObject
                 if (userId != Guid.Empty)
                 {
                     await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                 //   await NotifyUserAsync(userId, destination);
+                    await NotifyUserAsync(userId, destination);
                     return true;
                 }
                 else

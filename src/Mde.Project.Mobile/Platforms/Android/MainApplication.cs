@@ -28,8 +28,6 @@ public class MainApplication : MauiApplication{
     public override void OnCreate()
     {
         base.OnCreate();
-
-        
         FirebaseApp.InitializeApp(this);
         FirebaseMessaging.Instance.AutoInitEnabled = true;
         RetrieveFirebaseToken();
@@ -44,10 +42,32 @@ public class MainApplication : MauiApplication{
 }
 public class OnTokenSuccessListener : Java.Lang.Object, IOnSuccessListener
 {
-    public void OnSuccess(Java.Lang.Object result)
+    private readonly IUiService _uiService;
+    private readonly IAppUserService _userService;
+    public OnTokenSuccessListener()
     {
-        string fcmToken = result.ToString();
-        var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
-        userService?.StoreFcmTokenAsync(fcmToken);
+        _uiService = MauiProgram.CreateMauiApp().Services.GetService<IUiService>();
+        _userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
+    }
+    public async void OnSuccess(Java.Lang.Object result)
+    {
+        try
+        {
+            string fcmToken = result.ToString();
+
+            if (_userService != null)
+            {
+                var storeResult = await _userService.StoreFcmTokenAsync(fcmToken);
+
+                if (!storeResult.IsSuccess)
+                {
+                    await _uiService.ShowSnackbarWarning($"Error storing FCM token: {storeResult.ErrorMessage}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await _uiService.ShowSnackbarWarning("An unexpected error occurred while storing the FCM token.");
+        }
     }
 }
