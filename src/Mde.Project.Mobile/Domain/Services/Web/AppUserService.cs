@@ -41,33 +41,21 @@ public class AppUserService:IAppUserService{
         };
     }
     
-    public async Task<ServiceResult<string>> StoreFcmTokenAsync(string token)
-    {
-        try
+    public async Task StoreFcmTokenAsync(string token){
+        var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
+        var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
+    
+        if (!string.IsNullOrEmpty(userId))
         {
-            var authenticationService = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
-            var userId = await authenticationService?.GetUserIdFromTokenAsync();
-
-            if (!string.IsNullOrEmpty(userId))
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token );
+            if (!response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
-                if (response.IsSuccessStatusCode)
-                {
-                    return ServiceResult<string>.Success("FCM token updated successfully.");
-                }
-                else
-                {
-                    return ServiceResult<string>.Failure("Failed to update FCM token due to server error.");
-                }
-            }
-            else
-            {
-                return ServiceResult<string>.Failure("User ID not found in token.");
+                throw new Exception("Failed to update FCM token.");
             }
         }
-        catch (Exception ex)
+        else
         {
-            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
+            throw new InvalidOperationException("User ID not found in token.");
         }
     }
 

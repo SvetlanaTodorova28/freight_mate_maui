@@ -101,10 +101,9 @@ public class CargoService : ICargoService
 
 
     
-   private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
+  private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
 {
     var cargo = new CargoRequestDto();
-
     try
     {
         var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
@@ -117,14 +116,7 @@ public class CargoService : ICargoService
             }
             else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
             {
-                if (double.TryParse(line.Substring("Total Weight:".Length).Trim(), out double weight))
-                {
-                    cargo.TotalWeight = weight;
-                }
-                else
-                {
-                    return ServiceResult<CargoRequestDto>.Failure("Invalid total weight value.");
-                }
+                cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
             }
             else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
             {
@@ -132,25 +124,42 @@ public class CargoService : ICargoService
             }
             else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
             {
-                var emailUser = line.Substring("Responsible:".Length).Trim();
-                var result = await _appUserService.GetUserIdByEmailAsync(emailUser);
+                var email = line.Substring("Responsible:".Length).Trim();
+                var result = await _appUserService.GetUserIdByEmailAsync(email).ConfigureAwait(false);
                 if (result.IsSuccess)
                 {
                     cargo.AppUserId = Guid.Parse(result.Data);
                 }
                 else
                 {
-                    return ServiceResult<CargoRequestDto>.Failure("Responsible user ID could not be retrieved or parsed.");
+                    
+                    return ServiceResult<CargoRequestDto>.Failure("Failed to find a user with the given email.");
                 }
             }
+        }
+
+        if (string.IsNullOrEmpty(cargo.Destination) || cargo.AppUserId == Guid.Empty)
+        {
+            return ServiceResult<CargoRequestDto>.Failure("Necessary cargo information is missing.");
         }
 
         return ServiceResult<CargoRequestDto>.Success(cargo);
     }
     catch (Exception ex)
     {
-        return ServiceResult<CargoRequestDto>.Failure($"Error while parsing text to Cargo: {ex.Message}");
+        return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details: {ex.Message}");
     }
+}
+  
+
+private double ParseWeight(string weightText)
+{
+    var weightParts = weightText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    if (weightParts.Length > 0 && double.TryParse(weightParts[0], out var weight))
+    {
+        return weight; 
+    }
+    return 0; 
 }
    
 

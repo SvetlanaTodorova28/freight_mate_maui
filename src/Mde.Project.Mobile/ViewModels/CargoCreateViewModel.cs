@@ -258,7 +258,7 @@ public class CargoCreateViewModel : ObservableObject
                 if (userId != Guid.Empty)
                 {
                     await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                    await NotifyUserAsync(userId, destination);
+                 //   await NotifyUserAsync(userId, destination);
                     return true;
                 }
                 else
