@@ -12,7 +12,7 @@ public interface ICargoService{
     Task<ServiceResult<string>> CreateCargo(Cargo cargo);
     Task<(bool IsSuccess, string ErrorMessage, Guid userId, string destination)> CreateCargoWithPdf(Stream stream, string fileExtension);
     Task<ServiceResult<string>> UpdateCargo(Cargo cargo);
-    Task<(bool IsSuccess, string ErrorMessage)> DeleteCargo(Guid cargoId);
+    Task<ServiceResult<string>> DeleteCargo(Guid cargoId);
 
 
 

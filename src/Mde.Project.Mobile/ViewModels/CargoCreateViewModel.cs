@@ -186,7 +186,7 @@ public class CargoCreateViewModel : ObservableObject
         await LoadUsers();
         PageTitle = SelectedCargo != null ? "Edit Cargo" : "Add Cargo";
         Destination = SelectedCargo?.Destination ?? string.Empty;
-        TotalWeight = SelectedCargo?.TotalWeight ?? 0;
+        TotalWeight = SelectedCargo.TotalWeight;
         IsDangerous = SelectedCargo?.IsDangerous ?? false;
 
         if (SelectedCargo != null && Users != null)

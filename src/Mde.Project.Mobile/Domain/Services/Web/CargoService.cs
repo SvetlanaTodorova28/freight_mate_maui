@@ -30,7 +30,7 @@ public class CargoService : ICargoService
     {
         var cargoDto = new CargoRequestDto
         {
-            Id = Guid.Empty, // Typically, the ID should be set by the backend if creating a new cargo
+            Id = Guid.Empty,
             Destination = cargo.Destination,
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
@@ -176,25 +176,27 @@ public class CargoService : ICargoService
         }
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage)> DeleteCargo(Guid cargoId)
+    public async Task<ServiceResult<string>> DeleteCargo(Guid cargoId)
     {
         try
         {
             var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
             if (response.IsSuccessStatusCode)
             {
-                return (true, string.Empty);  
+                // Successful deletion does not necessarily have a string data to return
+                return ServiceResult<string>.Success("Cargo successfully deleted.");
             }
             else
             {
-                var error = await response.Content.ReadAsStringAsync();
-                return (false, $"Failed to delete cargo: {error}");  
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return ServiceResult<string>.Failure($"Failed to delete cargo: {errorMessage}");
             }
         }
         catch (Exception ex)
         {
-            return (false, $"Exception when deleting cargo: {ex.Message}");  
+            return ServiceResult<string>.Failure($"Exception when deleting cargo: {ex.Message}");
         }
     }
+
 
 }

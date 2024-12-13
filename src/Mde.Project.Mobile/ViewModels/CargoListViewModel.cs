@@ -161,14 +161,21 @@ public class CargoListViewModel:ObservableObject{
     {
         if (cargo != null)
         {
-            await _cargoService.DeleteCargo(cargo.Id);
-            Cargos.Remove(cargo); 
-            await _uiService.ShowSnackbarDeleteAsync("CARGO DELETED SUCCESSFULLY ❌");
+            var result = await _cargoService.DeleteCargo(cargo.Id);
+            if (result.IsSuccess)
+            {
+                Cargos.Remove(cargo);  
+                await _uiService.ShowSnackbarSuccessAsync("CARGO DELETED SUCCESSFULLY ❌");
+            }
+            else
+            {
+                await _uiService.ShowSnackbarWarning($"Failed to delete cargo: {result.ErrorMessage}");
+            }
            
         }
         else
         {
-            await _uiService.ShowSnackbarWarning("ChECK IF CARGO EXISTS IN THE LIST FIRST! ��");
+            await _uiService.ShowSnackbarWarning("Check if cargo exists in the list first! ⚠️");
         }
     }
 
