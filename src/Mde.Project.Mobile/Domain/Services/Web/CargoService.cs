@@ -43,7 +43,6 @@ public class CargoService : ICargoService
 
             if (response.IsSuccessStatusCode)
             {
-                // Optionally retrieve the ID or any other data of the newly created cargo from the response
                 return ServiceResult<string>.Success("Cargo created successfully");
             }
             else
@@ -54,97 +53,106 @@ public class CargoService : ICargoService
         }
         catch (Exception ex)
         {
-            // Handle exceptions that occur during the HTTP request
             return ServiceResult<string>.Failure($"An error occurred while creating the cargo: {ex.Message}");
         }
     }
 
-    public async Task<(bool IsSuccess, string ErrorMessage, Guid userId, string destination)> CreateCargoWithPdf(Stream stream, string fileExtension)
+    public async Task<ServiceResult<CargoCreationResultDto>> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
         try
         {
-           
-            string ocrResult = fileExtension.Equals("pdf")?
+            ServiceResult<string> ocrResult = fileExtension.Equals("pdf") ?
                 await _azureOcrService.ExtractTextFromPdfAsync(stream) : 
                 await _azureOcrService.ExtractTextFromImageAsync(stream);
-            if (string.IsNullOrWhiteSpace(ocrResult))
+
+            if (!ocrResult.IsSuccess)
             {
-                return (false, "OCR did not return any results.", Guid.Empty, string.Empty);
+                return ServiceResult<CargoCreationResultDto>.Failure(ocrResult.ErrorMessage);
             }
 
-           
-            CargoRequestDto cargoDto = await ParseExtractedTextToCargo(ocrResult);
-            
+            ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
+            if (!parsedCargoResult.IsSuccess)
+            {
+                return ServiceResult<CargoCreationResultDto>.Failure(parsedCargoResult.ErrorMessage);
+            }
+
+            CargoRequestDto cargoDto = parsedCargoResult.Data;
             var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
             if (response.IsSuccessStatusCode)
             {
-                return (true, null, cargoDto.AppUserId, cargoDto.Destination);
+                var result = new CargoCreationResultDto()
+                {
+                    UserId = cargoDto.AppUserId,
+                    Destination = cargoDto.Destination
+                };
+                return ServiceResult<CargoCreationResultDto>.Success(result);
             }
             else
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
-                return (false, errorMessage, Guid.Empty, string.Empty);
+                return ServiceResult<CargoCreationResultDto>.Failure(errorMessage);
             }
         }
         catch (Exception ex)
         {
-            return (false, $"Exception when creating cargo with PDF: {ex.Message}", Guid.Empty, string.Empty);
+            return ServiceResult<CargoCreationResultDto>.Failure($"Exception when creating cargo with PDF: {ex.Message}");
         }
     }
+
+
     
-    private async Task<CargoRequestDto> ParseExtractedTextToCargo(string text)
+   private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
+{
+    var cargo = new CargoRequestDto();
+
+    try
     {
-        var cargo = new CargoRequestDto();
+        var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-        try
+        foreach (var line in lines)
         {
-            var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var line in lines)
+            if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
             {
-                if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
-                {
-                    cargo.Destination = line.Substring("Destination:".Length).Trim();
-                }
-                else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
-                {
-                    cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
-                }
-                else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
-                {
-                    cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
-                }
-                else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
-                {
-                    var emailUser = line.Substring("Responsible:".Length).Trim();
-                    
-                    var result = await _appUserService.GetUserIdByEmailAsync(emailUser);
-                    if (result.IsSuccess)
-                    {
-                        cargo.AppUserId = Guid.Parse(result.Data);
-                    }
-                }
-                
+                cargo.Destination = line.Substring("Destination:".Length).Trim();
             }
+            else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
+            {
+                if (double.TryParse(line.Substring("Total Weight:".Length).Trim(), out double weight))
+                {
+                    cargo.TotalWeight = weight;
+                }
+                else
+                {
+                    return ServiceResult<CargoRequestDto>.Failure("Invalid total weight value.");
+                }
+            }
+            else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
+            {
+                cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
+            }
+            else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
+            {
+                var emailUser = line.Substring("Responsible:".Length).Trim();
+                var result = await _appUserService.GetUserIdByEmailAsync(emailUser);
+                if (result.IsSuccess)
+                {
+                    cargo.AppUserId = Guid.Parse(result.Data);
+                }
+                else
+                {
+                    return ServiceResult<CargoRequestDto>.Failure("Responsible user ID could not be retrieved or parsed.");
+                }
+            }
+        }
 
-            return cargo;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error while parsing text to Cargo: {ex.Message}");
-            return null;
-        }
+        return ServiceResult<CargoRequestDto>.Success(cargo);
     }
-
-    private double ParseWeight(string weightText)
+    catch (Exception ex)
     {
-        var weight = weightText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        if (weight.Length > 0 && double.TryParse(weight[0], out var result))
-        {
-            return result;
-        }
-        return 0;
+        return ServiceResult<CargoRequestDto>.Failure($"Error while parsing text to Cargo: {ex.Message}");
     }
+}
+   
 
     public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
     {
@@ -183,7 +191,6 @@ public class CargoService : ICargoService
             var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
             if (response.IsSuccessStatusCode)
             {
-                // Successful deletion does not necessarily have a string data to return
                 return ServiceResult<string>.Success("Cargo successfully deleted.");
             }
             else

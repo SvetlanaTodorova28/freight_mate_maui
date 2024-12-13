@@ -12,115 +12,124 @@ public class AzureOcrService : IOcrService
 {
     private readonly HttpClient _httpClient;
     private bool _initialized = false;
+    private string _ocrApiKey;
+    private bool _headersSetUp = false;
 
     public AzureOcrService(HttpClient httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        
     }
-    private async Task InitializeAsync()
+    private async Task<ServiceResult<bool>> InitializeAsync()
     {
         if (!_initialized)
         {
-            var keyOCR = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", keyOCR);
+            _ocrApiKey = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
+            if (string.IsNullOrEmpty(_ocrApiKey))
+            {
+                return ServiceResult<bool>.Failure("OCR API key not found in secure storage.");
+            }
             _initialized = true;
         }
+
+        if (!_headersSetUp)
+        {
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _ocrApiKey);
+            _headersSetUp = true;
+        }
+        return ServiceResult<bool>.Success(true);
     }
 
-    public async Task<string> ExtractTextFromPdfAsync(Stream pdfStream)
+
+    public async Task<ServiceResult<string>> ExtractTextFromPdfAsync(Stream pdfStream)
     {
-        await InitializeAsync();
-        if (pdfStream == null) throw new ArgumentNullException(nameof(pdfStream));
+        var initResult = await InitializeAsync();
+        if (!initResult.IsSuccess)
+        {
+            return ServiceResult<string>.Failure(initResult.ErrorMessage);
+        }
+        if (pdfStream == null) 
+        {
+            return ServiceResult<string>.Failure("PDF stream cannot be null.");
+        }
 
         if (pdfStream.CanSeek)
         {
             pdfStream.Position = 0;
         }
 
-        try
+       
+        using var content = new StreamContent(pdfStream);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+
+        string requestUrl = "vision/v3.2/read/analyze";
+        var response = await _httpClient.PostAsync(requestUrl, content);
+
+        if (!response.IsSuccessStatusCode)
         {
-            using var content = new StreamContent(pdfStream);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-
-            string requestUrl = "vision/v3.2/read/analyze";
-           
-
-            var response = await _httpClient.PostAsync(requestUrl, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-               
-                throw new HttpRequestException($"OCR request failed: {response.StatusCode}");
-            }
-
-            if (!response.Headers.TryGetValues("Operation-Location", out var operationLocations))
-            {
-               
-                throw new InvalidOperationException("Operation-Location header not found in response.");
-            }
-
-            var operationLocation = operationLocations.FirstOrDefault();
-           
-
-            return await WaitForOcrResultsAsync(operationLocation);
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            return ServiceResult<string>.Failure($"OCR request failed: {response.StatusCode}, Details: {errorResponse}");
         }
-        catch (HttpRequestException ex)
+
+        if (!response.Headers.TryGetValues("Operation-Location", out var operationLocations))
         {
-           
-            throw;
+            return ServiceResult<string>.Failure("Operation-Location header not found in response.");
         }
-        catch (Exception ex)
+        var operationLocation = operationLocations.FirstOrDefault();
+        if (string.IsNullOrEmpty(operationLocation))
         {
-           
-            throw;
+            return ServiceResult<string>.Failure("Operation location is not valid or missing.");
         }
+        return await WaitForOcrResultsAsync(operationLocation);
+      
     }
     
-    private async Task<string> WaitForOcrResultsAsync(string operationLocation)
+    private async Task<ServiceResult<string>> WaitForOcrResultsAsync(string operationLocation)
     {
         if (string.IsNullOrEmpty(operationLocation))
         {
-            throw new ArgumentException("Operation location cannot be null or empty.", nameof(operationLocation));
+            return ServiceResult<string>.Failure("Operation location cannot be null or empty.");
         }
-
-        for (int i = 0; i < 10; i++) 
-        {
-            try
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, operationLocation);
-                request.Headers.Add("Ocp-Apim-Subscription-Key", await SecureStorageHelper.GetApiKeyAsync("Key_OCR"));
-
-                var response = await _httpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                   
-                    continue;
-                }
-
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                var extractedText = ParseOcrResponse(responseBody);
-                if (!string.IsNullOrEmpty(extractedText))
-                {
-                    return extractedText;
-                }
-            }
-            catch (JsonException ex)
-            {
-                
-                throw new InvalidOperationException("Failed to parse OCR response JSON.", ex);
-            }
-
-            await Task.Delay(1000); 
-        }
-
         
-        throw new TimeoutException("OCR processing timed out.");
+        if (string.IsNullOrEmpty(_ocrApiKey))
+        {
+            var initResult = await InitializeAsync();
+            if (!initResult.IsSuccess)
+            {
+                return ServiceResult<string>.Failure(initResult.ErrorMessage);
+            }
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, operationLocation);
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _ocrApiKey);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await Task.Delay(1000); 
+                continue;
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var ocrResult = ParseOcrResponse(responseBody);
+            if (ocrResult.IsSuccess)
+            {
+                return ServiceResult<string>.Success(ocrResult.Data);
+            }
+            else
+            {
+                return ServiceResult<string>.Failure(ocrResult.ErrorMessage);
+            }
+
+        }
+
+        return ServiceResult<string>.Failure("OCR processing timed out.");
     }
 
-    private string ParseOcrResponse(string responseBody)
+
+    private ServiceResult<string> ParseOcrResponse(string responseBody)
     {
         using var jsonDoc = JsonDocument.Parse(responseBody);
         var root = jsonDoc.RootElement;
@@ -146,52 +155,65 @@ public class AzureOcrService : IOcrService
                 }
             }
 
-            return string.Join("\n", extractedText);
+            if (extractedText.Count > 0)
+            {
+                return ServiceResult<string>.Success(string.Join("\n", extractedText));
+            }
+            else
+            {
+                return ServiceResult<string>.Failure("OCR data is present but contains no readable text.");
+            }
         }
 
-       
-        return null;
+        return ServiceResult<string>.Failure("OCR processing did not succeed or returned an unexpected format.");
     }
+
     
-    public async Task<string> ExtractTextFromImageAsync(Stream imageStream){
-    var resizedStream =  ResizeImage(imageStream, 600, 600);
-
-    if (resizedStream == null) throw new ArgumentNullException(nameof(resizedStream));
-
-    if (resizedStream.CanSeek)
+    public async Task<ServiceResult<string>> ExtractTextFromImageAsync(Stream imageStream)
     {
-        resizedStream.Position = 0;
-    }
+        var resizedStream = ResizeImage(imageStream, 600, 600);
 
-    try
-    {
-        
+        if (resizedStream == null)
+        {
+            return ServiceResult<string>.Failure("Resized image stream is null.");
+        }
+
+        if (resizedStream.CanSeek)
+        {
+            resizedStream.Position = 0;
+        }
+
         using var content = new StreamContent(resizedStream);
         content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-        string requestUrl = "https://cargos.cognitiveservices.azure.com/vision/v3.2/ocr"; 
-       
+        string requestUrl = "https://cargos.cognitiveservices.azure.com/vision/v3.2/ocr";
 
-        var response = await _httpClient.PostAsync(requestUrl, content);
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        
-        if (response.IsSuccessStatusCode)
+        try
         {
-            string extractedText = ParseOcrImageResponse(responseBody);
-            return extractedText;
-            
-            
+            var response = await _httpClient.PostAsync(requestUrl, content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var parsedResult = ParseOcrImageResponse(responseBody);
+                if (parsedResult.IsSuccess)
+                {
+                    return ServiceResult<string>.Success(parsedResult.Data);
+                }
+                return ServiceResult<string>.Failure("OCR parsing successful but no text was extracted.");
+            }
+            else
+            {
+                var errorMessage = $"OCR image request failed: {response.StatusCode}, {response.ReasonPhrase}";
+                return ServiceResult<string>.Failure(errorMessage);
+            }
         }
-        throw new HttpRequestException($"OCR image request failed: {response.StatusCode}");
-        
-    }
-    catch (HttpRequestException ex)
-    {
-        throw;
+        catch (Exception ex)
+        {
+            return ServiceResult<string>.Failure($"An error occurred while processing the OCR request: {ex.Message}");
+        }
     }
 
-    }
 
     private Stream ResizeImage(Stream inputImageStream, int targetWidth, int targetHeight)
     {
@@ -223,37 +245,36 @@ public class AzureOcrService : IOcrService
     }
 
 
-    private string ParseOcrImageResponse(string responseBody){
-    var extractedText = new StringBuilder();
-    var jsonDoc = JsonDocument.Parse(responseBody);
-
-    var root = jsonDoc.RootElement;
-    if (root.TryGetProperty("regions", out var regions))
+    private ServiceResult<string> ParseOcrImageResponse(string responseBody)
     {
-        foreach (var region in regions.EnumerateArray())
+        try
         {
-            if (region.TryGetProperty("lines", out var lines))
+            var jsonDoc = JsonDocument.Parse(responseBody);
+            var root = jsonDoc.RootElement;
+            if (root.TryGetProperty("regions", out var regions))
             {
-                foreach (var line in lines.EnumerateArray())
+                StringBuilder extractedText = new StringBuilder();
+                foreach (var region in regions.EnumerateArray())
                 {
-                    if (line.TryGetProperty("words", out var words))
+                    foreach (var line in region.GetProperty("lines").EnumerateArray())
                     {
-                        foreach (var word in words.EnumerateArray())
+                        foreach (var word in line.GetProperty("words").EnumerateArray())
                         {
-                            if (word.TryGetProperty("text", out var text))
-                            {
-                                extractedText.Append(text.GetString());
-                                extractedText.Append(" ");
-                            }
+                            extractedText.Append(word.GetProperty("text").GetString());
+                            extractedText.Append(' ');
                         }
+                        extractedText.AppendLine();
                     }
-                    extractedText.AppendLine();
                 }
+                return ServiceResult<string>.Success(extractedText.ToString().Trim());
             }
+            return ServiceResult<string>.Failure("No 'regions' property found in OCR response.");
+        }
+        catch (JsonException ex)
+        {
+            return ServiceResult<string>.Failure($"Failed to parse OCR response JSON: {ex.Message}");
         }
     }
 
-    return extractedText.ToString().Trim();
-}
 
 }

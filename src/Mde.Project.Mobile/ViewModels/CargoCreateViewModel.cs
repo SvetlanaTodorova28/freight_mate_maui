@@ -238,7 +238,7 @@ public class CargoCreateViewModel : ObservableObject
         }
     }
 
-    public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream,string fileExtension = "pdf")
+    public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream, string fileExtension = "pdf")
     {
         if (pdfStream == null)
         {
@@ -248,20 +248,28 @@ public class CargoCreateViewModel : ObservableObject
 
         try
         {
-            var (IsSuccess, ErrorMessage, userId, destination) = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+            var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
 
-            if (IsSuccess)
+            if (result.IsSuccess)
             {
+                var userId = result.Data.UserId;
+                var destination = result.Data.Destination;
+
                 if (userId != Guid.Empty)
                 {
                     await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                    await NotifyUserAsync(userId,destination );
+                    await NotifyUserAsync(userId, destination);
+                    return true;
                 }
-                return true;
+                else
+                {
+                    await _uiService.ShowSnackbarWarning("Cargo saved, but no user was associated.");
+                    return true;  
+                }
             }
             else
             {
-                await _uiService.ShowSnackbarWarning($"Failed to create cargo from PDF: {ErrorMessage}");
+                await _uiService.ShowSnackbarWarning($"Failed to create cargo from PDF: {result.ErrorMessage}");
             }
         }
         catch (Exception ex)
@@ -270,6 +278,7 @@ public class CargoCreateViewModel : ObservableObject
         }
         return false;
     }
+
     #endregion
 }
  
