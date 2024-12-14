@@ -102,7 +102,7 @@ namespace Mde.Project.Mobile
             _ = Task.Run(async () =>
             {
                 var keyVaultHelper = app.Services.GetRequiredService<KeyVaultHelper>();
-                var result = await keyVaultHelper.FetchKeysFromApiAsync();
+                var result = await keyVaultHelper.EnsureKeysAreAvailableAsync();
 
                 if (!result.IsSuccess)
                 {
