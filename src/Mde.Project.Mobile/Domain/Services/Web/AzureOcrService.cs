@@ -10,32 +10,24 @@ namespace Mde.Project.Mobile.Domain.Services.Web
     public class AzureOcrService : IOcrService
     {
         private readonly HttpClient _httpClient;
-        private string _ocrApiKey;
-        
+        private Lazy<Task<string>> _lazyOcrApiKey;
         
 
         public AzureOcrService(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _lazyOcrApiKey = new Lazy<Task<string>>(GetOcrApiKeyAsync);
         }
-
-        private async Task<ServiceResult<string>> EnsureOcrApiKeyAsync()
+        
+        private async Task<string> GetOcrApiKeyAsync()
         {
-            if (!string.IsNullOrEmpty(_ocrApiKey))
-            {
-                return ServiceResult<string>.Success(_ocrApiKey);
-            }
-
             var apiKey = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
             if (string.IsNullOrEmpty(apiKey))
             {
-                return ServiceResult<string>.Failure("OCR API key not found in secure storage.");
+                throw new InvalidOperationException("OCR API key not found in secure storage.");
             }
-
-            _ocrApiKey = apiKey; 
-            return ServiceResult<string>.Success(_ocrApiKey);
+            return apiKey;
         }
-
 
 
         public async Task<ServiceResult<string>> ExtractTextFromPdfAsync(Stream pdfStream)
@@ -43,17 +35,9 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             if (pdfStream == null) return ServiceResult<string>.Failure("PDF stream cannot be null.");
 
             if (pdfStream.CanSeek) pdfStream.Position = 0;
-
+            var ocrApiKey = await _lazyOcrApiKey.Value;
             try
             {
-                var apiKeyResult = await EnsureOcrApiKeyAsync();
-                if (!apiKeyResult.IsSuccess)
-                {
-                    return ServiceResult<string>.Failure(apiKeyResult.ErrorMessage);
-                }
-
-                var ocrApiKey = apiKeyResult.Data;
-
                 using var content = new StreamContent(pdfStream);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
 
@@ -94,13 +78,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 return ServiceResult<string>.Failure("Operation location cannot be null or empty.");
             }
 
-            var apiKeyResult = await EnsureOcrApiKeyAsync();
-            if (!apiKeyResult.IsSuccess)
-            {
-                return ServiceResult<string>.Failure(apiKeyResult.ErrorMessage);
-            }
-
-            var ocrApiKey = apiKeyResult.Data;
+            var ocrApiKey = await _lazyOcrApiKey.Value;
             for (int i = 0; i < 10; i++) 
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, operationLocation);
@@ -174,17 +152,9 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             {
                 resizedStream.Position = 0;
             }
-
+            var ocrApiKey = await _lazyOcrApiKey.Value;
             try
             {
-                var apiKeyResult = await EnsureOcrApiKeyAsync();
-                if (!apiKeyResult.IsSuccess)
-                {
-                    return ServiceResult<string>.Failure(apiKeyResult.ErrorMessage);
-                }
-
-                var ocrApiKey = apiKeyResult.Data;
-
                 using var content = new StreamContent(resizedStream);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 

@@ -9,9 +9,12 @@ namespace Mde.Project.Mobile.Domain.Services;
 
 public class AppUserService:IAppUserService{
     private readonly HttpClient _httpClient;
+    private readonly IAuthenticationServiceMobile _authService;
 
-    public AppUserService(IHttpClientFactory httpClientFactory){
+    public AppUserService(IHttpClientFactory httpClientFactory, IAuthenticationServiceMobile authService)
+    {
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
+        _authService = authService;
     }
     public async Task<ServiceResult<List<AppUserResponseDto>>> GetUsersWithFunctions()
     {
@@ -24,13 +27,14 @@ public class AppUserService:IAppUserService{
                 return ServiceResult<List<AppUserResponseDto>>.Failure("No users found with assigned roles.");
             }
 
-            foreach (var user in appUsers)
+            appUsers.ForEach(user =>
             {
-                if (user.AccessLevelType != null && !string.IsNullOrEmpty(user.AccessLevelType.Name))
+                if (!string.IsNullOrEmpty(user.AccessLevelType?.Name))
                 {
                     user.AccessLevelType.Name = MapAccessLevelToFunction(user.AccessLevelType.Name);
                 }
-            }
+            });
+
 
             return ServiceResult<List<AppUserResponseDto>>.Success(appUsers);
         }
@@ -53,33 +57,17 @@ public class AppUserService:IAppUserService{
     
     public async Task<ServiceResult<bool>> StoreFcmTokenAsync(string token)
     {
-        try
-        {
-            var authenticationStorage = MauiProgram.CreateMauiApp().Services.GetService<IAuthenticationServiceMobile>() as SecureWebAuthenticationStorage;
-            var userId = await authenticationStorage?.GetUserIdFromTokenAsync();
+        var userId = await _authService.GetUserIdFromTokenAsync();
 
-            if (!string.IsNullOrEmpty(userId))
-            {
-                HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
-                if (response.IsSuccessStatusCode)
-                {
-                    return ServiceResult<bool>.Success(true);
-                }
-                else
-                {
-                    var errorDetails = await response.Content.ReadAsStringAsync();
-                    return ServiceResult<bool>.Failure($"Failed to update FCM token. Details: {errorDetails}");
-                }
-            }
-            else
-            {
-                return ServiceResult<bool>.Failure("User ID not found in token.");
-            }
-        }
-        catch (Exception ex)
+        if (string.IsNullOrEmpty(userId))
         {
-            return ServiceResult<bool>.Failure($"Unexpected error: {ex.Message}");
+            return ServiceResult<bool>.Failure("User ID not found in token.");
         }
+
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
+        return response.IsSuccessStatusCode
+            ? ServiceResult<bool>.Success(true)
+            : ServiceResult<bool>.Failure($"Failed to update FCM token. Status Code: {response.StatusCode}");
     }
 
 
