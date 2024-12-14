@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿
+using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -86,6 +87,7 @@ namespace Mde.Project.Mobile
             });
             
             
+            builder.Services.AddSingleton<KeyVaultHelper>();
             builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService( GlobalConstants.Region));
             builder.Services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));
             builder.Services.AddHttpClient<ITranslationService, AzureTranslationService>((client) => {
@@ -95,10 +97,28 @@ namespace Mde.Project.Mobile
             builder.Services.AddHttpClient<IOcrService, AzureOcrService>(client => {
                 client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
             });
-            
-            return builder.Build();
+            var app = builder.Build();
+
+            _ = Task.Run(async () =>
+            {
+                var keyVaultHelper = app.Services.GetRequiredService<KeyVaultHelper>();
+                var result = await keyVaultHelper.FetchKeysFromApiAsync();
+
+                if (!result.IsSuccess)
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", result.ErrorMessage, "OK");
+                    });
+                }
+            });
+
+            return app;
+
             
         }
+       
+
 
     }
 }
