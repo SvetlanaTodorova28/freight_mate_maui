@@ -3,68 +3,104 @@
     x:Class="Mde.Project.Mobile.Pages.TranslatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:global="clr-namespace:"
-    x:DataType="global:TranslateViewModel"
-    Style="{StaticResource CustomPageStyle}">
+    xmlns:global1="clr-namespace:"
+    x:DataType="global1:TranslateViewModel"
+    BackgroundColor="#2E2E2E"
+    Padding="20">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
-            <Label FontSize="18" 
-                   FontFamily="PlayBold"
-                   HorizontalOptions="Center"
-                   Text="Select the language to speak" 
-                   TextColor="White" />
-
-          
-            <Picker Title="Input Language" 
-                    FontFamily="PlayBold"
-                    FontSize="14"
-                    TextColor="White"
-                    ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedInputLanguage}" />
-
-            <Label FontSize="18" FontFamily="PlayBold"
-                   HorizontalOptions="Center" Text="Select the language for translation " TextColor="White" />
-           
-            <Picker Title="Target Language" 
-                    FontFamily="PlayBold"
-                    FontSize="14"
-                    TextColor="White"
-                    ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedTargetLanguage}" />
-
-           
-            <Button Text="Start Speaking"
-                    StyleClass="baseButton"
-                    FontSize="16"
-                    Command="{Binding StartListeningCommand}"
-                    IsVisible="{Binding IsListening, Converter={StaticResource InverseBooleanConverter}}" />
-                    
-            <Button Text="Stop"
-                    StyleClass="baseButton"
-                    FontSize="16"
-                    Command="{Binding StopListeningCommand}"
-                    IsVisible="{Binding IsListening}" />
-
-           
-            <Button Text="Translate"
-                    StyleClass="baseButton"
-                    FontSize="16"
-                    Command="{Binding TranslateCommand}" />
-
-           
-            <Editor Text="{Binding TranslatedText}"
-                    BackgroundColor="#E8E8E8"
-                    FontSize="18"
-                    TextColor="OrangeRed"
-                    HeightRequest="100"
-                    Placeholder="Your translation will appear here..."
-                    PlaceholderColor="SlateGray"
-                    IsReadOnly="True" 
-                    Shadow="{StaticResource basicShadow}"/>
+        <VerticalStackLayout Spacing="20">
             
-            <Button Text="Speak Translation" 
-                    StyleClass="baseButton"
-                    FontSize="16"
-                    Command="{Binding SpeakTranslatedTextCommand}" />
+            <!-- Language Selection Section -->
+            <Label 
+                FontSize="18"
+                FontFamily="PlayBold"
+                HorizontalOptions="Center"
+                Text="Select the language to speak"
+                TextColor="White" />
+
+            <Picker 
+                Title="Input Language"
+                FontFamily="PlayBold"
+                FontSize="14"
+                TextColor="White"
+                ItemsSource="{Binding AvailableLanguages}"
+                SelectedItem="{Binding SelectedInputLanguage}" />
+
+            <Label 
+                FontSize="18"
+                FontFamily="PlayBold"
+                HorizontalOptions="Center"
+                Text="Select the language for translation"
+                TextColor="White" />
+
+            <Picker 
+                Title="Target Language"
+                FontFamily="PlayBold"
+                FontSize="14"
+                TextColor="White"
+                ItemsSource="{Binding AvailableLanguages}"
+                SelectedItem="{Binding SelectedTargetLanguage}" />
+
+            <!-- Speech Recognition Section -->
+            <Label 
+                FontSize="18"
+                FontFamily="PlayBold"
+                Text="Recognized Text:"
+                TextColor="White" />
+
+            <Editor 
+                Text="{Binding RecognizedText}"
+                BackgroundColor="#E8E8E8"
+                FontSize="16"
+                TextColor="Black"
+                HeightRequest="100"
+                Placeholder="Start speaking to see recognized text..."
+                PlaceholderColor="Gray"
+                IsReadOnly="True" />
+
+            <Button 
+                Text="Start Listening"
+                StyleClass="baseButton"
+                FontSize="16"
+                Command="{Binding StartListeningCommand}"
+                IsVisible="{Binding IsListening, Converter={StaticResource InverseBooleanConverter}}" />
+
+            <Button 
+                Text="Stop Listening"
+                StyleClass="baseButton"
+                FontSize="16"
+                Command="{Binding StopListeningCommand}"
+                IsVisible="{Binding IsListening}" />
+
+            <!-- Translation Section -->
+            <Button 
+                Text="Translate"
+                StyleClass="baseButton"
+                FontSize="16"
+                Command="{Binding TranslateSpeechCommand}" />
+
+            <Label 
+                FontSize="18"
+                FontFamily="PlayBold"
+                Text="Translated Text:"
+                TextColor="White" />
+
+            <Editor 
+                Text="{Binding TranslatedText}"
+                BackgroundColor="#E8E8E8"
+                FontSize="16"
+                TextColor="Black"
+                HeightRequest="100"
+                Placeholder="Your translation will appear here..."
+                PlaceholderColor="Gray"
+                IsReadOnly="True" />
+
+            <Button 
+                Text="Speak Translation"
+                StyleClass="baseButton"
+                FontSize="16"
+                Command="{Binding SpeakTranslatedTextCommand}" />
 
         </VerticalStackLayout>
     </ScrollView>

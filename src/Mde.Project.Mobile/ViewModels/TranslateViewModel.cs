@@ -3,16 +3,16 @@ using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-
 public partial class TranslateViewModel : ObservableObject
 {
     private readonly ISpeechService _speechService;
     private readonly ITranslationService _translationService;
     private readonly ITranslationStorageService _translationStorageService;
     private readonly ITextToSpeechService _textToSpeechService;
+    private readonly IUiService _uiService;
 
     [ObservableProperty]
-    private List<LanguageOption> availableLanguages = new List<LanguageOption>
+    private List<LanguageOption> availableLanguages = new()
     {
         LanguageOption.English,
         LanguageOption.Dutch,
@@ -22,10 +22,13 @@ public partial class TranslateViewModel : ObservableObject
     };
 
     [ObservableProperty]
-    private LanguageOption selectedInputLanguage = LanguageOption.Dutch; 
+    private LanguageOption selectedInputLanguage = LanguageOption.Dutch;
 
     [ObservableProperty]
-    private LanguageOption selectedTargetLanguage = LanguageOption.French; 
+    private LanguageOption selectedTargetLanguage = LanguageOption.French;
+
+    [ObservableProperty]
+    private string recognizedText;
 
     [ObservableProperty]
     private string translatedText;
@@ -33,77 +36,112 @@ public partial class TranslateViewModel : ObservableObject
     [ObservableProperty]
     private bool isListening;
 
-    public TranslateViewModel(ISpeechService speechService, ITranslationService translationService, 
-                              ITranslationStorageService translationStorageService, ITextToSpeechService textToSpeechService)
+    public TranslateViewModel(
+        ISpeechService speechService,
+        ITranslationService translationService,
+        ITranslationStorageService translationStorageService,
+        ITextToSpeechService textToSpeechService,
+        IUiService uiService)
     {
         _speechService = speechService;
         _translationService = translationService;
         _translationStorageService = translationStorageService;
         _textToSpeechService = textToSpeechService;
-
-        StartListeningCommand = new AsyncRelayCommand(StartListeningAsync);
-        StopListeningCommand = new RelayCommand(StopListening);
-        TranslateCommand = new AsyncRelayCommand(TranslateSpeechAsync);
-        SpeakTranslatedTextCommand = new AsyncRelayCommand(SpeakTranslatedTextAsync);
+        _uiService = uiService;
     }
-
-    public IAsyncRelayCommand StartListeningCommand { get; }
-    public RelayCommand StopListeningCommand { get; }
-    public IAsyncRelayCommand TranslateCommand { get; }
-    public IAsyncRelayCommand SpeakTranslatedTextCommand { get; }
-
+    
+    [RelayCommand]
     private async Task StartListeningAsync()
     {
-        
-        string inputLanguageCode = GetLanguageCode(selectedInputLanguage);
-        _speechService.SetRecognitionLanguage(inputLanguageCode);
+        string inputLanguageCode = GetLanguageCode(SelectedInputLanguage);
+        var setLanguageResult = await _speechService.SetRecognitionLanguageAsync(inputLanguageCode);
+
+        if (!setLanguageResult.IsSuccess)
+        {
+            await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
+            return;
+        }
 
         IsListening = true;
-        OnPropertyChanged(nameof(IsListening));
 
-        var speechText = await _speechService.RecognizeSpeechAsync();
-        if (!string.IsNullOrEmpty(speechText))
-        {
-            TranslatedText = speechText;
-        }
-        else
-        {
-            TranslatedText = "Could not recognize speech.";
-        }
-
-        IsListening = false;
-        OnPropertyChanged(nameof(IsListening));
+        await _speechService.StartContinuousRecognitionAsync(
+            onRecognized: text =>
+            {
+                RecognizedText = text;
+            },
+            onError: async error =>
+            {
+                await _uiService.ShowSnackbarWarning(error);
+            },
+            onInfo: async info =>
+            {
+                await _uiService.ShowSnackbarInfoAsync(info); 
+            });
     }
 
-    private void StopListening()
+
+    [RelayCommand]
+    private async Task StopListeningAsync()
     {
         IsListening = false;
+
+        var stopResult = await _speechService.StopContinuousRecognitionAsync();
+        if (!stopResult.IsSuccess)
+        {
+            await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
+        }
     }
 
+    [RelayCommand]
     private async Task TranslateSpeechAsync()
     {
-        if (!string.IsNullOrEmpty(TranslatedText))
+        if (string.IsNullOrWhiteSpace(RecognizedText))
         {
-            
-            string targetLanguageCode = GetLanguageCode(selectedTargetLanguage);
-            var translatedText = await _translationService.TranslateTextAsync(TranslatedText, targetLanguageCode);
-            TranslatedText = translatedText;
-            await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel { OriginalText = TranslatedText, TranslatedText = translatedText });
+            await _uiService.ShowSnackbarWarning("No text to translate.");
+            return;
+        }
+
+        string targetLanguageCode = GetLanguageCode(SelectedTargetLanguage);
+        var translatedTextResult = await _translationService.TranslateTextAsync(RecognizedText, targetLanguageCode);
+
+        if (!string.IsNullOrEmpty(translatedTextResult))
+        {
+            TranslatedText = translatedTextResult;
+            await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel
+            {
+                OriginalText = RecognizedText,
+                TranslatedText = TranslatedText
+            });
+
+            await _uiService.ShowSnackbarSuccessAsync("Translation completed successfully!");
         }
         else
         {
-            TranslatedText = "No text to translate.";
-        }
-    }
-    private async Task SpeakTranslatedTextAsync()
-    {
-        if (!string.IsNullOrEmpty(TranslatedText))
-        {
-            await _textToSpeechService.SynthesizeSpeechAsync(TranslatedText);
+            await _uiService.ShowSnackbarWarning("Translation failed.");
         }
     }
 
-    
+    [RelayCommand]
+    private async Task SpeakTranslatedTextAsync()
+    {
+        if (string.IsNullOrWhiteSpace(TranslatedText))
+        {
+            await _uiService.ShowSnackbarWarning("No translated text to speak.");
+            return;
+        }
+
+        var synthesisResult = await _textToSpeechService.SynthesizeSpeechAsync(TranslatedText);
+
+        if (synthesisResult.IsSuccess)
+        {
+            await _uiService.ShowSnackbarSuccessAsync("Text-to-speech synthesis completed!");
+        }
+        else
+        {
+            await _uiService.ShowSnackbarWarning(synthesisResult.ErrorMessage);
+        }
+    }
+
     private string GetLanguageCode(LanguageOption language)
     {
         return language switch
@@ -113,7 +151,7 @@ public partial class TranslateViewModel : ObservableObject
             LanguageOption.French => "fr-FR",
             LanguageOption.German => "de-DE",
             LanguageOption.Bulgarian => "bg-BG",
-            _ => "en-US" 
+            _ => "en-US"
         };
     }
 }

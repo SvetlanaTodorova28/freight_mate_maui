@@ -20,20 +20,6 @@ public class UiService : IUiService
         var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
         await snackbar.Show();
     }
-    
-    public async Task ShowSnackbarDeleteAsync(string message)
-    {
-        var snackbarOptions = new SnackbarOptions
-        {
-            BackgroundColor = Colors.Pink,
-            TextColor = Colors.White,
-            CornerRadius = new CornerRadius(10),
-            CharacterSpacing = 1
-        };
-
-        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
-        await snackbar.Show();
-    }
     public async Task ShowSnackbarWarning(string message)
     {
         var snackbarOptions = new SnackbarOptions
@@ -48,7 +34,6 @@ public class UiService : IUiService
         var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
         await snackbar.Show();
     }
-
     public async Task<Stream> PickAndOpenFileAsync(string fileFilter){
         try
         {
@@ -70,5 +55,21 @@ public class UiService : IUiService
         }
         return null;
     }
+    public async Task ShowSnackbarInfoAsync(string message)
+    {
+        var snackbarOptions = new SnackbarOptions
+        {
+            BackgroundColor = Colors.CornflowerBlue, 
+            TextColor = Colors.White,
+            CornerRadius = new CornerRadius(10),
+            CharacterSpacing = 1
+        };
+
+        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
+        await snackbar.Show();
     }
+
+    }
+
+
 

@@ -1,6 +1,9 @@
+using Mde.Project.Mobile.Domain.Services.Web;
+
 namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public interface ITextToSpeechService{
 
-    Task SynthesizeSpeechAsync(string text);
+    Task<ServiceResult<bool>> SynthesizeSpeechAsync(string text);
+
 }

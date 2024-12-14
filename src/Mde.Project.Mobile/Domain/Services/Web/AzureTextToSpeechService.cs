@@ -1,6 +1,7 @@
 using Microsoft.CognitiveServices.Speech;
 
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.Domain.Services
@@ -24,17 +25,29 @@ namespace Mde.Project.Mobile.Domain.Services
 
         
 
-        public async Task SynthesizeSpeechAsync(string text)
+        public async Task<ServiceResult<bool>> SynthesizeSpeechAsync(string text)
         {
-            var config = await _lazyConfig.Value;
-            using (var synthesizer = new SpeechSynthesizer(config))
+            try
             {
-                var result = await synthesizer.SpeakTextAsync(text);
-                if (result.Reason != ResultReason.SynthesizingAudioCompleted)
+                var config = await _lazyConfig.Value;
+                using (var synthesizer = new SpeechSynthesizer(config))
                 {
-                    throw new ApplicationException($"Speech synthesis failed: {result.Reason}");
+                    var result = await synthesizer.SpeakTextAsync(text);
+                    if (result.Reason == ResultReason.SynthesizingAudioCompleted)
+                    {
+                        return ServiceResult<bool>.Success(true);
+                    }
+                    else
+                    {
+                        return ServiceResult<bool>.Failure($"Speech synthesis failed: {result.Reason}");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Failure($"Exception during speech synthesis: {ex.Message}");
+            }
         }
+
     }
 }

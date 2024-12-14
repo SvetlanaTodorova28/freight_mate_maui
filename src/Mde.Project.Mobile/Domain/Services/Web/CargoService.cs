@@ -22,7 +22,7 @@ public class CargoService : ICargoService
 
     public async Task<List<CargoResponseDto>> GetCargosForUser(Guid userId){
         var cargos = new List<CargoResponseDto>();
-         cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
+        cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
         return cargos;
     }
 
@@ -101,66 +101,66 @@ public class CargoService : ICargoService
 
 
     
-  private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
-{
-    var cargo = new CargoRequestDto();
-    try
+    private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
     {
-        var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-
-        foreach (var line in lines)
+        var cargo = new CargoRequestDto();
+        try
         {
-            if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
+            var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var line in lines)
             {
-                cargo.Destination = line.Substring("Destination:".Length).Trim();
-            }
-            else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
-            {
-                cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
-            }
-            else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
-            {
-                cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
-            }
-            else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
-            {
-                var email = line.Substring("Responsible:".Length).Trim();
-                var result = await _appUserService.GetUserIdByEmailAsync(email).ConfigureAwait(false);
-                if (result.IsSuccess)
+                if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.AppUserId = Guid.Parse(result.Data);
+                    cargo.Destination = line.Substring("Destination:".Length).Trim();
                 }
-                else
+                else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
                 {
+                    cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
+                }
+                else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
+                {
+                    cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                }
+                else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
+                {
+                    var email = line.Substring("Responsible:".Length).Trim();
+                    var result = await _appUserService.GetUserIdByEmailAsync(email).ConfigureAwait(false);
+                    if (result.IsSuccess)
+                    {
+                        cargo.AppUserId = Guid.Parse(result.Data);
+                    }
+                    else
+                    {
                     
-                    return ServiceResult<CargoRequestDto>.Failure("Failed to find a user with the given email.");
+                        return ServiceResult<CargoRequestDto>.Failure("Failed to find a user with the given email.");
+                    }
                 }
             }
-        }
 
-        if (string.IsNullOrEmpty(cargo.Destination) || cargo.AppUserId == Guid.Empty)
+            if (string.IsNullOrEmpty(cargo.Destination) || cargo.AppUserId == Guid.Empty)
+            {
+                return ServiceResult<CargoRequestDto>.Failure("Necessary cargo information is missing.");
+            }
+
+            return ServiceResult<CargoRequestDto>.Success(cargo);
+        }
+        catch (Exception ex)
         {
-            return ServiceResult<CargoRequestDto>.Failure("Necessary cargo information is missing.");
+            return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details: {ex.Message}");
         }
-
-        return ServiceResult<CargoRequestDto>.Success(cargo);
     }
-    catch (Exception ex)
-    {
-        return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details: {ex.Message}");
-    }
-}
   
 
-private double ParseWeight(string weightText)
-{
-    var weightParts = weightText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-    if (weightParts.Length > 0 && double.TryParse(weightParts[0], out var weight))
+    private double ParseWeight(string weightText)
     {
-        return weight; 
+        var weightParts = weightText.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (weightParts.Length > 0 && double.TryParse(weightParts[0], out var weight))
+        {
+            return weight; 
+        }
+        return 0; 
     }
-    return 0; 
-}
    
 
     public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
