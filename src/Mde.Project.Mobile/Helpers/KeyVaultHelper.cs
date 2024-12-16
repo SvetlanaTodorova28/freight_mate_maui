@@ -13,11 +13,10 @@ namespace Mde.Project.Mobile.Helpers
             _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
         }
 
-        public async Task<ServiceResult<bool>> EnsureKeysAreAvailableAsync()
+        public  async Task<ServiceResult<bool>> EnsureKeysAreAvailableAsync()
         {
             try
             {
-                // Controleer of de sleutels al in Secure Storage staan
                 var ocrKey = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
                 var speechKey = await SecureStorageHelper.GetApiKeyAsync("Key_Speech");
                 var translationKey = await SecureStorageHelper.GetApiKeyAsync("Key_Translation");

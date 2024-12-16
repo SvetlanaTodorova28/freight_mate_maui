@@ -36,7 +36,7 @@
                         </Grid.GestureRecognizers>
                     </Grid>
 
-                    <!-- Contact Item met FontAwesome icoon en klik event -->
+                    
                     <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

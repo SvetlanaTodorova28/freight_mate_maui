@@ -87,9 +87,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
                 await StoreToken(loginResponse.Token);
 
-                // Retrieve and store the FCM token
-                var serviceProvider = MauiProgram.CreateMauiApp().Services;
-                var appUserService = serviceProvider.GetRequiredService<IAppUserService>();
+                
                 var fcmResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
 
                 if (!fcmResult.IsSuccess)

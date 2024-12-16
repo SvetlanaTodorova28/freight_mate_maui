@@ -53,27 +53,9 @@ namespace Mde.Project.Mobile
 
             var app = builder.Build();
 
-            _ = Task.Run(async () =>
-            {
-                await StartupHelper.InitializeKeyVaultAsync(app.Services);
-                var appUserService = app.Services.GetService<IAppUserService>();
-                if (appUserService != null)
-                {
-                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
+            _ = InitializeAppAsync(app.Services);
 
-                    if (!firebaseTokenResult.IsSuccess)
-                    {
-                        var uiService = app.Services.GetService<IUiService>();
-                        if (uiService != null)
-                        {
-                            await MainThread.InvokeOnMainThreadAsync(() =>
-                            {
-                                uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");
-                            });
-                        }
-                    }
-                }
-            });
+
 
             return app;
         }
@@ -132,6 +114,50 @@ namespace Mde.Project.Mobile
                 client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
             });
         }
+
+        private static async Task InitializeAppAsync(IServiceProvider services)
+        {
+            try
+            {
+                var keyVaultHelper = services.GetRequiredService<KeyVaultHelper>();
+                var uiService = services.GetService<IUiService>();
+
+               
+                var keyVaultResult = await keyVaultHelper.EnsureKeysAreAvailableAsync();
+                if (!keyVaultResult.IsSuccess && uiService != null)
+                {
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        uiService.ShowSnackbarWarning($"Key Vault Error: {keyVaultResult.ErrorMessage}");
+                    });
+                }
+                
+                var appUserService = services.GetService<IAppUserService>();
+                if (appUserService != null)
+                {
+                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
+                    if (!firebaseTokenResult.IsSuccess && uiService != null)
+                    {
+                        await MainThread.InvokeOnMainThreadAsync(() =>
+                        {
+                            uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var uiService = services.GetService<IUiService>();
+                if (uiService != null)
+                {
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        uiService.ShowSnackbarWarning($"Unexpected error: {ex.Message}");
+                    });
+                }
+            }
+        }
+
         
       
 

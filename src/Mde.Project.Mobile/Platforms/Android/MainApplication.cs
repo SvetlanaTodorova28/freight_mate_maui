@@ -45,7 +45,6 @@ namespace Mde.Project.Mobile.Platforms.Android
 
         private async Task InitializeFirebaseTokenAsync()
         {
-            // Haal services op via de serviceprovider
             var appUserService = _serviceProvider.GetService<IAppUserService>();
             var uiService = _serviceProvider.GetService<IUiService>();
 
