@@ -8,25 +8,31 @@ namespace Mde.Project.Mobile.Pages;
 
 public partial class AppUserRegisterPage : ContentPage{
     private readonly IUiService _uiService;
-    private readonly IAuthenticationServiceMobile authenticationServiceMobile;
+    private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly INativeAuthentication _nativeAuthentication;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
+    private readonly IAppUserService _appUserService;
     private readonly LoginViewModel _loginViewModel;
   
    
     public AppUserRegisterPage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
-        AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication){
+        AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication,
+        IAppUserService appUserService){
         InitializeComponent();
         _uiService = uiService;
         _loginViewModel = loginViewModel;
         _nativeAuthentication = nativeAuthentication;
+        _authenticationServiceMobile = authenticationServiceMobile;
+        _uiService = uiService;
+        _appUserService = appUserService; 
          BindingContext =  _userRegisterViewModel = userRegisterViewModel;
-        this.authenticationServiceMobile = authenticationServiceMobile;
+      
        
     }
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
-        Navigation.PushAsync( new WelcomePage(_uiService, authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication));
+        Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
+            _appUserService));
     }
     
     protected override void OnAppearing()

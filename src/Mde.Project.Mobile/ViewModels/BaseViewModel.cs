@@ -12,11 +12,13 @@ public class BaseViewModel:ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly INativeAuthentication _nativeAuthentication;
     private readonly IUiService _uiService;
+    private readonly IAppUserService _appUserService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
     
     public BaseViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-    AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication serviceNativeAuthentication)
+    AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication serviceNativeAuthentication,
+    IAppUserService appUserService)
     {
        
         _uiService = uiService;
@@ -24,6 +26,7 @@ public class BaseViewModel:ObservableObject
         _loginViewModel = loginViewModel;
         _authenticationServiceMobile = authServiceMobile;
         _nativeAuthentication = serviceNativeAuthentication;
+        _appUserService = appUserService;
         
     }
     
@@ -38,7 +41,7 @@ public class BaseViewModel:ObservableObject
         if (result.IsSuccess && result.Data)
         {
             Application.Current.MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationServiceMobile,
-                _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
+                _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService));
         }
         else
         {

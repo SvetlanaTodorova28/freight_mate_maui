@@ -13,6 +13,7 @@ public class LoginViewModel : ObservableObject
     private readonly INativeAuthentication _nativeAuthentication;
     private readonly IUiService _uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
+    private readonly IAppUserService _appUserService;
 
     public ICommand LoginCommand { get; }
     public ICommand FaceLoginCommand { get; }
@@ -21,12 +22,14 @@ public class LoginViewModel : ObservableObject
         IUiService uiService,
         IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel,
-        INativeAuthentication nativeAuthentication)
+        INativeAuthentication nativeAuthentication,
+        IAppUserService appUserService)
     {
         _uiService = uiService;
         _authenticationServiceMobile = authenticationServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
         _nativeAuthentication = nativeAuthentication;
+        _appUserService = appUserService;
 
         LoginCommand = new AsyncRelayCommand(ExecuteLoginCommandAsync);
         FaceLoginCommand = new AsyncRelayCommand(ExecuteFaceLoginCommandAsync);
@@ -77,6 +80,11 @@ public class LoginViewModel : ObservableObject
 
         if (loginResult.IsSuccess)
         {
+            var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
+            if (!fcmResult.IsSuccess)
+            {
+                await _uiService.ShowSnackbarWarning($"Failed to update FCM token: {fcmResult.ErrorMessage}");
+            }
             Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
@@ -114,6 +122,11 @@ public class LoginViewModel : ObservableObject
                 var loginResult = await _authenticationServiceMobile.TryLoginAsync(username, password);
                 if (loginResult.IsSuccess)
                 {
+                    var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
+                    if (!fcmResult.IsSuccess)
+                    {
+                        await _uiService.ShowSnackbarWarning($"Failed to update FCM token: {fcmResult.ErrorMessage}");
+                    }
                     Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
                     await Shell.Current.GoToAsync("//CargoListPage");
                 }

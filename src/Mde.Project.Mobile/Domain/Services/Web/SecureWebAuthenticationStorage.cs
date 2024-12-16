@@ -88,11 +88,11 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 await StoreToken(loginResponse.Token);
 
                 
-                var fcmResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
+                var fcmResult = await SecureStorageHelper.GetFcmTokenAsync();
 
-                if (!fcmResult.IsSuccess)
+                if (string.IsNullOrEmpty(fcmResult))
                 {
-                    return ServiceResult<bool>.Failure(fcmResult.ErrorMessage);
+                    return ServiceResult<bool>.Failure("Not FCM");
                 }
 
                 return ServiceResult<bool>.Success(true);

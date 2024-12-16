@@ -11,7 +11,8 @@ namespace Mde.Project.Mobile
         
         private readonly IAuthenticationServiceMobile _authenticationService;
         private readonly INativeAuthentication _nativeAuthentication;
-        private readonly IUiService uiService;
+        private readonly IUiService _uiService;
+        private readonly IAppUserService _appUserService;
         private readonly AppUserRegisterViewModel _userRegisterViewModel;
         private readonly LoginViewModel _loginViewModel;
         public AppShell( IAuthenticationServiceMobile authenticationService, IUiService uiService,
@@ -23,8 +24,9 @@ namespace Mde.Project.Mobile
             _userRegisterViewModel = userRegisterViewModel;
             _loginViewModel = loginViewModel;
             _nativeAuthentication = nativeAuthentication;
-            this.uiService = uiService;
-            BindingContext = new BaseViewModel(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
+            _uiService = uiService;
+            BindingContext = new BaseViewModel(_uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication,
+                _appUserService);
           
             
         }

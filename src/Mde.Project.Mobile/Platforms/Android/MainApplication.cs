@@ -4,8 +4,6 @@ using AndroidColor = Android.Graphics.Color;
 using Android.Runtime;
 using Firebase;
 using Firebase.Messaging;
-using Mde.Project.Mobile.Helpers;
-using Mde.Project.Mobile.Domain.Services.Interfaces;
 
 namespace Mde.Project.Mobile.Platforms.Android
 {
@@ -24,8 +22,7 @@ namespace Mde.Project.Mobile.Platforms.Android
                     handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
                 }
             });
-
-            // Initialiseer de serviceprovider hier één keer
+            
             _serviceProvider = MauiProgram.CreateMauiApp().Services;
         }
 
@@ -34,32 +31,10 @@ namespace Mde.Project.Mobile.Platforms.Android
         public override void OnCreate()
         {
             base.OnCreate();
-
-            // Initialize Firebase
             FirebaseApp.InitializeApp(this);
             FirebaseMessaging.Instance.AutoInitEnabled = true;
-
-            // Haal de FCM-token op en sla deze op
-            InitializeFirebaseTokenAsync().ConfigureAwait(false);
         }
 
-        private async Task InitializeFirebaseTokenAsync()
-        {
-            var appUserService = _serviceProvider.GetService<IAppUserService>();
-            var uiService = _serviceProvider.GetService<IUiService>();
-
-            if (appUserService == null || uiService == null)
-            {
-                await uiService?.ShowSnackbarWarning("Error initializing Firebase token: Missing services.");
-                return;
-            }
-
-            var result = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
-
-            if (!result.IsSuccess)
-            {
-                await uiService.ShowSnackbarWarning(result.ErrorMessage);
-            }
-        }
+     
     }
 }

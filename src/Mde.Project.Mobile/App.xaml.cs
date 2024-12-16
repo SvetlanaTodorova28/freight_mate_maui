@@ -10,20 +10,22 @@ public partial class App : Application
 {
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly INativeAuthentication _nativeAuthentication;
-  
-    private readonly IUiService uiService;
+    private readonly IAppUserService _appUserService;
+    private readonly IUiService _uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
+
     public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, AppUserRegisterViewModel userRegisterViewModel,
-        LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication)
+        LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication, IAppUserService appUserService)
     {
         InitializeComponent();
         _authenticationService = authenticationService;
         _nativeAuthentication = nativeAuthentication;
-        this.uiService = uiService;
+        _uiService = uiService;
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
-        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication);
+        _appUserService = appUserService;
+        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication, _appUserService);
      
     }
 
@@ -44,12 +46,12 @@ public partial class App : Application
         var isAuthenticated = await _authenticationService.IsAuthenticatedAsync();
         if (isAuthenticated.IsSuccess)
         {
-            MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
+            MainPage = new AppShell(_authenticationService,_uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
-            MainPage = new NavigationPage(new WelcomePage(uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
+            MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService));
         }
     }
     
