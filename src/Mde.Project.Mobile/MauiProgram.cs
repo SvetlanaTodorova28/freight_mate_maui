@@ -59,7 +59,7 @@ namespace Mde.Project.Mobile
                 var appUserService = app.Services.GetService<IAppUserService>();
                 if (appUserService != null)
                 {
-                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync(appUserService);
+                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
 
                     if (!firebaseTokenResult.IsSuccess)
                     {

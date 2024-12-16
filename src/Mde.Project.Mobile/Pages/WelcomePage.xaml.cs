@@ -39,7 +39,7 @@ public partial class WelcomePage : ContentPage{
             Password = ""
         };
 
-        var loginPage = new LoginPage(loginViewModel, _uiService, authenticationServiceMobile, _userRegisterViewModel, _nativeAuthentication)
+        var loginPage = new LoginPage(loginViewModel)
         {
             BindingContext = loginViewModel
         };

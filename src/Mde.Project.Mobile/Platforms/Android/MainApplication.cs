@@ -1,12 +1,13 @@
 ﻿using Android.App;
 using Android.Content.Res;
+using AndroidColor = Android.Graphics.Color;
 using Android.Runtime;
 using Firebase;
 using Firebase.Messaging;
 using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-namespace Mde.Project.Mobile.Platforms
+namespace Mde.Project.Mobile.Platforms.Android
 {
     [Application]
     public class MainApplication : MauiApplication
@@ -20,7 +21,7 @@ namespace Mde.Project.Mobile.Platforms
             {
                 if (view is Entry)
                 {
-                    handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+                    handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
                 }
             });
 
@@ -54,7 +55,7 @@ namespace Mde.Project.Mobile.Platforms
                 return;
             }
 
-            var result = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync(appUserService);
+            var result = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync();
 
             if (!result.IsSuccess)
             {

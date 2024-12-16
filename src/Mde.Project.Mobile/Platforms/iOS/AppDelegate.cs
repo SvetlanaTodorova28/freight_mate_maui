@@ -41,7 +41,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
     public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken){
 
         var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
-       userService?.StoreFcmTokenAsync(fcmToken);
+      // userService?.StoreFcmTokenAsync(fcmToken);
     }
 
 

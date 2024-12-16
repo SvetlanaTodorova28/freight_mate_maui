@@ -1,6 +1,8 @@
-namespace Mde.Project.Mobile.Platforms.Listeners;
+using AndroidGmsTasks = Android.Gms.Tasks;
 
-public class OnTokenFailureListener : Java.Lang.Object, Android.Gms.Tasks.IOnFailureListener
+namespace Mde.Project.Mobile.Platforms.Android.Listeners;
+
+public class OnTokenFailureListener : Java.Lang.Object, AndroidGmsTasks.IOnFailureListener
 {
     private readonly Action<Exception> _onFailure;
 

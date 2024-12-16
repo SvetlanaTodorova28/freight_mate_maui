@@ -1,6 +1,8 @@
-namespace Mde.Project.Mobile.Platforms.Listeners;
+using AndroidGmsTasks = Android.Gms.Tasks;
 
-public class OnTokenSuccessListener : Java.Lang.Object, Android.Gms.Tasks.IOnSuccessListener
+namespace Mde.Project.Mobile.Platforms.Android.Listeners;
+
+public class OnTokenSuccessListener : Java.Lang.Object, AndroidGmsTasks.IOnSuccessListener
 {
     private readonly Action<string> _onSuccess;
 

@@ -3,10 +3,9 @@
 	<application
 			android:hardwareAccelerated="true"
 			android:allowBackup="true"
-			android:icon="@mipmap/appicon"
 			android:roundIcon="@mipmap/appicon_round"
 			android:supportsRtl="true">
-		
+
 
 		<receiver
 				android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
@@ -18,7 +17,7 @@
 				<category android:name="${applicationId}" />
 			</intent-filter>
 		</receiver>
-		
+
 
 	</application>
 

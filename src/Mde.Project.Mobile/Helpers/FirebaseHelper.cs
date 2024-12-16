@@ -1,83 +1,42 @@
 using Mde.Project.Mobile.Domain.Services.Web;
-using Mde.Project.Mobile.Platforms.Listeners;
-    
-namespace Mde.Project.Mobile.Helpers;
-public static class FirebaseHelper
+#if ANDROID
+using Mde.Project.Mobile.Platforms.Android.Listeners;
+#endif
+
+
+namespace Mde.Project.Mobile.Helpers
 {
-    public static async Task<ServiceResult<bool>> RetrieveAndStoreFirebaseTokenAsync(IAppUserService appUserService)
+    public static class FirebaseHelper
     {
-        try
+        public static async Task<ServiceResult<string>> RetrieveAndStoreFirebaseTokenAsync()
         {
-            var tokenResult = await RetrieveFirebaseTokenAsync();
-            if (!tokenResult.IsSuccess)
+#if ANDROID
+            try
             {
-                return ServiceResult<bool>.Failure(tokenResult.ErrorMessage);
+                var taskCompletionSource = new TaskCompletionSource<string>();
+
+                Firebase.Messaging.FirebaseMessaging.Instance.GetToken()
+                    .AddOnSuccessListener(new OnTokenSuccessListener(result =>
+                    {
+                        taskCompletionSource.SetResult(result);
+                    }))
+                    .AddOnFailureListener(new OnTokenFailureListener(exception =>
+                    {
+                        taskCompletionSource.SetException(exception);
+                    }));
+
+                var token = await taskCompletionSource.Task;
+                return !string.IsNullOrEmpty(token)
+                    ? ServiceResult<string>.Success(token)
+                    : ServiceResult<string>.Failure("Failed to retrieve FCM token.");
             }
-
-            return await StoreFcmTokenAsync(appUserService, tokenResult.Data);
-        }
-        catch (Exception ex)
-        {
-            return ServiceResult<bool>.Failure($"Unexpected error while retrieving and storing FCM token: {ex.Message}");
-        }
-    }
-
-    public static async Task<ServiceResult<string>> RetrieveFirebaseTokenAsync()
-    {
-        try
-        {
-            var taskCompletionSource = new TaskCompletionSource<string>();
-
-            Firebase.Messaging.FirebaseMessaging.Instance.GetToken()
-                .AddOnSuccessListener(new OnTokenSuccessListener(result =>
-                {
-                    taskCompletionSource.SetResult(result);
-                }))
-                .AddOnFailureListener(new OnTokenFailureListener(exception =>
-                {
-                    taskCompletionSource.SetException(exception);
-                }));
-
-            var token = await taskCompletionSource.Task;
-            return !string.IsNullOrEmpty(token)
-                ? ServiceResult<string>.Success(token)
-                : ServiceResult<string>.Failure("Failed to retrieve FCM token.");
-        }
-        catch (Exception ex)
-        {
-            return ServiceResult<string>.Failure($"Unexpected error while retrieving FCM token: {ex.Message}");
-        }
-    }
-
-    public static async Task<ServiceResult<bool>> StoreFcmTokenAsync(IAppUserService appUserService, string token)
-    {
-        try
-        {
-            var existingToken = await SecureStorageHelper.GetApiKeyAsync("FCM_Token");
-
-            if (!string.IsNullOrEmpty(existingToken) && existingToken == token)
+            catch (Exception ex)
             {
-                return ServiceResult<bool>.Success(true); 
+                return ServiceResult<string>.Failure($"Unexpected error while retrieving FCM token: {ex.Message}");
             }
-
-            var userIdResult = await appUserService.GetCurrentUserIdAsync();
-            if (!userIdResult.IsSuccess)
-            {
-                return ServiceResult<bool>.Failure(userIdResult.ErrorMessage);
-            }
-
-            var response = await appUserService.UpdateFcmTokenOnServerAsync(userIdResult.Data, token);
-            if (response.IsSuccess)
-            {
-                await SecureStorageHelper.SaveApiKey("FCM_Token", token);
-                return ServiceResult<bool>.Success(true);
-            }
-
-            return ServiceResult<bool>.Failure(response.ErrorMessage);
-        }
-        catch (Exception ex)
-        {
-            return ServiceResult<bool>.Failure($"Unexpected error while storing FCM token: {ex.Message}");
+#else
+            return ServiceResult<string>.Failure("FCM Token retrieval is not supported on this platform.");
+#endif
         }
     }
 }
