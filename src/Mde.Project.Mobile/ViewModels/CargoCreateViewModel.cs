@@ -199,7 +199,7 @@ public class CargoCreateViewModel : ObservableObject
         var userFcmToken = string.Empty;
         string errorMessage = "";
         try{
-            var  result = await _appUserService.GetFcmTokenAsync(userId.ToString());
+            var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
             if (result.IsSuccess)
             {
                

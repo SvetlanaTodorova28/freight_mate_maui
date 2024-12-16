@@ -112,14 +112,13 @@ public class AppUserService : IAppUserService
         try
         {
             var tokenResult = await _authService.GetTokenAsync();
-            if (string.IsNullOrEmpty(tokenResult))
+            if (!tokenResult.IsSuccess)
             {
-                return ServiceResult<string>.Failure("No token found in secure storage.");
+                return ServiceResult<string>.Failure("Failed to retrieve token.");
             }
-
-            // Decodeer de token en haal de user ID op
+            
             var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(tokenResult);
+            var jwtToken = handler.ReadJwtToken(tokenResult.Data);
             var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
             if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))

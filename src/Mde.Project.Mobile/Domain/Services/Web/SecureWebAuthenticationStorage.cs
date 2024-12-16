@@ -110,6 +110,10 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             try
             {
                 var functionId = await _functionAccessService.GetFunctionIdAsync(appUser.Function);
+                if (!functionId.IsSuccess)
+                {
+                    return ServiceResult<bool>.Failure(functionId.ErrorMessage);
+                }
 
                 var registerRequest = new RegisterRequestDto
                 {
@@ -118,7 +122,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                     ConfirmPassword = appUser.ConfirmPassword,
                     FirstName = appUser.FirstName,
                     LastName = appUser.LastName,
-                    AccessLevelTypeId = functionId
+                    AccessLevelTypeId = functionId.Data
                 };
 
                 var response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/register", registerRequest);

@@ -2,163 +2,136 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Services;
-
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.ViewModels;
 
 public class LoginViewModel : ObservableObject
 {
-    private readonly IAuthenticationServiceMobile authenticationServiceMobile;
+    private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly INativeAuthentication _nativeAuthentication;
-    private readonly IUiService uiService;
-    // private readonly IAppUserService _appUserService;
+    private readonly IUiService _uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
-   
 
     public ICommand LoginCommand { get; }
     public ICommand FaceLoginCommand { get; }
 
-    public LoginViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
-        AppUserRegisterViewModel userRegisterViewModel, INativeAuthentication nativeAuthentication 
-        
-    )
+    public LoginViewModel(
+        IUiService uiService,
+        IAuthenticationServiceMobile authenticationServiceMobile,
+        AppUserRegisterViewModel userRegisterViewModel,
+        INativeAuthentication nativeAuthentication)
     {
-       
-        this.uiService = uiService;
-        authenticationServiceMobile = authServiceMobile;
+        _uiService = uiService;
+        _authenticationServiceMobile = authenticationServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
         _nativeAuthentication = nativeAuthentication;
-        
-        LoginCommand = new RelayCommand(async () => await ExecuteLoginCommand());
-        FaceLoginCommand = new RelayCommand(async () => await ExecuteFaceLoginCommand());
-        
+
+        LoginCommand = new AsyncRelayCommand(ExecuteLoginCommandAsync);
+        FaceLoginCommand = new AsyncRelayCommand(ExecuteFaceLoginCommandAsync);
     }
 
-    private string username;
+    private string _username;
     public string UserName
     {
-        get => username;
-        set => SetProperty(ref username, value);
+        get => _username;
+        set => SetProperty(ref _username, value);
     }
 
-    private string password;
+    private string _password;
     public string Password
     {
-        get => password;
-        set => SetProperty(ref password, value);
+        get => _password;
+        set => SetProperty(ref _password, value);
     }
-    
-    private string fcm;
+
+    private string _fcm;
     public string Fcm
     {
-        get => fcm;
-        set => SetProperty(ref fcm, value);
+        get => _fcm;
+        set => SetProperty(ref _fcm, value);
     }
- 
 
-    public async Task<bool> ExecuteLoginCommand()
+    public async Task ExecuteLoginCommandAsync()
     {
-        // Valideer invoer: gebruikersnaam en wachtwoord
         if (string.IsNullOrWhiteSpace(UserName))
         {
-            await uiService.ShowSnackbarWarning("Username cannot be empty.");
-            return false;
+            await _uiService.ShowSnackbarWarning("Username cannot be empty.");
+            return;
         }
 
         if (string.IsNullOrWhiteSpace(Password))
         {
-            await uiService.ShowSnackbarWarning("Password cannot be empty.");
-            return false;
+            await _uiService.ShowSnackbarWarning("Password cannot be empty.");
+            return;
         }
 
-        // Controleer of het e-mailadres geldig is
-        if (!IsValidEmail(UserName))
+        if (!EmailValidator.IsValidEmail(UserName))
         {
-            await uiService.ShowSnackbarWarning("Please enter a valid email address.");
-            return false;
+            await _uiService.ShowSnackbarWarning("Please enter a valid email address.");
+            return;
         }
 
-       
-        var isAuthenticated = await authenticationServiceMobile.TryLoginAsync(UserName, Password);
-        if (isAuthenticated)
+        var loginResult = await _authenticationServiceMobile.TryLoginAsync(UserName, Password);
+
+        if (loginResult.IsSuccess)
         {
-            
-            Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
+            Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
-            return true;
         }
         else
         {
-           
-            await uiService.ShowSnackbarWarning("Login Failed. Please check your username and password and try again.");
-            return false;
+            await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Login Failed. Please check your username and password and try again.");
         }
     }
 
-    
-    public async Task<bool> ExecuteFaceLoginCommand()
+    public async Task ExecuteFaceLoginCommandAsync()
     {
-       
-        var isAuthenticated = new NativeAuthResult();
+        NativeAuthResult isAuthenticated;
         try
         {
 #if __ANDROID__
             isAuthenticated = await _nativeAuthentication.PromptLoginAsync("Please authenticate to proceed");
 #elif __IOS__
             isAuthenticated = await _nativeAuthentication.PromptLoginAsync("Please authenticate to proceed");
+#else
+            await _uiService.ShowSnackbarWarning("Biometric authentication is not supported on this platform.");
+            return;
 #endif
 
             if (isAuthenticated.Authenticated)
             {
+                string username;
+                string password;
 #if __ANDROID__
-            var username = "milka@speedy.gr";  
-                var password = "Advanced1234"; 
+                username = "milka@speedy.gr";  
+                password = "Advanced1234"; 
 #elif __IOS__
-                var username = "s@t.com";  
-                var password = "1234"; 
+                username = "s@t.com";  
+                password = "1234"; 
 #endif
-                
-               
-                var loginResult = await authenticationServiceMobile.TryLoginAsync(username, password);
-                if (loginResult)
+                var loginResult = await _authenticationServiceMobile.TryLoginAsync(username, password);
+                if (loginResult.IsSuccess)
                 {
-                   
-                    Application.Current.MainPage = new AppShell(authenticationServiceMobile, uiService, _userRegisterViewModel, this, _nativeAuthentication);
+                    Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
                     await Shell.Current.GoToAsync("//CargoListPage");
-                    return true;
                 }
                 else
                 {
-                    await uiService.ShowSnackbarWarning("Automatic login failed after biometric authentication.");
+                    await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Automatic login failed after biometric authentication.");
                 }
             }
             else
             {
-                await uiService.ShowSnackbarWarning($"Authentication  failed. Error: {isAuthenticated.ErrorMessage}. Please try again.");
+                await _uiService.ShowSnackbarWarning(isAuthenticated.ErrorMessage ?? "Authentication failed. Please try again.");
             }
         }
         catch (Exception ex)
         {
-            await uiService.ShowSnackbarWarning($"An error occurred during biometric authentication: {ex.Message}");
-        }
-        return false;
-    }
-
-
-
-
-    private bool IsValidEmail(string email)
-    {
-        try
-        {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == email;
-        }
-        catch
-        {
-            return false;
+            await _uiService.ShowSnackbarWarning($"An error occurred during biometric authentication: {ex.Message}");
         }
     }
 
+   
 }

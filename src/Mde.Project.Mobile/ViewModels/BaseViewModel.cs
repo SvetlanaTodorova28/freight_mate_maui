@@ -1,6 +1,8 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -27,15 +29,23 @@ public class BaseViewModel:ObservableObject
     
     public ICommand OnLogoutCommand => new Command(async () => await LogoutAsync());
 
-    private async Task LogoutAsync()
+    public async Task<ServiceResult<bool>> LogoutAsync()
     {
-        bool success = _authenticationServiceMobile.Logout();
-
-        if(success)
+        try
         {
-            Application.Current.MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationServiceMobile,
-                _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
+            bool success = SecureStorageHelper.RemoveToken();
+
+            if (success)
+            {
+                return ServiceResult<bool>.Success(true);
+            }
+
+            return ServiceResult<bool>.Failure("Failed to remove the token from secure storage.");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<bool>.Failure($"Unexpected error during logout: {ex.Message}");
         }
     }
-    
+
 }

@@ -78,7 +78,11 @@ public class AppUserRegisterViewModel: ObservableObject
     
     private async Task OnAppearingAsync()
     {
-        Functions = new ObservableCollection<Function>(await _functionAccessService.GetFunctionsAsync());
+        var functions = await _functionAccessService.GetFunctionsAsync();
+        if (functions.IsSuccess)
+        {
+            Functions = new ObservableCollection<Function>(functions.Data);
+        }
         
     }
     public async Task<bool> ExecuteRegisterCommand()
@@ -118,7 +122,13 @@ public class AppUserRegisterViewModel: ObservableObject
             ConfirmPassword = ConfirmPassword,
             Function = SelectedFunction
         };
-        return  await _authenticationServiceMobile.TryRegisterAsync(user);
+        var result = await _authenticationServiceMobile.TryRegisterAsync(user);
+        if (result.IsSuccess)
+        {
+            return true;
+        }
+       
+        return false;
         
     }
     

@@ -24,7 +24,7 @@ public partial class App : Application
         _userRegisterViewModel = userRegisterViewModel;
         _loginViewModel = loginViewModel;
         MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication);
-      // SaveApiKeys();
+     
     }
 
     protected async override void OnStart()
@@ -41,11 +41,9 @@ public partial class App : Application
 
     private async Task SkipLoginPageIfPossible()
     {
-        bool isAuthenticated = await _authenticationService.IsAuthenticatedAsync();
-        if (isAuthenticated)
+        var isAuthenticated = await _authenticationService.IsAuthenticatedAsync();
+        if (isAuthenticated.IsSuccess)
         {
-            Debug.WriteLine($"Authentication Service Initialized: {_authenticationService != null}");
-
             MainPage = new AppShell(_authenticationService,uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
@@ -55,18 +53,6 @@ public partial class App : Application
         }
     }
     
-    private  void SaveApiKeys(){
-       
-        try
-        {
-           
-        }
-        catch (Exception ex)
-        {
-           
-            Console.WriteLine($"Error saving API keys: {ex.Message}");
-        }
-    }
     
    
 
