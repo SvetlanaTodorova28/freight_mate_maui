@@ -29,23 +29,22 @@ public class BaseViewModel:ObservableObject
     
     public ICommand OnLogoutCommand => new Command(async () => await LogoutAsync());
 
-    public async Task<ServiceResult<bool>> LogoutAsync()
+    private async Task LogoutAsync()
     {
-        try
+        
+        var result = await _authenticationServiceMobile.Logout();
+
+        
+        if (result.IsSuccess && result.Data)
         {
-            bool success = SecureStorageHelper.RemoveToken();
-
-            if (success)
-            {
-                return ServiceResult<bool>.Success(true);
-            }
-
-            return ServiceResult<bool>.Failure("Failed to remove the token from secure storage.");
+            Application.Current.MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationServiceMobile,
+                _userRegisterViewModel, _loginViewModel, _nativeAuthentication));
         }
-        catch (Exception ex)
+        else
         {
-            return ServiceResult<bool>.Failure($"Unexpected error during logout: {ex.Message}");
+            await Application.Current.MainPage.DisplayAlert("Fout", result.ErrorMessage ?? "Logout mislukt", "OK");
         }
     }
+
 
 }
