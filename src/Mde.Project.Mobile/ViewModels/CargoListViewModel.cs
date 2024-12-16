@@ -9,22 +9,20 @@ using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
 
-public class CargoListViewModel:ObservableObject{
-    
-   
+public class CargoListViewModel : ObservableObject
+{
     private readonly ICargoService _cargoService;
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
-   
-   
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService,
-        IFunctionAccessService functionAccessService)
+
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
         _functionAccessService = functionAccessService;
+
         RefreshListCommand = new AsyncRelayCommand(RefreshListAsync);
         CreateCargoCommand = new AsyncRelayCommand(NavigateToCreateCargoAsync);
         EditCargoCommand = new AsyncRelayCommand<Cargo>(NavigateToEditCargoAsync);
@@ -32,43 +30,41 @@ public class CargoListViewModel:ObservableObject{
         DetailsCargoCommand = new AsyncRelayCommand<Cargo>(NavigateToDetailsCargoAsync);
         PerformSearchCommand = new AsyncRelayCommand<string>(PerformSearchAsync);
         TextChangedCommand = new AsyncRelayCommand<string>(OnSearchTextChanged);
+
         LoadUserFunction();
         LoadUserFirstName();
     }
 
     #region Bindings
-    
-    private ObservableCollection<Cargo> cargos = new ObservableCollection<Cargo>();
+
+    private ObservableCollection<Cargo> _cargos = new();
     public ObservableCollection<Cargo> Cargos
     {
-        get { return cargos; }
-        set
-        {
-            SetProperty(ref cargos, value);
-        }
+        get => _cargos;
+        set => SetProperty(ref _cargos, value);
     }
-    
+
     private Function _userFunction;
     public Function UserFunction
     {
         get => _userFunction;
         set => SetProperty(ref _userFunction, value);
     }
-    
+
     private string _userFirstName;
     public string UserFirstName
     {
         get => _userFirstName;
         set => SetProperty(ref _userFirstName, value);
     }
-    
-    
+
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
     private bool _showAnimation;
     public bool ShowAnimation
     {
@@ -76,10 +72,10 @@ public class CargoListViewModel:ObservableObject{
         set => SetProperty(ref _showAnimation, value);
     }
 
-
     #endregion
-  
+
     #region Commands
+
     public ICommand RefreshListCommand { get; }
     public ICommand CreateCargoCommand { get; }
     public ICommand EditCargoCommand { get; }
@@ -87,37 +83,40 @@ public class CargoListViewModel:ObservableObject{
     public ICommand DetailsCargoCommand { get; }
     public ICommand PerformSearchCommand { get; }
     public ICommand TextChangedCommand { get; }
-  
 
     #endregion
 
-    # region methods
-    
+    #region Methods
+
     public event EventHandler CargosLoaded;
 
-  
-   
     private async Task RefreshListAsync()
     {
         try
         {
-            IsLoading = true;  
-            var userId = await _authenticationService.GetUserIdFromTokenAsync();
-            if (string.IsNullOrEmpty(userId))
+            IsLoading = true;
+
+            var userIdResult = await _authenticationService.GetUserIdFromTokenAsync();
+            if (!userIdResult.IsSuccess)
             {
-                _uiService.ShowSnackbarWarning("User ID is not available, please login again.");
+                await _uiService.ShowSnackbarWarning(userIdResult.ErrorMessage);
                 return;
             }
-          
-            var dtoCargos = await _cargoService.GetCargosForUser(Guid.Parse(userId));
 
-            var modelCargos = dtoCargos.Select(dto => new Cargo
+            var dtoCargosResult = await _cargoService.GetCargosForUser(Guid.Parse(userIdResult.Data));
+            if (!dtoCargosResult.IsSuccess)
+            {
+                await _uiService.ShowSnackbarWarning(dtoCargosResult.ErrorMessage);
+                return;
+            }
+
+            var modelCargos = dtoCargosResult.Data.Select(dto => new Cargo
             {
                 Id = dto.Id,
                 Destination = dto.Destination,
                 IsDangerous = dto.IsDangerous,
                 TotalWeight = dto.TotalWeight ?? 0,
-                Userid = Guid.Parse(userId)
+                Userid = Guid.Parse(userIdResult.Data)
             }).ToList();
 
             Cargos = new ObservableCollection<Cargo>(modelCargos);
@@ -126,16 +125,14 @@ public class CargoListViewModel:ObservableObject{
         }
         catch (Exception ex)
         {
-            
-            Cargos = new ObservableCollection<Cargo>(); 
+            Cargos = new ObservableCollection<Cargo>();
+            await _uiService.ShowSnackbarWarning($"Error refreshing cargo list: {ex.Message}");
         }
         finally
         {
             IsLoading = false;
-            
         }
     }
-
 
     private async Task NavigateToCreateCargoAsync()
     {
@@ -149,6 +146,12 @@ public class CargoListViewModel:ObservableObject{
 
     private async Task NavigateToEditCargoAsync(Cargo cargo)
     {
+        if (cargo == null)
+        {
+            await _uiService.ShowSnackbarWarning("Invalid cargo selected.");
+            return;
+        }
+
         var navigationParameter = new Dictionary<string, object>
         {
             { nameof(CargoCreateViewModel.SelectedCargo), cargo }
@@ -159,28 +162,32 @@ public class CargoListViewModel:ObservableObject{
 
     private async Task DeleteCargoAsync(Cargo cargo)
     {
-        if (cargo != null)
+        if (cargo == null)
         {
-            var result = await _cargoService.DeleteCargo(cargo.Id);
-            if (result.IsSuccess)
-            {
-                Cargos.Remove(cargo);  
-                await _uiService.ShowSnackbarSuccessAsync("CARGO DELETED SUCCESSFULLY ❌");
-            }
-            else
-            {
-                await _uiService.ShowSnackbarWarning($"Failed to delete cargo: {result.ErrorMessage}");
-            }
-           
+            await _uiService.ShowSnackbarWarning("Invalid cargo selected.");
+            return;
+        }
+
+        var deleteResult = await _cargoService.DeleteCargo(cargo.Id);
+        if (deleteResult.IsSuccess)
+        {
+            Cargos.Remove(cargo);
+            await _uiService.ShowSnackbarSuccessAsync("Cargo deleted successfully.");
         }
         else
         {
-            await _uiService.ShowSnackbarWarning("Check if cargo exists in the list first! ⚠️");
+            await _uiService.ShowSnackbarWarning($"Failed to delete cargo: {deleteResult.ErrorMessage}");
         }
     }
 
     private async Task NavigateToDetailsCargoAsync(Cargo cargo)
     {
+        if (cargo == null)
+        {
+            await _uiService.ShowSnackbarWarning("Invalid cargo selected.");
+            return;
+        }
+
         var navigationParameter = new Dictionary<string, object>
         {
             { nameof(CargoCreateViewModel.SelectedCargo), cargo }
@@ -191,45 +198,57 @@ public class CargoListViewModel:ObservableObject{
 
     private async Task PerformSearchAsync(string searchTerm)
     {
-        var filteredList = await Task.Run(() => Cargos
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            await ResetSearchAsync();
+            return;
+        }
+
+        var filteredList = Cargos
             .Where(c => c.Destination.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-            .ToList());
+            .ToList();
 
         if (!filteredList.Any())
         {
-            _uiService.ShowSnackbarWarning("No cargos found matching the search criteria.");
+            await _uiService.ShowSnackbarWarning("No cargos found matching the search criteria.");
         }
         else
         {
             Cargos = new ObservableCollection<Cargo>(filteredList);
         }
     }
+
+    private async Task ResetSearchAsync()
+    {
+        await RefreshListAsync();
+    }
+
     private async void LoadUserFirstName()
     {
-        try
+        var result = await _authenticationService.GetUserFirstNameFromTokenAsync();
+        if (result.IsSuccess)
         {
-            UserFirstName = await _authenticationService.GetUserFirstNameFromTokenAsync();
+            UserFirstName = result.Data;
         }
-        catch (Exception ex)
+        else
         {
-            _uiService.ShowSnackbarWarning("Could not load user first name.");
+            await _uiService.ShowSnackbarWarning(result.ErrorMessage);
         }
     }
-    
+
     private async void LoadUserFunction()
     {
-        try
+        var result = await _functionAccessService.GetUserFunctionFromTokenAsync();
+        if (result.IsSuccess)
         {
-            UserFunction = await _functionAccessService.GetUserFunctionFromTokenAsync();
+            UserFunction = result.Data;
         }
-        catch (Exception ex)
+        else
         {
-            _uiService.ShowSnackbarWarning("Could not load the functions.");
+            await _uiService.ShowSnackbarWarning(result.ErrorMessage);
         }
     }
-    
-   
-    
+
     private async Task OnSearchTextChanged(string newText)
     {
         if (string.IsNullOrEmpty(newText))
@@ -241,14 +260,6 @@ public class CargoListViewModel:ObservableObject{
             await PerformSearchAsync(newText);
         }
     }
-    private async Task ResetSearchAsync()
-    {
-       
-        await RefreshListAsync();
-    }
-    #endregion
-    
-    
-   
 
+    #endregion
 }

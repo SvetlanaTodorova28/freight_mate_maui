@@ -9,79 +9,114 @@ using Utilities;
 
 namespace Mde.Project.Mobile.Domain.Services.Web;
 
-public class FunctionAccessService:IFunctionAccessService{
-    private  Dictionary<Function, Guid> functionMappings ;
+public class FunctionAccessService : IFunctionAccessService
+{
+    private Dictionary<Function, Guid> _functionMappings;
     private readonly HttpClient _azureHttpClient;
-    
+
     public FunctionAccessService(IHttpClientFactory httpClientFactory)
     {
         _azureHttpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
     }
-    public Task<IEnumerable<Function>> GetFunctionsAsync()
-    {
-        var functions = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
-        return Task.FromResult(functions);
-    }
-    
-    private async Task EnsureFunctionMappings()
-    {
-        
-        if (functionMappings != null) return;
 
-        var functionDtos = await _azureHttpClient.GetFromJsonAsync<IEnumerable<AccessLevelsResponseDto>>("/api/AccessLevels");
-
-        Dictionary<Function, Guid> functionDictionary = new Dictionary<Function, Guid>();
-        foreach (var functiondto in functionDtos)
+    public async Task<ServiceResult<IEnumerable<Function>>> GetFunctionsAsync()
+    {
+        try
         {
-            switch (functiondto.Name.ToLower())
+            var functions = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
+            return ServiceResult<IEnumerable<Function>>.Success(functions);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<IEnumerable<Function>>.Failure($"Error retrieving functions: {ex.Message}");
+        }
+    }
+
+    private async Task<ServiceResult<bool>> EnsureFunctionMappingsAsync()
+    {
+        try
+        {
+            if (_functionMappings != null)
             {
-                case "admin":
-                    functionDictionary.Add(Function.Admin,functiondto.Id);
-                    break;
-                case "advanced":
-                    functionDictionary.Add(Function.Consignee,functiondto.Id);
-                    break;
-                case "basic":
-                    functionDictionary.Add(Function.Driver,functiondto.Id);
-                    break;
-                
+                // Mappings zijn al beschikbaar, geef succes terug
+                return ServiceResult<bool>.Success(true);
             }
+
+            var functionDtos = await _azureHttpClient.GetFromJsonAsync<IEnumerable<AccessLevelsResponseDto>>("/api/AccessLevels");
+
+            if (functionDtos == null || !functionDtos.Any())
+            {
+                return ServiceResult<bool>.Failure("Failed to retrieve access levels from the server.");
+            }
+
+            _functionMappings = functionDtos
+                .Select(dto => new { Function = MapFunction(dto.Name), dto.Id })
+                .Where(item => item.Function.HasValue) 
+                .ToDictionary(
+                    item => item.Function.Value,
+                    item => item.Id
+                );
+
+            return ServiceResult<bool>.Success(true);
         }
-
-        functionMappings = functionDictionary;
-    }
-    public async Task<Guid> GetFunctionIdAsync(Function function)
-    {
-        await EnsureFunctionMappings();
-
-        if (functionMappings.TryGetValue(function, out Guid functionId))
+        catch (Exception ex)
         {
-            return functionId; 
+            return ServiceResult<bool>.Failure($"Error ensuring function mappings: {ex.Message}");
+        }
+    }
+
+    public async Task<ServiceResult<Guid>> GetFunctionIdAsync(Function function)
+    {
+        var mappingResult = await EnsureFunctionMappingsAsync();
+        if (!mappingResult.IsSuccess)
+        {
+            return ServiceResult<Guid>.Failure(mappingResult.ErrorMessage);
         }
 
-        throw new KeyNotFoundException($"Function {function} not found in function mappings.");
+        if (_functionMappings.TryGetValue(function, out Guid functionId))
+        {
+            return ServiceResult<Guid>.Success(functionId);
+        }
+
+        return ServiceResult<Guid>.Failure($"Function {function} not found in mappings.");
     }
-        
-    public async Task<Function> GetUserFunctionFromTokenAsync()
+
+    public async Task<ServiceResult<Function>> GetUserFunctionFromTokenAsync()
     {
-        var token = await SecureStorageHelper.GetTokenAsync();
-        if (string.IsNullOrEmpty(token))
-            throw new InvalidOperationException("No token found");
+        try
+        {
+            var token = await SecureStorageHelper.GetTokenAsync();
 
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role); 
+            if (string.IsNullOrEmpty(token))
+                return ServiceResult<Function>.Failure("No token found in secure storage.");
 
-        if (roleClaim == null)
-            throw new InvalidOperationException("Role claim not found in token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var roleClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
 
-       
-        return roleClaim.Value.ToLower() switch
+            if (roleClaim == null)
+                return ServiceResult<Function>.Failure("Role claim not found in token.");
+
+            var function = MapFunction(roleClaim.Value);
+
+            return function != null
+                ? ServiceResult<Function>.Success(function.Value)
+                : ServiceResult<Function>.Failure("Invalid role in token.");
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<Function>.Failure($"Error retrieving user function: {ex.Message}");
+        }
+    }
+
+    private Function? MapFunction(string roleName)
+    {
+        return roleName.ToLower() switch
         {
             "admin" => Function.Admin,
             "advanced" => Function.Consignee,
             "basic" => Function.Driver,
-            _ => throw new InvalidOperationException("Invalid role")
+            _ => null
         };
     }
 }

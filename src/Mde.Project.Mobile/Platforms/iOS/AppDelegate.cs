@@ -17,18 +17,15 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
     public override bool FinishedLaunching(UIApplication app, NSDictionary options)
     {
         Firebase.Core.App.Configure();
-        Console.WriteLine("Firebase configured");
-
         Messaging.SharedInstance.Delegate = this;
 
-        // Vraag toestemming voor meldingen
+        
         if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
         {
             UNUserNotificationCenter.Current.RequestAuthorization(
                 UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
                 (granted, error) =>
                 {
-                    Console.WriteLine($"Notification permission granted: {granted}");
                     if (granted)
                         InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications);
                 });
@@ -60,7 +57,6 @@ public class NotificationDelegate : UNUserNotificationCenterDelegate
 {
     public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
     {
-        
         completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Badge);
     }
 }

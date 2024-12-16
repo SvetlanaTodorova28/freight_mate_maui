@@ -1,73 +1,65 @@
 ﻿using Android.App;
 using Android.Content.Res;
-using Android.Gms.Tasks;
 using Android.Runtime;
 using Firebase;
 using Firebase.Messaging;
-using Mde.Project.Mobile.Domain.Services;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using Mde.Project.Mobile.Domain.Services.Web;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 
-namespace Mde.Project.Mobile.Platforms;
-
-[Application]
-public class MainApplication : MauiApplication{
-    public MainApplication(IntPtr handle, JniHandleOwnership ownership)
-        : base(handle, ownership){
-        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
-        {
-            if (view is Entry)
-            {
-                handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
-            }
-        });
-    }
-
-    protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-    public override void OnCreate()
-    {
-        base.OnCreate();
-        FirebaseApp.InitializeApp(this);
-        FirebaseMessaging.Instance.AutoInitEnabled = true;
-        RetrieveFirebaseToken();
-        
-       
-    }
-    private void RetrieveFirebaseToken()
-    {
-        FirebaseMessaging.Instance.GetToken().AddOnSuccessListener(new OnTokenSuccessListener());
-    }
-   
-}
-public class OnTokenSuccessListener : Java.Lang.Object, IOnSuccessListener
+namespace Mde.Project.Mobile.Platforms
 {
-    private readonly IUiService _uiService;
-    private readonly IAppUserService _userService;
-    public OnTokenSuccessListener()
+    [Application]
+    public class MainApplication : MauiApplication
     {
-        _uiService = MauiProgram.CreateMauiApp().Services.GetService<IUiService>();
-        _userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
-    }
-    public async void OnSuccess(Java.Lang.Object result)
-    {
-        try
-        {
-            string fcmToken = result.ToString();
+        private readonly IServiceProvider _serviceProvider;
 
-            if (_userService != null)
+        public MainApplication(IntPtr handle, JniHandleOwnership ownership)
+            : base(handle, ownership)
+        {
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
             {
-                var storeResult = await _userService.StoreFcmTokenAsync(fcmToken);
-
-                if (!storeResult.IsSuccess)
+                if (view is Entry)
                 {
-                    await _uiService.ShowSnackbarWarning($"Error storing FCM token: {storeResult.ErrorMessage}");
+                    handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
                 }
-            }
+            });
+
+            // Initialiseer de serviceprovider hier één keer
+            _serviceProvider = MauiProgram.CreateMauiApp().Services;
         }
-        catch (Exception ex)
+
+        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+        public override void OnCreate()
         {
-            await _uiService.ShowSnackbarWarning("An unexpected error occurred while storing the FCM token.");
+            base.OnCreate();
+
+            // Initialize Firebase
+            FirebaseApp.InitializeApp(this);
+            FirebaseMessaging.Instance.AutoInitEnabled = true;
+
+            // Haal de FCM-token op en sla deze op
+            InitializeFirebaseTokenAsync().ConfigureAwait(false);
+        }
+
+        private async Task InitializeFirebaseTokenAsync()
+        {
+            // Haal services op via de serviceprovider
+            var appUserService = _serviceProvider.GetService<IAppUserService>();
+            var uiService = _serviceProvider.GetService<IUiService>();
+
+            if (appUserService == null || uiService == null)
+            {
+                await uiService?.ShowSnackbarWarning("Error initializing Firebase token: Missing services.");
+                return;
+            }
+
+            var result = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync(appUserService);
+
+            if (!result.IsSuccess)
+            {
+                await uiService.ShowSnackbarWarning(result.ErrorMessage);
+            }
         }
     }
 }

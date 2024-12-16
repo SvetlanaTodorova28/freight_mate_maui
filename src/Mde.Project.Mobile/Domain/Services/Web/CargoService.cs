@@ -20,11 +20,29 @@ public class CargoService : ICargoService
         _appUserService = appUserService;
     }
 
-    public async Task<List<CargoResponseDto>> GetCargosForUser(Guid userId){
-        var cargos = new List<CargoResponseDto>();
-        cargos = await _httpClient.GetFromJsonAsync<List<CargoResponseDto>>($"/api/Cargos/GetCargosByUser/{userId}");
-        return cargos;
+    public async Task<ServiceResult<List<CargoResponseDto>>> GetCargosForUser(Guid userId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"/api/Cargos/GetCargosByUser/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var cargos = await response.Content.ReadFromJsonAsync<List<CargoResponseDto>>();
+                return cargos != null 
+                    ? ServiceResult<List<CargoResponseDto>>.Success(cargos)
+                    : ServiceResult<List<CargoResponseDto>>.Failure("No cargos found for the specified user.");
+            }
+            else
+            {
+                return ServiceResult<List<CargoResponseDto>>.Failure($"Failed to fetch cargos. Status code: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<List<CargoResponseDto>>.Failure($"An unexpected error occurred: {ex.Message}");
+        }
     }
+
 
     public async Task<ServiceResult<string>> CreateCargo(Cargo cargo)
     {

@@ -1,16 +1,16 @@
-﻿
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
-using Mde.Project.Mobile.ViewModels;
 using Mde.Project.Mobile.Platforms;
+using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Utilities;
+
 
 
 namespace Mde.Project.Mobile
@@ -19,9 +19,8 @@ namespace Mde.Project.Mobile
     {
         public static MauiApp CreateMauiApp()
         {
-           
             var builder = MauiApp.CreateBuilder();
-         
+
             builder
                 .UseMauiApp<App>()
                 .UseSkiaSharp()
@@ -35,49 +34,15 @@ namespace Mde.Project.Mobile
                     fonts.AddFont("Cinzel-VariableFont_wght.ttf", "Cinzel");
                     fonts.AddFont("Play-Bold.ttf", "PlayBold");
                 });
-           
-            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
-            Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
-            Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
-            Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
-            Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
-            
-            builder.Services.AddTransient<WelcomePage>();
-            
-            builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<LoginPage>();
-            
-            builder.Services.AddTransient<CargoListPage>();
-            builder.Services.AddTransient<CargoListViewModel>();
 
-            builder.Services.AddTransient<CargoCreatePage>();
-            builder.Services.AddTransient<CargoCreateViewModel>();
-            
-            builder.Services.AddTransient<CargoDetailsPage>();
-            builder.Services.AddTransient<CargoDetailsViewModel>();
-            
-            builder.Services.AddTransient<AppUserRegisterPage>();
-            builder.Services.AddTransient<AppUserRegisterViewModel>();
-            
-            builder.Services.AddTransient<TranslatePage>();
-            builder.Services.AddTransient<TranslateViewModel>();
-            
-            builder.Services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
-            builder.Services.AddTransient<IFunctionAccessService, FunctionAccessService>();
-            builder.Services.AddTransient<INativeAuthentication, NativeAuthentication>();
-           
-            builder.Services.AddTransient<IAppUserService, AppUserService>();
-            builder.Services.AddTransient<ICargoService, CargoService>();
-            builder.Services.AddTransient<IUiService, UiService>();
-            builder.Services.AddTransient<ITranslationStorageService, TranslationStorageService>();
-            
+            RegisterRoutes();
+            RegisterServices(builder.Services);
+
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));
             builder.Services.AddHttpClient(GlobalConstants.HttpClientFireBase, config => config.BaseAddress = new Uri(GlobalConstants.BaseUrlFireBase));
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
             {
@@ -85,40 +50,92 @@ namespace Mde.Project.Mobile
                 handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
 #endif
             });
-            
-            
-            builder.Services.AddSingleton<KeyVaultHelper>();
-            builder.Services.AddSingleton<ISpeechService>(new AzureSpeechService( GlobalConstants.Region));
-            builder.Services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));
-            builder.Services.AddHttpClient<ITranslationService, AzureTranslationService>((client) => {
-                client.BaseAddress = new Uri(GlobalConstants.EndPointTranslate);
-            });
-            
-            builder.Services.AddHttpClient<IOcrService, AzureOcrService>(client => {
-                client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
-            });
+
             var app = builder.Build();
 
             _ = Task.Run(async () =>
             {
-                var keyVaultHelper = app.Services.GetRequiredService<KeyVaultHelper>();
-                var result = await keyVaultHelper.EnsureKeysAreAvailableAsync();
-
-                if (!result.IsSuccess)
+                await StartupHelper.InitializeKeyVaultAsync(app.Services);
+                var appUserService = app.Services.GetService<IAppUserService>();
+                if (appUserService != null)
                 {
-                    MainThread.BeginInvokeOnMainThread(async () =>
+                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFirebaseTokenAsync(appUserService);
+
+                    if (!firebaseTokenResult.IsSuccess)
                     {
-                        await App.Current.MainPage.DisplayAlert("Error", result.ErrorMessage, "OK");
-                    });
+                        var uiService = app.Services.GetService<IUiService>();
+                        if (uiService != null)
+                        {
+                            await MainThread.InvokeOnMainThreadAsync(() =>
+                            {
+                                uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");
+                            });
+                        }
+                    }
                 }
             });
 
             return app;
-
-            
         }
+
+        private static void RegisterRoutes()
+        {
+            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
+            Routing.RegisterRoute(nameof(CargoCreatePage), typeof(CargoCreatePage));
+            Routing.RegisterRoute(nameof(CargoDetailsPage), typeof(CargoDetailsPage));
+            Routing.RegisterRoute(nameof(AppUserRegisterPage), typeof(AppUserRegisterPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
+            Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddTransient<WelcomePage>();
+
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<LoginPage>();
+
+            services.AddTransient<CargoListPage>();
+            services.AddTransient<CargoListViewModel>();
+
+            services.AddTransient<CargoCreatePage>();
+            services.AddTransient<CargoCreateViewModel>();
+
+            services.AddTransient<CargoDetailsPage>();
+            services.AddTransient<CargoDetailsViewModel>();
+
+            services.AddTransient<AppUserRegisterPage>();
+            services.AddTransient<AppUserRegisterViewModel>();
+
+            services.AddTransient<TranslatePage>();
+            services.AddTransient<TranslateViewModel>();
+
+            services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
+            services.AddTransient<IFunctionAccessService, FunctionAccessService>();
+            services.AddTransient<INativeAuthentication, NativeAuthentication>();
+
+            services.AddTransient<IAppUserService, AppUserService>();
+            services.AddTransient<ICargoService, CargoService>();
+            services.AddTransient<IUiService, UiService>();
+            services.AddTransient<ITranslationStorageService, TranslationStorageService>();
+
+            services.AddSingleton<KeyVaultHelper>();
+            services.AddSingleton<ISpeechService>(new AzureSpeechService(GlobalConstants.Region));
+            services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));
+            services.AddHttpClient<ITranslationService, AzureTranslationService>(client =>
+            {
+                client.BaseAddress = new Uri(GlobalConstants.EndPointTranslate);
+            });
+            services.AddHttpClient<IOcrService, AzureOcrService>(client =>
+            {
+                client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
+            });
+        }
+        
       
-       
+
+
 
 
     }

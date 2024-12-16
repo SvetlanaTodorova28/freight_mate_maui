@@ -1,13 +1,14 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
 using Utilities;
 
-namespace Mde.Project.Mobile.Domain.Services;
-
-public class AppUserService:IAppUserService{
+public class AppUserService : IAppUserService
+{
     private readonly HttpClient _httpClient;
     private readonly IAuthenticationServiceMobile _authService;
 
@@ -16,6 +17,7 @@ public class AppUserService:IAppUserService{
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
         _authService = authService;
     }
+
     public async Task<ServiceResult<List<AppUserResponseDto>>> GetUsersWithFunctions()
     {
         try
@@ -35,7 +37,6 @@ public class AppUserService:IAppUserService{
                 }
             });
 
-
             return ServiceResult<List<AppUserResponseDto>>.Success(appUsers);
         }
         catch (Exception ex)
@@ -44,35 +45,22 @@ public class AppUserService:IAppUserService{
         }
     }
 
-    private string MapAccessLevelToFunction(string accessLevelName)
+    public async Task<ServiceResult<bool>> UpdateFcmTokenOnServerAsync(string userId, string token)
     {
-        return accessLevelName.ToLower() switch
+        try
         {
-            "admin" => Function.Admin.ToString(),
-            "advanced" => Function.Consignee.ToString(),
-            "basic" => Function.Driver.ToString(),
-            _ => "Unknown" 
-        };
-    }
-    
-    public async Task<ServiceResult<bool>> StoreFcmTokenAsync(string token)
-    {
-        var userId = await _authService.GetUserIdFromTokenAsync();
-
-        if (string.IsNullOrEmpty(userId))
-        {
-            return ServiceResult<bool>.Failure("User ID not found in token.");
+            var response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
+            return response.IsSuccessStatusCode
+                ? ServiceResult<bool>.Success(true)
+                : ServiceResult<bool>.Failure($"Failed to update FCM token. Status Code: {response.StatusCode}");
         }
-
-        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
-        return response.IsSuccessStatusCode
-            ? ServiceResult<bool>.Success(true)
-            : ServiceResult<bool>.Failure($"Failed to update FCM token. Status Code: {response.StatusCode}");
+        catch (Exception ex)
+        {
+            return ServiceResult<bool>.Failure($"Unexpected error while updating FCM token: {ex.Message}");
+        }
     }
 
-
-    
-    public async Task<ServiceResult<string>> GetFcmTokenAsync(string userId)
+    public async Task<ServiceResult<string>> GetFcmTokenFromServerAsync(string userId)
     {
         try
         {
@@ -82,14 +70,11 @@ public class AppUserService:IAppUserService{
                 var token = await response.Content.ReadAsStringAsync();
                 return ServiceResult<string>.Success(token);
             }
-            else
-            {
-                return ServiceResult<string>.Failure("Failed to retrieve FCM token.");
-            }
+            return ServiceResult<string>.Failure("Failed to retrieve FCM token from server.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
+            return ServiceResult<string>.Failure($"Unexpected error while retrieving FCM token: {ex.Message}");
         }
     }
 
@@ -103,14 +88,9 @@ public class AppUserService:IAppUserService{
             if (response.IsSuccessStatusCode)
             {
                 var userId = await response.Content.ReadAsStringAsync();
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    return ServiceResult<string>.Success(userId);
-                }
-                else
-                {
-                    return ServiceResult<string>.Failure("User ID not found.");
-                }
+                return !string.IsNullOrEmpty(userId)
+                    ? ServiceResult<string>.Success(userId)
+                    : ServiceResult<string>.Failure("User ID not found.");
             }
             else
             {
@@ -127,5 +107,43 @@ public class AppUserService:IAppUserService{
         }
     }
 
+    public async Task<ServiceResult<string>> GetCurrentUserIdAsync()
+    {
+        try
+        {
+            var tokenResult = await _authService.GetTokenAsync();
+            if (string.IsNullOrEmpty(tokenResult))
+            {
+                return ServiceResult<string>.Failure("No token found in secure storage.");
+            }
 
+            // Decodeer de token en haal de user ID op
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(tokenResult);
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
+            {
+                return ServiceResult<string>.Failure("User ID claim not found in token.");
+            }
+
+            return ServiceResult<string>.Success(userIdClaim.Value);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<string>.Failure($"Unexpected error while retrieving user ID: {ex.Message}");
+        }
+    }
+
+
+    private string MapAccessLevelToFunction(string accessLevelName)
+    {
+        return accessLevelName.ToLower() switch
+        {
+            "admin" => Function.Admin.ToString(),
+            "advanced" => Function.Consignee.ToString(),
+            "basic" => Function.Driver.ToString(),
+            _ => "Unknown"
+        };
+    }
 }
