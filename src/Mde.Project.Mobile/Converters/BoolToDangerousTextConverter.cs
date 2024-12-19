@@ -1,26 +1,33 @@
 using System.Globalization;
-using System.Net.Mime;
 
-namespace Mde.Project.Mobile.Converters;
 
-public class BoolToDangerousTextConverter:IValueConverter{
-    
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+namespace Mde.Project.Mobile.Converters
+{
+    public class BoolToDangerousTextConverter : IValueConverter
     {
-        if (value is not bool)
-            throw new ArgumentException("An bool value was not supplied. Cannot convert.");
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                if (value is bool dangerous)
+                {
+                    return dangerous ? "Yes" : "No";
+                }
+                
+                System.Diagnostics.Debug.WriteLine("Invalid input: expected a boolean value.");
+                return "Unknown"; 
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in BoolToDangerousTextConverter: {ex.Message}");
+                return "Error"; 
+            }
+        }
 
-        bool dangerous = (bool)value;
-
-        if (!dangerous) return "No";
-        return "Yes";
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            System.Diagnostics.Debug.WriteLine("ConvertBack is not implemented for BoolToDangerousTextConverter.");
+            throw new NotSupportedException("ConvertBack is not supported.");
+        }
     }
-
-    public object ConvertBack(object value, Type targetType,
-        object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-    
-    
 }

@@ -24,7 +24,6 @@ public class BoolToDangerousColorConverter : IValueConverter
         }
         catch (Exception ex)
         {
-           
             System.Diagnostics.Debug.WriteLine($"Error in converter: {ex.Message}");
             return GetFallbackColor();
         }
