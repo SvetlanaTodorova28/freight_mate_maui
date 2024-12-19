@@ -17,6 +17,7 @@ namespace Mde.Project.Mobile
 {
     public static class MauiProgram
     {
+        public static IServiceProvider App { get; private set; }
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -51,13 +52,13 @@ namespace Mde.Project.Mobile
 #endif
             });
 
+           
+           
             var app = builder.Build();
-
-            _ = InitializeAppAsync(app.Services);
-
-
-
+            App = app.Services;
+            _ = InitializeAppAsync(App); 
             return app;
+
         }
 
         private static void RegisterRoutes()
@@ -97,7 +98,7 @@ namespace Mde.Project.Mobile
             services.AddTransient<IFunctionAccessService, FunctionAccessService>();
             services.AddTransient<INativeAuthentication, NativeAuthentication>();
 
-            services.AddTransient<IAppUserService, AppUserService>();
+            services.AddSingleton<IAppUserService, AppUserService>();
             services.AddTransient<ICargoService, CargoService>();
             services.AddTransient<IUiService, UiService>();
             services.AddTransient<ITranslationStorageService, TranslationStorageService>();
@@ -115,7 +116,7 @@ namespace Mde.Project.Mobile
             });
         }
 
-        private static async Task InitializeAppAsync(IServiceProvider services)
+        public static async Task InitializeAppAsync(IServiceProvider services)
         {
             try
             {
@@ -132,7 +133,7 @@ namespace Mde.Project.Mobile
                     });
                 }
                 
-                var appUserService = services.GetService<IAppUserService>();
+                var appUserService = services.GetRequiredService<IAppUserService>();
                 if (appUserService != null)
                 {
                     var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();

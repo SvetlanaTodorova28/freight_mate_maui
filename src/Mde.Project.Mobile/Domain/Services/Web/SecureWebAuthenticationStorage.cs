@@ -136,17 +136,21 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
         public async Task<ServiceResult<bool>> Logout()
         {
+        
             try
             {
                 var success = SecureStorageHelper.RemoveToken();
+            
                 return success
                     ? ServiceResult<bool>.Success(true)
                     : ServiceResult<bool>.Failure("Failed to remove token.");
+                
             }
             catch (Exception ex)
             {
                 return ServiceResult<bool>.Failure($"Unexpected error during logout: {ex.Message}");
             }
+            
         }
 
         public async Task<ServiceResult<string>> GetUserIdFromTokenAsync()

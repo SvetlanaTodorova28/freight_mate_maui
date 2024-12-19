@@ -52,21 +52,20 @@ namespace Mde.Project.Mobile.Helpers
         {
             try
             {
-                // Haal de lokaal opgeslagen FCM-token op
+               
                 var localTokenResult = await GetStoredFcmTokenAsync();
                 if (!localTokenResult.IsSuccess)
                 {
                     return ServiceResult<bool>.Failure(localTokenResult.ErrorMessage);
                 }
-
-                // Haal de userId na login
+                
                 var userIdResult = await appUserService.GetCurrentUserIdAsync();
                 if (!userIdResult.IsSuccess)
                 {
                     return ServiceResult<bool>.Failure("User ID not found.");
                 }
 
-                // Stuur de FCM-token naar de server
+               
                 var updateResult = await appUserService.UpdateFcmTokenOnServerAsync(userIdResult.Data, localTokenResult.Data);
                 return updateResult;
             }

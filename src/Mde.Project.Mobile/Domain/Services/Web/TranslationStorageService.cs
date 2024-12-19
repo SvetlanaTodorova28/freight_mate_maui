@@ -17,7 +17,7 @@ public class TranslationStorageService : ITranslationStorageService
     {
         try
         {
-            Directory.CreateDirectory(_folderPath); // Ensure the folder exists
+            Directory.CreateDirectory(_folderPath); 
 
             string fileName = $"Translation_{DateTime.UtcNow.Ticks}.json";
             var filePath = Path.Combine(_folderPath, fileName);

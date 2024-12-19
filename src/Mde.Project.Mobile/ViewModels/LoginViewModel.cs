@@ -79,13 +79,14 @@ public class LoginViewModel : ObservableObject
         var loginResult = await _authenticationServiceMobile.TryLoginAsync(UserName, Password);
 
         if (loginResult.IsSuccess)
-        {
+        { 
+            
             var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
             if (!fcmResult.IsSuccess)
             {
                 await _uiService.ShowSnackbarWarning($"Failed to update FCM token: {fcmResult.ErrorMessage}");
             }
-            Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
+            Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -127,7 +128,7 @@ public class LoginViewModel : ObservableObject
                     {
                         await _uiService.ShowSnackbarWarning($"Failed to update FCM token: {fcmResult.ErrorMessage}");
                     }
-                    Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication);
+                    Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
                     await Shell.Current.GoToAsync("//CargoListPage");
                 }
                 else

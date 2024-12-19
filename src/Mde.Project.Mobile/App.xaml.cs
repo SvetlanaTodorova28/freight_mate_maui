@@ -46,7 +46,7 @@ public partial class App : Application
         var isAuthenticated = await _authenticationService.IsAuthenticatedAsync();
         if (isAuthenticated.IsSuccess)
         {
-            MainPage = new AppShell(_authenticationService,_uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication);
+            MainPage = new AppShell(_authenticationService,_uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
