@@ -1,21 +1,34 @@
 using System.Globalization;
 
-namespace Mde.Project.Mobile.Converters;
 
-public class BoolToIconConverter: IValueConverter
+namespace Mde.Project.Mobile.Converters
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class BoolToIconConverter : IValueConverter
     {
-        if (value is not bool)
-            throw new ArgumentException("An bool value was not supplied. Cannot convert.");
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                if (value is bool dangerous)
+                {
+                    return dangerous ? "danger_container.png" : " "; 
+                }
+                
+                System.Diagnostics.Debug.WriteLine("Invalid input: expected a boolean value.");
+                return " "; 
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in BoolToIconConverter: {ex.Message}");
+                return " "; 
+            }
+        }
 
-        bool dangerous = (bool)value;
-        if (dangerous) return "danger_container.png";
-        return " ";
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            
+            System.Diagnostics.Debug.WriteLine("ConvertBack is not implemented for BoolToIconConverter.");
+            throw new NotSupportedException("ConvertBack is not supported.");
+        }
     }
 }
