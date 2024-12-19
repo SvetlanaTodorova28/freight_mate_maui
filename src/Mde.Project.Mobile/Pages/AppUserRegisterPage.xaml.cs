@@ -66,7 +66,7 @@ public partial class AppUserRegisterPage : ContentPage{
        using (var paint = new SKPaint())
        {
            paint.Style = SKPaintStyle.Fill;
-           var colors = new SKColor[] { SKColor.Parse("#1D3448"), SKColor.Parse("#35606E"), SKColor.Parse("#1D3448") };
+           var colors = new [] { SKColor.Parse("#1D3448"), SKColor.Parse("#35606E"), SKColor.Parse("#1D3448") };
            var colorPositions = new float[] { 0.1f, 0.6f, 0.8f };  
 
            paint.IsAntialias = true;  
