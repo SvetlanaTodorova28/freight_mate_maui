@@ -105,13 +105,27 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
         public async Task<ServiceResult<bool>> TryRegisterAsync(AppUser appUser)
         {
+           
+            if (string.IsNullOrEmpty(appUser.Username))
+                return ServiceResult<bool>.Failure("Username cannot be empty.");
+
+            if (!EmailValidator.IsValidEmail(appUser.Username))
+                return ServiceResult<bool>.Failure("Please enter a valid email address.");
+
+            if (string.IsNullOrEmpty(appUser.Password))
+                return ServiceResult<bool>.Failure("Password cannot be empty.");
+
+            if (appUser.Password != appUser.ConfirmPassword)
+                return ServiceResult<bool>.Failure("Password and confirm password do not match.");
+
+            if (appUser.Function == null)
+                return ServiceResult<bool>.Failure("Function cannot be empty.");
+
             try
             {
                 var functionId = await _functionAccessService.GetFunctionIdAsync(appUser.Function);
                 if (!functionId.IsSuccess)
-                {
                     return ServiceResult<bool>.Failure(functionId.ErrorMessage);
-                }
 
                 var registerRequest = new RegisterRequestDto
                 {
@@ -124,6 +138,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 };
 
                 var response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/register", registerRequest);
+
                 return response.IsSuccessStatusCode
                     ? ServiceResult<bool>.Success(true)
                     : ServiceResult<bool>.Failure("Registration failed.");
@@ -133,6 +148,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 return ServiceResult<bool>.Failure($"Unexpected error during registration: {ex.Message}");
             }
         }
+
 
         public async Task<ServiceResult<bool>> Logout()
         {

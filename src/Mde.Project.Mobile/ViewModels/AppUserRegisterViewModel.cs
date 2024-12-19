@@ -85,7 +85,7 @@ public class AppUserRegisterViewModel: ObservableObject
         }
         
     }
-    public async Task<bool> ExecuteRegisterCommand()
+    /*public async Task<bool> ExecuteRegisterCommand()
     {
         if (Password != ConfirmPassword)
         {
@@ -125,12 +125,37 @@ public class AppUserRegisterViewModel: ObservableObject
         var result = await _authenticationServiceMobile.TryRegisterAsync(user);
         if (result.IsSuccess)
         {
+            await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
             return true;
         }
        
         return false;
         
+    }*/
+    public async Task<bool> ExecuteRegisterCommand()
+    {
+        var user = new AppUser
+        {
+            Username = Username,
+            FirstName = FirstName,
+            LastName = LastName,
+            Password = Password,
+            ConfirmPassword = ConfirmPassword,
+            Function = SelectedFunction
+        };
+
+        var result = await _authenticationServiceMobile.TryRegisterAsync(user);
+
+        if (result.IsSuccess)
+        {
+            await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
+            return true;
+        }
+
+        await _uiService.ShowSnackbarWarning(result.ErrorMessage);
+        return false;
     }
+
     
 
     

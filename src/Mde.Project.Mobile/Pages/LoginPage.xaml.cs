@@ -1,3 +1,4 @@
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
 using SkiaSharp;
 
@@ -5,17 +6,32 @@ namespace Mde.Project.Mobile.Pages;
 
 public partial class LoginPage : ContentPage
 {
+   
+    private readonly IUiService _uiService;
+    private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
+    private readonly INativeAuthentication _nativeAuthentication;
+    private readonly AppUserRegisterViewModel _userRegisterViewModel;
+    private readonly IAppUserService _appUserService;
     private readonly LoginViewModel _loginViewModel;
 
-    public LoginPage(LoginViewModel loginViewModel)
+    public LoginPage(LoginViewModel loginViewModel, IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
+        AppUserRegisterViewModel userRegisterViewModel,INativeAuthentication nativeAuthentication,
+        IAppUserService appUserService)
     {
+        _uiService = uiService;
+        _loginViewModel = loginViewModel;
+        _nativeAuthentication = nativeAuthentication;
+        _authenticationServiceMobile = authenticationServiceMobile;
+        _uiService = uiService;
+        _appUserService = appUserService; 
         InitializeComponent();
         BindingContext = _loginViewModel = loginViewModel;
     }
 
-    private async void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
+    private void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
     {
-        await Shell.Current.GoToAsync("//WelcomePage");
+        Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
+            _appUserService));
     }
 
     private async void Login_OnClicked(object sender, EventArgs e)
