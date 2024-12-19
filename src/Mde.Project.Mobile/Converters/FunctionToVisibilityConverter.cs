@@ -9,7 +9,6 @@ public class FunctionToVisibilityConverter:IValueConverter{
     {
         if (value is Function function && parameter is string targetFunction)
         {
-           
             return function.ToString().Equals(targetFunction, StringComparison.OrdinalIgnoreCase) 
                    || function.ToString().Equals("Consignee", StringComparison.OrdinalIgnoreCase);
         }
