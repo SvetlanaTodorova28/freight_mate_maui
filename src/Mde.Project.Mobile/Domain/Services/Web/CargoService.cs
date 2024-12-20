@@ -44,11 +44,29 @@ public class CargoService : ICargoService
     }
 
 
-    public async Task<ServiceResult<string>> CreateCargo(Cargo cargo)
+    public async Task<ServiceResult<string>> CreateOrUpdateCargo(Cargo cargo, string totalWeightText)
     {
-        var cargoDto = new CargoRequestDto
+        if (string.IsNullOrWhiteSpace(cargo.Destination))
         {
-            Id = Guid.Empty,
+            return ServiceResult<string>.Failure("Please provide a valid destination.");
+        }
+
+        if (!double.TryParse(totalWeightText, out double parsedWeight) || parsedWeight <= 0)
+        {
+            return ServiceResult<string>.Failure("Total weight must be a positive number.");
+        }
+
+       
+        cargo.TotalWeight = parsedWeight;
+
+        if (cargo.Userid == Guid.Empty)
+        {
+            return ServiceResult<string>.Failure("Please select a user.");
+        }
+
+        CargoRequestDto cargoDto = new CargoRequestDto
+        {
+            Id = cargo.Id,
             Destination = cargo.Destination,
             TotalWeight = cargo.TotalWeight,
             IsDangerous = cargo.IsDangerous,
@@ -57,11 +75,13 @@ public class CargoService : ICargoService
 
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
+            HttpResponseMessage response = cargo.Id == Guid.Empty
+                ? await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto)
+                : await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);
 
             if (response.IsSuccessStatusCode)
             {
-                return ServiceResult<string>.Success("Cargo created successfully");
+                return ServiceResult<string>.Success("Cargo saved successfully.");
             }
             else
             {
@@ -71,9 +91,10 @@ public class CargoService : ICargoService
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An error occurred while creating the cargo: {ex.Message}");
+            return ServiceResult<string>.Failure($"An error occurred while saving the cargo: {ex.Message}");
         }
     }
+
 
     public async Task<ServiceResult<CargoCreationResultDto>> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
@@ -186,7 +207,7 @@ public class CargoService : ICargoService
     }
    
 
-    public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
+    /*public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
     {
         var cargoDto = new CargoRequestDto
         {
@@ -214,7 +235,7 @@ public class CargoService : ICargoService
         {
             return ServiceResult<string>.Failure($"An error occurred while updating the cargo: {ex.Message}");
         }
-    }
+    }*/
 
     public async Task<ServiceResult<string>> DeleteCargo(Guid cargoId)
     {

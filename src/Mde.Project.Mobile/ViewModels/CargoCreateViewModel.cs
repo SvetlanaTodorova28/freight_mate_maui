@@ -57,19 +57,8 @@ public class CargoCreateViewModel : ObservableObject
     private string _totalWeightText;
     public string TotalWeightText
     {
-        get => _totalWeight.ToString();
-        set
-        {
-            if (double.TryParse(value, out double parsedValue))
-            {
-                TotalWeight = parsedValue;
-            }
-            else
-            {
-                _uiService.ShowSnackbarWarning("Please enter a valid number.");
-            }
-           
-        }
+        get => _totalWeightText;
+        set => SetProperty(ref _totalWeightText, value);
     }
 
     private double _totalWeight;
@@ -93,7 +82,7 @@ public class CargoCreateViewModel : ObservableObject
         set => SetProperty(ref _destination, value);
     }
     
-    private ObservableCollection<AppUserResponseDto> _users = new ObservableCollection<AppUserResponseDto>();
+    private ObservableCollection<AppUserResponseDto> _users = new ();
     public ObservableCollection<AppUserResponseDto> Users
     {
         get => _users;
@@ -144,43 +133,33 @@ public class CargoCreateViewModel : ObservableObject
     private async Task SaveCargoAsync()
     {
         IsLoading = true;
-        try{
-            if (string.IsNullOrWhiteSpace(Destination))
+        try
+        {
+            var cargo = SelectedCargo ?? new Cargo
             {
-                await _uiService.ShowSnackbarWarning("Please provide a valid destination.");
-                return;
-            }
-            
+                Destination = Destination,
+                IsDangerous = IsDangerous,
+                Userid = SelectedUser?.Id ?? Guid.Empty
+            };
 
-            var cargo = SelectedCargo ?? new Cargo();
-            cargo.Destination = Destination;
-            cargo.TotalWeight = TotalWeight;
-            cargo.IsDangerous = IsDangerous;
-            cargo.Userid = SelectedUser?.Id ?? Guid.Empty;
-
-            if (cargo.Userid == Guid.Empty)
-            {
-                await _uiService.ShowSnackbarWarning("Please select a user.");
-                return;
-            }
-
-            var result = cargo.Id == Guid.Empty ? await _cargoService.CreateCargo(cargo) : await _cargoService.UpdateCargo(cargo);
+            var result = await _cargoService.CreateOrUpdateCargo(cargo, TotalWeightText);
             if (result.IsSuccess)
             {
                 await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                await NotifyUserAsync(SelectedUser.Id,Destination);
+                await NotifyUserAsync(SelectedUser.Id, Destination);
                 await Shell.Current.GoToAsync("//CargoListPage");
             }
             else
             {
-                await _uiService.ShowSnackbarWarning($"Error saving cargo: {result.ErrorMessage}");
+                await _uiService.ShowSnackbarWarning(result.ErrorMessage);
             }
         }
-        finally{
+        finally
+        {
             IsLoading = false;
         }
-      
     }
+
     
     private async Task LoadSelectedCargoData(){
         await LoadUsers();
