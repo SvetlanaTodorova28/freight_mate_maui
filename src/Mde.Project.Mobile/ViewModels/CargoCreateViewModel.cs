@@ -135,13 +135,14 @@ public class CargoCreateViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            var cargo = SelectedCargo ?? new Cargo
-            {
-                Destination = Destination,
-                IsDangerous = IsDangerous,
-                Userid = SelectedUser?.Id ?? Guid.Empty
-            };
 
+            var cargo = SelectedCargo ?? new Cargo();
+            cargo.Destination = Destination;
+            cargo.TotalWeight = TotalWeight;
+            cargo.IsDangerous = IsDangerous;
+            cargo.Userid = SelectedUser?.Id ?? Guid.Empty;
+            
+            
             var result = await _cargoService.CreateOrUpdateCargo(cargo, TotalWeightText);
             if (result.IsSuccess)
             {
@@ -166,6 +167,7 @@ public class CargoCreateViewModel : ObservableObject
         PageTitle = SelectedCargo != null ? "Edit Cargo" : "Add Cargo";
         Destination = SelectedCargo?.Destination ?? string.Empty;
         TotalWeight = SelectedCargo.TotalWeight;
+        TotalWeightText = TotalWeight.ToString();
         IsDangerous = SelectedCargo?.IsDangerous ?? false;
 
         if (SelectedCargo != null && Users != null)
