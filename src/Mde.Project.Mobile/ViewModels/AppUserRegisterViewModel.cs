@@ -85,53 +85,7 @@ public class AppUserRegisterViewModel: ObservableObject
         }
         
     }
-    /*public async Task<bool> ExecuteRegisterCommand()
-    {
-        if (Password != ConfirmPassword)
-        {
-            await _uiService.ShowSnackbarWarning("Password and confirm password do not match.");
-            return false;
-        }
-        if (string.IsNullOrEmpty(Username))
-        {
-            await _uiService.ShowSnackbarWarning("Username can not be empty");
-            return false;
-        }
-        if (!EmailValidator.IsValidEmail(Username))
-        {
-            await _uiService.ShowSnackbarWarning("Please enter a valid email address.");
-            return false;
-        }
-        if (string.IsNullOrEmpty(Password))
-        {
-            await _uiService.ShowSnackbarWarning("Password can not be empty.");
-            return false;
-        }
-        if (selectedFunction == null)
-        {
-            await _uiService.ShowSnackbarWarning("Function can not be empty.");
-            return false;
-        }
-        
-
-        AppUser user = new AppUser(){
-            Username = Username,
-            FirstName = FirstName,
-            LastName = LastName,
-            Password = Password,
-            ConfirmPassword = ConfirmPassword,
-            Function = SelectedFunction
-        };
-        var result = await _authenticationServiceMobile.TryRegisterAsync(user);
-        if (result.IsSuccess)
-        {
-            await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
-            return true;
-        }
-       
-        return false;
-        
-    }*/
+ 
     public async Task<bool> ExecuteRegisterCommand()
     {
         var user = new AppUser

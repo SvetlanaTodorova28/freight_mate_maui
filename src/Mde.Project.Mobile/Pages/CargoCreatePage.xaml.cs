@@ -42,7 +42,7 @@ public partial class CargoCreatePage : ContentPage{
             }
             
             
-            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); // Start animatie
+            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); 
         
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
             if (isCreated)

@@ -66,6 +66,15 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
         public async Task<ServiceResult<bool>> TryLoginAsync(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username))
+                return ServiceResult<bool>.Failure("Username cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(password))
+                return ServiceResult<bool>.Failure("Password cannot be empty.");
+
+            if (!EmailValidator.IsValidEmail(username))
+                return ServiceResult<bool>.Failure("Please enter a valid email address.");
+
             try
             {
                 var response = await _azureHttpClient.PostAsJsonAsync("/api/accounts/login", new LoginRequestDto
@@ -75,25 +84,16 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 });
 
                 if (!response.IsSuccessStatusCode)
-                {
                     return ServiceResult<bool>.Failure("Invalid username or password.");
-                }
 
                 var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
                 if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
-                {
                     return ServiceResult<bool>.Failure("Failed to retrieve authentication token from the server.");
-                }
 
                 await StoreToken(loginResponse.Token);
-
-                
                 var fcmResult = await SecureStorageHelper.GetFcmTokenAsync();
-
                 if (string.IsNullOrEmpty(fcmResult))
-                {
                     return ServiceResult<bool>.Failure("Not FCM");
-                }
 
                 return ServiceResult<bool>.Success(true);
             }
@@ -102,6 +102,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 return ServiceResult<bool>.Failure($"Unexpected error during login: {ex.Message}");
             }
         }
+
 
         public async Task<ServiceResult<bool>> TryRegisterAsync(AppUser appUser)
         {

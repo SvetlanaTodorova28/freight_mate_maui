@@ -24,6 +24,7 @@ public partial class LoginPage : ContentPage
         _authenticationServiceMobile = authenticationServiceMobile;
         _uiService = uiService;
         _appUserService = appUserService; 
+        _userRegisterViewModel = userRegisterViewModel;
         InitializeComponent();
         BindingContext = _loginViewModel = loginViewModel;
     }

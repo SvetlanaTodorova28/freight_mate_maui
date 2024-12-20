@@ -77,11 +77,16 @@ public class CargoService : ICargoService
 
     public async Task<ServiceResult<CargoCreationResultDto>> CreateCargoWithPdf(Stream stream, string fileExtension)
     {
+        if (stream == null)
+        {
+            return ServiceResult<CargoCreationResultDto>.Failure("No file was provided.");
+        }
+
         try
         {
-            ServiceResult<string> ocrResult = fileExtension.Equals("pdf") ?
-                await _azureOcrService.ExtractTextFromPdfAsync(stream) : 
-                await _azureOcrService.ExtractTextFromImageAsync(stream);
+            ServiceResult<string> ocrResult = fileExtension.Equals("pdf") 
+                ? await _azureOcrService.ExtractTextFromPdfAsync(stream)
+                : await _azureOcrService.ExtractTextFromImageAsync(stream);
 
             if (!ocrResult.IsSuccess)
             {
@@ -89,33 +94,33 @@ public class CargoService : ICargoService
             }
 
             ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
+
             if (!parsedCargoResult.IsSuccess)
             {
                 return ServiceResult<CargoCreationResultDto>.Failure(parsedCargoResult.ErrorMessage);
             }
 
-            CargoRequestDto cargoDto = parsedCargoResult.Data;
-            var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", cargoDto);
+            var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", parsedCargoResult.Data);
+
             if (response.IsSuccessStatusCode)
             {
-                var result = new CargoCreationResultDto()
+                var result = new CargoCreationResultDto
                 {
-                    UserId = cargoDto.AppUserId,
-                    Destination = cargoDto.Destination
+                    UserId = parsedCargoResult.Data.AppUserId,
+                    Destination = parsedCargoResult.Data.Destination
                 };
                 return ServiceResult<CargoCreationResultDto>.Success(result);
             }
-            else
-            {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                return ServiceResult<CargoCreationResultDto>.Failure(errorMessage);
-            }
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            return ServiceResult<CargoCreationResultDto>.Failure(errorMessage);
         }
         catch (Exception ex)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure($"Exception when creating cargo with PDF: {ex.Message}");
+            return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo: {ex.Message}");
         }
     }
+
 
 
     

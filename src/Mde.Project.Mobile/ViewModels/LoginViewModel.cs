@@ -58,29 +58,9 @@ public class LoginViewModel : ObservableObject
 
     public async Task ExecuteLoginCommandAsync()
     {
-        if (string.IsNullOrWhiteSpace(UserName))
-        {
-            await _uiService.ShowSnackbarWarning("Username cannot be empty.");
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            await _uiService.ShowSnackbarWarning("Password cannot be empty.");
-            return;
-        }
-
-        if (!EmailValidator.IsValidEmail(UserName))
-        {
-            await _uiService.ShowSnackbarWarning("Please enter a valid email address.");
-            return;
-        }
-
         var loginResult = await _authenticationServiceMobile.TryLoginAsync(UserName, Password);
-
         if (loginResult.IsSuccess)
-        { 
-            
+        {
             var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
             if (!fcmResult.IsSuccess)
             {
@@ -91,7 +71,7 @@ public class LoginViewModel : ObservableObject
         }
         else
         {
-            await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Login Failed. Please check your username and password and try again.");
+            await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Login failed. Please check your username and password and try again.");
         }
     }
 

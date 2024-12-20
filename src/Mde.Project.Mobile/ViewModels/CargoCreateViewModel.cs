@@ -240,44 +240,19 @@ public class CargoCreateViewModel : ObservableObject
 
     public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream, string fileExtension = "pdf")
     {
-        if (pdfStream == null)
+        var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+
+        if (result.IsSuccess)
         {
-            await _uiService.ShowSnackbarWarning("No PDF file selected.");
-            return false;
+            await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+            await NotifyUserAsync(result.Data.UserId, result.Data.Destination);
+            return true;
         }
 
-        try
-        {
-            var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
-
-            if (result.IsSuccess)
-            {
-                var userId = result.Data.UserId;
-                var destination = result.Data.Destination;
-
-                if (userId != Guid.Empty)
-                {
-                    await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
-                    await NotifyUserAsync(userId, destination);
-                    return true;
-                }
-                else
-                {
-                    await _uiService.ShowSnackbarWarning("Cargo saved, but no user was associated.");
-                    return true;  
-                }
-            }
-            else
-            {
-                await _uiService.ShowSnackbarWarning($"Failed to create cargo from PDF: {result.ErrorMessage}");
-            }
-        }
-        catch (Exception ex)
-        {
-            await _uiService.ShowSnackbarWarning($"Error processing PDF: {ex.Message}");
-        }
+        await _uiService.ShowSnackbarWarning(result.ErrorMessage);
         return false;
     }
+
 
     #endregion
 }
