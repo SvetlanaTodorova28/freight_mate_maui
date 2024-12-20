@@ -11,7 +11,8 @@
     xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
     x:DataType="viewmodels:BaseViewModel"
     TabBarBackgroundColor="#1D3448"
-    BackgroundColor="#3B3131" Opacity="1.4">
+    BackgroundColor="#3B3131" 
+    Opacity="1.4">
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
         <Tab Route="TranslatePage" Title="Translate">
             <Tab.Icon>

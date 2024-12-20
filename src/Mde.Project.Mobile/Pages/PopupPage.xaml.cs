@@ -9,7 +9,7 @@ public partial class PopupPage : Popup{
         InitializeComponent();
     }
     
-    private void Button_Clicked(object sender, EventArgs e)
+    private void Label_Tapped(object sender, EventArgs e)
     {
         Close();
     }

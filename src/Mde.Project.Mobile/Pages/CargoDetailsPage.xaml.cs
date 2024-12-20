@@ -13,10 +13,10 @@ public partial class CargoDetailsPage : ContentPage{
     public CargoDetailsPage(CargoDetailsViewModel cargoDetailsViewModel){
         InitializeComponent();
         BindingContext = cargoDetailsViewModel;
-        MessagingCenter.Subscribe<CargoDetailsViewModel, string>(this, "ShowFullAddress", (sender, address) =>
+        /*MessagingCenter.Subscribe<CargoDetailsViewModel, string>(this, "ShowFullAddress", (sender, address) =>
         {
             DisplayAlert("Volledig Adres", address, "OK");
-        });
+        });*/
     }
 
 

@@ -55,8 +55,7 @@ public partial class CargoCreatePage : ContentPage{
                     _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
                 );
             }
-
-          
+            
         }
         catch (Exception ex)
         {

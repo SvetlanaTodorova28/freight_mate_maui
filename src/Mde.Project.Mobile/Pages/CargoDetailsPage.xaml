@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CargoDetailsPage"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodels:CargoDetailsViewModel"
              Style="{StaticResource CustomPageStyle}">
     

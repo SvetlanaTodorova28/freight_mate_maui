@@ -3,9 +3,7 @@ using Foundation;
 using UIKit;
 using UserNotifications;
 using Firebase.CloudMessaging;
-using Mde.Project.Mobile.Domain.Services;
-using Mde.Project.Mobile.Domain.Services.Interfaces;
-
+using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.Platforms;
 
@@ -19,7 +17,6 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
         Firebase.Core.App.Configure();
         Messaging.SharedInstance.Delegate = this;
 
-        
         if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
         {
             UNUserNotificationCenter.Current.RequestAuthorization(
@@ -35,20 +32,17 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
         return base.FinishedLaunching(app, options);
     }
 
-
-    
     [Export("messaging:didReceiveRegistrationToken:")]
-    public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken){
-
+    public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
+    {
         var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
-      // userService?.StoreFcmTokenAsync(fcmToken);
+        if (userService != null){
+            FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
+        }
     }
 
-
-
-    public  void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+    public void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
     {
-        
         Messaging.SharedInstance.ApnsToken = deviceToken;
     }
 }

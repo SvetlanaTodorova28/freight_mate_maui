@@ -5,13 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:global1="clr-namespace:"
     x:DataType="global1:TranslateViewModel"
-    BackgroundColor="#2E2E2E"
+    Style="{StaticResource CustomPageStyle}"
     Padding="20">
 
     <ScrollView>
         <VerticalStackLayout Spacing="20">
             
-            <!-- Language Selection Section -->
             <Label 
                 FontSize="18"
                 FontFamily="PlayBold"

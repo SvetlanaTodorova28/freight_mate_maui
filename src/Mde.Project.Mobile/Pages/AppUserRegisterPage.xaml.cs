@@ -46,8 +46,6 @@ public partial class AppUserRegisterPage : ContentPage{
        
         bool isRegistered = await _userRegisterViewModel.ExecuteRegisterCommand();
         
-   
-
         if (isRegistered){
             Application.Current.MainPage = new NavigationPage(new LoginPage
                 (_loginViewModel,
@@ -57,7 +55,7 @@ public partial class AppUserRegisterPage : ContentPage{
                     _nativeAuthentication, 
                     _appUserService));
         }
-        await Navigation.PopModalAsync();
+     //   await Navigation.PopModalAsync();
         
     }
  

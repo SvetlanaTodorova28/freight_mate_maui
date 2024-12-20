@@ -1,53 +1,72 @@
 using Mde.Project.Mobile.Domain.Services.Web;
-
-
 #if ANDROID
 using Mde.Project.Mobile.Platforms.Android.Listeners;
+#endif
+#if __IOS__
+using Firebase.CloudMessaging;
 #endif
 
 namespace Mde.Project.Mobile.Helpers
 {
     public static class FirebaseHelper
     {
-        // Stap 1: Haal en sla de FCM-token lokaal op
-        public static async Task<ServiceResult<string>> RetrieveAndStoreFcmTokenLocallyAsync()
-        {
+        
+      public static async Task<ServiceResult<string>> RetrieveAndStoreFcmTokenLocallyAsync()
+{
 #if ANDROID
-            try
+    try
+    {
+        var taskCompletionSource = new TaskCompletionSource<string>();
+
+        Firebase.Messaging.FirebaseMessaging.Instance.GetToken()
+            .AddOnSuccessListener(new OnTokenSuccessListener(result =>
             {
-                var taskCompletionSource = new TaskCompletionSource<string>();
-
-                Firebase.Messaging.FirebaseMessaging.Instance.GetToken()
-                    .AddOnSuccessListener(new OnTokenSuccessListener(result =>
-                    {
-                        taskCompletionSource.SetResult(result);
-                    }))
-                    .AddOnFailureListener(new OnTokenFailureListener(exception =>
-                    {
-                        taskCompletionSource.SetException(exception);
-                    }));
-
-                var token = await taskCompletionSource.Task;
-
-                if (!string.IsNullOrEmpty(token))
-                {
-                    //fetch en sla de token lokaal op
-                    await SecureStorageHelper.SaveFcmTokenAsync(token);
-                    return ServiceResult<string>.Success(token);
-                }
-
-                return ServiceResult<string>.Failure("Failed to retrieve FCM token.");
-            }
-            catch (Exception ex)
+                taskCompletionSource.SetResult(result);
+            }))
+            .AddOnFailureListener(new OnTokenFailureListener(exception =>
             {
-                return ServiceResult<string>.Failure($"Error retrieving FCM token: {ex.Message}");
-            }
-#else
-            return ServiceResult<string>.Failure("FCM Token retrieval not supported on this platform.");
-#endif
+                taskCompletionSource.SetException(exception);
+            }));
+
+        var token = await taskCompletionSource.Task;
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            await SecureStorageHelper.SaveFcmTokenAsync(token);
+            return ServiceResult<string>.Success(token);
         }
 
-        // Stap 2: Stuur de FCM-token naar de server na login
+        return ServiceResult<string>.Failure("Failed to retrieve FCM token.");
+    }
+    catch (Exception ex)
+    {
+        return ServiceResult<string>.Failure($"Error retrieving FCM token: {ex.Message}");
+    }
+#elif __IOS__
+    try
+    {
+        string token = Messaging.SharedInstance.FcmToken; 
+        if (!string.IsNullOrEmpty(token))
+        {
+            await SecureStorageHelper.SaveFcmTokenAsync(token);
+            return ServiceResult<string>.Success(token);
+        }
+        else
+        {
+            return ServiceResult<string>.Failure("FCM token is null or empty.");
+        }
+    }
+    catch (Exception ex)
+    {
+        return ServiceResult<string>.Failure($"Error retrieving FCM token for iOS: {ex.Message}");
+    }
+#else
+    return ServiceResult<string>.Failure("FCM Token retrieval not supported on this platform.");
+#endif
+}
+
+
+       
         public static async Task<ServiceResult<bool>> UpdateFcmTokenOnServerAsync(IAppUserService appUserService)
         {
             try
