@@ -4,6 +4,7 @@ using AndroidColor = Android.Graphics.Color;
 using Android.Runtime;
 using Firebase;
 using Firebase.Messaging;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 
 namespace Mde.Project.Mobile.Platforms.Android
 {
@@ -20,6 +21,7 @@ namespace Mde.Project.Mobile.Platforms.Android
                 if (view is Entry)
                 {
                     handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
+                    handler.PlatformView.TextCursorDrawable.SetTint(Colors.OrangeRed.ToAndroid());
                 }
             });
             

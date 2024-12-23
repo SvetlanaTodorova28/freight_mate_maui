@@ -146,9 +146,6 @@
 		<GoogleServicesJson Include="Platforms/Android/google-services.json" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Platforms\Android\Resources\drawable\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	</ItemGroup>
 	

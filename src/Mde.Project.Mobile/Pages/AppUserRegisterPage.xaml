@@ -6,6 +6,7 @@
              x:Class="Mde.Project.Mobile.Pages.AppUserRegisterPage"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
              xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
              x:DataType="viewmodels:AppUserRegisterViewModel"
@@ -57,6 +58,7 @@
                                     Placeholder="FIRST NAME"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
+                                    ios:Entry.CursorColor="OrangeRed"
                                     Text="{Binding FirstName}" 
                                     />
                                 
@@ -75,6 +77,7 @@
                                     Placeholder="LAST NAME"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
+                                    ios:Entry.CursorColor="OrangeRed"
                                     Text="{Binding LastName}" />
                                 
                                 <BoxView HeightRequest="1"
@@ -92,6 +95,7 @@
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
                                     Keyboard="Email"
+                                    ios:Entry.CursorColor="OrangeRed"
                                     Text="{Binding Username}" />
                                 
                                 <BoxView HeightRequest="1"
@@ -108,6 +112,7 @@
                                     Placeholder="PASSWORD"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
+                                    ios:Entry.CursorColor="OrangeRed"
                                     Text="{Binding Password}" />
                                 
                                 <BoxView HeightRequest="1"
@@ -125,6 +130,7 @@
                                     Placeholder="CONFIRM PASSWORD"
                                     PlaceholderColor="WhiteSmoke"
                                     TextColor="White"
+                                    ios:Entry.CursorColor="OrangeRed"
                                     Text="{Binding ConfirmPassword}" />
                                 
                                 <BoxView HeightRequest="1"

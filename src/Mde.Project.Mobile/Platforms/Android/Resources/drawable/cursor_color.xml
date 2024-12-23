@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF4500" /> <!-- OrangeRed -->
+            <size android:width="2dp" /> <!-- Breedte van de cursor -->
+        </shape>
+    </item>
+</layer-list>

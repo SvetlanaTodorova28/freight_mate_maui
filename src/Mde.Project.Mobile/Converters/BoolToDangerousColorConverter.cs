@@ -36,6 +36,6 @@ public class BoolToDangerousColorConverter : IValueConverter
     }
     private Color GetFallbackColor()
     {
-        return Color.FromRgb(0, 0, 0); // Zwart als standaardkleur
+        return Color.FromRgb(0, 0, 0); 
     }
 }
