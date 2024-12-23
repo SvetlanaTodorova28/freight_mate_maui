@@ -19,7 +19,7 @@ public class FunctionAccessService : IFunctionAccessService
         _azureHttpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
     }
 
-    public async Task<ServiceResult<IEnumerable<Function>>> GetFunctionsAsync()
+    public async Task<ServiceResult<IEnumerable<Function>>> GetSelectableFunctionsAsync()
     {
         try
         {

@@ -125,9 +125,6 @@
                                          BackgroundColor="White" WidthRequest="250"  HorizontalOptions="End"/>
                             </Grid>
                             
-                            <Label Text="Chose your function" FontFamily="PlayBold"
-                                   TextColor="White">
-                            </Label>
                             <Picker FontFamily="PlayBold" FontSize="18" ItemsSource="{Binding Functions}"
                                     SelectedItem="{Binding SelectedFunction}"
                                     Title="Select a function">
@@ -153,8 +150,6 @@
                         </VerticalStackLayout>
                     </Grid>
                 </ScrollView>
-           
-
         </Grid>
     </ScrollView>
     </Grid>

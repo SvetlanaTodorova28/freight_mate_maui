@@ -135,7 +135,6 @@ public class CargoCreateViewModel : ObservableObject
         IsLoading = true;
         try
         {
-
             var cargo = SelectedCargo ?? new Cargo();
             cargo.Destination = Destination;
             cargo.TotalWeight = TotalWeight;

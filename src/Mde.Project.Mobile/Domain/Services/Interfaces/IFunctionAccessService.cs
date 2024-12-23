@@ -3,9 +3,8 @@ using Mde.Project.Mobile.Domain.Services.Web;
 
 namespace Mde.Project.Mobile.Domain.Services.Interfaces;
 
-public interface IFunctionAccessService
-{
-    Task<ServiceResult<IEnumerable<Function>>> GetFunctionsAsync();
+public interface IFunctionAccessService{
+    Task<ServiceResult<IEnumerable<Function>>> GetSelectableFunctionsAsync();
     Task<ServiceResult<Guid>> GetFunctionIdAsync(Function function);
     Task<ServiceResult<Function>> GetUserFunctionFromTokenAsync();
 }

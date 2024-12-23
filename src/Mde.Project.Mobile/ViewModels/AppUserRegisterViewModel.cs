@@ -80,15 +80,17 @@ public class AppUserRegisterViewModel: ObservableObject
     
     private async Task OnAppearingAsync()
     {
-        var functions = await _functionAccessService.GetFunctionsAsync();
-        if (functions.IsSuccess)
+        var functionsResult = await _functionAccessService.GetSelectableFunctionsAsync();
+        if (functionsResult.IsSuccess)
         {
-            Functions = new ObservableCollection<Function>(functions.Data);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Functions = new ObservableCollection<Function>(functionsResult.Data);
+            });
         }
-        
     }
 
-  
+    
 
     public async Task<bool> ExecuteRegisterCommand()
     {
@@ -106,7 +108,9 @@ public class AppUserRegisterViewModel: ObservableObject
 
         if (result.IsSuccess)
         {
-            await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
+            Device.BeginInvokeOnMainThread(() => 
+                    _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now."
+            ));
             return true;
         }
 
