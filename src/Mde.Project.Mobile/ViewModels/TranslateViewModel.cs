@@ -49,7 +49,7 @@ public partial class TranslateViewModel : ObservableObject
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
     }
-
+    public DateTime CurrentDate { get; } = DateTime.Now;
     [RelayCommand]
     private async Task StartListeningAsync()
     {

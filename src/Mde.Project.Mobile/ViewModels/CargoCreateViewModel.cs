@@ -36,6 +36,7 @@ public class CargoCreateViewModel : ObservableObject
 
     #region Bindable Properties
     
+    public DateTime CurrentDate { get; } = DateTime.Now;
     private string _pageTitle = "Add Cargo";
     public string PageTitle
     {

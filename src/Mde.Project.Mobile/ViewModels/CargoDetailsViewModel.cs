@@ -16,6 +16,7 @@ public class CargoDetailsViewModel:ObservableObject{
       
     }
 
+    public DateTime CurrentDate { get; } = DateTime.Now;
     private Cargo selectedCargo;
     public Cargo SelectedCargo
     {

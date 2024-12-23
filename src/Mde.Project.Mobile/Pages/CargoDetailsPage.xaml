@@ -73,9 +73,12 @@
                 </ScrollView>
             </Border>
         </Grid>
-       <contents:SnowAnimationView 
-           VerticalOptions="FillAndExpand"
-           HorizontalOptions="FillAndExpand"
-           InputTransparent="True" />
+       <contents:SnowAnimationView
+           WidthRequest="330"
+           Margin="0"
+           Padding="0"
+           HeightRequest="900"
+           InputTransparent="True" 
+           IsVisible="{Binding CurrentDate, Converter={StaticResource DateRangeToVisibilityConverter}}"/>
   </Grid>
 </ContentPage>

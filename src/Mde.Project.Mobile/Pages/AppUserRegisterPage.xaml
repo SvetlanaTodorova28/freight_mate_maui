@@ -163,6 +163,7 @@
             Margin="0"
             Padding="0"
             HeightRequest="900"
-            InputTransparent="True" />
+            InputTransparent="True" 
+            IsVisible="{Binding CurrentDate, Converter={StaticResource DateRangeToVisibilityConverter}}"/>
     </Grid>
 </ContentPage>

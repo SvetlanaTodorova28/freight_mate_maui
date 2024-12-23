@@ -34,7 +34,7 @@ public class LoginViewModel : ObservableObject
         LoginCommand = new AsyncRelayCommand(ExecuteLoginCommandAsync);
         FaceLoginCommand = new AsyncRelayCommand(ExecuteFaceLoginCommandAsync);
     }
-
+    public DateTime CurrentDate { get; } = DateTime.Now;
     private string _username;
     public string UserName
     {
