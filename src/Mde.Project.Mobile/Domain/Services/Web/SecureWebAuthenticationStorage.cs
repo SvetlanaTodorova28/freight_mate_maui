@@ -119,7 +119,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             if (appUser.Password != appUser.ConfirmPassword)
                 return ServiceResult<bool>.Failure("Password and confirm password do not match.");
 
-            if (appUser.Function == null)
+            if (appUser.Function == Function.Unknown)
                 return ServiceResult<bool>.Failure("Function cannot be empty.");
 
             try

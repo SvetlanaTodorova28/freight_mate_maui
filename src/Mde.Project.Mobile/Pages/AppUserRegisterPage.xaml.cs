@@ -55,7 +55,10 @@ public partial class AppUserRegisterPage : ContentPage{
                     _nativeAuthentication, 
                     _appUserService));
         }
-     //   await Navigation.PopModalAsync();
+        else{
+            await Navigation.PopModalAsync();
+        }
+        
         
     }
  

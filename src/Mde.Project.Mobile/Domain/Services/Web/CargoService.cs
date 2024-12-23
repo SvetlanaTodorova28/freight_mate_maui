@@ -46,17 +46,15 @@ public class CargoService : ICargoService
 
     public async Task<ServiceResult<string>> CreateOrUpdateCargo(Cargo cargo, string totalWeightText)
     {
-        if (string.IsNullOrWhiteSpace(cargo.Destination))
-        {
-            return ServiceResult<string>.Failure("Please provide a valid destination.");
-        }
-
         if (!double.TryParse(totalWeightText, out double parsedWeight) || parsedWeight <= 0)
         {
             return ServiceResult<string>.Failure("Total weight must be a positive number.");
         }
-
-       
+        if (string.IsNullOrWhiteSpace(cargo.Destination))
+        {
+            return ServiceResult<string>.Failure("Please provide a valid destination.");
+        }
+        
         cargo.TotalWeight = parsedWeight;
 
         if (cargo.Userid == Guid.Empty)

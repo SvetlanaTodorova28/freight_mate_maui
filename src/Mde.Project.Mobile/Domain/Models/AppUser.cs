@@ -13,5 +13,7 @@ public class AppUser{
 public enum Function {
     Admin, 
     Consignee, 
-    Driver
+    Driver,
+    Unknown
+   
 }

@@ -129,7 +129,8 @@
                                    TextColor="White">
                             </Label>
                             <Picker FontFamily="PlayBold" FontSize="18" ItemsSource="{Binding Functions}"
-                                    SelectedItem="{Binding SelectedFunction}">
+                                    SelectedItem="{Binding SelectedFunction}"
+                                    Title="Select a function">
                             </Picker>
 
                             <Button

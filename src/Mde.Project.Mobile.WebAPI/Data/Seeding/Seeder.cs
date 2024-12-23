@@ -9,9 +9,9 @@ namespace Mde.Project.Mobile.WebAPI.Data.Seeding;
 public class Seeder{
     public static void Seed(ModelBuilder modelBuilder){
         var categories = new List<Category>{
-            new Category{ Id = Guid.Parse("00000000-0000-0000-0000-000000000011"), Name = "Electronics" },
-            new Category{ Id = Guid.Parse("00000000-0000-0000-0000-000000000012"), Name = "Home Appliances" },
-            new Category{ Id = Guid.Parse("00000000-0000-0000-0000-000000000013"), Name = "Sportswear" }
+            new (){ Id = Guid.Parse("00000000-0000-0000-0000-000000000011"), Name = "Electronics" },
+            new(){ Id = Guid.Parse("00000000-0000-0000-0000-000000000012"), Name = "Home Appliances" },
+            new (){ Id = Guid.Parse("00000000-0000-0000-0000-000000000013"), Name = "Sportswear" }
         };
         var products = new List<Product>{
             new (){
@@ -49,6 +49,22 @@ public class Seeder{
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000083"),
                 Name = "Basic"
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000084"),
+                Name = "ManageUsers"
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000085"),
+                Name = "CrudProducts"
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000086"),
+                Name = "CrudCustomers"
+            },
+            new (){
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000087"),
+                Name = "SalesRep"
             }
         };
         

@@ -23,7 +23,9 @@ public class FunctionAccessService : IFunctionAccessService
     {
         try
         {
-            var functions = ((Function[])Enum.GetValues(typeof(Function))).AsEnumerable();
+            var functions = ((Function[])Enum.GetValues(typeof(Function)))
+                .Where(f => f != Function.Unknown)
+                .AsEnumerable();
             return ServiceResult<IEnumerable<Function>>.Success(functions);
         }
         catch (Exception ex)
@@ -38,7 +40,6 @@ public class FunctionAccessService : IFunctionAccessService
         {
             if (_functionMappings != null)
             {
-                // Mappings zijn al beschikbaar, geef succes terug
                 return ServiceResult<bool>.Success(true);
             }
 

@@ -19,6 +19,7 @@ public class AppUserRegisterViewModel: ObservableObject
         _uiService = uiService;
         _authenticationServiceMobile = authServiceMobile;
         _functionAccessService = functionAccessService;
+        SelectedFunction = Function.Unknown;
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
         
     }
@@ -72,6 +73,7 @@ public class AppUserRegisterViewModel: ObservableObject
         get => selectedFunction;
         set => SetProperty(ref selectedFunction, value);
     }
+
     public ICommand RegisterCommand { get; }
 
     public ICommand OnAppearingCommand => new Command(async () => await OnAppearingAsync());
@@ -85,7 +87,9 @@ public class AppUserRegisterViewModel: ObservableObject
         }
         
     }
- 
+
+  
+
     public async Task<bool> ExecuteRegisterCommand()
     {
         var user = new AppUser
