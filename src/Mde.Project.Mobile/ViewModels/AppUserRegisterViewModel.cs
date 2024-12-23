@@ -89,9 +89,6 @@ public class AppUserRegisterViewModel: ObservableObject
             });
         }
     }
-
-    
-
     public async Task<bool> ExecuteRegisterCommand()
     {
         var user = new AppUser
@@ -108,15 +105,28 @@ public class AppUserRegisterViewModel: ObservableObject
 
         if (result.IsSuccess)
         {
-            Device.BeginInvokeOnMainThread(() => 
-                    _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now."
-            ));
+            Device.BeginInvokeOnMainThread(async () => 
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
+                ResetRegistrationForm(); // Reset de form na succesvolle melding
+            });
             return true;
         }
 
         await _uiService.ShowSnackbarWarning(result.ErrorMessage);
         return false;
     }
+    
+    public void ResetRegistrationForm()
+    {
+        Username = string.Empty;
+        FirstName = string.Empty;
+        LastName = string.Empty;
+        Password = string.Empty;
+        ConfirmPassword = string.Empty;
+        SelectedFunction = Function.Unknown; 
+    }
+
 
     
 

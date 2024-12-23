@@ -39,6 +39,12 @@ public partial class AppUserRegisterPage : ContentPage{
     {
         _userRegisterViewModel?.OnAppearingCommand.Execute(null);
     }
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _userRegisterViewModel.ResetRegistrationForm(); 
+    }
+
 
     private async void CreateAccount_OnClicked(object sender, EventArgs e){
 
