@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Mde.Project.Mobile.Pages.SnowPage"
+             BackgroundColor="Transparent">
+    <controls:SKCanvasView x:Name="canvasView" PaintSurface="OnCanvasViewPaintSurface" BackgroundColor="Transparent" />
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#3B3131" />
+    </ContentPage.Behaviors>
+</ContentPage>

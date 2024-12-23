@@ -8,19 +8,30 @@
     xmlns:models="clr-namespace:Mde.Project.Mobile.Domain.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+    xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
+    xmlns:converters="clr-namespace:Mde.Project.Mobile.Converters"
     HideSoftInputOnTapped="True"
     x:DataType="viewmodels:CargoListViewModel"
-    Style="{StaticResource CustomPageStyle}">
-
-    
-    <ScrollView>
+    Style="{StaticResource CustomPageStyle}"
+    >
+    <ContentPage.Resources>
+        <converters:DateRangeToVisibilityConverter x:Key="DateRangeToVisibilityConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#3B3131" />
+    </ContentPage.Behaviors>
+   <Grid  RowDefinitions="*">
+     
+       <ScrollView   Padding="0"
+                     Margin="0"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" /> 
+                <RowDefinition Height="*" />   
+               
             </Grid.RowDefinitions>
-
-
             <SearchBar Grid.Row="0"
                        StyleClass="baseSearch"
                        Placeholder="ZOEK CARGOS..."
@@ -40,6 +51,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                  
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -93,7 +105,6 @@
                                                        FontFamily="PlayBold" FontSize="22" 
                                                        TextColor="{Binding IsDangerous, Converter={StaticResource BoolToDangerousColorConverter}}"
                                                        VerticalOptions="Center" />
-
                                             </Grid>
                                         </Border>
                                     </SwipeView>
@@ -126,7 +137,14 @@
                                        HeightRequest="600" 
                                        />
             </Grid>
-
         </Grid>
     </ScrollView>
+       <contents:SnowAnimationView
+           WidthRequest="330"
+           Margin="0"
+           Padding="0"
+           HeightRequest="900"
+           InputTransparent="True" 
+           IsVisible="{Binding CurrentDate, Converter={StaticResource DateRangeToVisibilityConverter}}"/>
+  </Grid>
 </ContentPage>

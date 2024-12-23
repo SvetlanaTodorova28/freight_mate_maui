@@ -4,13 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:global1="clr-namespace:"
+    xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
     x:DataType="global1:TranslateViewModel"
     Style="{StaticResource CustomPageStyle}"
-    Padding="20">
-
+    Padding="20"
+    >
+<Grid RowDefinitions="*">
     <ScrollView>
         <VerticalStackLayout Spacing="20">
-            
             <Label 
                 FontSize="18"
                 FontFamily="PlayBold"
@@ -103,4 +104,11 @@
 
         </VerticalStackLayout>
     </ScrollView>
+    <contents:SnowAnimationView
+        WidthRequest="330"
+        Margin="0"
+        Padding="0"
+        HeightRequest="900"
+        InputTransparent="True" />
+    </Grid>
 </ContentPage>

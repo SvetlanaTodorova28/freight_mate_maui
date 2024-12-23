@@ -2,9 +2,10 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
              x:Class="Mde.Project.Mobile.Pages.AboutPage"
              Style="{StaticResource CustomPageStyle}">
-  
+  <Grid>
        
         <ScrollView>
             <VerticalStackLayout Padding="30" Spacing="25">
@@ -26,6 +27,11 @@
                        TextColor="White" FontSize="15" FontAttributes="Bold" Text="Freight Mate v1.0" />
             </VerticalStackLayout>
         </ScrollView>
-       
-    
+      <contents:SnowAnimationView
+          WidthRequest="330"
+          Margin="0"
+          Padding="0"
+          HeightRequest="900"
+          InputTransparent="True" />
+    </Grid>
 </ContentPage>

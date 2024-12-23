@@ -14,6 +14,7 @@ public class CargoListViewModel : ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
+    
 
     public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService)
     {
@@ -35,6 +36,8 @@ public class CargoListViewModel : ObservableObject
     }
 
     #region Bindings
+    
+    public DateTime CurrentDate { get; } = DateTime.Now;
 
     private ObservableCollection<Cargo> _cargos = new();
     public ObservableCollection<Cargo> Cargos

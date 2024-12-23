@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.CargoDetailsPage"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
              x:DataType="viewmodels:CargoDetailsViewModel"
              Style="{StaticResource CustomPageStyle}">
     
-    <ScrollView>
+   <Grid RowDefinitions="*">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -72,5 +73,9 @@
                 </ScrollView>
             </Border>
         </Grid>
-    </ScrollView>
+       <contents:SnowAnimationView 
+           VerticalOptions="FillAndExpand"
+           HorizontalOptions="FillAndExpand"
+           InputTransparent="True" />
+  </Grid>
 </ContentPage>

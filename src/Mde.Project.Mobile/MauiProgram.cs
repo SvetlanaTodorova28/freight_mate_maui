@@ -70,6 +70,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
             Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
+            Routing.RegisterRoute(nameof(SnowPage), typeof(SnowPage));
         }
 
         private static void RegisterServices(IServiceCollection services)
