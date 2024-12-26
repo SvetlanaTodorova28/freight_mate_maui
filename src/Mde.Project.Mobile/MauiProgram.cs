@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Mde.Project.Mobile.Converters;
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -71,6 +72,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(LoadingPage), typeof(LoadingPage));
             Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
             Routing.RegisterRoute(nameof(SnowPage), typeof(SnowPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
 
         private static void RegisterServices(IServiceCollection services)
@@ -94,16 +96,19 @@ namespace Mde.Project.Mobile
 
             services.AddTransient<TranslatePage>();
             services.AddTransient<TranslateViewModel>();
+            
+            services.AddTransient<SettingsPage>();
+            services.AddTransient<SettingsViewModel>();
 
             services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
             services.AddTransient<IFunctionAccessService, FunctionAccessService>();
             services.AddTransient<INativeAuthentication, NativeAuthentication>();
-
             services.AddSingleton<IAppUserService, AppUserService>();
             services.AddTransient<ICargoService, CargoService>();
             services.AddTransient<IUiService, UiService>();
             services.AddTransient<ITranslationStorageService, TranslationStorageService>();
-
+          
+            
             services.AddSingleton<KeyVaultHelper>();
             services.AddSingleton<ISpeechService>(new AzureSpeechService(GlobalConstants.Region));
             services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));

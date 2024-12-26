@@ -10,6 +10,10 @@ public partial class OptionsPage : ContentPage{
         await Shell.Current.GoToAsync(nameof(AboutPage));
     }
     
+    private async void NavigateToSettings(object? sender, EventArgs e){
+        await Shell.Current.GoToAsync(nameof(SettingsPage));
+    }
+    
 
    
 }

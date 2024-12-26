@@ -13,7 +13,6 @@ namespace Mde.Project.Mobile.Converters
                 
                 DateTime startDate = new DateTime(2024, 12, 01); 
                 DateTime endDate = new DateTime(2025, 1, 10);   
-
                
                 if (currentDate >= startDate && currentDate <= endDate)
                 {

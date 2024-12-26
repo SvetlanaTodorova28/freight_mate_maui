@@ -44,7 +44,7 @@
                             <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Text="Contact"
+                        <Label Text="Settings"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
                                FontSize="18"
@@ -59,6 +59,9 @@
                                FontSize="12"
                                TextColor="White"
                                Grid.Column="1" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NavigateToSettings" />
+                        </Grid.GestureRecognizers>
                     </Grid>
 
                 </VerticalStackLayout>

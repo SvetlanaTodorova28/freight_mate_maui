@@ -96,7 +96,7 @@ public partial class CargoListPage : ContentPage{
         var scale2 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 120) / 180);  
         var scale3 = 0.5f + 0.5f * MathF.Sin(MathF.PI * (_angle + 240) / 180);  
 
-        // Draw the dots
+      
         canvas.DrawCircle(centerX1, centerY, baseRadius * scale1, paint);
         canvas.DrawCircle(centerX2, centerY, baseRadius * scale2, paint);
         canvas.DrawCircle(centerX3, centerY, baseRadius * scale3, paint);
