@@ -23,7 +23,7 @@
                 Title="Input Language"
                 FontFamily="PlayBold"
                 FontSize="14"
-                TextColor="White"
+                TextColor="OrangeRed"
                 ItemsSource="{Binding AvailableLanguages}"
                 SelectedItem="{Binding SelectedInputLanguage}" />
 
@@ -38,7 +38,7 @@
                 Title="Target Language"
                 FontFamily="PlayBold"
                 FontSize="14"
-                TextColor="White"
+                TextColor="OrangeRed"
                 ItemsSource="{Binding AvailableLanguages}"
                 SelectedItem="{Binding SelectedTargetLanguage}" />
 
