@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Maui;
-using Mde.Project.Mobile.Converters;
+
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
+#if ANDROID || IOS
 using Mde.Project.Mobile.Platforms;
+#endif
 using Mde.Project.Mobile.ViewModels;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -102,7 +104,9 @@ namespace Mde.Project.Mobile
 
             services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
             services.AddTransient<IFunctionAccessService, FunctionAccessService>();
+#if ANDROID || IOS
             services.AddTransient<INativeAuthentication, NativeAuthentication>();
+#endif
             services.AddSingleton<IAppUserService, AppUserService>();
             services.AddTransient<ICargoService, CargoService>();
             services.AddTransient<IUiService, UiService>();
