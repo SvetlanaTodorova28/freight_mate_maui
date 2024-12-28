@@ -50,6 +50,9 @@
 	<string>Access to the photo library to save files.</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.mde.project.mobile</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This application requires microphone access to recognize speech.</string>
+
 
 </dict>
 </plist>

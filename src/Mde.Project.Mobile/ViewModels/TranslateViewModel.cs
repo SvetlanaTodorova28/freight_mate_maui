@@ -51,7 +51,7 @@ public partial class TranslateViewModel : ObservableObject
     }
     public DateTime CurrentDate { get; } = DateTime.Now;
     [RelayCommand]
-    private async Task StartListeningAsync()
+    public async Task StartListeningAsync()
     {
         string inputLanguageCode = GetLanguageCode(SelectedInputLanguage);
         var setLanguageResult = await _speechService.SetRecognitionLanguageAsync(inputLanguageCode);
@@ -80,7 +80,7 @@ public partial class TranslateViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task StopListeningAsync()
+    public async Task StopListeningAsync()
     {
         IsListening = false;
 
