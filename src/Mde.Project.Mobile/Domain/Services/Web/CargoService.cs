@@ -204,36 +204,7 @@ public class CargoService : ICargoService
         return 0; 
     }
    
-
-    /*public async Task<ServiceResult<string>> UpdateCargo(Cargo cargo)
-    {
-        var cargoDto = new CargoRequestDto
-        {
-            Destination = cargo.Destination,
-            TotalWeight = cargo.TotalWeight,
-            IsDangerous = cargo.IsDangerous,
-            Id = cargo.Id,
-            AppUserId = cargo.Userid 
-        };
-
-        try
-        {
-            var response = await _httpClient.PutAsJsonAsync($"/api/Cargos/Update/{cargo.Id}", cargoDto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return ServiceResult<string>.Success("Cargo updated successfully");
-            }
-            else
-            {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                return ServiceResult<string>.Failure(errorMessage);
-            }
-        }catch (Exception ex)
-        {
-            return ServiceResult<string>.Failure($"An error occurred while updating the cargo: {ex.Message}");
-        }
-    }*/
+    
 
     public async Task<ServiceResult<string>> DeleteCargo(Guid cargoId)
     {

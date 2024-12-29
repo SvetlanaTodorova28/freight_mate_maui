@@ -2,7 +2,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
-
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -10,10 +10,10 @@ namespace Mde.Project.Mobile.ViewModels;
 [QueryProperty(nameof(SelectedCargo), nameof(SelectedCargo))]
 public class CargoDetailsViewModel:ObservableObject{
     
-    public CargoDetailsViewModel(){
+    private readonly IGeocodingService _geocodingService;
+    public CargoDetailsViewModel( IGeocodingService geocodingService){
+        _geocodingService = geocodingService;
         NavigateCommand = new AsyncRelayCommand<string>(OpenNavigationApp);
-       
-      
     }
 
     public DateTime CurrentDate { get; } = DateTime.Now;
@@ -80,7 +80,7 @@ public class CargoDetailsViewModel:ObservableObject{
     {
         try
         {
-            var locations = await Geocoding.GetLocationsAsync(destination);
+            var locations = await _geocodingService.GetLocationsAsync(destination);
             var location = locations?.FirstOrDefault();
             if (location != null)
             {

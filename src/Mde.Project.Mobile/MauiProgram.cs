@@ -111,6 +111,7 @@ namespace Mde.Project.Mobile
             services.AddTransient<ICargoService, CargoService>();
             services.AddTransient<IUiService, UiService>();
             services.AddTransient<ITranslationStorageService, TranslationStorageService>();
+            services.AddTransient<IGeocodingService, GeocodingService>();
           
             
             services.AddSingleton<KeyVaultHelper>();
