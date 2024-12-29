@@ -10,6 +10,7 @@ public class AzureSpeechService : ISpeechService
     private readonly Lazy<Task<SpeechConfig>> _lazyConfig;
     private readonly string _region;
     private SpeechRecognizer _recognizer;
+    private TaskCompletionSource<int> _stopRecognizer = new TaskCompletionSource<int>();
 
     public AzureSpeechService(string region)
     {
@@ -82,10 +83,12 @@ public class AzureSpeechService : ISpeechService
 
             _recognizer.SessionStopped += (s, e) =>
             {
+                _stopRecognizer.TrySetResult(0);
                 onInfo?.Invoke("Speech recognition session stopped gracefully.");
             };
 
             await _recognizer.StartContinuousRecognitionAsync();
+            await _stopRecognizer.Task;  
             return ServiceResult<bool>.Success(true);
         }
         catch (Exception ex)
@@ -93,6 +96,7 @@ public class AzureSpeechService : ISpeechService
             return ServiceResult<bool>.Failure($"Failed to start continuous recognition: {ex.Message}");
         }
     }
+
 
     public async Task<ServiceResult<bool>> StopContinuousRecognitionAsync()
     {
@@ -103,7 +107,8 @@ public class AzureSpeechService : ISpeechService
 
         try
         {
-            await _recognizer.StopContinuousRecognitionAsync();
+         await _recognizer.StopContinuousRecognitionAsync();
+
             _recognizer.Dispose();
             _recognizer = null;
 
@@ -114,4 +119,5 @@ public class AzureSpeechService : ISpeechService
             return ServiceResult<bool>.Failure($"Failed to stop recognition: {ex.Message}");
         }
     }
+
 }
