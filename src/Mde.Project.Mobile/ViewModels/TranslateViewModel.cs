@@ -48,7 +48,7 @@ public partial class TranslateViewModel : ObservableObject
         _translationStorageService = translationStorageService;
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
-        isListening = true;
+      
     }
     public DateTime CurrentDate { get; } = DateTime.Now;
     [RelayCommand]
@@ -80,20 +80,10 @@ public partial class TranslateViewModel : ObservableObject
             });
     }
 
-  //  [RelayCommand]
-    /*public async Task StopListeningAsync()
-    {
-        IsListening = false;
-
-        var stopResult = await _speechService.StopContinuousRecognitionAsync();
-        if (!stopResult.IsSuccess)
-        {
-            await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
-        }
-    }*/
+  
 
     [RelayCommand]
-    private async Task TranslateSpeechAsync(){
+    public async Task TranslateSpeechAsync(){
 
         if (string.IsNullOrWhiteSpace(RecognizedText))
         {
