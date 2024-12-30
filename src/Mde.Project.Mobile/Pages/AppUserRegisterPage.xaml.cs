@@ -42,7 +42,7 @@ public partial class AppUserRegisterPage : ContentPage{
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _userRegisterViewModel.ResetRegistrationForm(); 
+       // _userRegisterViewModel.ResetRegistrationForm(); 
     }
 
 

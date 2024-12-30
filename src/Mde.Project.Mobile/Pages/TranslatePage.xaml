@@ -63,14 +63,16 @@
                 Text="Start Listening"
                 StyleClass="baseButton"
                 FontSize="16"
-                Command="{Binding StartListeningCommand}"/>
+                Command="{Binding StartListeningCommand}"
+                IsVisible="{Binding IsListening, Converter={StaticResource InverseBooleanConverter}}" />
 
-            <!--<Button 
+            <Button 
                 Text="Stop Listening"
                 StyleClass="baseButton"
                 FontSize="16"
                 Command="{Binding StopListeningCommand}"
-                IsVisible="{Binding IsListening}" />-->
+                IsVisible="{Binding IsListening}" />
+
 
             <!-- Translation Section -->
             <Button 

@@ -80,7 +80,17 @@ public partial class TranslateViewModel : ObservableObject
             });
     }
 
-  
+    [RelayCommand]
+    private async Task StopListeningAsync()
+    {
+        IsListening = false;
+
+        var stopResult = await _speechService.StopContinuousRecognitionAsync();
+        if (!stopResult.IsSuccess)
+        {
+            await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
+        }
+    }
 
     [RelayCommand]
     public async Task TranslateSpeechAsync(){

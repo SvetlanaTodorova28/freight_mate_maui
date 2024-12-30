@@ -88,12 +88,32 @@ public class AzureSpeechService : ISpeechService
             };
 
             await _recognizer.StartContinuousRecognitionAsync();
-           // await _stopRecognizer.Task;  
+          
             return ServiceResult<bool>.Success(true);
         }
         catch (Exception ex)
         {
             return ServiceResult<bool>.Failure($"Failed to start continuous recognition: {ex.Message}");
+        }
+    }
+    public async Task<ServiceResult<bool>> StopContinuousRecognitionAsync()
+    {
+        if (_recognizer == null)
+        {
+            return ServiceResult<bool>.Failure("Recognition has not been started yet.");
+        }
+
+        try
+        {
+            await _recognizer.StopContinuousRecognitionAsync();
+            _recognizer.Dispose();
+            _recognizer = null;
+
+            return ServiceResult<bool>.Success(true);
+        }
+        catch (Exception ex)
+        {
+            return ServiceResult<bool>.Failure($"Failed to stop recognition: {ex.Message}");
         }
     }
 
