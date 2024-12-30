@@ -48,9 +48,8 @@ public partial class TranslateViewModel : ObservableObject
         _translationStorageService = translationStorageService;
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
-      
     }
-    public DateTime CurrentDate { get; } = DateTime.Now;
+    
     [RelayCommand]
     public async Task StartListeningAsync()
     {
@@ -59,7 +58,10 @@ public partial class TranslateViewModel : ObservableObject
 
         if (!setLanguageResult.IsSuccess)
         {
-            await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
+            MainThread.BeginInvokeOnMainThread(async() =>
+            {
+                await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
+            });
             return;
         }
 
@@ -68,33 +70,53 @@ public partial class TranslateViewModel : ObservableObject
         await _speechService.StartContinuousRecognitionAsync(
             onRecognized: text =>
             {
-                RecognizedText = text;
+                MainThread.BeginInvokeOnMainThread(async() =>
+                {
+                    RecognizedText = text;
+                });
             },
             onError: async error =>
             {
-                await _uiService.ShowSnackbarWarning(error);
+                MainThread.BeginInvokeOnMainThread(async() =>
+                {
+                    await _uiService.ShowSnackbarWarning(error);
+                });
             },
             onInfo: async info =>
             {
-                await _uiService.ShowSnackbarInfoAsync(info);
+                MainThread.BeginInvokeOnMainThread(async() =>
+                {
+                    await _uiService.ShowSnackbarInfoAsync(info);
+                });
             });
     }
 
-    [RelayCommand]
-    private async Task StopListeningAsync()
-    {
-        IsListening = false;
 
+
+    [RelayCommand]
+    public async Task StopListening()
+    {
         var stopResult = await _speechService.StopContinuousRecognitionAsync();
-        if (!stopResult.IsSuccess)
+        if (stopResult.IsSuccess)
         {
-            await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                IsListening = false;
+            });
+        }
+        else
+        {
+            MainThread.BeginInvokeOnMainThread(async() =>
+            {
+                await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
+            });
         }
     }
 
-    [RelayCommand]
-    public async Task TranslateSpeechAsync(){
 
+    [RelayCommand]
+    private async Task TranslateSpeechAsync()
+    {
         if (string.IsNullOrWhiteSpace(RecognizedText))
         {
             await _uiService.ShowSnackbarWarning("No text to translate.");
@@ -104,27 +126,21 @@ public partial class TranslateViewModel : ObservableObject
         string targetLanguageCode = GetLanguageCode(SelectedTargetLanguage);
         var translatedTextResult = await _translationService.TranslateTextAsync(RecognizedText, targetLanguageCode);
 
-        if (!translatedTextResult.IsSuccess)
+        if (!string.IsNullOrEmpty(translatedTextResult.Data))
         {
-            await _uiService.ShowSnackbarWarning(translatedTextResult.ErrorMessage);
-            return;
+            TranslatedText = translatedTextResult.Data;
+            await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel
+            {
+                OriginalText = RecognizedText,
+                TranslatedText = TranslatedText
+            });
+
+            await _uiService.ShowSnackbarSuccessAsync("Translation completed successfully!");
         }
-
-        TranslatedText = translatedTextResult.Data;
-
-        var saveResult = await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel
+        else
         {
-            OriginalText = RecognizedText,
-            TranslatedText = TranslatedText
-        });
-
-        if (!saveResult.IsSuccess)
-        {
-            await _uiService.ShowSnackbarWarning(saveResult.ErrorMessage);
-            return;
+            await _uiService.ShowSnackbarWarning("Translation failed.");
         }
-
-        await _uiService.ShowSnackbarSuccessAsync("Translation completed successfully!");
     }
 
     [RelayCommand]
