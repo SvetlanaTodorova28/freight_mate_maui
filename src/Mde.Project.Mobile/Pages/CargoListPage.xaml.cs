@@ -1,37 +1,42 @@
 
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.ViewModels;
 using SkiaSharp;
 
 namespace Mde.Project.Mobile.Pages;
 
 public partial class CargoListPage : ContentPage{
-    private readonly ICargoService _cargoService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
+    private readonly CargoService _cargoService;
+    private readonly CargoListViewModel _cargoListViewModel;
     private float _angle;
     private Timer _animationTimer;
    
     
-    public CargoListPage(CargoListViewModel cargoListViewModel){
+    public CargoListPage(CargoListViewModel cargoListViewModel, IMainThreadInvoker mainThreadInvoker){ 
         InitializeComponent();
-        BindingContext = cargoListViewModel;
+        BindingContext = _cargoListViewModel =  cargoListViewModel;
+        _mainThreadInvoker = mainThreadInvoker;
     }
    
     
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        MessagingCenter.Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
+        MessagingCenter
+            .Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
         {
-            var viewModel = BindingContext as CargoListViewModel;
-            viewModel?.RefreshListCommand.Execute(null);
+           
+            _cargoListViewModel?.RefreshListCommand.Execute(null);
             await Task.Delay(1000); 
-            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); 
+            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface()); 
         });
        
-        CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        viewmodel.CargosLoaded += OnCargosLoaded;  
-        viewmodel.RefreshListCommand?.Execute(null);
+        
+        _cargoListViewModel.CargosLoaded += OnCargosLoaded;  
+        _cargoListViewModel.RefreshListCommand?.Execute(null);
         
         Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
         {
@@ -54,15 +59,14 @@ public partial class CargoListPage : ContentPage{
    
     private void OnCargosLoaded(object sender, EventArgs e)
     {
-        Device.BeginInvokeOnMainThread(() => {
+        _mainThreadInvoker.InvokeOnMainThread(() => {
             canvasView.InvalidateSurface(); 
         });
     }
    
     private void LstCargos_OnItemTapped(object? sender, ItemTappedEventArgs e){
         Cargo cargo = e.Item as Cargo;
-        CargoListViewModel viewmodel = BindingContext as CargoListViewModel;
-        viewmodel.DetailsCargoCommand?.Execute(cargo);
+        _cargoListViewModel.DetailsCargoCommand?.Execute(cargo);
     }
 
     private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)

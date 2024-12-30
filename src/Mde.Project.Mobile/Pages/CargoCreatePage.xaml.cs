@@ -1,5 +1,6 @@
 
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.ViewModels;
 using SkiaSharp;
 
@@ -9,12 +10,14 @@ public partial class CargoCreatePage : ContentPage{
 
     private readonly CargoCreateViewModel _cargoCreateViewModel;
     private readonly IUiService _uiService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
     private float _angle;
     
-    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService){ 
+    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService, IMainThreadInvoker mainThreadInvoker){ 
         InitializeComponent();
         BindingContext = _cargoCreateViewModel = cargoCreateViewModel;
         _uiService = uiService;
+        _mainThreadInvoker = mainThreadInvoker;
     }
 
     protected override void OnAppearing(){
@@ -42,7 +45,7 @@ public partial class CargoCreatePage : ContentPage{
             }
             
             
-            Device.BeginInvokeOnMainThread(() => canvasView.InvalidateSurface()); 
+            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface()); 
         
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
             if (isCreated)
@@ -51,7 +54,7 @@ public partial class CargoCreatePage : ContentPage{
             }
             else
             {
-                Device.BeginInvokeOnMainThread(() => 
+                _mainThreadInvoker.InvokeOnMainThread(() => 
                     _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
                 );
             }
@@ -77,7 +80,7 @@ public partial class CargoCreatePage : ContentPage{
             }
 
             
-            Device.BeginInvokeOnMainThread(() => {
+            _mainThreadInvoker.InvokeOnMainThread(() => {
                 canvasView.InvalidateSurface(); 
             });
 
@@ -88,7 +91,7 @@ public partial class CargoCreatePage : ContentPage{
             }
             else
             {
-                Device.BeginInvokeOnMainThread(() => 
+                _mainThreadInvoker.InvokeOnMainThread(() => 
                     _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
                 );
             }

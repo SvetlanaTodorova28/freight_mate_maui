@@ -13,12 +13,15 @@ public class AppUserRegisterViewModel: ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationServiceMobile;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
 
-    public AppUserRegisterViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile, IFunctionAccessService functionAccessService)
+    public AppUserRegisterViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile, IFunctionAccessService functionAccessService,
+        IMainThreadInvoker mainThreadInvoker)
     {
         _uiService = uiService;
         _authenticationServiceMobile = authServiceMobile;
         _functionAccessService = functionAccessService;
+        _mainThreadInvoker = mainThreadInvoker;
         SelectedFunction = Function.Unknown;
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
         
@@ -83,7 +86,7 @@ public class AppUserRegisterViewModel: ObservableObject
         var functionsResult = await _functionAccessService.GetSelectableFunctionsAsync();
         if (functionsResult.IsSuccess)
         {
-            Device.BeginInvokeOnMainThread(() =>
+            _mainThreadInvoker.InvokeOnMainThread(() =>
             {
                 Functions = new ObservableCollection<Function>(functionsResult.Data);
             });
@@ -105,7 +108,7 @@ public class AppUserRegisterViewModel: ObservableObject
 
         if (result.IsSuccess)
         {
-            Device.BeginInvokeOnMainThread(async () => 
+            _mainThreadInvoker.InvokeOnMainThread(async () => 
             {
                 await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
                 ResetRegistrationForm(); // Reset de form na succesvolle melding

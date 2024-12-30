@@ -10,6 +10,7 @@ public partial class TranslateViewModel : ObservableObject
     private readonly ITranslationStorageService _translationStorageService;
     private readonly ITextToSpeechService _textToSpeechService;
     private readonly IUiService _uiService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
 
     [ObservableProperty]
     private List<LanguageOption> availableLanguages = new()
@@ -41,13 +42,15 @@ public partial class TranslateViewModel : ObservableObject
         ITranslationService translationService,
         ITranslationStorageService translationStorageService,
         ITextToSpeechService textToSpeechService,
-        IUiService uiService)
+        IUiService uiService,
+        IMainThreadInvoker mainThreadInvoker)
     {
         _speechService = speechService;
         _translationService = translationService;
         _translationStorageService = translationStorageService;
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
+        _mainThreadInvoker = mainThreadInvoker;
     }
     
     [RelayCommand]
@@ -58,7 +61,7 @@ public partial class TranslateViewModel : ObservableObject
 
         if (!setLanguageResult.IsSuccess)
         {
-            MainThread.BeginInvokeOnMainThread(async() =>
+            _mainThreadInvoker.InvokeOnMainThread(async() =>
             {
                 await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
             });
@@ -70,21 +73,21 @@ public partial class TranslateViewModel : ObservableObject
         await _speechService.StartContinuousRecognitionAsync(
             onRecognized: text =>
             {
-                MainThread.BeginInvokeOnMainThread(async() =>
+                _mainThreadInvoker.InvokeOnMainThread(() =>
                 {
                     RecognizedText = text;
                 });
             },
             onError: async error =>
             {
-                MainThread.BeginInvokeOnMainThread(async() =>
+                _mainThreadInvoker.InvokeOnMainThread(async () =>
                 {
                     await _uiService.ShowSnackbarWarning(error);
                 });
             },
             onInfo: async info =>
             {
-                MainThread.BeginInvokeOnMainThread(async() =>
+                _mainThreadInvoker.InvokeOnMainThread(async () =>
                 {
                     await _uiService.ShowSnackbarInfoAsync(info);
                 });
@@ -99,14 +102,14 @@ public partial class TranslateViewModel : ObservableObject
         var stopResult = await _speechService.StopContinuousRecognitionAsync();
         if (stopResult.IsSuccess)
         {
-            MainThread.BeginInvokeOnMainThread(() =>
+            _mainThreadInvoker.InvokeOnMainThread(() =>
             {
                 IsListening = false;
             });
         }
         else
         {
-            MainThread.BeginInvokeOnMainThread(async() =>
+            _mainThreadInvoker.InvokeOnMainThread(async () =>
             {
                 await _uiService.ShowSnackbarWarning(stopResult.ErrorMessage);
             });
@@ -115,7 +118,7 @@ public partial class TranslateViewModel : ObservableObject
 
 
     [RelayCommand]
-    private async Task TranslateSpeechAsync()
+    public async Task TranslateSpeechAsync()
     {
         if (string.IsNullOrWhiteSpace(RecognizedText))
         {
@@ -126,7 +129,7 @@ public partial class TranslateViewModel : ObservableObject
         string targetLanguageCode = GetLanguageCode(SelectedTargetLanguage);
         var translatedTextResult = await _translationService.TranslateTextAsync(RecognizedText, targetLanguageCode);
 
-        if (!string.IsNullOrEmpty(translatedTextResult.Data))
+        if (translatedTextResult.IsSuccess && !string.IsNullOrEmpty(translatedTextResult.Data))
         {
             TranslatedText = translatedTextResult.Data;
             await _translationStorageService.SaveTranslationAsync(new TranslationSpeechModel
@@ -144,7 +147,7 @@ public partial class TranslateViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SpeakTranslatedTextAsync()
+    public async Task SpeakTranslatedTextAsync()
     {
         if (string.IsNullOrWhiteSpace(TranslatedText))
         {

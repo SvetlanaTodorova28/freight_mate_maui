@@ -148,7 +148,7 @@ public class CargoCreateViewModel : ObservableObject
             {
                 await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
                 await NotifyUserAsync(SelectedUser.Id, Destination);
-                await Shell.Current.GoToAsync("//CargoListPage");
+               await Shell.Current.GoToAsync("//CargoListPage");
             }
             else
             {
