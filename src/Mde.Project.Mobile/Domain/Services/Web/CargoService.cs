@@ -211,11 +211,10 @@ public class CargoService : ICargoService
             var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
             if (response.IsSuccessStatusCode)
             {
-                return ServiceResult<string>.Success("Cargo successfully deleted.");
+                return ServiceResult<string>.Success( "Cargo deleted successfully.");
             }
             else
             {
-                var errorMessage = await response.Content.ReadAsStringAsync();
                 return ServiceResult<string>.Failure("Failed to delete cargo. Please try again later.");
             }
         }

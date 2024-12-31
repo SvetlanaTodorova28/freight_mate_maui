@@ -33,13 +33,14 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 var token = await SecureStorageHelper.GetTokenAsync();
                 return !string.IsNullOrEmpty(token)
                     ? ServiceResult<string>.Success(token)
-                    : ServiceResult<string>.Failure("No token found in secure storage.");
+                    : ServiceResult<string>.Failure("Authentication required. Please log in to continue.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ServiceResult<string>.Failure($"Unexpected error retrieving token: {ex.Message}");
+                return ServiceResult<string>.Failure("Unable to access secure storage. Please try again later or contact support.");
             }
         }
+
 
         public async Task<ServiceResult<bool>> IsAuthenticatedAsync()
         {
@@ -177,7 +178,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 var tokenResult = await GetTokenAsync();
                 if (!tokenResult.IsSuccess)
                 {
-                    return ServiceResult<string>.Failure(tokenResult.ErrorMessage);
+                    return tokenResult; 
                 }
 
                 var handler = new JwtSecurityTokenHandler();
@@ -186,11 +187,11 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
                 return userIdClaim != null
                     ? ServiceResult<string>.Success(userIdClaim.Value)
-                    : ServiceResult<string>.Failure("User ID claim not found in token.");
+                    : ServiceResult<string>.Failure("Unable to verify user identity. Please log in again.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ServiceResult<string>.Failure($"Unexpected error while retrieving user ID: {ex.Message}");
+                return ServiceResult<string>.Failure("An unexpected issue occurred while processing your authentication information. Please try again or contact support.");
             }
         }
 

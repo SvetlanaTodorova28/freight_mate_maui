@@ -42,7 +42,7 @@ public class AppUserService : IAppUserService
         }
         catch (Exception ex)
         {
-            return ServiceResult<List<AppUserResponseDto>>.Failure($"An error occurred while trying to fetch user details. Please try again later.");
+            return ServiceResult<List<AppUserResponseDto>>.Failure("An error occurred while trying to fetch user details. Please try again later.");
         }
     }
 
@@ -57,7 +57,7 @@ public class AppUserService : IAppUserService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"An unexpected error occurred while updating the notification token. Please contact support if the problem persists.");
+            return ServiceResult<bool>.Failure("An unexpected error occurred while updating the notification token. Please contact support if the problem persists.");
         }
     }
 
@@ -75,7 +75,7 @@ public class AppUserService : IAppUserService
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An unexpected error occurred while retrieving the notification token. Please contact support if the problem persists.");
+            return ServiceResult<string>.Failure("An unexpected error occurred while retrieving the notification token. Please contact support if the problem persists.");
         }
     }
 
@@ -100,11 +100,11 @@ public class AppUserService : IAppUserService
         }
         catch (HttpRequestException ex)
         {
-            return ServiceResult<string>.Failure($"A network error occurred while trying to fetch user details. Please check your network connection and try again.");
+            return ServiceResult<string>.Failure("A network error occurred while trying to fetch user details. Please check your network connection and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An unexpected error occurred. Please contact support if the problem persists.");
+            return ServiceResult<string>.Failure("An unexpected error occurred. Please contact support if the problem persists.");
         }
     }
 
@@ -131,7 +131,7 @@ public class AppUserService : IAppUserService
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An unexpected error occurred while retrieving your user ID. Please contact support if the problem persists");
+            return ServiceResult<string>.Failure("An unexpected error occurred while retrieving your user ID. Please contact support if the problem persists");
         }
     }
 

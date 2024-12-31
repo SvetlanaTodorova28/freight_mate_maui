@@ -43,7 +43,7 @@ public class AzureSpeechService : ISpeechService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Failed to set recognition language: {ex.Message}");
+            return ServiceResult<bool>.Failure($"Failed to set recognition language. Please try again later.");
         }
     }
 
@@ -90,7 +90,7 @@ public class AzureSpeechService : ISpeechService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Failed to start continuous recognition: {ex.Message}");
+            return ServiceResult<bool>.Failure($"Failed to start continuous recognition. Please try again later.");
         }
     }
 
@@ -111,7 +111,7 @@ public class AzureSpeechService : ISpeechService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Failed to stop recognition: {ex.Message}");
+            return ServiceResult<bool>.Failure($"Failed to stop recognition. Please try again later.");
         }
     }
 }

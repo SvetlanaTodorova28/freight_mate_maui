@@ -128,7 +128,7 @@ public class CargoListViewModel : ObservableObject
         catch (Exception ex)
         {
             Cargos = new ObservableCollection<Cargo>();
-            await _uiService.ShowSnackbarWarning($"Error refreshing cargo list: {ex.Message}");
+            await _uiService.ShowSnackbarWarning($"Error refreshing cargo list. ");
         }
         finally
         {
@@ -174,11 +174,11 @@ public class CargoListViewModel : ObservableObject
         if (deleteResult.IsSuccess)
         {
             Cargos.Remove(cargo);
-            await _uiService.ShowSnackbarSuccessAsync("Cargo deleted successfully.");
+            await _uiService.ShowSnackbarSuccessAsync(deleteResult.Message);
         }
         else
         {
-            await _uiService.ShowSnackbarWarning($"Failed to delete cargo: {deleteResult.ErrorMessage}");
+            await _uiService.ShowSnackbarWarning(deleteResult.ErrorMessage);
         }
     }
 

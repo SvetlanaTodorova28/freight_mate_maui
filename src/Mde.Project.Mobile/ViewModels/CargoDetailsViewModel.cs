@@ -28,14 +28,9 @@ public class CargoDetailsViewModel:ObservableObject{
                 
             if (selectedCargo != null)
             {
-               
                 Destination = selectedCargo.Destination;
                 TotalWeight = selectedCargo.TotalWeight;
                 IsDangerous = selectedCargo.IsDangerous;
-            }
-            else{
-                Console.Error.WriteLine("Cannot find Cargo with this id");
-
             }
         }
     }
@@ -70,10 +65,6 @@ public class CargoDetailsViewModel:ObservableObject{
     
     
     public ICommand NavigateCommand { get; }
-  
-    
-   
-
 
     
     private async Task OpenNavigationApp(string destination)

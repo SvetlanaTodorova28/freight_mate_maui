@@ -170,12 +170,12 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 }
                 else
                 {
-                    return ServiceResult<string>.Failure($"OCR image request failed");
+                    return ServiceResult<string>.Failure("OCR image request failed");
                 }
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"An error occurred while processing the OCR request:. Please contact support if the problem persists.");
+                return ServiceResult<string>.Failure("An error occurred while processing the OCR request:. Please contact support if the problem persists.");
             }
         }
 
