@@ -34,12 +34,12 @@ public class CargoService : ICargoService
             }
             else
             {
-                return ServiceResult<List<CargoResponseDto>>.Failure($"Failed to fetch cargos. Status code: {response.StatusCode}");
+                return ServiceResult<List<CargoResponseDto>>.Failure("Failed to fetch cargos.");
             }
         }
         catch (Exception ex)
         {
-            return ServiceResult<List<CargoResponseDto>>.Failure($"An unexpected error occurred: {ex.Message}");
+            return ServiceResult<List<CargoResponseDto>>.Failure("An unexpected error occurred while fetching cargos. Please contact support if the problem persists.");
         }
     }
 
@@ -79,7 +79,7 @@ public class CargoService : ICargoService
 
             if (response.IsSuccessStatusCode)
             {
-                return ServiceResult<string>.Success("Cargo saved successfully.");
+                return ServiceResult<string>.Success("Cargo saved successfully 📦");
             }
             else
             {
@@ -89,7 +89,7 @@ public class CargoService : ICargoService
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An error occurred while saving the cargo: {ex.Message}");
+            return ServiceResult<string>.Failure($"An error occurred while saving the cargo. Please contact support if the problem persists.");
         }
     }
 
@@ -98,7 +98,7 @@ public class CargoService : ICargoService
     {
         if (stream == null)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure("No file was provided.");
+            return ServiceResult<CargoCreationResultDto>.Failure("Please provide a file to process.");
         }
 
         try
@@ -128,20 +128,18 @@ public class CargoService : ICargoService
                     UserId = parsedCargoResult.Data.AppUserId,
                     Destination = parsedCargoResult.Data.Destination
                 };
-                return ServiceResult<CargoCreationResultDto>.Success(result);
-            }
+                return ServiceResult<CargoCreationResultDto>.Success(result, "Cargo saved successfully 📦");
 
-            var errorMessage = await response.Content.ReadAsStringAsync();
-            return ServiceResult<CargoCreationResultDto>.Failure(errorMessage);
+            }
+            
+            return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo: {ex.Message}");
+            return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo. Please contact support if the problem persists.");
         }
     }
-
-
-
+    
     
     private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
     {
@@ -189,7 +187,7 @@ public class CargoService : ICargoService
         }
         catch (Exception ex)
         {
-            return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details: {ex.Message}");
+            return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details. Please contact support if the problem persists.");
         }
     }
   
@@ -218,12 +216,12 @@ public class CargoService : ICargoService
             else
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
-                return ServiceResult<string>.Failure($"Failed to delete cargo: {errorMessage}");
+                return ServiceResult<string>.Failure("Failed to delete cargo. Please try again later.");
             }
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Exception when deleting cargo: {ex.Message}");
+            return ServiceResult<string>.Failure("An unexpected error occurred while deleting cargo. Please contact support.");
         }
     }
 

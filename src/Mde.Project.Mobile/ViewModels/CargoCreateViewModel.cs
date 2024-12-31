@@ -156,7 +156,7 @@ public class CargoCreateViewModel : ObservableObject
             var result = await _cargoService.CreateOrUpdateCargo(cargo, TotalWeightText);
             if (result.IsSuccess)
             {
-                await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+                await _uiService.ShowSnackbarSuccessAsync(result.Data);
                 await NotifyUserAsync(SelectedUser.Id, Destination);
                await Shell.Current.GoToAsync("//CargoListPage");
             }
@@ -235,7 +235,7 @@ public class CargoCreateViewModel : ObservableObject
 
         if (result.IsSuccess)
         {
-            await _uiService.ShowSnackbarSuccessAsync("Cargo saved successfully 📦");
+            await _uiService.ShowSnackbarSuccessAsync(result.Message);
             await NotifyUserAsync(result.Data.UserId, result.Data.Destination);
             await Shell.Current.GoToAsync("//CargoListPage");
             return true;
