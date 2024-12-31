@@ -48,7 +48,7 @@ public class CargoService : ICargoService
     {
         if (!double.TryParse(totalWeightText, out double parsedWeight) || parsedWeight <= 0)
         {
-            return ServiceResult<string>.Failure("Total weight must be a positive number.");
+            return ServiceResult<string>.Failure("Weight must be a positive number.");
         }
         if (string.IsNullOrWhiteSpace(cargo.Destination))
         {
@@ -83,13 +83,13 @@ public class CargoService : ICargoService
             }
             else
             {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                return ServiceResult<string>.Failure(errorMessage);
+                
+                return ServiceResult<string>.Failure("Cargo could not be saved. Please try again.");
             }
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"An error occurred while saving the cargo. Please contact support if the problem persists.");
+            return ServiceResult<string>.Failure("An error occurred while saving the cargo. Please contact support if the problem persists.");
         }
     }
 
@@ -211,7 +211,7 @@ public class CargoService : ICargoService
             var response = await _httpClient.DeleteAsync($"/api/Cargos/Delete/{cargoId}");
             if (response.IsSuccessStatusCode)
             {
-                return ServiceResult<string>.Success( "Cargo deleted successfully.");
+                return ServiceResult<string>.Success("Cargo deleted successfully ❌" );
             }
             else
             {

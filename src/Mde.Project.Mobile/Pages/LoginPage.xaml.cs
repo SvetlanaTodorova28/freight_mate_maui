@@ -13,10 +13,12 @@ public partial class LoginPage : ContentPage
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly IAppUserService _appUserService;
     private readonly LoginViewModel _loginViewModel;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
+    private bool _isRegistrationSuccessful;
 
     public LoginPage(LoginViewModel loginViewModel, IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel,INativeAuthentication nativeAuthentication,
-        IAppUserService appUserService)
+        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker , bool isRegistrationSuccessful = false)
     {
         _uiService = uiService;
         _loginViewModel = loginViewModel;
@@ -25,14 +27,27 @@ public partial class LoginPage : ContentPage
         _uiService = uiService;
         _appUserService = appUserService; 
         _userRegisterViewModel = userRegisterViewModel;
+        _mainThreadInvoker = mainThreadInvoker; 
+        _isRegistrationSuccessful = isRegistrationSuccessful;
         InitializeComponent();
         BindingContext = _loginViewModel = loginViewModel;
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (_isRegistrationSuccessful)
+        {
+            _mainThreadInvoker.InvokeOnMainThreadAsync(async () => 
+            {
+                await _uiService.ShowSnackbarSuccessAsync("Registration successful! You can now login.");
+            });
+        }
     }
 
     private void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
     {
         Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService));
+            _appUserService, _mainThreadInvoker));
     }
 
     private async void Login_OnClicked(object sender, EventArgs e)

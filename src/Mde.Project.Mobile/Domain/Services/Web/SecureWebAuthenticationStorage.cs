@@ -69,12 +69,13 @@ namespace Mde.Project.Mobile.Domain.Services.Web
         {
             if (string.IsNullOrWhiteSpace(username))
                 return ServiceResult<bool>.Failure("Username cannot be empty.");
+            
+            if (!EmailValidator.IsValidEmail(username))
+                return ServiceResult<bool>.Failure("Please enter a valid email address.");
 
             if (string.IsNullOrWhiteSpace(password))
                 return ServiceResult<bool>.Failure("Password cannot be empty.");
-
-            if (!EmailValidator.IsValidEmail(username))
-                return ServiceResult<bool>.Failure("Please enter a valid email address.");
+            
 
             try
             {
@@ -147,7 +148,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error during registration. Please try again later or contact support.");
+                return ServiceResult<bool>.Failure("Unexpected error during registration. Please try again later or contact support.");
             }
         }
 
@@ -166,7 +167,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error during logout. Please try again later or contact support.");
+                return ServiceResult<bool>.Failure("Unexpected error during logout. Please try again later or contact support.");
             }
             
         }

@@ -14,6 +14,7 @@ public class LoginViewModel : ObservableObject
     private readonly IUiService _uiService;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly IAppUserService _appUserService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
 
     public ICommand LoginCommand { get; }
     public ICommand FaceLoginCommand { get; }
@@ -23,14 +24,16 @@ public class LoginViewModel : ObservableObject
         IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel,
         INativeAuthentication nativeAuthentication,
-        IAppUserService appUserService)
+        IAppUserService appUserService,
+        IMainThreadInvoker mainThreadInvoker)
     {
         _uiService = uiService;
         _authenticationServiceMobile = authenticationServiceMobile;
         _userRegisterViewModel = userRegisterViewModel;
         _nativeAuthentication = nativeAuthentication;
         _appUserService = appUserService;
-
+        _mainThreadInvoker = mainThreadInvoker;
+        
         LoginCommand = new AsyncRelayCommand(ExecuteLoginCommandAsync);
         FaceLoginCommand = new AsyncRelayCommand(ExecuteFaceLoginCommandAsync);
     }
@@ -66,7 +69,8 @@ public class LoginViewModel : ObservableObject
             {
                 await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
             }
-            Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
+            Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService,
+                _mainThreadInvoker);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -108,7 +112,8 @@ public class LoginViewModel : ObservableObject
                     {
                         await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
                     }
-                    Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
+                    Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService,
+                        _mainThreadInvoker);
                     await Shell.Current.GoToAsync("//CargoListPage");
                 }
                 else

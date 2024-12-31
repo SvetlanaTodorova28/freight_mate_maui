@@ -13,11 +13,12 @@ namespace Mde.Project.Mobile
         private readonly INativeAuthentication _nativeAuthentication;
         private readonly IUiService _uiService;
         private readonly IAppUserService _appUserService;
+        private readonly IMainThreadInvoker _mainThreadInvoker;
         private readonly AppUserRegisterViewModel _userRegisterViewModel;
         private readonly LoginViewModel _loginViewModel;
         public AppShell( IAuthenticationServiceMobile authenticationService, IUiService uiService,
         AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel,
-        INativeAuthentication nativeAuthentication, IAppUserService appUserService)
+        INativeAuthentication nativeAuthentication, IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker)
         {
             InitializeComponent();
             _authenticationService = authenticationService;
@@ -26,8 +27,9 @@ namespace Mde.Project.Mobile
             _nativeAuthentication = nativeAuthentication;
             _uiService = uiService;
             _appUserService = appUserService;
+            _mainThreadInvoker = mainThreadInvoker;
             BindingContext = new BaseViewModel(_uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-                _appUserService);
+                _appUserService, _mainThreadInvoker);
           
             
         }

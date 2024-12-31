@@ -10,12 +10,13 @@ public partial class WelcomePage : ContentPage{
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly IAppUserService _appUserService;
     private readonly LoginViewModel _loginViewModel; 
+    private readonly IMainThreadInvoker _mainThreadInvoker; 
     private readonly INativeAuthentication _nativeAuthentication;
     
 
     public WelcomePage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
     AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication,
-    IAppUserService appUserService
+    IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker
     ){
        
         InitializeComponent();
@@ -25,18 +26,18 @@ public partial class WelcomePage : ContentPage{
         _nativeAuthentication = nativeAuthentication;
         _authenticationServiceMobile = authenticationServiceMobile;
         _appUserService = appUserService;
-       
+       _mainThreadInvoker = mainThreadInvoker;
 
     }
 
     private async void CrtAccount_OnClicked(object? sender, EventArgs e){
         await Navigation.PushAsync(new AppUserRegisterPage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel,_nativeAuthentication,
-            _appUserService));
+            _appUserService, _mainThreadInvoker));
     }
 
     private async void Login_OnClicked(object? sender, EventArgs e){
         var loginViewModel = new LoginViewModel(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
-            _nativeAuthentication,_appUserService )
+            _nativeAuthentication,_appUserService,_mainThreadInvoker )
         {
             UserName = "",
             Password = ""
@@ -47,7 +48,8 @@ public partial class WelcomePage : ContentPage{
             _authenticationServiceMobile, 
             _userRegisterViewModel, 
             _nativeAuthentication,
-            _appUserService)
+            _appUserService,
+            _mainThreadInvoker)
         {
             BindingContext = loginViewModel
         };

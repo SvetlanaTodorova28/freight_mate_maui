@@ -12,12 +12,13 @@ public partial class AppUserRegisterPage : ContentPage{
     private readonly INativeAuthentication _nativeAuthentication;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly IAppUserService _appUserService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly LoginViewModel _loginViewModel;
   
    
     public AppUserRegisterPage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication,
-        IAppUserService appUserService){
+        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker){
         InitializeComponent();
         _uiService = uiService;
         _loginViewModel = loginViewModel;
@@ -25,6 +26,7 @@ public partial class AppUserRegisterPage : ContentPage{
         _authenticationServiceMobile = authenticationServiceMobile;
         _uiService = uiService;
         _appUserService = appUserService; 
+        _mainThreadInvoker = mainThreadInvoker;
          BindingContext =  _userRegisterViewModel = userRegisterViewModel;
       
        
@@ -32,18 +34,14 @@ public partial class AppUserRegisterPage : ContentPage{
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
         Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService));
+            _appUserService, _mainThreadInvoker));
     }
     
     protected override void OnAppearing()
     {
         _userRegisterViewModel?.OnAppearingCommand.Execute(null);
     }
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-       // _userRegisterViewModel.ResetRegistrationForm(); 
-    }
+   
 
 
     private async void CreateAccount_OnClicked(object sender, EventArgs e){
@@ -59,7 +57,9 @@ public partial class AppUserRegisterPage : ContentPage{
                     _authenticationServiceMobile,
                     _userRegisterViewModel,
                     _nativeAuthentication, 
-                    _appUserService));
+                    _appUserService,
+                    _mainThreadInvoker,
+                    true));
         }
         else{
             await Navigation.PopModalAsync();

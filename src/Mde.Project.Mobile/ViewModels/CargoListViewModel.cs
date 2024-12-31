@@ -174,7 +174,7 @@ public class CargoListViewModel : ObservableObject
         if (deleteResult.IsSuccess)
         {
             Cargos.Remove(cargo);
-            await _uiService.ShowSnackbarSuccessAsync(deleteResult.Message);
+            await _uiService.ShowSnackbarInfoAsync(deleteResult.Data);
         }
         else
         {
