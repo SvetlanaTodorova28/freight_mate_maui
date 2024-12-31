@@ -193,7 +193,6 @@ public class CargoCreateViewModel : ObservableObject
             var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
             if (result.IsSuccess)
             {
-               
                  userFcmToken = result.Data;
             }
             else{

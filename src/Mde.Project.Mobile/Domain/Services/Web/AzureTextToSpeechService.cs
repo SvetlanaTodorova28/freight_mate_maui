@@ -35,7 +35,7 @@ namespace Mde.Project.Mobile.Domain.Services
                     var result = await synthesizer.SpeakTextAsync(text);
                     if (result.Reason == ResultReason.SynthesizingAudioCompleted)
                     {
-                        return ServiceResult<bool>.Success(true);
+                        return ServiceResult<bool>.Success(true,"Speech synthesized successfully");
                     }
                     else
                     {

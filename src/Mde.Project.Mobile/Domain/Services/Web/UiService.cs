@@ -17,7 +17,7 @@ public class UiService : IUiService
             CharacterSpacing = 1
         };
 
-        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
+        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(3), snackbarOptions);
         await snackbar.Show();
     }
     public async Task ShowSnackbarWarning(string message)
@@ -50,8 +50,7 @@ public class UiService : IUiService
         }
         catch (Exception ex)
         {
-            // Log or handle exceptions as necessary
-            Console.WriteLine("Error accessing file: " + ex.Message);
+           this.ShowSnackbarWarning("An error occurred while picking a file");
         }
         return null;
     }
@@ -65,7 +64,7 @@ public class UiService : IUiService
             CharacterSpacing = 1
         };
 
-        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(5), snackbarOptions);
+        var snackbar = Snackbar.Make(message, null, "", TimeSpan.FromSeconds(3), snackbarOptions);
         await snackbar.Show();
     }
 

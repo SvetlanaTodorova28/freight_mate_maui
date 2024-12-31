@@ -29,7 +29,7 @@ public class TranslationStorageService : ITranslationStorageService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Failed to save translation: {ex.Message}");
+            return ServiceResult<bool>.Failure($"Failed to save translation.");
         }
     }
 
@@ -58,7 +58,7 @@ public class TranslationStorageService : ITranslationStorageService
         }
         catch (Exception ex)
         {
-            return ServiceResult<List<TranslationSpeechModel>>.Failure($"Failed to load translations: {ex.Message}");
+            return ServiceResult<List<TranslationSpeechModel>>.Failure($"Failed to load translations. Please try again later.");
         }
     }
 }

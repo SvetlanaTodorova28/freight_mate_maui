@@ -48,7 +48,7 @@ public class AzureTranslationService : ITranslationService
 
                 if (!string.IsNullOrEmpty(translatedText))
                 {
-                    return ServiceResult<string>.Success(translatedText);
+                    return ServiceResult<string>.Success(translatedText, "Translation completed successfully.");
                 }
 
                 return ServiceResult<string>.Failure("Translation result was empty.");

@@ -64,14 +64,14 @@ public class LoginViewModel : ObservableObject
             var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
             if (!fcmResult.IsSuccess)
             {
-                await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage?? "Failed to update FCM token");
+                await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
             }
             Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
-            await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Login failed. Please check your username and password and try again.");
+            await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage);
         }
     }
 
@@ -106,24 +106,24 @@ public class LoginViewModel : ObservableObject
                     var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
                     if (!fcmResult.IsSuccess)
                     {
-                        await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage?? "Failed to update FCM token");
+                        await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
                     }
                     Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService);
                     await Shell.Current.GoToAsync("//CargoListPage");
                 }
                 else
                 {
-                    await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage ?? "Automatic login failed after biometric authentication.");
+                    await _uiService.ShowSnackbarWarning(loginResult.ErrorMessage);
                 }
             }
             else
             {
-                await _uiService.ShowSnackbarWarning(isAuthenticated.ErrorMessage ?? "Authentication failed. Please try again.");
+                await _uiService.ShowSnackbarWarning(isAuthenticated.ErrorMessage);
             }
         }
         catch (Exception ex)
         {
-            await _uiService.ShowSnackbarWarning($"An error occurred during biometric authentication: {ex.Message}");
+            await _uiService.ShowSnackbarWarning($"An error occurred during biometric authentication");
         }
     }
 

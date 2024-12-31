@@ -138,11 +138,11 @@ public partial class TranslateViewModel : ObservableObject
                 TranslatedText = TranslatedText
             });
 
-            await _uiService.ShowSnackbarSuccessAsync("Translation completed successfully!");
+            await _uiService.ShowSnackbarSuccessAsync(translatedTextResult.Message);
         }
         else
         {
-            await _uiService.ShowSnackbarWarning("Translation failed.");
+            await _uiService.ShowSnackbarWarning(translatedTextResult.ErrorMessage);
         }
     }
 
@@ -159,7 +159,7 @@ public partial class TranslateViewModel : ObservableObject
 
         if (synthesisResult.IsSuccess)
         {
-            await _uiService.ShowSnackbarSuccessAsync("Text-to-speech synthesis completed!");
+            await _uiService.ShowSnackbarSuccessAsync(synthesisResult.Message);
         }
         else
         {
