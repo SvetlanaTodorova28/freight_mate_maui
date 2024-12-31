@@ -54,11 +54,11 @@ public class AzureTranslationService : ITranslationService
                 return ServiceResult<string>.Failure("Translation result was empty.");
             }
 
-            return ServiceResult<string>.Failure($"Translation API request failed with status code: {response.StatusCode}");
+            return ServiceResult<string>.Failure("Translation API request failed with status code. Check the internet connection and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Unexpected error during translation: {ex.Message}");
+            return ServiceResult<string>.Failure("Unexpected error during translation. Please contact support if the problem persists. ");
         }
     }
 

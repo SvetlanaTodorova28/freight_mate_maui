@@ -39,13 +39,13 @@ namespace Mde.Project.Mobile.Domain.Services
                     }
                     else
                     {
-                        return ServiceResult<bool>.Failure($"Speech synthesis failed: {result.Reason}");
+                        return ServiceResult<bool>.Failure($"Speech synthesis failed. Please try again later");
                     }
                 }
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Exception during speech synthesis: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Exception during speech synthesis. ");
             }
         }
 
