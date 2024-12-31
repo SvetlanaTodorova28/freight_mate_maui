@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -30,14 +31,25 @@ public class CargoListViewModel : ObservableObject
         DetailsCargoCommand = new AsyncRelayCommand<Cargo>(NavigateToDetailsCargoAsync);
         PerformSearchCommand = new AsyncRelayCommand<string>(PerformSearchAsync);
         TextChangedCommand = new AsyncRelayCommand<string>(OnSearchTextChanged);
-
+        
+        UpdateSnowVisibility();
         LoadUserFunction();
         LoadUserFirstName();
+        
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
     }
 
     #region Bindings
+    private bool _snowVisibility;
+    public bool SnowVisibility
+    {
+        get => _snowVisibility;
+        private set => SetProperty(ref _snowVisibility, value);
+    }
     
-    public DateTime CurrentDate { get; } = DateTime.Now;
 
     private ObservableCollection<Cargo> _cargos = new();
     public ObservableCollection<Cargo> Cargos
@@ -89,6 +101,7 @@ public class CargoListViewModel : ObservableObject
     #endregion
 
     #region Methods
+  
 
     public event EventHandler CargosLoaded;
 
@@ -261,6 +274,11 @@ public class CargoListViewModel : ObservableObject
         {
             await PerformSearchAsync(newText);
         }
+    }
+    
+    public void UpdateSnowVisibility()
+    {
+        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
     }
 
     #endregion

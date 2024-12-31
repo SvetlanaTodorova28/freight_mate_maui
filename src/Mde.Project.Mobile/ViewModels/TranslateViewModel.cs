@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Helpers;
 
 public partial class TranslateViewModel : ObservableObject
 {
@@ -51,6 +52,17 @@ public partial class TranslateViewModel : ObservableObject
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
         _mainThreadInvoker = mainThreadInvoker;
+        UpdateSnowVisibility();
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
+    }
+    private bool _snowVisibility;
+    public bool SnowVisibility
+    {
+        get => _snowVisibility;
+        private set => SetProperty(ref _snowVisibility, value);
     }
     
     [RelayCommand]
@@ -178,5 +190,10 @@ public partial class TranslateViewModel : ObservableObject
             LanguageOption.Bulgarian => "bg-BG",
             _ => "en-US"
         };
+    }
+    
+    public void UpdateSnowVisibility()
+    {
+        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
     }
 }

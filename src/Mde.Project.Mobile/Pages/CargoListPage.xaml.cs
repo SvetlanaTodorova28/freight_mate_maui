@@ -28,12 +28,10 @@ public partial class CargoListPage : ContentPage{
         MessagingCenter
             .Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
         {
-           
             _cargoListViewModel?.RefreshListCommand.Execute(null);
             await Task.Delay(1000); 
             _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface()); 
         });
-       
         
         _cargoListViewModel.CargosLoaded += OnCargosLoaded;  
         _cargoListViewModel.RefreshListCommand?.Execute(null);

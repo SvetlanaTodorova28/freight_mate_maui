@@ -1,19 +1,26 @@
-using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Input;
-using Mde.Project.Mobile.Domain.Services.Interfaces;
 
-namespace Mde.Project.Mobile.ViewModels
+
+public class SettingsViewModel : ObservableObject
 {
-    public class SettingsViewModel : ObservableObject
+    public SettingsViewModel()
     {
-      
+        SnowEnabled = Preferences.Get("SnowEnabled", true);
+    }
 
-       
-        public SettingsViewModel()
+    private bool _snowEnabled;
+    public bool SnowEnabled
+    {
+        get => _snowEnabled;
+        set
         {
+            if (SetProperty(ref _snowEnabled, value))
+            {
+               
+                Preferences.Set("SnowEnabled", value);
+                
+                MessagingCenter.Send(this, "SnowToggleChanged", value);
+            }
         }
-
-      
     }
 }
