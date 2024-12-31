@@ -48,8 +48,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorResponse = await response.Content.ReadAsStringAsync();
-                    return ServiceResult<string>.Failure($"OCR request failed: {response.StatusCode}, Details: {errorResponse}");
+                    return ServiceResult<string>.Failure("Failed to process the PDF file. Please try again later.");
                 }
 
                 if (!response.Headers.TryGetValues("Operation-Location", out var operationLocations))
@@ -67,7 +66,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"An error occurred: {ex.Message}");
+                return ServiceResult<string>.Failure($"An unexpected error occurred while extracting pdf file. Please contact support if the problem persists.");
             }
         }
 
@@ -171,12 +170,12 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 }
                 else
                 {
-                    return ServiceResult<string>.Failure($"OCR image request failed: {response.StatusCode}");
+                    return ServiceResult<string>.Failure($"OCR image request failed");
                 }
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"An error occurred while processing the OCR request: {ex.Message}");
+                return ServiceResult<string>.Failure($"An error occurred while processing the OCR request:. Please contact support if the problem persists.");
             }
         }
 
@@ -209,7 +208,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (JsonException ex)
             {
-                return ServiceResult<string>.Failure($"Failed to parse OCR response JSON: {ex.Message}");
+                return ServiceResult<string>.Failure("Failed to parse OCR response JSON. Please contact support if the problem persists.");
             }
         }
 

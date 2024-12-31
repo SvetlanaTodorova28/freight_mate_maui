@@ -120,11 +120,21 @@ public class CargoCreateViewModel : ObservableObject
 
     #region Methods
     
-    private async Task LoadUsers()
+    public async Task LoadUsers()
     {
+        IsLoading = true;
         var fetchedUsers = await _appUserService.GetUsersWithFunctions();
-        Users = new ObservableCollection<AppUserResponseDto>(fetchedUsers.Data);
+        if (fetchedUsers.IsSuccess)
+        {
+            Users = new ObservableCollection<AppUserResponseDto>(fetchedUsers.Data);
+        }
+        else
+        {
+            _uiService.ShowSnackbarWarning(fetchedUsers.ErrorMessage);
+        }
+        IsLoading = false;
     }
+
     
     private async Task OnAppearingAsync()
     {

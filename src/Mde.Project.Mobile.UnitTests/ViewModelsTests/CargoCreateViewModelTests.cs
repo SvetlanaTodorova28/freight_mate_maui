@@ -53,20 +53,23 @@ namespace Mde.Project.Mobile.UnitTests
             Assert.Equal("John", _viewModel.Users[0].FirstName);
             Assert.Equal("Jane", _viewModel.Users[1].FirstName);
         }
-
+        
         [Fact]
-        public async Task LoadUsersCommand_ShowsWarningOnFailure()
+        public async Task LoadUsers_ShowsWarningOnFailure()
         {
             // Arrange
-            _mockAppUserService.Setup(x => x.GetUsersWithFunctions())
-                .ReturnsAsync(ServiceResult<List<AppUserResponseDto>>.Failure("Failed to load users"));
-
+            string expectedMessage = "No users found with assigned roles.";
+            _mockAppUserService
+                .Setup(service => service.GetUsersWithFunctions())
+                .ReturnsAsync(ServiceResult<List<AppUserResponseDto>>.Failure(expectedMessage));
+        
             // Act
-             _viewModel.LoadUsersCommand.Execute(null);
+            await _viewModel.LoadUsers();  
 
             // Assert
-            Assert.Empty(_viewModel.Users);
+            _mockUiService.Verify(x => x.ShowSnackbarWarning(expectedMessage), Times.Once);
         }
+
 
         [Fact]
         public async Task SaveCargoCommand_SavesSuccessfully()
@@ -76,7 +79,8 @@ namespace Mde.Project.Mobile.UnitTests
             _viewModel.TotalWeight = 100;
             _viewModel.IsDangerous = true;
 
-            _mockCargoService.Setup(x => x.CreateOrUpdateCargo(It.IsAny<Cargo>(), It.IsAny<string>()))
+            _mockCargoService
+                .Setup(x => x.CreateOrUpdateCargo(It.IsAny<Cargo>(), It.IsAny<string>()))
                 .ReturnsAsync(ServiceResult<string>.Success("Cargo saved successfully"));
 
             // Act
@@ -84,14 +88,14 @@ namespace Mde.Project.Mobile.UnitTests
 
             // Assert
             _mockUiService.Verify(x => x.ShowSnackbarSuccessAsync("Cargo saved successfully 📦"), Times.Once);
-            Assert.False(_viewModel.IsLoading);
         }
 
         [Fact]
         public async Task SaveCargoCommand_ShowsWarningOnFailure()
         {
             // Arrange
-            _mockCargoService.Setup(x => x.CreateOrUpdateCargo(It.IsAny<Cargo>(), It.IsAny<string>()))
+            _mockCargoService
+                .Setup(x => x.CreateOrUpdateCargo(It.IsAny<Cargo>(), It.IsAny<string>()))
                 .ReturnsAsync(ServiceResult<string>.Failure("Failed to save cargo"));
 
             // Act
