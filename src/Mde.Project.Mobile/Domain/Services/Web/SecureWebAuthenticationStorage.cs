@@ -61,7 +61,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error while checking authentication: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Unexpected error while checking authentication. Please try again later or contact support.");
             }
         }
 
@@ -100,7 +100,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error during login: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Unexpected error during login. Please try again later or contact support.");
             }
         }
 
@@ -147,7 +147,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error during registration: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Unexpected error during registration. Please try again later or contact support.");
             }
         }
 
@@ -166,7 +166,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error during logout: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Unexpected error during logout. Please try again later or contact support.");
             }
             
         }
@@ -221,7 +221,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Unexpected error while sending notification: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Unexpected error while sending notification. Please try again later or contact support.");
             }
         }
         public async Task<ServiceResult<string>> GetUserFirstNameFromTokenAsync()
@@ -245,7 +245,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"Unexpected error while retrieving first name: {ex.Message}");
+                return ServiceResult<string>.Failure($"Unexpected error while retrieving first name. Please try again later or contact support.");
             }
         }
 
@@ -277,7 +277,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"Unexpected error retrieving access token: {ex.Message}");
+                return ServiceResult<string>.Failure($"Unexpected error retrieving access token. Please try again later or contact support.");
             }
         }
 

@@ -30,7 +30,7 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<IEnumerable<Function>>.Failure($"Error retrieving functions: {ex.Message}");
+            return ServiceResult<IEnumerable<Function>>.Failure($"Error retrieving functions. Please contact support if the problem persists.");
         }
     }
 
@@ -62,7 +62,7 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Error ensuring function mappings: {ex.Message}");
+            return ServiceResult<bool>.Failure($"Error ensuring function mappings. Please contact support if the problem persists.");
         }
     }
 
@@ -106,7 +106,7 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<Function>.Failure($"Error retrieving user function: {ex.Message}");
+            return ServiceResult<Function>.Failure($"Error retrieving user function. Please contact support if the problem persists.");
         }
     }
 
