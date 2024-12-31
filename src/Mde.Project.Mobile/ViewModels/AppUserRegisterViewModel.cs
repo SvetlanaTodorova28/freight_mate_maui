@@ -111,7 +111,7 @@ public class AppUserRegisterViewModel: ObservableObject
             _mainThreadInvoker.InvokeOnMainThread(async () => 
             {
                 await _uiService.ShowSnackbarSuccessAsync("Your account is successfully created. You can login now.");
-                ResetRegistrationForm(); // Reset de form na succesvolle melding
+                ResetRegistrationForm(); 
             });
             return true;
         }

@@ -11,6 +11,7 @@ public class AppUserService : IAppUserService
 {
     private readonly HttpClient _httpClient;
     private readonly IAuthenticationServiceMobile _authService;
+    
 
     public AppUserService(IHttpClientFactory httpClientFactory, IAuthenticationServiceMobile authService)
     {
@@ -41,7 +42,7 @@ public class AppUserService : IAppUserService
         }
         catch (Exception ex)
         {
-            return ServiceResult<List<AppUserResponseDto>>.Failure($"Error fetching users: {ex.Message}");
+            return ServiceResult<List<AppUserResponseDto>>.Failure($"An error occurred while trying to fetch user details. Please try again later.");
         }
     }
 
@@ -52,11 +53,11 @@ public class AppUserService : IAppUserService
             var response = await _httpClient.PutAsJsonAsync($"/api/AppUsers/update-fcm-token/{userId}", token);
             return response.IsSuccessStatusCode
                 ? ServiceResult<bool>.Success(true)
-                : ServiceResult<bool>.Failure($"Failed to update FCM token. Status Code: {response.StatusCode}");
+                : ServiceResult<bool>.Failure($"Failed to update the notification token for the user. Please verify the user ID and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Unexpected error while updating FCM token: {ex.Message}");
+            return ServiceResult<bool>.Failure($"An unexpected error occurred while updating the notification token. Please contact support if the problem persists.");
         }
     }
 
@@ -70,11 +71,11 @@ public class AppUserService : IAppUserService
                 var token = await response.Content.ReadAsStringAsync();
                 return ServiceResult<string>.Success(token);
             }
-            return ServiceResult<string>.Failure("Failed to retrieve FCM token from server.");
+            return ServiceResult<string>.Failure("Failed to retrieve the notification token from the server. Please check the user ID and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Unexpected error while retrieving FCM token: {ex.Message}");
+            return ServiceResult<string>.Failure($"An unexpected error occurred while retrieving the notification token. Please contact support if the problem persists.");
         }
     }
 
@@ -90,20 +91,20 @@ public class AppUserService : IAppUserService
                 var userId = await response.Content.ReadAsStringAsync();
                 return !string.IsNullOrEmpty(userId)
                     ? ServiceResult<string>.Success(userId)
-                    : ServiceResult<string>.Failure("User ID not found.");
+                    : ServiceResult<string>.Failure("No user found with the provided email address. Please verify the email and try again.");
             }
             else
             {
-                return ServiceResult<string>.Failure("Failed to retrieve user ID from server.");
+                return ServiceResult<string>.Failure("Failed to retrieve user ID from the server. Please ensure the email is correct and try again.");
             }
         }
         catch (HttpRequestException ex)
         {
-            return ServiceResult<string>.Failure($"HTTP request error: {ex.Message}");
+            return ServiceResult<string>.Failure($"A network error occurred while trying to fetch user details. Please check your network connection and try again.");
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Unexpected error: {ex.Message}");
+            return ServiceResult<string>.Failure($"An unexpected error occurred. Please contact support if the problem persists.");
         }
     }
 
@@ -114,7 +115,7 @@ public class AppUserService : IAppUserService
             var tokenResult = await _authService.GetTokenAsync();
             if (!tokenResult.IsSuccess)
             {
-                return ServiceResult<string>.Failure("Failed to retrieve token.");
+                return ServiceResult<string>.Failure("Failed to retrieve authentication token. Please log in again");
             }
             
             var handler = new JwtSecurityTokenHandler();
@@ -123,14 +124,14 @@ public class AppUserService : IAppUserService
 
             if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
-                return ServiceResult<string>.Failure("User ID claim not found in token.");
+                return ServiceResult<string>.Failure("User ID not found in the authentication token. Please log in again.");
             }
 
             return ServiceResult<string>.Success(userIdClaim.Value);
         }
         catch (Exception ex)
         {
-            return ServiceResult<string>.Failure($"Unexpected error while retrieving user ID: {ex.Message}");
+            return ServiceResult<string>.Failure($"An unexpected error occurred while retrieving your user ID. Please contact support if the problem persists");
         }
     }
 

@@ -42,6 +42,7 @@ namespace Mde.Project.Mobile
             RegisterRoutes();
             RegisterServices(builder.Services);
 
+            
             builder.Services.AddHttpClient(GlobalConstants.HttpClient, config => config.BaseAddress = new Uri(GlobalConstants.BaseAzure));
             builder.Services.AddHttpClient(GlobalConstants.HttpClientFireBase, config => config.BaseAddress = new Uri(GlobalConstants.BaseUrlFireBase));
 
