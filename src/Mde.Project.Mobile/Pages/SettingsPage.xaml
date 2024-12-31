@@ -4,8 +4,23 @@
              xmlns:global="clr-namespace:"
              x:DataType="global:SettingsViewModel"
              Style="{StaticResource CustomPageStyle}">
+    <Grid>
+        <!-- Definieer de kolommen -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />  <!-- Breedte voor de Label -->
+            <ColumnDefinition Width="*" />     <!-- Breedte voor de Switch, vult de resterende ruimte -->
+        </Grid.ColumnDefinitions>
 
-   
-    <Switch IsToggled="{Binding SnowEnabled}"/>
+        <!-- Plaats de Label in de eerste kolom -->
+        <Label Grid.Column="0"
+               StyleClass="BaseLabel"
+               Text="Let it snow !!!"
+               VerticalOptions="Center" />  <!-- Zorgt ervoor dat de tekst verticaal gecentreerd is -->
+
+        <!-- Plaats de Switch in de tweede kolom -->
+        <Switch Grid.Column="1"
+                IsToggled="{Binding SnowEnabled}"
+                VerticalOptions="Center" /> <!-- Zorgt ervoor dat de switch verticaal gecentreerd is -->
+    </Grid>
 
 </ContentPage>
