@@ -75,7 +75,6 @@ public partial class CargoCreatePage : ContentPage{
                 await _uiService.ShowSnackbarWarning("No document scanned or failed to read the document stream.");
                 return;
             }
-
             
             await Navigation.PushModalAsync(new LoadingPage());
 
@@ -152,4 +151,31 @@ public partial class CargoCreatePage : ContentPage{
 
         canvasView.InvalidateSurface();  
     }
+
+    private async void SaveCargo_OnClicked(object? sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new LoadingPage()); 
+        bool isCreated = false;
+
+        try
+        {
+            isCreated = await _cargoCreateViewModel.SaveCargoAsync();
+            if (isCreated)
+            {
+                MessagingCenter.Send(this, "CargoUpdated", isCreated);
+            }
+           
+        }
+        catch (Exception ex)
+        {
+            await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            await Navigation.PopModalAsync(); 
+        }
+
+       
+    }
+
 }

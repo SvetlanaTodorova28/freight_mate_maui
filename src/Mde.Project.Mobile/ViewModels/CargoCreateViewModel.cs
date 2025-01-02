@@ -141,7 +141,7 @@ public class CargoCreateViewModel : ObservableObject
         await LoadUsers();
     }
 
-    private async Task SaveCargoAsync()
+    public async Task<bool> SaveCargoAsync()
     {
         IsLoading = true;
         try
@@ -158,17 +158,20 @@ public class CargoCreateViewModel : ObservableObject
             {
                 await _uiService.ShowSnackbarSuccessAsync(result.Data);
                 await NotifyUserAsync(SelectedUser.Id, Destination);
-               await Shell.Current.GoToAsync("//CargoListPage");
+                await Shell.Current.GoToAsync("//CargoListPage");
+              return true;
             }
             else
             {
                 await _uiService.ShowSnackbarWarning(result.ErrorMessage);
+                return false;
             }
         }
         finally
         {
             IsLoading = false;
         }
+        return false;
     }
 
     
