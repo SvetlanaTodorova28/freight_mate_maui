@@ -70,6 +70,7 @@ namespace Mde.Project.Mobile.Platforms
                 .SetAutoCancel(true)
                 .SetVisibility(NotificationCompat.VisibilityPublic);
 
+
             var notificationManager = NotificationManagerCompat.From(context);
             notificationManager.Notify(0, notificationBuilder.Build());
         }
