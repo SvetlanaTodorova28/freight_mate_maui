@@ -2,8 +2,11 @@
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Tasks;
 using Android.OS;
 using AndroidX.Core.App;
+using Mde.Project.Mobile.Helpers;
+using Task = System.Threading.Tasks.Task;
 
 namespace Mde.Project.Mobile.Platforms
 {
@@ -17,7 +20,7 @@ namespace Mde.Project.Mobile.Platforms
         const int RequestMicrophonePermissionId = 10;
         readonly string[] Permissions = { Manifest.Permission.RecordAudio };
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             CreateNotificationChannel();
@@ -31,6 +34,11 @@ namespace Mde.Project.Mobile.Platforms
             {
                 Platform.Init(this, savedInstanceState);
             }
+            var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
+            if (userService != null){
+                FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
+            }
+
         }
 
         private void CreateNotificationChannel()
@@ -72,5 +80,8 @@ namespace Mde.Project.Mobile.Platforms
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        
+     
     }
+    
 }

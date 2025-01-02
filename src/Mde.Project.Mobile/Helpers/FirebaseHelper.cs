@@ -1,4 +1,3 @@
-using Mde.Project.Mobile.Domain.Services.Web;
 #if ANDROID
 using Mde.Project.Mobile.Platforms.Android.Listeners;
 #endif
@@ -28,12 +27,16 @@ namespace Mde.Project.Mobile.Helpers
                 taskCompletionSource.SetException(exception);
             }));
 
-        var token = await taskCompletionSource.Task;
-
-        if (!string.IsNullOrEmpty(token))
+        var newToken = await taskCompletionSource.Task;
+       
+        if (!string.IsNullOrEmpty(newToken))
         {
-            await SecureStorageHelper.SaveFcmTokenAsync(token);
-            return ServiceResult<string>.Success(token);
+            var currentToken = await SecureStorageHelper.GetFcmTokenAsync();
+            if (!newToken.Equals(currentToken)){
+                await SecureStorageHelper.SaveFcmTokenAsync(newToken);
+                return ServiceResult<string>.Success(newToken);
+            }
+            return ServiceResult<string>.Success("Token unchanged.");
         }
 
         return ServiceResult<string>.Failure("Failed to retrieve FCM token.");
@@ -45,11 +48,16 @@ namespace Mde.Project.Mobile.Helpers
 #elif __IOS__
     try
     {
-        string token = Messaging.SharedInstance.FcmToken; 
-        if (!string.IsNullOrEmpty(token))
+        string newToken = Messaging.SharedInstance.FcmToken; 
+        string currentToken = await SecureStorageHelper.GetFcmTokenAsync();
+        if (!string.IsNullOrEmpty(newToken))
         {
-            await SecureStorageHelper.SaveFcmTokenAsync(token);
-            return ServiceResult<string>.Success(token);
+            if (!newToken.Equals(currentToken))
+            {
+                await SecureStorageHelper.SaveFcmTokenAsync(newToken);
+                return ServiceResult<string>.Success(newToken);
+            }
+            return ServiceResult<string>.Success("Token unchanged.");
         }
         else
         {
@@ -58,7 +66,7 @@ namespace Mde.Project.Mobile.Helpers
     }
     catch (Exception ex)
     {
-        return ServiceResult<string>.Failure($"Error retrieving FCM token for iOS: {ex.Message}");
+        return ServiceResult<string>.Failure($"Error retrieving FCM token for iOS. Please contact support if the problem persists.");
     }
 #else
     return ServiceResult<string>.Failure("FCM Token retrieval not supported on this platform.");
@@ -71,7 +79,6 @@ namespace Mde.Project.Mobile.Helpers
         {
             try
             {
-               
                 var localTokenResult = await GetStoredFcmTokenAsync();
                 if (!localTokenResult.IsSuccess)
                 {
@@ -90,7 +97,7 @@ namespace Mde.Project.Mobile.Helpers
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Error updating FCM token on server: {ex.Message}");
+                return ServiceResult<bool>.Failure($"Error updating FCM token on server.");
             }
         }
 
@@ -105,7 +112,7 @@ namespace Mde.Project.Mobile.Helpers
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"Error retrieving stored FCM token: {ex.Message}");
+                return ServiceResult<string>.Failure($"Error retrieving stored FCM token.");
             }
         }
     }
