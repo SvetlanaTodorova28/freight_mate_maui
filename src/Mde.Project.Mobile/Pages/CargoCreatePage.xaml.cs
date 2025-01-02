@@ -45,18 +45,15 @@ public partial class CargoCreatePage : ContentPage{
             }
             
             
-            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface()); 
+            await Navigation.PushModalAsync(new LoadingPage());
         
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
             if (isCreated)
             {
                 MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
-            else
-            {
-                _mainThreadInvoker.InvokeOnMainThread(() => 
-                    _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
-                );
+            else{
+                await Navigation.PopModalAsync();
             }
             
         }
@@ -80,20 +77,15 @@ public partial class CargoCreatePage : ContentPage{
             }
 
             
-            _mainThreadInvoker.InvokeOnMainThread(() => {
-                canvasView.InvalidateSurface(); 
-            });
+            await Navigation.PushModalAsync(new LoadingPage());
 
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
                 MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
             }
-            else
-            {
-                _mainThreadInvoker.InvokeOnMainThread(() => 
-                    _uiService.ShowSnackbarWarning("Failed to create cargo from PDF.")
-                );
+            else{
+                await Navigation.PopModalAsync();
             }
         }
         catch (Exception ex)
