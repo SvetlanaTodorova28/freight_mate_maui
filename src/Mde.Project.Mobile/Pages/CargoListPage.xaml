@@ -13,9 +13,6 @@
     x:DataType="viewmodels:CargoListViewModel"
     Style="{StaticResource CustomPageStyle}"
     >
-    <!--<ContentPage.Resources>
-        <converters:DateRangeToVisibilityConverter x:Key="DateRangeToVisibilityConverter" />
-    </ContentPage.Resources>-->
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="#3B3131" />
     </ContentPage.Behaviors>

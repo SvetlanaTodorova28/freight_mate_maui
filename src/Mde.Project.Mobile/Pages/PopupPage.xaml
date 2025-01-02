@@ -30,7 +30,6 @@
                         NumberOfTapsRequired="1"/>
                 </Label.GestureRecognizers>
             </Label>
-           
         </Border>
     </VerticalStackLayout>
 </mct:Popup>

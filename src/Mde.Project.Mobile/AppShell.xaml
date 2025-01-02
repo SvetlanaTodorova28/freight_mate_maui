@@ -13,7 +13,8 @@
     TabBarBackgroundColor="#1D3448"
     BackgroundColor="#3B3131" 
     Opacity="1.4">
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
+    
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <Tab Route="TranslatePage" Title="Translate">
             <Tab.Icon>
                 <FontImageSource
@@ -35,7 +36,6 @@
             <ShellContent ContentTemplate="{DataTemplate pages:CargoListPage}" Route="Cargos" />
         </Tab>
         <Tab Route="OptionsPage" Title="Options">
-            <!--  f279  -->
             <Tab.Icon>
                 <FontImageSource
                     Color="OrangeRed"
@@ -46,7 +46,8 @@
             <ShellContent ContentTemplate="{DataTemplate pages:OptionsPage}" Route="Options" />
         </Tab>
     </FlyoutItem>
- 
+
+    <!-- Menu Items -->
     <MenuItem
         Text="Logout"
         Command="{Binding OnLogoutCommand}"
@@ -56,5 +57,5 @@
         Clicked="SiteLink_OnClicked"
         Text="Made by Svetlana"
         x:Name="SiteLink" />
-
+   
 </Shell>

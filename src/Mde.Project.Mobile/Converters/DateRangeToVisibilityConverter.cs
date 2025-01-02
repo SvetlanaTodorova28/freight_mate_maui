@@ -8,18 +8,17 @@ namespace Mde.Project.Mobile.Converters
         {
             if (value is DateTime currentDate)
             {
-                DateTime startDate = new DateTime(2024, 12, 01);
-                DateTime endDate = new DateTime(2025, 1, 10);
                 
-                bool showSnowflakes = Preferences.Get("ShowSnowflakes", true);
-
-                if (currentDate >= startDate && currentDate <= endDate && showSnowflakes)
+                DateTime startDate = new DateTime(2024, 12, 01); 
+                DateTime endDate = new DateTime(2025, 1, 10);   
+               
+                if (currentDate >= startDate && currentDate <= endDate)
                 {
-                    return true;
+                    return true; 
                 }
             }
 
-            return false;
+            return false; 
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

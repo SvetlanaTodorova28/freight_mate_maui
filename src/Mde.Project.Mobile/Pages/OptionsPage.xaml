@@ -3,6 +3,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
+             xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
+             x:DataType="viewmodels:OptionsViewModel"
              x:Class="Mde.Project.Mobile.Pages.OptionsPage"
              Style="{StaticResource CustomPageStyle}">
      <ContentPage.Content>
@@ -63,7 +65,6 @@
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NavigateToSettings" />
                         </Grid.GestureRecognizers>
                     </Grid>
-
                 </VerticalStackLayout>
              <contents:SnowAnimationView
                  WidthRequest="330"
@@ -71,7 +72,7 @@
                  Padding="0"
                  HeightRequest="900"
                  InputTransparent="True" 
-                 IsVisible="{Binding CurrentDate, Converter={StaticResource DateRangeToVisibilityConverter}}"/>
+                 IsVisible="{Binding SnowVisibility}"/>
          </Grid>
              </Border>
             </ContentPage.Content>

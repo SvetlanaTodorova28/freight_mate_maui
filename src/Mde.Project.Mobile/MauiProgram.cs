@@ -76,6 +76,7 @@ namespace Mde.Project.Mobile
             Routing.RegisterRoute(nameof(TranslatePage), typeof(TranslatePage));
             Routing.RegisterRoute(nameof(SnowPage), typeof(SnowPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+            Routing.RegisterRoute(nameof(OptionsPage), typeof(OptionsPage));
         }
 
         private static void RegisterServices(IServiceCollection services)
@@ -102,6 +103,9 @@ namespace Mde.Project.Mobile
             
             services.AddTransient<SettingsPage>();
             services.AddTransient<SettingsViewModel>();
+            
+            services.AddTransient<OptionsPage>();
+            services.AddTransient<OptionsViewModel>();
 
             services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
             services.AddTransient<IFunctionAccessService, FunctionAccessService>();
