@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.Gms.Tasks;
 using Android.OS;
 using AndroidX.Core.App;
+using Google.Apis.Auth.OAuth2;
 using Mde.Project.Mobile.Helpers;
 using Task = System.Threading.Tasks.Task;
 
@@ -65,6 +66,7 @@ namespace Mde.Project.Mobile.Platforms
             var channelId = "default_channel";
 
             var notificationBuilder = new NotificationCompat.Builder(context, channelId)
+                .SetSmallIcon(Resource.Drawable.ic_notification)
                 .SetContentTitle("New Message Received")
                 .SetContentText(messageBody)
                 .SetAutoCancel(true)
