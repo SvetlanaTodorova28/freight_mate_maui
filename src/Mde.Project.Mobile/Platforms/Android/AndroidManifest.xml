@@ -7,7 +7,9 @@
 			android:roundIcon="@mipmap/appicon_round"
 			android:supportsRtl="true">
 
-	
+		<meta-data
+				android:name="com.google.firebase.messaging.default_notification_icon"
+				android:resource="@drawable/ic_notification" />
 		<receiver
 				android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
 				android:exported="true"

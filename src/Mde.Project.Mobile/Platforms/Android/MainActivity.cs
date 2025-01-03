@@ -60,29 +60,16 @@ namespace Mde.Project.Mobile.Platforms
                 notificationManager.CreateNotificationChannel(channel);
             }
         }
+        
 
-        public void SendNotification(string messageBody, Context context)
-        {
-            var channelId = "default_channel";
-
-            var notificationBuilder = new NotificationCompat.Builder(context, channelId)
-                .SetSmallIcon(Resource.Drawable.ic_notification)
-                .SetContentTitle("New Message Received")
-                .SetContentText(messageBody)
-                .SetAutoCancel(true)
-                .SetVisibility(NotificationCompat.VisibilityPublic);
-
-
-            var notificationManager = NotificationManagerCompat.From(context);
-            notificationManager.Notify(0, notificationBuilder.Build());
-        }
-
+        /*
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        */
         
      
     }
