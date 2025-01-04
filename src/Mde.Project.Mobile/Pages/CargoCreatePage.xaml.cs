@@ -50,7 +50,7 @@ public partial class CargoCreatePage : ContentPage{
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
             if (isCreated)
             {
-                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
+                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoListUpdatedInApp", true); 
             }
             else{
                 await Navigation.PopModalAsync();
@@ -81,7 +81,7 @@ public partial class CargoCreatePage : ContentPage{
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
-                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoUpdated", true); 
+                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoListUpdated", true); 
             }
             else{
                 await Navigation.PopModalAsync();

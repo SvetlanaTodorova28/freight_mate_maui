@@ -6,7 +6,9 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
-
+#if ANDROID || IOS
+using Mde.Project.Mobile.Platforms;
+#endif
 namespace Mde.Project.Mobile.ViewModels;
 
 public class CargoListViewModel : ObservableObject
@@ -15,14 +17,18 @@ public class CargoListViewModel : ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
+    public event Action RequestAnimationUpdate;
+
     
 
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService)
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService
+        )
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
         _functionAccessService = functionAccessService;
+        
 
         RefreshListCommand = new AsyncRelayCommand(RefreshListAsync);
         CreateCargoCommand = new AsyncRelayCommand(NavigateToCreateCargoAsync);
@@ -35,11 +41,11 @@ public class CargoListViewModel : ObservableObject
         UpdateSnowVisibility();
         LoadUserFunction();
         LoadUserFirstName();
-        
-        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
-        {
-            UpdateSnowVisibility();
-        });
+        InitializeSubscriptionsCargoListUpdatedInApp();
+        InitializeSubscriptionsCargoListUpdatedRemotely();
+        InitializeSubscriptionSnow();
+
+
     }
 
     #region Bindings
@@ -110,7 +116,6 @@ public class CargoListViewModel : ObservableObject
         try
         {
             IsLoading = true;
-
             var userIdResult = await _authenticationService.GetUserIdFromTokenAsync();
             if (!userIdResult.IsSuccess)
             {
@@ -145,6 +150,7 @@ public class CargoListViewModel : ObservableObject
         }
         finally
         {
+            RequestAnimationUpdate?.Invoke(); 
             IsLoading = false;
         }
     }
@@ -279,6 +285,41 @@ public class CargoListViewModel : ObservableObject
     public void UpdateSnowVisibility()
     {
         SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
+    }
+    private void InitializeSubscriptionSnow()
+    {
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
+    }
+    private void InitializeSubscriptionsCargoListUpdatedInApp()
+    {
+        MessagingCenter.Subscribe<CargoCreatePage, bool>(this, "CargoListUpdatedInApp", async (sender, isUpdated) =>
+        {
+            if (isUpdated)
+            {
+                await RefreshListAsync();
+            }
+        });
+    }
+    private void InitializeSubscriptionsCargoListUpdatedRemotely()
+    {
+#if ANDROID
+        MessagingCenter.Subscribe<MyFirebaseMessagingService, bool>(this, "CargoListUpdatedRemotely", async (sender, isUpdated) =>
+        {
+            if (isUpdated)
+            {
+                await RefreshListAsync();
+            }
+        });
+        #endif
+    }
+    public void Cleanup()
+    {
+        MessagingCenter.Unsubscribe<SettingsViewModel, bool>(this, "SnowToggleChanged");
+        MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedInApp");
+        MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedRemotely");
     }
 
     #endregion

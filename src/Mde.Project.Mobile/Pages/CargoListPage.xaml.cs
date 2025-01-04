@@ -25,14 +25,11 @@ public partial class CargoListPage : ContentPage{
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        MessagingCenter
-            .Subscribe<CargoCreatePage, bool>(this, "CargoUpdated", async (sender, arg) =>
+       
+        _cargoListViewModel.RequestAnimationUpdate += () =>
         {
-            _cargoListViewModel?.RefreshListCommand.Execute(null);
-            await Task.Delay(1000); 
-            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface()); 
-        });
-        
+            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
+        };
         _cargoListViewModel.CargosLoaded += OnCargosLoaded;  
         _cargoListViewModel.RefreshListCommand?.Execute(null);
         
@@ -49,10 +46,11 @@ public partial class CargoListPage : ContentPage{
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        MessagingCenter.Unsubscribe<CargoCreatePage>(this, "CargoUpdated");
-        if (BindingContext is CargoListViewModel viewModel) {
-            viewModel.CargosLoaded -= OnCargosLoaded;
-        }
+       _cargoListViewModel.Cleanup();
+       _cargoListViewModel.RequestAnimationUpdate -= () =>
+       {
+           _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
+       };
     }
    
     private void OnCargosLoaded(object sender, EventArgs e)

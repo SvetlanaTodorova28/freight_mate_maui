@@ -121,6 +121,9 @@ namespace Mde.Project.Mobile
           
             
             services.AddSingleton<KeyVaultHelper>();
+            #if ANDROID
+            services.AddSingleton<MyFirebaseMessagingService>();
+            #endif
             services.AddSingleton<ISpeechService>(new AzureSpeechService(GlobalConstants.Region));
             services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));
             services.AddHttpClient<ITranslationService, AzureTranslationService>(client =>
