@@ -10,7 +10,7 @@ public class MyFirebaseMessagingService : FirebaseMessagingService
 {
     public override void OnMessageReceived(RemoteMessage message){
         base.OnMessageReceived(message);
-        Log.Debug("FCM", "Message received!");
+      
         string title = message.GetNotification().Title;
         string body = message.GetNotification().Body;
         var notification = message.GetNotification();
