@@ -8,28 +8,27 @@ using Mde.Project.Mobile.Helpers;
 namespace Mde.Project.Mobile.Platforms;
 
 [Register("AppDelegate")]
-public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
+public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate, IUNUserNotificationCenterDelegate
 {
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 
     public override bool FinishedLaunching(UIApplication app, NSDictionary options)
     {
         Firebase.Core.App.Configure();
+        RegisterForRemoteNotifications(app);
         Messaging.SharedInstance.Delegate = this;
-
-        if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
-        {
-            UNUserNotificationCenter.Current.RequestAuthorization(
-                UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
-                (granted, error) =>
-                {
-                    if (granted)
-                        InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications);
-                });
-            UNUserNotificationCenter.Current.Delegate = new NotificationDelegate();
-        }
-
+        UNUserNotificationCenter.Current.Delegate = new NotificationDelegate();
         return base.FinishedLaunching(app, options);
+    }
+    void RegisterForRemoteNotifications(UIApplication app)
+    {
+        UNUserNotificationCenter.Current.RequestAuthorization(
+            UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
+            (granted, error) =>
+            {
+                if (granted)
+                    InvokeOnMainThread(() => app.RegisterForRemoteNotifications());
+            });
     }
 
     [Export("messaging:didReceiveRegistrationToken:")]
@@ -40,11 +39,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate
             FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
         }
     }
-
-    public void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-    {
-        Messaging.SharedInstance.ApnsToken = deviceToken;
-    }
+    
 }
 
 public class NotificationDelegate : UNUserNotificationCenterDelegate
@@ -52,5 +47,6 @@ public class NotificationDelegate : UNUserNotificationCenterDelegate
     public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
     {
         completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Badge);
+        MessagingCenter.Send<NotificationDelegate, bool>(this, "CargoListUpdatedRemotely", true);
     }
 }

@@ -22,7 +22,7 @@ public class CargoListViewModel : ObservableObject
     
 
     public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService
-        )
+    )
     {
         _cargoService = cargoService;
         _uiService = uiService;
@@ -305,8 +305,16 @@ public class CargoListViewModel : ObservableObject
     }
     private void InitializeSubscriptionsCargoListUpdatedRemotely()
     {
-#if ANDROID
+#if ANDROID 
         MessagingCenter.Subscribe<MyFirebaseMessagingService, bool>(this, "CargoListUpdatedRemotely", async (sender, isUpdated) =>
+        {
+            if (isUpdated)
+            {
+                await RefreshListAsync();
+            }
+        });
+#elif IOS
+        MessagingCenter.Subscribe<NotificationDelegate, bool>(this, "CargoListUpdatedRemotely", async (sender, isUpdated) =>
         {
             if (isUpdated)
             {
