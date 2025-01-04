@@ -20,7 +20,13 @@
 				<category android:name="${applicationId}" />
 			</intent-filter>
 		</receiver>
-		
+		<service
+				android:name="Mde.Project.Mobile.Platforms.MyFirebaseMessagingService"
+				android:exported="true"> 
+			<intent-filter>
+				<action android:name="com.google.firebase.MESSAGING_EVENT" />
+			</intent-filter>
+		</service>
 
 	</application>
 

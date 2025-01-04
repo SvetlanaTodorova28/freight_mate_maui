@@ -24,7 +24,7 @@ namespace Mde.Project.Mobile.Platforms
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            CreateNotificationChannel();
+           // CreateNotificationChannel();
 
             if (CheckSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
             {
