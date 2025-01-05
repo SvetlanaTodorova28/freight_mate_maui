@@ -43,7 +43,12 @@ public class CargoListViewModel : ObservableObject
         LoadUserFirstName();
         InitializeSubscriptionsCargoListUpdatedInApp();
         InitializeSubscriptionsCargoListUpdatedRemotely();
-        InitializeSubscriptionSnow();
+       // InitializeSubscriptionSnow();
+        UpdateSnowVisibility();
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
 
 
     }
@@ -325,7 +330,7 @@ public class CargoListViewModel : ObservableObject
     }
     public void Cleanup()
     {
-        MessagingCenter.Unsubscribe<SettingsViewModel, bool>(this, "SnowToggleChanged");
+      //  MessagingCenter.Unsubscribe<SettingsViewModel, bool>(this, "SnowToggleChanged");
         MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedInApp");
         MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedRemotely");
     }

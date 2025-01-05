@@ -7,6 +7,11 @@ public class OptionsViewModel: ObservableObject{
     
     public OptionsViewModel(){
         UpdateSnowVisibility();
+       
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
     }
     private bool _snowVisibility;
     public bool SnowVisibility
