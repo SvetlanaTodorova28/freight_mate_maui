@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using Utilities;
 
 namespace Mde.Project.Mobile.Converters
 {
@@ -6,19 +8,25 @@ namespace Mde.Project.Mobile.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is DateTime currentDate)
-            {
-                
-                DateTime startDate = new DateTime(2024, 12, 01); 
-                DateTime endDate = new DateTime(2025, 1, 10);   
-               
-                if (currentDate >= startDate && currentDate <= endDate)
+                var currentDate = DateTime.Now;
+                var year = currentDate.Year;
+                var startDate = new DateTime(year, 12, 1);
+                var endDate = new DateTime(year, 1, GlobalConstants.EndDateSnow);
+       
+                if (currentDate.Month == 1)
                 {
-                    return true; 
+                    startDate = new DateTime(year - 1, 12, 1);
+                    endDate = new DateTime(year, 1, GlobalConstants.EndDateSnow);
                 }
-            }
+                else if (currentDate.Month == 12)
+                {
+                    startDate = new DateTime(year, 12, 1);
+                    endDate = new DateTime(year + 1, 1, GlobalConstants.EndDateSnow);
+                }
 
-            return false; 
+                bool isWithinDateRange = currentDate >= startDate && currentDate <= endDate;
+
+                return isWithinDateRange ;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

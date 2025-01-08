@@ -8,8 +8,8 @@
              x:Class="Mde.Project.Mobile.Pages.OptionsPage"
              Style="{StaticResource CustomPageStyle}">
      <ContentPage.Content>
-         <Border Grid.Row="1" Margin="0,25,0,12"
-                 StyleClass="baseBorder">
+         <!--<Border Grid.Row="1" Margin="0,25,0,12"
+                 StyleClass="baseBorder">-->
          <Grid >
          <VerticalStackLayout Spacing="25" Padding="30">
              
@@ -74,6 +74,6 @@
                  InputTransparent="True" 
                  IsVisible="{Binding SnowVisibility}"/>
          </Grid>
-             </Border>
+             <!--</Border>-->
             </ContentPage.Content>
 </ContentPage>

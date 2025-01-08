@@ -16,9 +16,8 @@ public class SettingsViewModel : ObservableObject
         {
             if (SetProperty(ref _snowEnabled, value))
             {
-               
                 Preferences.Set("SnowEnabled", value);
-                MessagingCenter.Send<SettingsViewModel, bool>(this, "SnowToggleChanged", true);
+                MessagingCenter.Send<SettingsViewModel, bool>(this, "SnowToggleChanged", _snowEnabled);
             }
         }
     }

@@ -53,10 +53,8 @@ public partial class TranslateViewModel : ObservableObject
         _uiService = uiService;
         _mainThreadInvoker = mainThreadInvoker;
         UpdateSnowVisibility();
-        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
-        {
-            UpdateSnowVisibility();
-        });
+        InitializeSubscriptionSnow();
+        
     }
     private bool _snowVisibility;
     public bool SnowVisibility
@@ -192,8 +190,18 @@ public partial class TranslateViewModel : ObservableObject
         };
     }
     
+   
+    private void InitializeSubscriptionSnow(){
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged",  (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
+    }
+    
     public void UpdateSnowVisibility()
     {
         SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
     }
+
+   
 }

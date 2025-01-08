@@ -27,4 +27,5 @@ public partial class TranslatePage : ContentPage{
         InitializeComponent();
         BindingContext = _translateViewModel = translateViewModel;
     }
+    
 }

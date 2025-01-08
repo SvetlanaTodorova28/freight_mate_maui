@@ -15,6 +15,7 @@ public class GlobalConstants{
    
     public const string EndPointOCR = "https://cargos.cognitiveservices.azure.com";
     public const string EndPointTranslate = "https://api.cognitive.microsofttranslator.com";
-
+    
+    public const int EndDateSnow = 10;
 
 }

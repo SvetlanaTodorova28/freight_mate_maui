@@ -38,19 +38,14 @@ public class CargoListViewModel : ObservableObject
         PerformSearchCommand = new AsyncRelayCommand<string>(PerformSearchAsync);
         TextChangedCommand = new AsyncRelayCommand<string>(OnSearchTextChanged);
         
-        UpdateSnowVisibility();
+        
         LoadUserFunction();
         LoadUserFirstName();
         InitializeSubscriptionsCargoListUpdatedInApp();
         InitializeSubscriptionsCargoListUpdatedRemotely();
-       // InitializeSubscriptionSnow();
         UpdateSnowVisibility();
-        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
-        {
-            UpdateSnowVisibility();
-        });
-
-
+        InitializeSubscriptionSnow();
+     
     }
 
     #region Bindings
@@ -287,17 +282,6 @@ public class CargoListViewModel : ObservableObject
         }
     }
     
-    public void UpdateSnowVisibility()
-    {
-        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
-    }
-    private void InitializeSubscriptionSnow()
-    {
-        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
-        {
-            UpdateSnowVisibility();
-        });
-    }
     private void InitializeSubscriptionsCargoListUpdatedInApp()
     {
         MessagingCenter.Subscribe<CargoCreatePage, bool>(this, "CargoListUpdatedInApp", async (sender, isUpdated) =>
@@ -328,9 +312,21 @@ public class CargoListViewModel : ObservableObject
         });
         #endif
     }
+    private void InitializeSubscriptionSnow(){
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged",  (sender, isEnabled) =>
+        {
+           UpdateSnowVisibility();
+        });
+    }
+    
+    public void UpdateSnowVisibility()
+    {
+        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
+    }
+
+  
     public void Cleanup()
     {
-      //  MessagingCenter.Unsubscribe<SettingsViewModel, bool>(this, "SnowToggleChanged");
         MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedInApp");
         MessagingCenter.Unsubscribe<App, string>(this, "CargoListUpdatedRemotely");
     }

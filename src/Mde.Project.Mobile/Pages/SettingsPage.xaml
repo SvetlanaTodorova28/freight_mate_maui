@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.SettingsPage"
              xmlns:global="clr-namespace:"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:DataType="global:SettingsViewModel"
              Style="{StaticResource CustomPageStyle}">
     <Grid>
@@ -15,11 +16,13 @@
         <Label Grid.Column="0"
                StyleClass="BaseLabel"
                Text="Let it snow !!!"
-              />  
+               IsVisible="{Binding Source={x:Static sys:DateTime.Now}, Converter={StaticResource DateRangeToVisibilityConverter}}" />
+              
         
         <Switch Grid.Column="1"
                 IsToggled="{Binding SnowEnabled}"
-               /> 
+                IsVisible="{Binding Source={x:Static sys:DateTime.Now}, Converter={StaticResource DateRangeToVisibilityConverter}}" />
+
     </Grid>
 
 </ContentPage>

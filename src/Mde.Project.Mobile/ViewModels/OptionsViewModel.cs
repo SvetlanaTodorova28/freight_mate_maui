@@ -6,12 +6,10 @@ namespace Mde.Project.Mobile.ViewModels;
 public class OptionsViewModel: ObservableObject{
     
     public OptionsViewModel(){
-        UpdateSnowVisibility();
+      
        
-        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged", (sender, isEnabled) =>
-        {
-            UpdateSnowVisibility();
-        });
+        UpdateSnowVisibility();
+        InitializeSubscriptionSnow();
     }
     private bool _snowVisibility;
     public bool SnowVisibility
@@ -20,6 +18,13 @@ public class OptionsViewModel: ObservableObject{
         private set => SetProperty(ref _snowVisibility, value);
     }
 
+    private void InitializeSubscriptionSnow(){
+        MessagingCenter.Subscribe<SettingsViewModel, bool>(this, "SnowToggleChanged",  (sender, isEnabled) =>
+        {
+            UpdateSnowVisibility();
+        });
+    }
+    
     public void UpdateSnowVisibility()
     {
         SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
