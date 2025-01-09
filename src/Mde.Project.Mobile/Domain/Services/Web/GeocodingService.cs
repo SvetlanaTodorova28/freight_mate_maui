@@ -8,4 +8,7 @@ public class GeocodingService :IGeocodingService{
         return await Geocoding.GetLocationsAsync(address);
     }
 
+    public async Task<IEnumerable<Placemark>> GetPlacemarksAsync(Location location){
+       return await Geocoding.GetPlacemarksAsync(location);
+    }
 }
