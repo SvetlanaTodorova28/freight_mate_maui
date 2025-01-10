@@ -16,20 +16,6 @@
                      BackgroundColor="Transparent" />
         <Label Text="{Binding Destination}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"
                StyleClass="BaseLabel"/>
-       
-        <Border StyleClass="cargosBorder" Opacity="0.7">
-            <Label 
-                   Text="Close"
-                   FontFamily="PlayBold" FontSize="22"
-                   HorizontalOptions="Center"
-                   TextColor="OrangeRed">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer
-                       x:Name="Close_OnTapped"
-                       Tapped="Label_Tapped"
-                        NumberOfTapsRequired="1"/>
-                </Label.GestureRecognizers>
-            </Label>
-        </Border>
+        
     </VerticalStackLayout>
 </mct:Popup>

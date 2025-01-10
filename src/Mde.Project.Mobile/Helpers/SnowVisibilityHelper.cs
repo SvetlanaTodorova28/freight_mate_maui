@@ -14,6 +14,7 @@ namespace Mde.Project.Mobile.Helpers
        
             if (currentDate.Month == 1)
             {
+                startDate = new DateTime(year - 1, 12, 1);
                 endDate = new DateTime(year, 1, GlobalConstants.EndDateSnow);
             }
             else if (currentDate.Month == 12)

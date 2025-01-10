@@ -11,13 +11,15 @@ public class CargoService : ICargoService
     private readonly HttpClient _httpClient;
     private readonly IOcrService _azureOcrService;
     private readonly IAppUserService _appUserService;
+    private readonly IGeocodingService _geocodingService;
 
     public CargoService(IHttpClientFactory httpClientFactory,
-        IOcrService azureOcrService, IAppUserService appUserService)
+        IOcrService azureOcrService, IAppUserService appUserService, IGeocodingService geocodingService)
     {
         _httpClient = httpClientFactory.CreateClient(GlobalConstants.HttpClient);
         _azureOcrService = azureOcrService;  
         _appUserService = appUserService;
+        _geocodingService = geocodingService;
     }
 
     public async Task<ServiceResult<List<CargoResponseDto>>> GetCargosForUser(Guid userId)
@@ -54,7 +56,27 @@ public class CargoService : ICargoService
         {
             return ServiceResult<string>.Failure("Please provide a valid destination.");
         }
-        
+
+        try{
+            var locations = await _geocodingService.GetLocationsAsync(cargo.Destination);
+            if (locations == null || !locations.Any())
+            {
+                return ServiceResult<string>.Failure("Location Not Found. The specified location could not be resolved.");
+            }
+            var location = locations?.FirstOrDefault();
+            if (location != null){
+                bool isValidPlacemark =
+                    await GeocodingHelper.ValidateDestination(location, cargo.Destination, _geocodingService);
+                if (!isValidPlacemark){
+                    return ServiceResult<string>.Failure("Please provide a valid destination.");
+                }
+            }
+        }
+        catch (Exception ex){
+           
+            return ServiceResult<string>.Failure("Location Not Found.The specified location could not be resolved.");
+        }
+
         cargo.TotalWeight = parsedWeight;
 
         if (cargo.Userid == Guid.Empty)
