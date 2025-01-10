@@ -18,6 +18,8 @@ public static class GeocodingHelper
             thoroughfareWords.Add(CleanString(placemark.CountryName));
         if (!string.IsNullOrWhiteSpace(placemark.Locality))
             thoroughfareWords.Add(CleanString(placemark.Locality));
+        if (!string.IsNullOrWhiteSpace(placemark.PostalCode))
+            thoroughfareWords.Add(CleanString(placemark.PostalCode));
         if (!string.IsNullOrWhiteSpace(placemark.FeatureName))
             thoroughfareWords.AddRange(CleanString(placemark.FeatureName).Split(' ', StringSplitOptions.RemoveEmptyEntries));
         if (!string.IsNullOrWhiteSpace(placemark.Thoroughfare))

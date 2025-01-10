@@ -116,51 +116,71 @@ public class CargoService : ICargoService
     }
 
 
-    public async Task<ServiceResult<CargoCreationResultDto>> CreateCargoWithPdf(Stream stream, string fileExtension)
+   public async Task<ServiceResult<CargoCreationResultDto>> CreateCargoWithPdf(Stream stream, string fileExtension)
+{
+    if (stream == null)
     {
-        if (stream == null)
+        return ServiceResult<CargoCreationResultDto>.Failure("Please provide a file to process.");
+    }
+
+    try
+    {
+        ServiceResult<string> ocrResult = fileExtension.Equals("pdf") 
+            ? await _azureOcrService.ExtractTextFromPdfAsync(stream)
+            : await _azureOcrService.ExtractTextFromImageAsync(stream);
+
+        if (!ocrResult.IsSuccess)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure("Please provide a file to process.");
+            return ServiceResult<CargoCreationResultDto>.Failure(ocrResult.ErrorMessage);
         }
 
-        try
+        ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
+        if (!parsedCargoResult.IsSuccess)
         {
-            ServiceResult<string> ocrResult = fileExtension.Equals("pdf") 
-                ? await _azureOcrService.ExtractTextFromPdfAsync(stream)
-                : await _azureOcrService.ExtractTextFromImageAsync(stream);
+            return ServiceResult<CargoCreationResultDto>.Failure(parsedCargoResult.ErrorMessage);
+        }
 
-            if (!ocrResult.IsSuccess)
-            {
-                return ServiceResult<CargoCreationResultDto>.Failure(ocrResult.ErrorMessage);
+        try{
+            var locations = await _geocodingService.GetLocationsAsync(parsedCargoResult.Data.Destination);
+            if (locations == null || !locations.Any()){
+                return ServiceResult<CargoCreationResultDto>.Failure(
+                    "Location Not Found. The specified location could not be resolved.");
             }
 
-            ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
-
-            if (!parsedCargoResult.IsSuccess)
-            {
-                return ServiceResult<CargoCreationResultDto>.Failure(parsedCargoResult.ErrorMessage);
+            var location = locations.FirstOrDefault();
+            bool isValidPlacemark =
+                await GeocodingHelper.ValidateDestination(location, parsedCargoResult.Data.Destination,
+                    _geocodingService);
+            if (!isValidPlacemark){
+                return ServiceResult<CargoCreationResultDto>.Failure("Please provide a valid destination.");
             }
 
-            var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", parsedCargoResult.Data);
+        }
+        catch (Exception ex){
+            return ServiceResult<CargoCreationResultDto>.Failure("Location Not Found. The specified location could not be resolved.");
+        }
 
-            if (response.IsSuccessStatusCode)
-            {
-                var result = new CargoCreationResultDto
-                {
-                    UserId = parsedCargoResult.Data.AppUserId,
-                    Destination = parsedCargoResult.Data.Destination
-                };
-                return ServiceResult<CargoCreationResultDto>.Success(result, "Cargo saved successfully 📦");
-
-            }
-            
+        var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", parsedCargoResult.Data);
+        if (!response.IsSuccessStatusCode)
+        {
             return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again.");
         }
-        catch (Exception ex)
+
+        var result = new CargoCreationResultDto
         {
-            return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo. Please contact support if the problem persists.");
-        }
+            UserId = parsedCargoResult.Data.AppUserId,
+            Destination = parsedCargoResult.Data.Destination,
+            TotalWeight = parsedCargoResult.Data.TotalWeight,
+            IsDangerous = parsedCargoResult.Data.IsDangerous
+        };
+        return ServiceResult<CargoCreationResultDto>.Success(result, "Cargo saved successfully 📦");
     }
+    catch (Exception ex)
+    {
+        return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo. Please contact support if the problem persists.");
+    }
+}
+
     
     
     private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
