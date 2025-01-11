@@ -23,8 +23,12 @@ namespace Mde.Project.Mobile.Helpers
                 endDate = new DateTime(year + 1, 1, GlobalConstants.EndDateSnow);
             }
 
+            if (endDate < DateTime.Today){
+                Preferences.Set("SnowEnabled", false);
+            }
+
             bool isWithinDateRange = currentDate >= startDate && currentDate <= endDate;
-            bool showSnowflakes = Preferences.Get("SnowEnabled", true);
+            bool showSnowflakes = Preferences.Get("SnowEnabled", false);
 
             return isWithinDateRange || showSnowflakes;
         }

@@ -195,25 +195,9 @@ public class CargoService : ICargoService
                 if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
                 {
                     cargo.Destination = line.Substring("Destination:".Length).Trim();
-                    try{
-                        var locations = await _geocodingService.GetLocationsAsync(cargo.Destination);
-                        if (locations == null || !locations.Any()){
-                            return ServiceResult<CargoRequestDto>.Failure(
-                                "Location Not Found. The specified location could not be resolved.");
-                        }
-
-                        var location = locations.FirstOrDefault();
-                        bool isValidPlacemark =
-                            await GeocodingHelper.ValidateDestination(location, cargo.Destination,
-                                _geocodingService);
-                        if (!isValidPlacemark){
-                            return ServiceResult<CargoRequestDto>.Failure("Please provide a valid destination.");
-                        }
-                    }
-                    catch (Exception ex){
-                        return ServiceResult<CargoRequestDto>.Failure("Location Not Found. The specified location could not be resolved.");
-                    }
+                 
                 }
+
                 else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
                 {
                     cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
@@ -242,12 +226,25 @@ public class CargoService : ICargoService
             {
                 return ServiceResult<CargoRequestDto>.Failure("Necessary cargo information is missing.");
             }
+            
+            var locations = await _geocodingService.GetLocationsAsync(cargo.Destination);
+            if (locations == null || !locations.Any()){
+                return ServiceResult<CargoRequestDto>.Failure(
+                    "Location Not Found. The specified location could not be resolved.");
+            }
+
+            var location = locations.FirstOrDefault();
+            bool isValidPlacemark =
+                await GeocodingHelper.ValidateDestination(location, cargo.Destination, _geocodingService);
+            if (!isValidPlacemark){
+                return ServiceResult<CargoRequestDto>.Failure("Please provide a valid destination.");
+            }
 
             return ServiceResult<CargoRequestDto>.Success(cargo);
         }
         catch (Exception ex)
         {
-            return ServiceResult<CargoRequestDto>.Failure($"Error parsing cargo details. Please contact support if the problem persists.");
+            return ServiceResult<CargoRequestDto>.Failure("Error parsing cargo details. Please contact support if the problem persists.");
         }
     }
   

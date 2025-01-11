@@ -66,7 +66,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             }
             catch (Exception ex)
             {
-                return ServiceResult<string>.Failure($"An unexpected error occurred while extracting pdf file. Please contact support if the problem persists.");
+                return ServiceResult<string>.Failure("An unexpected error occurred while extracting pdf file. Please contact support if the problem persists.");
             }
         }
 

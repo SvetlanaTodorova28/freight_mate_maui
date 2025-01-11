@@ -5,7 +5,7 @@ public class SettingsViewModel : ObservableObject
 {
     public SettingsViewModel()
     {
-        SnowEnabled = Preferences.Get("SnowEnabled", true);
+        SnowEnabled = Preferences.Get("SnowEnabled", false);
     }
 
     private bool _snowEnabled;
