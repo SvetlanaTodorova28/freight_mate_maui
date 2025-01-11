@@ -15,17 +15,15 @@ public class CargoCreateViewModel : ObservableObject
     private readonly IUiService _uiService;
     private readonly IAppUserService _appUserService;
     private readonly IAuthenticationServiceMobile _authenticationService;
-    private readonly IMainThreadInvoker _mainThreadInvoker;
     
 
     public CargoCreateViewModel(ICargoService cargoService, IUiService uiService, IAppUserService appUserService,
-        IAuthenticationServiceMobile authenticationService, IMainThreadInvoker mainThreadInvoker)
+        IAuthenticationServiceMobile authenticationService)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _appUserService = appUserService;
         _authenticationService = authenticationService;
-        _mainThreadInvoker = mainThreadInvoker;
         
         LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
         SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
@@ -161,7 +159,7 @@ public class CargoCreateViewModel : ObservableObject
                 await _uiService.ShowSnackbarSuccessAsync(result.Data);
                 await NotifyUserAsync(SelectedUser.Id, Destination);
                 await Shell.Current.GoToAsync("//CargoListPage");
-              return true;
+                return true;
             }
             else
             {
@@ -194,10 +192,10 @@ public class CargoCreateViewModel : ObservableObject
         var userFcmToken = string.Empty;
         string errorMessage = "";
         try{
-                       var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
+            var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
             if (result.IsSuccess)
             {
-                 userFcmToken = result.Data;
+                userFcmToken = result.Data;
             }
             else{
                 errorMessage = result.ErrorMessage;
@@ -236,9 +234,7 @@ public class CargoCreateViewModel : ObservableObject
     {
         IsLoading = true;
         try{
-
-                           var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
-
+            var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
             if (result.IsSuccess){
                 await _uiService.ShowSnackbarSuccessAsync(result.Message);
                 await NotifyUserAsync(result.Data.UserId, result.Data.Destination);
@@ -259,4 +255,3 @@ public class CargoCreateViewModel : ObservableObject
 
     #endregion
 }
- 
