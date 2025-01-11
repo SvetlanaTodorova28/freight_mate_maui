@@ -194,7 +194,7 @@ public class CargoCreateViewModel : ObservableObject
         var userFcmToken = string.Empty;
         string errorMessage = "";
         try{
-            var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
+                       var  result = await _appUserService.GetFcmTokenFromServerAsync(userId.ToString());
             if (result.IsSuccess)
             {
                  userFcmToken = result.Data;
@@ -237,7 +237,7 @@ public class CargoCreateViewModel : ObservableObject
         IsLoading = true;
         try{
 
-            var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+                           var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
 
             if (result.IsSuccess){
                 await _uiService.ShowSnackbarSuccessAsync(result.Message);

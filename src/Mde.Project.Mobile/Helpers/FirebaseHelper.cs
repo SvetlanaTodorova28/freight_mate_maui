@@ -8,6 +8,7 @@ using Firebase.CloudMessaging;
 namespace Mde.Project.Mobile.Helpers
 {
     public static class FirebaseHelper
+    
     {
         
       public static async Task<ServiceResult<string>> RetrieveAndStoreFcmTokenLocallyAsync()
@@ -43,7 +44,7 @@ namespace Mde.Project.Mobile.Helpers
     }
     catch (Exception ex)
     {
-        return ServiceResult<string>.Failure($"Error retrieving FCM token: {ex.Message}");
+        return ServiceResult<string>.Failure($"Error retrieving FCM token. Log out and try again .");
     }
 #elif __IOS__
     try
@@ -52,8 +53,7 @@ namespace Mde.Project.Mobile.Helpers
         string currentToken = await SecureStorageHelper.GetFcmTokenAsync();
         if (!string.IsNullOrEmpty(newToken))
         {
-            if (!newToken.Equals(currentToken))
-            {
+            if(string.IsNullOrEmpty(currentToken) ||!currentToken.Equals(newToken)){
                 await SecureStorageHelper.SaveFcmTokenAsync(newToken);
                 return ServiceResult<string>.Success(newToken);
             }
@@ -75,29 +75,36 @@ namespace Mde.Project.Mobile.Helpers
 
 
        
-        public static async Task<ServiceResult<bool>> UpdateFcmTokenOnServerAsync(IAppUserService appUserService)
+        public static async Task<ServiceResult<string>> UpdateFcmTokenOnServerAsync(IAppUserService appUserService)
         {
             try
             {
                 var localTokenResult = await GetStoredFcmTokenAsync();
-                if (!localTokenResult.IsSuccess)
-                {
-                    return ServiceResult<bool>.Failure(localTokenResult.ErrorMessage);
+                if (!localTokenResult.IsSuccess){
+                    var tokenResult = await RetrieveAndStoreFcmTokenLocallyAsync();
+                    if (!tokenResult.IsSuccess)
+                    {
+                        return ServiceResult<string>.Failure("Failed to store FCM token.");
+                    }
                 }
                 
                 var userIdResult = await appUserService.GetCurrentUserIdAsync();
                 if (!userIdResult.IsSuccess)
                 {
-                    return ServiceResult<bool>.Failure("User ID not found.");
+                    return ServiceResult<string>.Failure("User ID not found.");
                 }
 
                
                 var updateResult = await appUserService.UpdateFcmTokenOnServerAsync(userIdResult.Data, localTokenResult.Data);
-                return updateResult;
+                if (!updateResult.IsSuccess)
+                {
+                    return ServiceResult<string>.Failure(updateResult.ErrorMessage);
+                }
+                return ServiceResult<string>.Success("Token updated successfully on server.");
             }
             catch (Exception ex)
             {
-                return ServiceResult<bool>.Failure($"Error updating FCM token on server.");
+                return ServiceResult<string>.Failure("Error updating FCM token on server.");
             }
         }
 

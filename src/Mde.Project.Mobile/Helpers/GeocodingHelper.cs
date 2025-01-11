@@ -15,17 +15,17 @@ public static class GeocodingHelper
         var thoroughfareWords = new List<string>();
 
         if (!string.IsNullOrWhiteSpace(placemark.CountryName))
-            thoroughfareWords.Add(CleanString(placemark.CountryName));
+            thoroughfareWords.AddRange(CleanString(placemark.CountryName).Split(' ', StringSplitOptions.RemoveEmptyEntries));;
         if (!string.IsNullOrWhiteSpace(placemark.Locality))
-            thoroughfareWords.Add(CleanString(placemark.Locality));
+            thoroughfareWords.AddRange(CleanString(placemark.Locality).Split(' ', StringSplitOptions.RemoveEmptyEntries));
         if (!string.IsNullOrWhiteSpace(placemark.PostalCode))
-            thoroughfareWords.Add(CleanString(placemark.PostalCode));
+            thoroughfareWords.Add(CleanString(placemark.PostalCode).Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
         if (!string.IsNullOrWhiteSpace(placemark.FeatureName))
             thoroughfareWords.AddRange(CleanString(placemark.FeatureName).Split(' ', StringSplitOptions.RemoveEmptyEntries));
         if (!string.IsNullOrWhiteSpace(placemark.Thoroughfare))
             thoroughfareWords.AddRange(CleanString(placemark.Thoroughfare).Split(' ', StringSplitOptions.RemoveEmptyEntries));
 
-        int minimumMatchesRequired = 4;
+        int minimumMatchesRequired = 5;
         int matchCount = inputWords
             .Count(inputWord => thoroughfareWords.Any(thoroughfareWord => thoroughfareWord.Contains(inputWord)));
 

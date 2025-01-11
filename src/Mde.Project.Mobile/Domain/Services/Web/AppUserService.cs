@@ -5,6 +5,7 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Domain.Services.Web.Dtos.AppUsers;
+using Mde.Project.Mobile.Helpers;
 using Utilities;
 
 public class AppUserService : IAppUserService
@@ -70,6 +71,14 @@ public class AppUserService : IAppUserService
             {
                 var token = await response.Content.ReadAsStringAsync();
                 return ServiceResult<string>.Success(token);
+            }
+            else{
+                var localToken = await SecureStorageHelper.GetFcmTokenAsync();
+                if (string.IsNullOrEmpty(localToken))
+                {
+                    return ServiceResult<string>.Failure("Failed to retrieve the notification token from the local storage. Please login again.");
+                }
+                UpdateFcmTokenOnServerAsync(userId,localToken);
             }
             return ServiceResult<string>.Failure("Failed to retrieve the notification token from the server. Please check the user ID and try again.");
         }

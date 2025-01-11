@@ -138,42 +138,37 @@ namespace Mde.Project.Mobile
 
         public static async Task InitializeAppAsync(IServiceProvider services)
         {
-            try
-            {
+            try{
                 var keyVaultHelper = services.GetRequiredService<KeyVaultHelper>();
                 var uiService = services.GetService<IUiService>();
 
-               
+
                 var keyVaultResult = await keyVaultHelper.EnsureKeysAreAvailableAsync();
-                if (!keyVaultResult.IsSuccess && uiService != null)
-                {
-                    await MainThread.InvokeOnMainThreadAsync(() =>
-                    {
+                if (!keyVaultResult.IsSuccess && uiService != null){
+                    await MainThread.InvokeOnMainThreadAsync(() => {
                         uiService.ShowSnackbarWarning($"Key Vault Error: {keyVaultResult.ErrorMessage}");
                     });
                 }
-                
+
                 var appUserService = services.GetRequiredService<IAppUserService>();
-                if (appUserService != null)
-                {
+                if (appUserService != null){
                     var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
-                    if (!firebaseTokenResult.IsSuccess && uiService != null)
-                    {
-                        await MainThread.InvokeOnMainThreadAsync(() =>
-                        {
+                    if (!firebaseTokenResult.IsSuccess && uiService != null){
+                        await MainThread.InvokeOnMainThreadAsync(() => {
                             uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");
                         });
                     }
+                    else{
+                         await FirebaseHelper.UpdateFcmTokenOnServerAsync(appUserService);
+                    }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
                 var uiService = services.GetService<IUiService>();
-                if (uiService != null)
-                {
-                    await MainThread.InvokeOnMainThreadAsync(() =>
-                    {
-                        uiService.ShowSnackbarWarning($"Unexpected error: {ex.Message}");
+                if (uiService != null){
+                    await MainThread.InvokeOnMainThreadAsync(() => {
+                        uiService.ShowSnackbarWarning(
+                            $"Unexpected error. Contact the support team if the problem persists. Error: {ex.Message}");
                     });
                 }
             }

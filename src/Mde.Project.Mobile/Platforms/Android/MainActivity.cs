@@ -35,10 +35,10 @@ namespace Mde.Project.Mobile.Platforms
             {
                 Platform.Init(this, savedInstanceState);
             }
-            var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
+            /*var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
             if (userService != null){
                 FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
-            }
+            }*/
 
         }
 
@@ -61,15 +61,6 @@ namespace Mde.Project.Mobile.Platforms
             }
         }
         
-
-        /*
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        */
         
      
     }

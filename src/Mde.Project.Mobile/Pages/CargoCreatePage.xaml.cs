@@ -83,9 +83,7 @@ public partial class CargoCreatePage : ContentPage{
             {
                 MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoListUpdated", true); 
             }
-            else{
-                await Navigation.PopModalAsync();
-            }
+                                                                                 
         }
         catch (Exception ex)
         {
@@ -174,8 +172,6 @@ public partial class CargoCreatePage : ContentPage{
         {
             await Navigation.PopModalAsync(); 
         }
-
-       
     }
 
 }

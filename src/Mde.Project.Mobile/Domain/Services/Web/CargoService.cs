@@ -105,7 +105,6 @@ public class CargoService : ICargoService
             }
             else
             {
-                
                 return ServiceResult<string>.Failure("Cargo could not be saved. Please try again.");
             }
         }
@@ -135,32 +134,15 @@ public class CargoService : ICargoService
         }
 
         ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
+       
         if (!parsedCargoResult.IsSuccess)
         {
             return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again");
         }
-
-        try{
-            var locations = await _geocodingService.GetLocationsAsync(parsedCargoResult.Data.Destination);
-            if (locations == null || !locations.Any()){
-                return ServiceResult<CargoCreationResultDto>.Failure(
-                    "Location Not Found. The specified location could not be resolved.");
-            }
-
-            var location = locations.FirstOrDefault();
-            bool isValidPlacemark =
-                await GeocodingHelper.ValidateDestination(location, parsedCargoResult.Data.Destination,
-                    _geocodingService);
-            if (!isValidPlacemark){
-                return ServiceResult<CargoCreationResultDto>.Failure("Please provide a valid destination.");
-            }
-
-        }
-        catch (Exception ex){
-            return ServiceResult<CargoCreationResultDto>.Failure("Location Not Found. The specified location could not be resolved.");
-        }
+        
 
         var response = await _httpClient.PostAsJsonAsync("/api/Cargos/Add", parsedCargoResult.Data);
+      
         if (!response.IsSuccessStatusCode)
         {
             return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again.");
@@ -177,38 +159,33 @@ public class CargoService : ICargoService
     }
     catch (Exception ex)
     {
-        return ServiceResult<CargoCreationResultDto>.Failure($"Error creating cargo. Please contact support if the problem persists.");
+        return ServiceResult<CargoCreationResultDto>.Failure("Error creating cargo. Please contact support if the problem persists.");
     }
 }
-
-    
-    
-    private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
+ private async Task<ServiceResult<CargoRequestDto>> ParseExtractedTextToCargo(string text)
     {
         var cargo = new CargoRequestDto();
         try
         {
-            
             var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < lines.Length; i++)
+            foreach (var line in lines)
             {
-                if (lines[i].StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
+                if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.Destination = lines[i].Substring("Destination:".Length).Trim();
-                 
+                    cargo.Destination = line.Substring("Destination:".Length).Trim();
                 }
-                else if (lines[i].StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
+                else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.TotalWeight = ParseWeight(lines[i].Substring("Total Weight:".Length).Trim());
+                    cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
                 }
-                else if (lines[i].StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
+                else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.IsDangerous = lines[i].Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                    cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
                 }
-                else if (lines[i].StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
+                else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
                 {
-                    var email = lines[i].Substring("Responsible:".Length).Trim();
+                    var email = line.Substring("Responsible:".Length).Trim();
                     var result = await _appUserService.GetUserIdByEmailAsync(email).ConfigureAwait(false);
                     if (result.IsSuccess)
                     {
@@ -225,19 +202,6 @@ public class CargoService : ICargoService
             {
                 return ServiceResult<CargoRequestDto>.Failure("Necessary cargo information is missing.");
             }
-            
-            var locations = await _geocodingService.GetLocationsAsync(cargo.Destination);
-            if (locations == null || !locations.Any()){
-                return ServiceResult<CargoRequestDto>.Failure(
-                    "Location Not Found. The specified location could not be resolved.");
-            }
-
-            var location = locations.FirstOrDefault();
-            bool isValidPlacemark =
-                await GeocodingHelper.ValidateDestination(location, cargo.Destination, _geocodingService);
-            if (!isValidPlacemark){
-                return ServiceResult<CargoRequestDto>.Failure("Please provide a valid destination.");
-            }
 
             return ServiceResult<CargoRequestDto>.Success(cargo);
         }
@@ -246,6 +210,9 @@ public class CargoService : ICargoService
             return ServiceResult<CargoRequestDto>.Failure("Error parsing cargo details. Please contact support if the problem persists.");
         }
     }
+    
+    
+ 
   
 
     private double ParseWeight(string weightText)
