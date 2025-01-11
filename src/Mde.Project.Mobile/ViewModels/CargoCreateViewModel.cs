@@ -15,15 +15,17 @@ public class CargoCreateViewModel : ObservableObject
     private readonly IUiService _uiService;
     private readonly IAppUserService _appUserService;
     private readonly IAuthenticationServiceMobile _authenticationService;
+    private readonly IMainThreadInvoker _mainThreadInvoker;
     
 
     public CargoCreateViewModel(ICargoService cargoService, IUiService uiService, IAppUserService appUserService,
-        IAuthenticationServiceMobile authenticationService)
+        IAuthenticationServiceMobile authenticationService, IMainThreadInvoker mainThreadInvoker)
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _appUserService = appUserService;
         _authenticationService = authenticationService;
+        _mainThreadInvoker = mainThreadInvoker;
         
         LoadUsersCommand = new AsyncRelayCommand(LoadUsers);
         SaveCommand = new AsyncRelayCommand(SaveCargoAsync);
@@ -171,7 +173,6 @@ public class CargoCreateViewModel : ObservableObject
         {
             IsLoading = false;
         }
-        return false;
     }
 
     
@@ -233,18 +234,26 @@ public class CargoCreateViewModel : ObservableObject
 
     public async Task<bool> UploadAndProcessPdfAsync(Stream pdfStream, string fileExtension = "pdf")
     {
-        var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+        IsLoading = true;
+        try{
 
-        if (result.IsSuccess)
-        {
-            await _uiService.ShowSnackbarSuccessAsync(result.Message);
-            await NotifyUserAsync(result.Data.UserId, result.Data.Destination);
-            await Shell.Current.GoToAsync("//CargoListPage");
-            return true;
+            var result = await _cargoService.CreateCargoWithPdf(pdfStream, fileExtension);
+
+            if (result.IsSuccess){
+                await _uiService.ShowSnackbarSuccessAsync(result.Message);
+                await NotifyUserAsync(result.Data.UserId, result.Data.Destination);
+                await Shell.Current.GoToAsync("//CargoListPage");
+                return true;
+                
+            }  else
+            {
+                await _uiService.ShowSnackbarWarning(result.ErrorMessage);
+                return false;
+            }
         }
-
-        await _uiService.ShowSnackbarWarning(result.ErrorMessage);
-        return false;
+        finally{
+            IsLoading = false;
+        }
     }
 
 

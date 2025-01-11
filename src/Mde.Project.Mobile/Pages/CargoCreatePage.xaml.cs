@@ -10,14 +10,12 @@ public partial class CargoCreatePage : ContentPage{
 
     private readonly CargoCreateViewModel _cargoCreateViewModel;
     private readonly IUiService _uiService;
-    private readonly IMainThreadInvoker _mainThreadInvoker;
     private float _angle;
     
-    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService, IMainThreadInvoker mainThreadInvoker){ 
+    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService){ 
         InitializeComponent();
         BindingContext = _cargoCreateViewModel = cargoCreateViewModel;
         _uiService = uiService;
-        _mainThreadInvoker = mainThreadInvoker;
     }
 
     protected override void OnAppearing(){
@@ -59,7 +57,7 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
-            await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
+            await _uiService.ShowSnackbarWarning("An unexpected error occurred while creating the cargo.");
         }
        
     }
@@ -89,8 +87,7 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
-          
-            await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
+            await _uiService.ShowSnackbarWarning("Unexpected error occurred while capturing the document. Please try again.  If the issue persists, contact support.");
         }
        
     }
@@ -168,7 +165,7 @@ public partial class CargoCreatePage : ContentPage{
         }
         catch (Exception ex)
         {
-            await _uiService.ShowSnackbarWarning($"An error occurred: {ex.Message}");
+            await _uiService.ShowSnackbarWarning("Unexpected error occurred while saving the cargo. Please try again.  If the issue persists, contact support");
         }
         finally
         {

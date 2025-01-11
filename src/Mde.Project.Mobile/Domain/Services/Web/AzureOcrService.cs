@@ -161,17 +161,15 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ocrApiKey);
 
                 var response = await _httpClient.PostAsync(requestUrl, content);
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var parsedResult = ParseOcrImageResponse(responseBody);
-                    return parsedResult;
-                }
-                else
-                {
+                await Task.Delay(1000);
+                if (!response.IsSuccessStatusCode){
                     return ServiceResult<string>.Failure("OCR image request failed");
                 }
+                
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var parsedResult = ParseOcrImageResponse(responseBody);
+                return parsedResult;
+                
             }
             catch (Exception ex)
             {

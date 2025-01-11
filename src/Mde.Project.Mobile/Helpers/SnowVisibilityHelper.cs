@@ -9,9 +9,8 @@ namespace Mde.Project.Mobile.Helpers
         {
             var currentDate = DateTime.Now;
             var year = currentDate.Year;
-            var startDate = new DateTime(year, 12, 1);
-            var endDate = new DateTime(year, 1, GlobalConstants.EndDateSnow);
-       
+            DateTime startDate, endDate;
+
             if (currentDate.Month == 1)
             {
                 startDate = new DateTime(year - 1, 12, 1);
@@ -22,15 +21,24 @@ namespace Mde.Project.Mobile.Helpers
                 startDate = new DateTime(year, 12, 1);
                 endDate = new DateTime(year + 1, 1, GlobalConstants.EndDateSnow);
             }
-
-            if (endDate < DateTime.Today){
-                Preferences.Set("SnowEnabled", false);
+            else
+            {
+                return false;
             }
 
+           
             bool isWithinDateRange = currentDate >= startDate && currentDate <= endDate;
-            bool showSnowflakes = Preferences.Get("SnowEnabled", false);
+            
+            bool showSnowflakes = Preferences.Get("SnowEnabled", isWithinDateRange);
 
-            return isWithinDateRange || showSnowflakes;
+          
+            if (currentDate > endDate)
+            {
+                Preferences.Set("SnowEnabled", false);
+                showSnowflakes = false;
+            }
+
+            return showSnowflakes;
         }
     }
 }

@@ -137,7 +137,7 @@ public class CargoService : ICargoService
         ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
         if (!parsedCargoResult.IsSuccess)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure(parsedCargoResult.ErrorMessage);
+            return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again");
         }
 
         try{
@@ -188,27 +188,27 @@ public class CargoService : ICargoService
         var cargo = new CargoRequestDto();
         try
         {
+            
             var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var line in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
-                if (line.StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
+                if (lines[i].StartsWith("Destination:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.Destination = line.Substring("Destination:".Length).Trim();
+                    cargo.Destination = lines[i].Substring("Destination:".Length).Trim();
                  
                 }
-
-                else if (line.StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
+                else if (lines[i].StartsWith("Total Weight:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.TotalWeight = ParseWeight(line.Substring("Total Weight:".Length).Trim());
+                    cargo.TotalWeight = ParseWeight(lines[i].Substring("Total Weight:".Length).Trim());
                 }
-                else if (line.StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
+                else if (lines[i].StartsWith("Is Dangerous:", StringComparison.OrdinalIgnoreCase))
                 {
-                    cargo.IsDangerous = line.Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                    cargo.IsDangerous = lines[i].Substring("Is Dangerous:".Length).Trim().Equals("Yes", StringComparison.OrdinalIgnoreCase);
                 }
-                else if (line.StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
+                else if (lines[i].StartsWith("Responsible:", StringComparison.OrdinalIgnoreCase))
                 {
-                    var email = line.Substring("Responsible:".Length).Trim();
+                    var email = lines[i].Substring("Responsible:".Length).Trim();
                     var result = await _appUserService.GetUserIdByEmailAsync(email).ConfigureAwait(false);
                     if (result.IsSuccess)
                     {
@@ -216,7 +216,6 @@ public class CargoService : ICargoService
                     }
                     else
                     {
-                    
                         return ServiceResult<CargoRequestDto>.Failure("Failed to find a user with the given email.");
                     }
                 }

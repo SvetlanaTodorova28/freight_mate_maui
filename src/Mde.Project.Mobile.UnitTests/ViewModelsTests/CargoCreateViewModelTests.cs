@@ -15,6 +15,7 @@ namespace Mde.Project.Mobile.UnitTests
         private readonly Mock<IAppUserService> _mockAppUserService;
         private readonly Mock<IAuthenticationServiceMobile> _mockAuthService;
         private readonly CargoCreateViewModel _viewModel;
+        private readonly Mock<IMainThreadInvoker> _mockMainThreadInvoker;
 
         public CargoCreateViewModelTests()
         {
@@ -27,7 +28,8 @@ namespace Mde.Project.Mobile.UnitTests
                 _mockCargoService.Object,
                 _mockUiService.Object,
                 _mockAppUserService.Object,
-                _mockAuthService.Object
+                _mockAuthService.Object,
+                _mockMainThreadInvoker.Object
             );
         }
 
