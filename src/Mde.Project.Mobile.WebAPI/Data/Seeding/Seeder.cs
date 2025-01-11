@@ -203,41 +203,41 @@ public class Seeder{
           var cargos = new List<Cargo>{
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000031"),
-                Destination = "Milan",
+                Destination = "Via Giambellino, 7, 20146 Milan MI, Italy",
                 TotalWeight = 1500.5,
-                AppUserId = "00000000-0000-0000-0000-200000000000"
+                AppUserId = "00000000-0000-0000-0000-400000000000"
             },
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000032"),
-                Destination = "London",
+                Destination = "Cody Road, London E16 4SR, United Kingdom",
                 TotalWeight = 2900.0,
                 AppUserId = "00000000-0000-0000-0000-400000000000"
             }
             , new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000033"),
-                Destination = "Zeebrugge",
+                Destination = "Kustlaan 32, 8380 Bruges, Belgium",
                 TotalWeight = 1500.5,
                 AppUserId = "00000000-0000-0000-0000-400000000000"
             },
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000034"),
-                Destination = "Sofia",
+                Destination = "Prof. Tsvetan Lazarov 3, 1592 Sofia, Bulgaria",
                 TotalWeight = 2900.0,
                 AppUserId = "00000000-0000-0000-0000-400000000000"
             },
              new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000035"),
-                Destination = "Zeebrugge",
+                Destination = "Heiststraat 10, 8380 Bruges, Belgium",
                 TotalWeight = 500.5,
                 IsDangerous = true,
                 AppUserId = "00000000-0000-0000-0000-300000000000"
             },
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000036"),
-                Destination = "Berlin",
+                Destination = "Berolinastraße 7, 10178 Berlin, Germany",
                 TotalWeight = 900.0,
                 IsDangerous = true,
-                AppUserId = "00000000-0000-0000-0000-300000000000"
+                AppUserId = "00000000-0000-0000-0000-500000000000"
             }
         };
         var cargosProducts = new[]{
