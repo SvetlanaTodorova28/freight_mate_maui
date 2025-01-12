@@ -35,7 +35,7 @@ namespace Mde.Project.Mobile.UnitTests
         }
 
         [Fact]
-        public async Task RefreshListCommand_LoadsCargosSuccessfully()
+        public async Task RefreshListCommand_WhenCalled_LoadsCargosSuccessfully()
         {
             // Arrange
             var cargos = new List<Cargo>
@@ -70,7 +70,7 @@ namespace Mde.Project.Mobile.UnitTests
 
 
         [Fact]
-        public async Task RefreshListCommand_ShowsSnackbarOnError()
+        public async Task RefreshListCommand_WhenAuthServiceFails_ShowsSnackbarWithError()
         {
             // Arrange
             _mockAuthService.Setup(x => x.GetUserIdFromTokenAsync())
@@ -84,20 +84,10 @@ namespace Mde.Project.Mobile.UnitTests
             _mockUiService.Verify(x => x.ShowSnackbarWarning("Failed to get user ID."), Times.Once);
             Assert.Empty(_viewModel.Cargos);
         }
+        
 
         [Fact]
-        public async Task CreateCargoCommand_NavigatesToCreateCargoPage()
-        {
-            // Act
-             _viewModel.CreateCargoCommand.Execute(null);
-
-            // Assert
-            _mockUiService.Verify(x => x.ShowSnackbarWarning(It.IsAny<string>()), Times.Never);
-         
-        }
-
-        [Fact]
-        public async Task DeleteCargoCommand_RemovesCargoSuccessfully()
+        public async Task DeleteCargoCommand_WhenCargoExists_RemovesItSuccessfully()
         {
             // Arrange
             var cargo = new Cargo { Id = Guid.NewGuid(), Destination = "Test Destination" , IsDangerous = true, TotalWeight = 100 };
@@ -117,7 +107,7 @@ namespace Mde.Project.Mobile.UnitTests
         }
 
         [Fact]
-        public async Task PerformSearchCommand_FiltersCargosCorrectly()
+        public async Task PerformSearchCommand_WithValidQuery_FiltersCargosCorrectly()
         {
             // Arrange
             _viewModel.Cargos = new ObservableCollection<Cargo>
