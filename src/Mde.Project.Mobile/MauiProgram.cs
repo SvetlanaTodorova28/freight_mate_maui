@@ -121,6 +121,7 @@ namespace Mde.Project.Mobile
             services.AddTransient<IGeocodingService, GeocodingService>();
             services.AddSingleton<IMainThreadInvoker, MainThreadInvoker>(); 
             services.AddSingleton<IPreferencesService, PreferencesService>(); 
+            services.AddSingleton<ISnowVisibilityService, SnowVisibilityService>(); 
           
             
             services.AddSingleton<KeyVaultHelper>();

@@ -12,6 +12,7 @@ public partial class TranslateViewModel : ObservableObject
     private readonly ITextToSpeechService _textToSpeechService;
     private readonly IUiService _uiService;
     private readonly IMainThreadInvoker _mainThreadInvoker;
+    private readonly ISnowVisibilityService _snowVisibilityService;
 
     [ObservableProperty]
     private List<LanguageOption> availableLanguages = new()
@@ -44,7 +45,8 @@ public partial class TranslateViewModel : ObservableObject
         ITranslationStorageService translationStorageService,
         ITextToSpeechService textToSpeechService,
         IUiService uiService,
-        IMainThreadInvoker mainThreadInvoker)
+        IMainThreadInvoker mainThreadInvoker,
+        ISnowVisibilityService snowVisibilityService)
     {
         _speechService = speechService;
         _translationService = translationService;
@@ -52,6 +54,7 @@ public partial class TranslateViewModel : ObservableObject
         _textToSpeechService = textToSpeechService;
         _uiService = uiService;
         _mainThreadInvoker = mainThreadInvoker;
+        _snowVisibilityService = snowVisibilityService;
         UpdateSnowVisibility();
         InitializeSubscriptionSnow();
         
@@ -200,7 +203,7 @@ public partial class TranslateViewModel : ObservableObject
     
     public void UpdateSnowVisibility()
     {
-        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
+        SnowVisibility = _snowVisibilityService.DetermineSnowVisibility();
     }
 
    

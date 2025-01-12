@@ -15,6 +15,7 @@ namespace Mde.Project.Mobile.UnitTests
         private readonly Mock<IUiService> _mockUiService;
         private readonly Mock<IAuthenticationServiceMobile> _mockAuthService;
         private readonly Mock<IFunctionAccessService> _mockFunctionAccessService;
+        private readonly Mock<ISnowVisibilityService> _mockSnowVisibilityService;
         private readonly CargoListViewModel _viewModel;
 
         public CargoListViewModelTests()
@@ -23,12 +24,14 @@ namespace Mde.Project.Mobile.UnitTests
             _mockUiService = new Mock<IUiService>();
             _mockAuthService = new Mock<IAuthenticationServiceMobile>();
             _mockFunctionAccessService = new Mock<IFunctionAccessService>();
+            _mockSnowVisibilityService = new Mock<ISnowVisibilityService>();
 
             _viewModel = new CargoListViewModel(
                 _mockCargoService.Object,
                 _mockUiService.Object,
                 _mockAuthService.Object,
-                _mockFunctionAccessService.Object
+                _mockFunctionAccessService.Object,
+                _mockSnowVisibilityService.Object
             );
         }
 
@@ -53,6 +56,8 @@ namespace Mde.Project.Mobile.UnitTests
                     new CargoResponseDto { Id = cargos[0].Id, Destination = cargos[0].Destination, IsDangerous = cargos[0].IsDangerous, TotalWeight = cargos[0].TotalWeight },
                     new CargoResponseDto { Id = cargos[1].Id, Destination = cargos[1].Destination, IsDangerous = cargos[1].IsDangerous, TotalWeight = cargos[1].TotalWeight }
                 }));
+            
+            _mockSnowVisibilityService.Setup(x => x.DetermineSnowVisibility()).Returns(true);
 
             // Act
             _viewModel.RefreshListCommand.Execute(null);

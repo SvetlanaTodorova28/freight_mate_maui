@@ -1,12 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.ViewModels;
 
 public class OptionsViewModel: ObservableObject{
+    private readonly ISnowVisibilityService _snowVisibilityService;
     
-    public OptionsViewModel(){
-      
+    public OptionsViewModel(ISnowVisibilityService snowVisibilityService){
+      _snowVisibilityService = snowVisibilityService;
        
         UpdateSnowVisibility();
         InitializeSubscriptionSnow();
@@ -27,6 +29,6 @@ public class OptionsViewModel: ObservableObject{
     
     public void UpdateSnowVisibility()
     {
-        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
+        SnowVisibility = _snowVisibilityService.DetermineSnowVisibility();
     }
 }

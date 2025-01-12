@@ -17,18 +17,20 @@ public class CargoListViewModel : ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
+    private readonly ISnowVisibilityService _snowVisibilityService;
     public event Action RequestAnimationUpdate;
 
     
 
-    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, IFunctionAccessService functionAccessService
+    public CargoListViewModel(ICargoService cargoService, IUiService uiService, IAuthenticationServiceMobile authenticationService, 
+        IFunctionAccessService functionAccessService, ISnowVisibilityService snowVisibilityService
     )
     {
         _cargoService = cargoService;
         _uiService = uiService;
         _authenticationService = authenticationService;
         _functionAccessService = functionAccessService;
-        
+        _snowVisibilityService = snowVisibilityService;
 
         RefreshListCommand = new AsyncRelayCommand(RefreshListAsync);
         CreateCargoCommand = new AsyncRelayCommand(NavigateToCreateCargoAsync);
@@ -321,7 +323,7 @@ public class CargoListViewModel : ObservableObject
     
     public void UpdateSnowVisibility()
     {
-        SnowVisibility = SnowVisibilityHelper.DetermineSnowVisibility();
+        SnowVisibility = _snowVisibilityService.DetermineSnowVisibility();
     }
 
   

@@ -11,6 +11,7 @@ public class TranslateViewModelTests
     private readonly Mock<ITranslationService> _mockTranslationService;
     private readonly Mock<IMainThreadInvoker> _mockMainThreadInvoker; 
     private readonly Mock<ITranslationStorageService> _mockTranslationStorageService; 
+    private readonly Mock<ISnowVisibilityService> _mockSnowVisibilityService;
     private readonly TranslateViewModel _viewModel;
 
     public TranslateViewModelTests()
@@ -20,6 +21,7 @@ public class TranslateViewModelTests
         _mockMainThreadInvoker = new Mock<IMainThreadInvoker>(); 
         _mockTranslationService = new Mock<ITranslationService>();
         _mockTranslationStorageService = new Mock<ITranslationStorageService>();
+        _mockSnowVisibilityService = new Mock<ISnowVisibilityService>(); 
 
         _viewModel = new TranslateViewModel(
             _mockSpeechService.Object,
@@ -27,7 +29,8 @@ public class TranslateViewModelTests
             null, 
             null,
             _mockUiService.Object,
-            _mockMainThreadInvoker.Object
+            _mockMainThreadInvoker.Object,
+            _mockSnowVisibilityService.Object
             
         );
     }
