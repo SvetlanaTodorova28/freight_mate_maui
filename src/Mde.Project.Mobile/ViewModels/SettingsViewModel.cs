@@ -1,14 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 
 public class SettingsViewModel : ObservableObject
 {
-    public SettingsViewModel()
+    private IPreferencesService _preferencesService;
+    private bool _snowEnabled;
+
+    // Constructor Injection
+    public SettingsViewModel(IPreferencesService preferencesService)
     {
-        SnowEnabled = Preferences.Get("SnowEnabled", false);
+        _preferencesService = preferencesService;
+        SnowEnabled = _preferencesService.GetBoolean("SnowEnabled", false);
     }
 
-    private bool _snowEnabled;
     public bool SnowEnabled
     {
         get => _snowEnabled;
@@ -16,8 +20,8 @@ public class SettingsViewModel : ObservableObject
         {
             if (SetProperty(ref _snowEnabled, value))
             {
-                Preferences.Set("SnowEnabled", value);
-                MessagingCenter.Send<SettingsViewModel, bool>(this, "SnowToggleChanged", _snowEnabled);
+                _preferencesService.SetBoolean("SnowEnabled", value);
+                MessagingCenter.Send(this, "SnowToggleChanged", _snowEnabled);
             }
         }
     }
