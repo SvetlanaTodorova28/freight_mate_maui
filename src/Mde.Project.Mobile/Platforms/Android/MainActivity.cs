@@ -24,7 +24,7 @@ namespace Mde.Project.Mobile.Platforms
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-           // CreateNotificationChannel();
+          
 
             if (CheckSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
             {
@@ -35,32 +35,8 @@ namespace Mde.Project.Mobile.Platforms
             {
                 Platform.Init(this, savedInstanceState);
             }
-            /*var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
-            if (userService != null){
-                FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
-            }*/
 
         }
-
-        private void CreateNotificationChannel()
-        {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                string channelName = "General Notifications";
-                string channelId = "default_channel";
-                string channelDescription = "General notifications";
-                NotificationImportance importance = NotificationImportance.High;
-
-                NotificationChannel channel = new NotificationChannel(channelId, channelName, importance)
-                {
-                    Description = channelDescription
-                };
-
-                var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-                notificationManager.CreateNotificationChannel(channel);
-            }
-        }
-        
         
      
     }

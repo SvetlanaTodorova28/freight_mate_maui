@@ -16,10 +16,11 @@ public class BaseViewModel:ObservableObject
     private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
+    private readonly IFirebaseTokenService _firebaseTokenService;
     
     public BaseViewModel(IUiService uiService, IAuthenticationServiceMobile authServiceMobile,
     AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication serviceNativeAuthentication,
-    IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker)
+    IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker, IFirebaseTokenService firebaseTokenService)
     {
        
         _uiService = uiService;
@@ -29,6 +30,7 @@ public class BaseViewModel:ObservableObject
         _nativeAuthentication = serviceNativeAuthentication;
         _appUserService = appUserService;
         _mainThreadInvoker = mainThreadInvoker;
+        _firebaseTokenService = firebaseTokenService;
     }
     
     public ICommand OnLogoutCommand => new Command(async () => await LogoutAsync());
@@ -43,7 +45,8 @@ public class BaseViewModel:ObservableObject
            
             
             Application.Current.MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationServiceMobile,
-                _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService, _mainThreadInvoker)); 
+                _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService, _mainThreadInvoker,
+                _firebaseTokenService)); 
           
         }
         else

@@ -12,11 +12,12 @@ public partial class WelcomePage : ContentPage{
     private readonly LoginViewModel _loginViewModel; 
     private readonly IMainThreadInvoker _mainThreadInvoker; 
     private readonly INativeAuthentication _nativeAuthentication;
+    private readonly IFirebaseTokenService _firebaseTokenService;
     
 
     public WelcomePage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
     AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication,
-    IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker
+    IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker, IFirebaseTokenService firebaseTokenService
     ){
        
         InitializeComponent();
@@ -27,17 +28,18 @@ public partial class WelcomePage : ContentPage{
         _authenticationServiceMobile = authenticationServiceMobile;
         _appUserService = appUserService;
        _mainThreadInvoker = mainThreadInvoker;
+        _firebaseTokenService = firebaseTokenService;
 
     }
 
     private async void CrtAccount_OnClicked(object? sender, EventArgs e){
         await Navigation.PushAsync(new AppUserRegisterPage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel,_nativeAuthentication,
-            _appUserService, _mainThreadInvoker));
+            _appUserService, _mainThreadInvoker, _firebaseTokenService));
     }
 
     private async void Login_OnClicked(object? sender, EventArgs e){
         var loginViewModel = new LoginViewModel(_uiService, _authenticationServiceMobile, _userRegisterViewModel,
-            _nativeAuthentication,_appUserService,_mainThreadInvoker )
+            _nativeAuthentication, _appUserService, _mainThreadInvoker, _firebaseTokenService) 
         {
             UserName = "",
             Password = ""
@@ -49,7 +51,8 @@ public partial class WelcomePage : ContentPage{
             _userRegisterViewModel, 
             _nativeAuthentication,
             _appUserService,
-            _mainThreadInvoker)
+            _mainThreadInvoker,
+            _firebaseTokenService)
         {
             BindingContext = loginViewModel
         };

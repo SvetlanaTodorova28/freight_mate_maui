@@ -3,6 +3,8 @@ using Foundation;
 using UIKit;
 using UserNotifications;
 using Firebase.CloudMessaging;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.Helpers;
 
 namespace Mde.Project.Mobile.Platforms;
@@ -35,8 +37,9 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate, IUNUse
     public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
     {
         var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
+        var firebaseTokenService = MauiProgram.CreateMauiApp().Services.GetService<IFirebaseTokenService>() as FirebaseTokenService;
         if (userService != null){
-            FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
+            firebaseTokenService.RetrieveAndStoreFcmTokenLocallyAsync();
         }
     }
     

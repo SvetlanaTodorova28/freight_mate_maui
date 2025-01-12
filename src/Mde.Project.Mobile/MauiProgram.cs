@@ -119,6 +119,7 @@ namespace Mde.Project.Mobile
             
             
             services.AddTransient<IGeocodingService, GeocodingService>();
+            services.AddTransient<IFirebaseTokenService, FirebaseTokenService>();
             services.AddSingleton<IMainThreadInvoker, MainThreadInvoker>(); 
             services.AddSingleton<IPreferencesService, PreferencesService>(); 
             services.AddSingleton<ISnowVisibilityService, SnowVisibilityService>(); 
@@ -155,15 +156,16 @@ namespace Mde.Project.Mobile
                 }
 
                 var appUserService = services.GetRequiredService<IAppUserService>();
+                var firbaseTokenService = services.GetRequiredService<IFirebaseTokenService>();
                 if (appUserService != null){
-                    var firebaseTokenResult = await FirebaseHelper.RetrieveAndStoreFcmTokenLocallyAsync();
+                    var firebaseTokenResult = await firbaseTokenService.RetrieveAndStoreFcmTokenLocallyAsync();
                     if (!firebaseTokenResult.IsSuccess && uiService != null){
                         await MainThread.InvokeOnMainThreadAsync(() => {
                             uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");
                         });
                     }
                     else{
-                         await FirebaseHelper.UpdateFcmTokenOnServerAsync(appUserService);
+                         await firbaseTokenService.UpdateFcmTokenOnServerAsync(appUserService);
                     }
                 }
             }

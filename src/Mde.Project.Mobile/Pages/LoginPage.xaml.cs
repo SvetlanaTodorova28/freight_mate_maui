@@ -14,11 +14,13 @@ public partial class LoginPage : ContentPage
     private readonly IAppUserService _appUserService;
     private readonly LoginViewModel _loginViewModel;
     private readonly IMainThreadInvoker _mainThreadInvoker;
+    private readonly IFirebaseTokenService _firebaseTokenService;
     private bool _isRegistrationSuccessful;
 
     public LoginPage(LoginViewModel loginViewModel, IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel,INativeAuthentication nativeAuthentication,
-        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker , bool isRegistrationSuccessful = false)
+        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker ,
+        IFirebaseTokenService firebaseTokenService, bool isRegistrationSuccessful = false)
     {
         _uiService = uiService;
         _loginViewModel = loginViewModel;
@@ -28,6 +30,7 @@ public partial class LoginPage : ContentPage
         _appUserService = appUserService; 
         _userRegisterViewModel = userRegisterViewModel;
         _mainThreadInvoker = mainThreadInvoker; 
+        _firebaseTokenService = firebaseTokenService;
         _isRegistrationSuccessful = isRegistrationSuccessful;
         InitializeComponent();
         BindingContext = _loginViewModel = loginViewModel;
@@ -47,7 +50,7 @@ public partial class LoginPage : ContentPage
     private void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
     {
         Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService, _mainThreadInvoker));
+            _appUserService, _mainThreadInvoker, _firebaseTokenService));
     }
 
     private async void Login_OnClicked(object sender, EventArgs e)

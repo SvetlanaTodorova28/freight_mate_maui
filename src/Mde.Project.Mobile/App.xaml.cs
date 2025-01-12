@@ -15,9 +15,11 @@ public partial class App : Application
     private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly LoginViewModel _loginViewModel;
+    private readonly IFirebaseTokenService _firebaseTokenService;
 
     public App(IAuthenticationServiceMobile authenticationService, IUiService uiService, AppUserRegisterViewModel userRegisterViewModel,
-        LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication, IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker)
+        LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication, IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker,
+        IFirebaseTokenService firebaseTokenService)
     {
         InitializeComponent();
         _authenticationService = authenticationService;
@@ -27,7 +29,8 @@ public partial class App : Application
         _loginViewModel = loginViewModel;
         _appUserService = appUserService;
         _mainThreadInvoker = mainThreadInvoker;
-        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication, _appUserService, _mainThreadInvoker);
+        _firebaseTokenService = firebaseTokenService;
+        MainPage = new WelcomePage(uiService, authenticationService,_userRegisterViewModel,_loginViewModel, _nativeAuthentication, _appUserService, _mainThreadInvoker, _firebaseTokenService);
     }
 
     protected async override void OnStart()
@@ -48,13 +51,13 @@ public partial class App : Application
         if (isAuthenticated.IsSuccess)
         {
             MainPage = new AppShell(_authenticationService,_uiService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService,
-                _mainThreadInvoker);
+                _mainThreadInvoker, _firebaseTokenService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
         {
             MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService,
-                _mainThreadInvoker));
+                _mainThreadInvoker, _firebaseTokenService));
         }
     }
     

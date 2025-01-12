@@ -14,11 +14,12 @@ public partial class AppUserRegisterPage : ContentPage{
     private readonly IAppUserService _appUserService;
     private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly LoginViewModel _loginViewModel;
+    private readonly IFirebaseTokenService _firebaseTokenService;
   
    
     public AppUserRegisterPage(IUiService uiService, IAuthenticationServiceMobile authenticationServiceMobile,
         AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel, INativeAuthentication nativeAuthentication,
-        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker){
+        IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker, IFirebaseTokenService firebaseTokenService){
         InitializeComponent();
         _uiService = uiService;
         _loginViewModel = loginViewModel;
@@ -27,6 +28,7 @@ public partial class AppUserRegisterPage : ContentPage{
         _uiService = uiService;
         _appUserService = appUserService; 
         _mainThreadInvoker = mainThreadInvoker;
+        _firebaseTokenService = firebaseTokenService;
          BindingContext =  _userRegisterViewModel = userRegisterViewModel;
       
        
@@ -34,7 +36,7 @@ public partial class AppUserRegisterPage : ContentPage{
 
     private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
         Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService, _mainThreadInvoker));
+            _appUserService, _mainThreadInvoker, _firebaseTokenService));
     }
     
     protected override void OnAppearing()
@@ -59,6 +61,7 @@ public partial class AppUserRegisterPage : ContentPage{
                     _nativeAuthentication, 
                     _appUserService,
                     _mainThreadInvoker,
+                    _firebaseTokenService,
                     true));
         }
         else{

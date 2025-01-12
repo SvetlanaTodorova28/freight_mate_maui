@@ -16,9 +16,11 @@ namespace Mde.Project.Mobile
         private readonly IMainThreadInvoker _mainThreadInvoker;
         private readonly AppUserRegisterViewModel _userRegisterViewModel;
         private readonly LoginViewModel _loginViewModel;
+        private readonly IFirebaseTokenService _firebaseTokenService;
         public AppShell( IAuthenticationServiceMobile authenticationService, IUiService uiService,
         AppUserRegisterViewModel userRegisterViewModel, LoginViewModel loginViewModel,
-        INativeAuthentication nativeAuthentication, IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker)
+        INativeAuthentication nativeAuthentication, IAppUserService appUserService, IMainThreadInvoker mainThreadInvoker,
+        IFirebaseTokenService firebaseTokenService)
         {
             InitializeComponent();
             _authenticationService = authenticationService;
@@ -28,8 +30,9 @@ namespace Mde.Project.Mobile
             _uiService = uiService;
             _appUserService = appUserService;
             _mainThreadInvoker = mainThreadInvoker;
+            _firebaseTokenService = firebaseTokenService;
             BindingContext = new BaseViewModel(_uiService, _authenticationService, _userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-                _appUserService, _mainThreadInvoker);
+                _appUserService, _mainThreadInvoker, _firebaseTokenService);
           
             
         }

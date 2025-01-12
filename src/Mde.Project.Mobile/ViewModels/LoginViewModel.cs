@@ -15,6 +15,7 @@ public class LoginViewModel : ObservableObject
     private readonly AppUserRegisterViewModel _userRegisterViewModel;
     private readonly IAppUserService _appUserService;
     private readonly IMainThreadInvoker _mainThreadInvoker;
+    private readonly IFirebaseTokenService _firebaseTokenService;
 
     public ICommand LoginCommand { get; }
     public ICommand FaceLoginCommand { get; }
@@ -25,7 +26,8 @@ public class LoginViewModel : ObservableObject
         AppUserRegisterViewModel userRegisterViewModel,
         INativeAuthentication nativeAuthentication,
         IAppUserService appUserService,
-        IMainThreadInvoker mainThreadInvoker)
+        IMainThreadInvoker mainThreadInvoker,
+        IFirebaseTokenService firebaseTokenService)
     {
         _uiService = uiService;
         _authenticationServiceMobile = authenticationServiceMobile;
@@ -33,10 +35,13 @@ public class LoginViewModel : ObservableObject
         _nativeAuthentication = nativeAuthentication;
         _appUserService = appUserService;
         _mainThreadInvoker = mainThreadInvoker;
+        _firebaseTokenService = firebaseTokenService;
         
         LoginCommand = new AsyncRelayCommand(ExecuteLoginCommandAsync);
         FaceLoginCommand = new AsyncRelayCommand(ExecuteFaceLoginCommandAsync);
     }
+    
+    
     public DateTime CurrentDate { get; } = DateTime.Now;
     private string _username;
     public string UserName
@@ -61,16 +66,17 @@ public class LoginViewModel : ObservableObject
 
     public async Task ExecuteLoginCommandAsync()
     {
+        
         var loginResult = await _authenticationServiceMobile.TryLoginAsync(UserName, Password);
         if (loginResult.IsSuccess)
         {
-            var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
+            var fcmResult = await _firebaseTokenService.UpdateFcmTokenOnServerAsync(_appUserService);
             if (!fcmResult.IsSuccess)
             {
                 await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
             }
             Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService,
-                _mainThreadInvoker);
+                _mainThreadInvoker, _firebaseTokenService);
             await Shell.Current.GoToAsync("//CargoListPage");
         }
         else
@@ -107,13 +113,13 @@ public class LoginViewModel : ObservableObject
                 var loginResult = await _authenticationServiceMobile.TryLoginAsync(username, password);
                 if (loginResult.IsSuccess)
                 {
-                    var fcmResult = await FirebaseHelper.UpdateFcmTokenOnServerAsync(_appUserService);
+                    var fcmResult = await _firebaseTokenService.UpdateFcmTokenOnServerAsync(_appUserService);
                     if (!fcmResult.IsSuccess)
                     {
                         await _uiService.ShowSnackbarWarning(fcmResult.ErrorMessage);
                     }
                     Application.Current.MainPage = new AppShell(_authenticationServiceMobile, _uiService, _userRegisterViewModel, this, _nativeAuthentication, _appUserService,
-                        _mainThreadInvoker);
+                        _mainThreadInvoker, _firebaseTokenService);
                     await Shell.Current.GoToAsync("//CargoListPage");
                 }
                 else
