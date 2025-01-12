@@ -209,7 +209,7 @@ public class Seeder{
             },
             new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000032"),
-                Destination = "Cody Rd, London E16 4SR, United Kingdom",
+                Destination = "Tsar Simeon 2, 4023 Plovdiv, Bulgaria",
                 TotalWeight = 2900.0,
                 AppUserId = "00000000-0000-0000-0000-400000000000"
             },
@@ -221,7 +221,7 @@ public class Seeder{
             },
              new (){
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000035"),
-                Destination = "Heiststraat 10, 8380 Bruges, Belgium",
+                Destination = "Heiststraat 10, 8380 Brugge, Belgium",
                 TotalWeight = 500.5,
                 IsDangerous = true,
                 AppUserId = "00000000-0000-0000-0000-300000000000"

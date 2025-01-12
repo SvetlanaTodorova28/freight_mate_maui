@@ -134,10 +134,24 @@ public class CargoService : ICargoService
         }
 
         ServiceResult<CargoRequestDto> parsedCargoResult = await ParseExtractedTextToCargo(ocrResult.Data);
+      
+            var locations = await _geocodingService.GetLocationsAsync(parsedCargoResult.Data.Destination);
+            if (locations == null || !locations.Any())
+            {
+                return ServiceResult<CargoCreationResultDto>.Failure("Location Not Found. The specified location could not be resolved.");
+            }
+            var location = locations?.FirstOrDefault();
+            if (location != null){
+                bool isValidPlacemark =
+                    await GeocodingHelper.ValidateDestination(location, parsedCargoResult.Data.Destination, _geocodingService);
+                if (!isValidPlacemark){
+                    return ServiceResult<CargoCreationResultDto>.Failure("Please provide a valid destination.");
+                }
+            }
        
         if (!parsedCargoResult.IsSuccess)
         {
-            return ServiceResult<CargoCreationResultDto>.Failure("Failed to add cargo. Please check your data and try again");
+            return ServiceResult<CargoCreationResultDto>.Failure("Failed to create cargo. Please check your data and try again");
         }
         
 
