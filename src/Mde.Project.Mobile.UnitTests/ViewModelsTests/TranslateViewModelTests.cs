@@ -51,6 +51,9 @@ public class TranslateViewModelTests
        
         _mockMainThreadInvoker.Setup(invoker => invoker.InvokeOnMainThread(It.IsAny<Action>()))
             .Callback<Action>(action => action());
+        
+        _mockSnowVisibilityService.Setup(x => x.DetermineSnowVisibility()).Returns(true);
+
 
         // Act
         await _viewModel.StartListeningAsync();
@@ -61,7 +64,7 @@ public class TranslateViewModelTests
            .Verify(x => x.ShowSnackbarWarning(It.IsAny<string>()), Times.Never);
     }
   
-    
+
 
     
 
@@ -70,6 +73,8 @@ public class TranslateViewModelTests
     {
         // Arrange
         _viewModel.RecognizedText = "";
+        _mockSnowVisibilityService.Setup(x => x.DetermineSnowVisibility()).Returns(true);
+
 
         // Act
         await _viewModel.TranslateSpeechAsync();
