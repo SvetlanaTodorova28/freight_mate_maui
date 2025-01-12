@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using Mde.Project.Mobile.Helpers;
-
 namespace Mde.Project.Mobile.ViewModels;
 
 public class LoginViewModel : ObservableObject

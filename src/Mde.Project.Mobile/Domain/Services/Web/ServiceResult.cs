@@ -1,9 +1,9 @@
 public class ServiceResult<T>
 {
-    public bool IsSuccess { get; private set; }
+    public bool IsSuccess { get;  set; }
     public T Data { get; private set; }
     public string Message { get; private set; }
-    public string ErrorMessage { get; private set; }
+    public string ErrorMessage { get;  set; }
 
     public static ServiceResult<T> Success(T data, string message = "")
     {
