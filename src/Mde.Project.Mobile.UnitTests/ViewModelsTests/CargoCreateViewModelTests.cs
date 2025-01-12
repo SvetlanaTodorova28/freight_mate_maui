@@ -32,7 +32,7 @@ namespace Mde.Project.Mobile.UnitTests
         }
 
         [Fact]
-        public async Task LoadUsersCommand_LoadsUsersSuccessfully()
+        public async Task LoadUsersCommand_Executes_LoadsUsersSuccessfully()
         {
             // Arrange
             var users = new List<AppUserResponseDto>()
@@ -55,7 +55,7 @@ namespace Mde.Project.Mobile.UnitTests
         }
         
         [Fact]
-        public async Task LoadUsers_ShowsWarningOnFailure()
+        public async Task LoadUsers_WhenServiceFails_ShowsWarning()
         {
             // Arrange
             string expectedMessage = "No users found with assigned roles.";
@@ -72,16 +72,17 @@ namespace Mde.Project.Mobile.UnitTests
 
 
         [Fact]
-        public async Task SaveCargoCommand_SavesSuccessfully()
+        public async Task SaveCargoCommand_WithValidInput_SavesSuccessfully()
         {
             // Arrange
             _viewModel.Destination = "Amsterdam";
             _viewModel.TotalWeight = 100;
             _viewModel.IsDangerous = true;
+            _viewModel.SelectedUser = new AppUserResponseDto { Id = Guid.NewGuid(), FirstName = "John" };
 
             _mockCargoService
                 .Setup(x => x.CreateOrUpdateCargo(It.IsAny<Cargo>(), It.IsAny<string>()))
-                .ReturnsAsync(ServiceResult<string>.Success("Cargo saved successfully"));
+                .ReturnsAsync(ServiceResult<string>.Success("Cargo saved successfully \ud83d\udce6"));
 
             // Act
              _viewModel.SaveCommand.Execute(null);
@@ -91,7 +92,7 @@ namespace Mde.Project.Mobile.UnitTests
         }
 
         [Fact]
-        public async Task SaveCargoCommand_ShowsWarningOnFailure()
+        public async Task SaveCargoCommand_WithInvalidInput_ShowsFailureWarning()
         {
             // Arrange
             _mockCargoService
