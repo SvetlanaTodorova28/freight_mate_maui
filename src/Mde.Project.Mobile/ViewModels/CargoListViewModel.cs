@@ -113,7 +113,7 @@ public class CargoListViewModel : ObservableObject
 
     public event EventHandler CargosLoaded;
 
-    private async Task RefreshListAsync()
+    public async Task RefreshListAsync()
     {
         try
         {

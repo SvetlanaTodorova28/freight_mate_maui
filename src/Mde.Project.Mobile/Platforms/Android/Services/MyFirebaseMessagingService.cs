@@ -1,4 +1,7 @@
 using Android.App;
+using Android.Content;
+using Android.Media;
+using AndroidX.Core.App;
 using Firebase.Messaging;
 
 namespace Mde.Project.Mobile.Platforms;
@@ -15,7 +18,7 @@ public class MyFirebaseMessagingService : FirebaseMessagingService{
             SendNotification(title, body);
         }
             
-        MessagingCenter.Send<MyFirebaseMessagingService, bool>(this, "CargoListUpdatedRemotely", true);
+        MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
     }
 
     void SendNotification(string title, string body){
@@ -26,12 +29,22 @@ public class MyFirebaseMessagingService : FirebaseMessagingService{
             Description = "Firebase Notifications"
         };
         notificationManager.CreateNotificationChannel(channel);
+    
+        var intent = new Intent(this, typeof(MainActivity));
+        intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop); 
+        intent.PutExtra("refreshList", true); 
+        var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
-        var notificationBuilder = new Notification.Builder(this, channelId)
+        var notificationBuilder = new NotificationCompat.Builder(this, channelId)
             .SetContentTitle(title)
             .SetContentText(body)
-            .SetSmallIcon(Resource.Drawable.ic_notification);
+            .SetSmallIcon(Resource.Drawable.ic_notification)
+            .SetAutoCancel(true)
+            .SetVisibility(NotificationCompat.VisibilityPublic)
+            .SetContentIntent(pendingIntent);
 
         notificationManager.Notify(0, notificationBuilder.Build());
     }
+    
+
 }

@@ -207,11 +207,6 @@ public class CargoCreateViewModel : ObservableObject
                         notification = new{
                             title = "New Cargo Assignment",
                             body = $"A new cargo has been assigned to you with destination {destination}."
-                        },
-                        android = new{
-                            notification = new{
-                                channel_id = "default_channel"
-                            }
                         }
                     }
                 };
