@@ -19,6 +19,7 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             _lazyOcrApiKey = new Lazy<Task<string>>(GetOcrApiKeyAsync);
         }
         
+        //thread-safe way to get OCR API key otherwise 
         private async Task<string> GetOcrApiKeyAsync()
         {
             var apiKey = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");

@@ -17,7 +17,7 @@ public class RegisterUserRequestDto:LoginUserRequestDto{
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     
-    public Guid AccessLevelTypeId { get; set; }
+    public string AccessLevelTypeId { get; set; }
     
     
     

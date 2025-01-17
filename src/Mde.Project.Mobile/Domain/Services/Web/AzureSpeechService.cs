@@ -16,6 +16,7 @@ public class AzureSpeechService : ISpeechService
         _region = region;
         _lazyConfig = new Lazy<Task<SpeechConfig>>(InitializeConfigAsync);
     }
+    //thread-safe way to initialize SpeechConfig it happens only if it is needed
 
     private async Task<SpeechConfig> InitializeConfigAsync()
     {

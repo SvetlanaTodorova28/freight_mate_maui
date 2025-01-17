@@ -30,7 +30,7 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<IEnumerable<Function>>.Failure($"Error retrieving functions. Please contact support if the problem persists.");
+            return ServiceResult<IEnumerable<Function>>.Failure("Error retrieving functions. Please contact support if the problem persists.");
         }
     }
 
@@ -50,6 +50,7 @@ public class FunctionAccessService : IFunctionAccessService
                 return ServiceResult<bool>.Failure("Failed to retrieve access levels from the server.");
             }
 
+            // Map function names to enum values only if they exist in the enum and like that the  enum has id
             _functionMappings = functionDtos
                 .Select(dto => new { Function = MapFunction(dto.Name), dto.Id })
                 .Where(item => item.Function.HasValue) 
@@ -62,7 +63,7 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<bool>.Failure($"Error ensuring function mappings. Please contact support if the problem persists.");
+            return ServiceResult<bool>.Failure("Error ensuring function mappings. Please contact support if the problem persists.");
         }
     }
 
@@ -106,10 +107,11 @@ public class FunctionAccessService : IFunctionAccessService
         }
         catch (Exception ex)
         {
-            return ServiceResult<Function>.Failure($"Error retrieving user function. Please contact support if the problem persists.");
+            return ServiceResult<Function>.Failure("Error retrieving user function. Please contact support if the problem persists.");
         }
     }
 
+    //rename to more meaningful functions for own case
     private Function? MapFunction(string roleName)
     {
         return roleName.ToLower() switch

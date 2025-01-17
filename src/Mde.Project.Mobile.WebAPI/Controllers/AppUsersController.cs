@@ -1,18 +1,16 @@
 
+using System.Net;
 using System.Text;
 using Mde.Project.Mobile.WebAPI.Api.Dtos;
 using Mde.Project.Mobile.WebAPI.Api.Dtos.Users;
+using Mde.Project.Mobile.WebAPI.Dtos;
 using Mde.Project.Mobile.WebAPI.Dtos.Cargos;
-using Mde.Project.Mobile.WebAPI.Dtos.Functions;
 using Mde.Project.Mobile.WebAPI.Entities;
-
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Utilities;
+
 
 
 namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
@@ -20,19 +18,14 @@ namespace Mde.Project.Mobile.WebAPI.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class AppUsersController:ControllerBase{
-   
-    private readonly UserManager<AppUser> _userManager;
-    private readonly IAppUserService _userService;
     
+    private readonly IAppUserService _userService;
+    private readonly IAuthenticationService _authenticationService;
     
 
-    public AppUsersController(IAppUserService userService , UserManager<AppUser> userManager) {
-    
+    public AppUsersController(IAppUserService userService, IAuthenticationService authenticationService ) {
         _userService = userService;
-        _userManager = userManager;
-        
-       
-        
+        _authenticationService = authenticationService;
     }
     
     //========================================= GET REQUESTS ==============================================================
@@ -46,58 +39,69 @@ public class AppUsersController:ControllerBase{
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUserResponseDto>>> GetUsers()
     {
-        // Fetch all users from the database
-        var users = await _userManager
-            .Users
-            .ToListAsync();
-        
-        // Map the user entities to UserResponsDto objects
-        var userDtos = users
-            .Select(user => new AppUserResponseDto {
-                Id = Guid.Parse(user.Id),
-                UserName = user.UserName,
-                FirstName = user.FirstName
-            });
-
-        // Return the list of UserResponsDto objects as Ok result
-        return Ok(userDtos);
-    }
-    [HttpGet("users-with-roles")]
-    public async Task<ActionResult<IEnumerable<AppUserResponseDto>>> GetUsersWithAdvancedAndBasic()
-    {
-        
-        var result = await _userService.GetUsersByRoleAsync();
-
-       
-        if (result.Data == null || !result.Data.Any())
-        {
-            return NotFound("No users with the specified roles were found.");
+        var users = await _userService.GetUsersAsync();
+        if (!users.Success){
+            return StatusCode((int)HttpStatusCode.NotFound, users.Errors);
         }
 
-       
-        var userDtos = result.Data.Select(user => new AppUserResponseDto
-        {
-            Id = Guid.Parse(user.Id),   
+        var userDtos = users.Data.Select(user => new AppUserResponseDto{
+            Id = Guid.Parse(user.Id),
             UserName = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Email = user.Email ,
+            Email = user.Email,
             Cargos = user.Cargos?.Select(cargo => new CargoResponseDto
             {
                 Destination = cargo.Destination,
                 TotalWeight = cargo.TotalWeight,
                 IsDangerous = cargo.IsDangerous,
             }).ToList(),
-            AccessLevelType = new AccessLevelsResponseDto{
-                Id = user.AccessLevel.Id,
-                Name = user.AccessLevel.Name,
-            }
+            AccessLevelTypeId = user.AccessLevel.Id.ToString()
+            
         }).ToList();
-
-        
         return Ok(userDtos);
     }
 
+    [HttpGet("get-user-by-email/{email}")]
+    public async Task<ActionResult<AppUserResponseDto>> GetUserIdByEmail([FromRoute] string email){
+        var resultUser = await _userService.GetUserByEmailAsync(email);
+       
+        if (!resultUser.Success)
+        {
+            return NotFound(resultUser.Errors);
+        }
+        var userDto = new AppUserResponseDto{
+            Id = Guid.Parse(resultUser.Data.Id),
+            Email = resultUser.Data.Email,
+            UserName = resultUser.Data.Email,
+            FirstName = resultUser.Data.FirstName,
+            LastName = resultUser.Data.LastName,
+            FCMToken = resultUser.Data.FCMToken,
+            AccessLevelTypeId = resultUser.Data.AccessLevel.Id.ToString()
+        };
+        return Ok(userDto);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<AppUserResponseDto>> GetUserById(string id){
+
+        var resultUser = await _userService.GetUserByIdAsync(id);
+
+        if (!resultUser.Success){
+            return NotFound(resultUser.Errors);
+        }
+
+        var userDto = new AppUserResponseDto{
+            Id = Guid.Parse(resultUser.Data.Id),
+            Email = resultUser.Data.Email,
+            UserName = resultUser.Data.Email,
+            FirstName = resultUser.Data.FirstName,
+            LastName = resultUser.Data.LastName,
+            FCMToken = resultUser.Data.FCMToken,
+            AccessLevelTypeId = resultUser.Data.AccessLevel.Id.ToString()
+        };
+        return Ok(userDto);
+    }
 
     [HttpGet("get-fcm-token/{userId}")]
     public async Task<IActionResult> GetUserFcmToken([FromRoute] string userId)
@@ -109,54 +113,7 @@ public class AppUsersController:ControllerBase{
         }
         return Ok(result.Data);
     }
-
-    [HttpGet("get-user-by-email/{email}")]
-    public async Task<IActionResult> GetUserIdByEmail([FromRoute] string email){
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-        {
-            return NotFound("User not found");
-        }
-        return Ok(user.Id);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<AppUserResponseDto>> GetUserById(Guid id){
-
-        var user = await _userManager
-            .Users
-            .Include(u => u.AccessLevel)
-            .Include(u => u.Cargos)
-            .FirstOrDefaultAsync(u => u.Id == id.ToString());
-
-
-        if (user == null){
-            return NotFound("User not found");
-        }
-
-        var userDto = new AppUserResponseDto{
-            Id = Guid.Parse(user.Id),
-            Email = user.Email,
-            UserName = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            FCMToken = user.FCMToken,
-            AccessLevelType = new AccessLevelsResponseDto{
-                Name = user.AccessLevel.Name,
-                Id = user.AccessLevel.Id 
-            },
-            Cargos = user.Cargos.Select(c => new CargoResponseDto()
-            {
-                Id = c.Id,
-                Destination = c.Destination,
-                TotalWeight = c.TotalWeight
-            }).ToList()
-            
-            
-        };
-        return Ok(userDto);
-    }
-
+    
     //========================================= POST REQUESTS ==============================================================
     
     
@@ -193,22 +150,22 @@ public class AppUsersController:ControllerBase{
     /// </returns>
     
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserCreateRequestDto model){
+    public async Task<IActionResult> Add([FromBody] RegisterUserRequestDto model){
 
-        var user = new AppUser{
-            Email = model.Email,
-            UserName = model.Email,
+        var userDto = new AppUser(){
+            Email = model.Username,
+            UserName = model.Username,
             FirstName = model.FirstName,
             LastName = model.LastName,
-            AccessLevelId = model.AccessLevelTypeId
+            AccessLevelId = Guid.Parse(model.AccessLevelTypeId)
         };
         
-        var result = await _userService.CreateUserAsync(user, model.Password);
+        var result = await _authenticationService.RegisterUserAsync(userDto, model.Password);
 
         if (!result.Success){
             return BadRequest(result.Errors);
         }
-       // await SendEmailAsync(result.Data);
+      
 
         return Ok(new { message = "User successfully registered", userId = result.Data.Id });
         
@@ -236,19 +193,17 @@ public class AppUsersController:ControllerBase{
         changePasswordDto.Token = Encoding.UTF8.GetString(bytes);
      
         
-        var existingUser = await _userManager.FindByIdAsync(changePasswordDto.Id.ToString());
-        if (existingUser == null){
-            return NotFound("User not found.");
-        }
-       
 
-        var result = await _userManager.ResetPasswordAsync(existingUser, changePasswordDto.Token, changePasswordDto.NewPassword);
-        if (!result.Succeeded)
+        var result = await _userService
+            .UpdateUserPasswordAsync(changePasswordDto.Id.ToString()
+                , changePasswordDto.Token
+                , changePasswordDto.NewPassword);
+        if (!result.Success)
         {
             return BadRequest(result.Errors);
         }
 
-        return Ok(new { message = "Password has been successfully reset." });
+        return Ok(new { message = result.Data });
     }
     
     //========================================= PUT REQUESTS ==============================================================
@@ -273,13 +228,13 @@ public class AppUsersController:ControllerBase{
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> Update([FromBody]UserUpdateRequestDto userUpdateRequestDto)
     {
-        var existingUser = await _userManager
-            .Users
-            .FirstOrDefaultAsync( u => u.Id == userUpdateRequestDto.Id.ToString());
-        if (existingUser == null)
+        var existingUserResult = await _userService
+            .GetUserByIdAsync(userUpdateRequestDto.Id.ToString());
+        if (existingUserResult == null)
         {
-            return NotFound($"No user with id '{userUpdateRequestDto.Id}' found.");
+            return NotFound(existingUserResult.Errors);
         }
+        var existingUser = existingUserResult.Data;
 
         // Update user properties
         existingUser.UserName = userUpdateRequestDto.Email;
@@ -291,8 +246,8 @@ public class AppUsersController:ControllerBase{
            
     
 
-        var updateResult = await _userManager.UpdateAsync(existingUser);
-        if (!updateResult.Succeeded)
+        var updateResult = await _userService.UpdateUserAsync(existingUser);
+        if (!updateResult.Success)
         {
             return BadRequest(updateResult.Errors);
         }
@@ -300,21 +255,6 @@ public class AppUsersController:ControllerBase{
         return Ok(new { message = "User successfully updated" });
     }
 
-    //========================================= PUT REQUESTS ==============================================================
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id){
-        var existingUser = await _userManager.FindByIdAsync(id.ToString());
-        if (existingUser == null){
-            return NotFound($"No user with id '{id}' found.");
-        }
-        
-        var result = await _userManager.DeleteAsync(existingUser);
-        if (result.Succeeded){
-            return Ok(new{ message = "User successfully deleted" });
-        }
-        return BadRequest(result.Errors);
-    }
-    
     [HttpPut("update-fcm-token/{userId}")]
     public async Task<IActionResult> UpdateUserFcmToken([FromRoute] string userId, [FromBody] string newToken)
     {
@@ -325,6 +265,18 @@ public class AppUsersController:ControllerBase{
         }
         return Ok(result.Data);
     }
+    //========================================= DELETE REQUESTS ==============================================================
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id){
+
+        var result = await _userService.DeleteUserAsync(id);
+        if (result.Success){
+            return Ok(new{ message = "User successfully deleted" });
+        }
+        return BadRequest(result.Errors);
+    }
+    
+   
    
 
 

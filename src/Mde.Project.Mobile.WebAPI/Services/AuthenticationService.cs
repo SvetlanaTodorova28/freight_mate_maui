@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using Mde.Project.Mobile.WebAPI.Data;
+using Mde.Project.Mobile.WebAPI.Dtos;
 using Mde.Project.Mobile.WebAPI.Entities;
 using Mde.Project.Mobile.WebAPI.Services.Interfaces;
 using Mde.Project.Mobile.WebAPI.Services.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Utilities;
 
 
@@ -27,36 +29,38 @@ public class AuthenticationService:IAuthenticationService{
         //Dit omvat het verzamelen van gebruikersgegevens, het aanmaken van een record in de database,
         //en soms het toewijzen van een of meer rollen aan de gebruiker (bijvoorbeeld standaardrollen zoals "gebruiker" of "consignee").
         //Rollen worden vaak toegevoegd om toegangsniveaus te bepalen, die bij latere interacties relevant zijn.
-     public async Task<ResultModel<AppUser>> RegisterUserAsync(AppUser newUser, string password){
+     public async Task<ResultModel<AppUser>> RegisterUserAsync(AppUser appUser, string password){
                
-         var accessLevel = await _applicationDbContext.AccessLevels
-             .FindAsync(newUser.AccessLevelId);
+         var accessLevel = await _applicationDbContext
+             .AccessLevels
+             .Select(al => al.Id)
+             .FirstOrDefaultAsync(id => id == appUser.AccessLevelId);
          if (accessLevel == null){
              return new ResultModel<AppUser>{
-                 Errors = new List<string>{ $"No accessLevel with name{accessLevel.Name} exists." }
+                 Errors = new List<string>{ $"This user doesn't have an accesslevel yet" }
              };
          }
 
-         var result = await _userManager.CreateAsync(newUser, password);
+         var result = await _userManager.CreateAsync(appUser, password);
             if (!result.Succeeded){
                 return new ResultModel<AppUser>{
                     Errors = new List<string>(result.Errors.Select(x => x.Description))
                 };
             }
 
-            // Add role only if user creation is successful
-            var roleResult = await _userManager.AddToRoleAsync(newUser, newUser.AccessLevel.Name);
+           
+            var roleResult = await _userManager.AddToRoleAsync(appUser, appUser.AccessLevel.Name);
             if (!roleResult.Succeeded){
-                // Optionally handle errors related to role assignment
+               
                 return new ResultModel<AppUser>{
                     Errors = new List<string>(roleResult.Errors.Select(x => x.Description))
                 };
             }
            
-            newUser = await _userManager.FindByNameAsync(newUser.UserName);
+            appUser = await _userManager.FindByNameAsync(appUser.UserName);
            
             return new ResultModel<AppUser>{
-                Data = newUser
+                Data = appUser
             };
         }
 //Het loginproces is gericht op authenticatie en het bepalen van de toegangsrechten van de gebruiker tijdens die sessie.

@@ -42,7 +42,6 @@ public class BaseViewModel:ObservableObject
         
         if (result.IsSuccess && result.Data)
         {
-           
             
             Application.Current.MainPage = new NavigationPage(new WelcomePage(_uiService, _authenticationServiceMobile,
                 _userRegisterViewModel, _loginViewModel, _nativeAuthentication, _appUserService, _mainThreadInvoker,
