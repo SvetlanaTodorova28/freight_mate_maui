@@ -224,10 +224,7 @@ public class CargoService : ICargoService
             return ServiceResult<CargoRequestDto>.Failure("Error parsing cargo details. Please contact support if the problem persists.");
         }
     }
-    
-    
  
-  
 
     private double ParseWeight(string weightText)
     {
@@ -238,7 +235,6 @@ public class CargoService : ICargoService
         }
         return 0; 
     }
-   
     
 
     public async Task<ServiceResult<string>> DeleteCargo(Guid cargoId)

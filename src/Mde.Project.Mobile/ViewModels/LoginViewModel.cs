@@ -40,7 +40,7 @@ public class LoginViewModel : ObservableObject
     }
     
     
-    public DateTime CurrentDate { get; } = DateTime.Now;
+   
     private string _username;
     public string UserName
     {

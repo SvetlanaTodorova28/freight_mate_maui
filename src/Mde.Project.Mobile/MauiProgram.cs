@@ -106,6 +106,7 @@ namespace Mde.Project.Mobile
             
             services.AddTransient<OptionsPage>();
             services.AddTransient<OptionsViewModel>();
+            services.AddTransient<WebViewLinkdInPage>();
 
             services.AddTransient<IAuthenticationServiceMobile, SecureWebAuthenticationStorage>();
             services.AddTransient<IFunctionAccessService, FunctionAccessService>();

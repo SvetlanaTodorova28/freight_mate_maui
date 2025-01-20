@@ -1,6 +1,6 @@
 ﻿
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-
+using Mde.Project.Mobile.Pages;
 using Mde.Project.Mobile.ViewModels;
 
 
@@ -39,8 +39,14 @@ namespace Mde.Project.Mobile
         private async void SiteLink_OnClicked(object? sender, EventArgs e){
             await Launcher.OpenAsync("https://bold.pro/my/todorova-svetlana/310r");
         }
-        
-       
-        
+
+
+// Example of navigating to WebViewLinkdInPage with a URL parameter
+        private async void LinkLinkdIn_OnClicked(Object sender, EventArgs e)
+        {
+            string linkedInUrl = "https://www.linkedin.com/in/svetlana-todorova-87354bbb";
+            await Shell.Current.GoToAsync($"{nameof(WebViewLinkdInPage)}?url={linkedInUrl}");
+        }
+
     }
 }

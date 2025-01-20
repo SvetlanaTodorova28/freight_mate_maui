@@ -3,6 +3,7 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
 using Mde.Project.Mobile.ViewModels;
+using SkiaSharp.Views.Maui;
 using SkiaSharp;
 
 namespace Mde.Project.Mobile.Pages;
@@ -65,7 +66,7 @@ public partial class CargoListPage : ContentPage{
         _cargoListViewModel.DetailsCargoCommand?.Execute(cargo);
     }
 
-    private void OnCanvasViewPaintSurface(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
+    private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         var width = e.Info.Width;

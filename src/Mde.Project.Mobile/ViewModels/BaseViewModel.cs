@@ -1,8 +1,6 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using Mde.Project.Mobile.Domain.Services.Web;
-using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 
 namespace Mde.Project.Mobile.ViewModels;
@@ -34,6 +32,8 @@ public class BaseViewModel:ObservableObject
     }
     
     public ICommand OnLogoutCommand => new Command(async () => await LogoutAsync());
+ 
+  
 
     private async Task LogoutAsync()
     {
@@ -54,6 +54,7 @@ public class BaseViewModel:ObservableObject
             await Application.Current.MainPage.DisplayAlert("Fout", result.ErrorMessage ?? "Logout mislukt", "OK");
         }
     }
+   
 
 
 }

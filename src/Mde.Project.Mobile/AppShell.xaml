@@ -57,5 +57,10 @@
         Clicked="SiteLink_OnClicked"
         Text="Made by Svetlana"
         x:Name="SiteLink" />
+    
+    <MenuItem 
+        x:Name="LinkLinkdIn"
+        Clicked="LinkLinkdIn_OnClicked"
+        Text="Open LinkedIn"/>
    
 </Shell>

@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.Pages;
 #if ANDROID || IOS
 using Mde.Project.Mobile.Platforms;
@@ -17,7 +16,7 @@ public class CargoListViewModel : ObservableObject
     private readonly IAuthenticationServiceMobile _authenticationService;
     private readonly IFunctionAccessService _functionAccessService;
     private readonly IUiService _uiService;
-    private readonly ISnowVisibilityService _snowVisibilityService;
+    private readonly ISnowVisibilityService _snowVisibilityService; 
     public event Action RequestAnimationUpdate;
 
     
@@ -87,12 +86,12 @@ public class CargoListViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-    private bool _showAnimation;
+    /*private bool _showAnimation;
     public bool ShowAnimation
     {
         get => _showAnimation;
         set => SetProperty(ref _showAnimation, value);
-    }
+    }*/
 
     #endregion
 
@@ -117,6 +116,7 @@ public class CargoListViewModel : ObservableObject
     {
         try
         {
+            //visibility :load cargos
             IsLoading = true;
             var userIdResult = await _authenticationService.GetUserIdFromTokenAsync();
             if (!userIdResult.IsSuccess)
@@ -132,26 +132,16 @@ public class CargoListViewModel : ObservableObject
                 return;
             }
 
-            var modelCargos = dtoCargosResult.Data.Select(dto => new Cargo
-            {
-                Id = dto.Id,
-                Destination = dto.Destination,
-                IsDangerous = dto.IsDangerous,
-                TotalWeight = dto.TotalWeight ?? 0,
-                Userid = Guid.Parse(userIdResult.Data)
-            }).ToList();
-
-            Cargos = new ObservableCollection<Cargo>(modelCargos);
-            CargosLoaded?.Invoke(this, EventArgs.Empty);
-            ShowAnimation = false;
+          //  ShowAnimation = false;
         }
         catch (Exception ex)
         {
             Cargos = new ObservableCollection<Cargo>();
-            await _uiService.ShowSnackbarWarning($"Error refreshing cargo list. ");
+            await _uiService.ShowSnackbarWarning("Error refreshing cargo list. ");
         }
         finally
         {
+            //stop de loading even if the cargo list failed to load
             RequestAnimationUpdate?.Invoke(); 
             IsLoading = false;
         }
