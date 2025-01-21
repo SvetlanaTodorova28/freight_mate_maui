@@ -23,7 +23,7 @@ public class AppUserRegisterViewModel: ObservableObject
         RegisterCommand = new RelayCommand(async () => await ExecuteRegisterCommand());
         
     }
-    public DateTime CurrentDate { get; } = DateTime.Now;
+   
     private string username;
     public string Username
     {

@@ -26,22 +26,26 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" /> 
                 <RowDefinition Height="*" />   
-               
             </Grid.RowDefinitions>
-            <SearchBar Grid.Row="0"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" /> 
+                <ColumnDefinition Width="*" />   
+            </Grid.ColumnDefinitions>
+            <SearchBar Grid.Row="0" Grid.Column="0"
                        StyleClass="baseSearch"
                        Placeholder="ZOEK CARGOS..."
                        SearchCommand="{Binding PerformSearchCommand}"
                        SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}">
                 <SearchBar.Behaviors>
-                    <toolkit:EventToCommandBehavior EventName="TextChanged"
-                                                    
+                    <toolkit:EventToCommandBehavior 
+                        EventName="TextChanged"
                                                     Command="{Binding TextChangedCommand}"
                                                     EventArgsConverter="{StaticResource TextChangedEventArgsConverter}"/>
                 </SearchBar.Behaviors>
 
             </SearchBar>
-            <Border Grid.Row="1" Margin="0,55,0,0" StyleClass="baseBorder">
+            <Label Grid.Row="0" Grid.Column="1"></Label>
+            <Border Grid.Row="1" Grid.ColumnSpan ="2" Margin="0,55,0,0" StyleClass="baseBorder">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -51,6 +55,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -92,6 +97,17 @@
                                                            CommandParameter="{Binding .}" />
                                             </SwipeItems>
                                         </SwipeView.RightItems>
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems>
+                                                <SwipeItem
+                                                    Text ="Details"
+                                                    BackgroundColor="SteelBlue"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CargoListViewModel}}, Path=DetailsCargoCommand}"
+                                                    CommandParameter="{Binding .}" 
+                                                    ></SwipeItem>
+                                            </SwipeItems>
+
+                                        </SwipeView.LeftItems>
 
                                         <Border StyleClass="cargosBorder" Opacity="0.7" MaximumWidthRequest="650">
                                             <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">

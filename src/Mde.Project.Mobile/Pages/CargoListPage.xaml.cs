@@ -1,7 +1,9 @@
 
+using System.Collections.ObjectModel;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Web;
+using Mde.Project.Mobile.Helpers;
 using Mde.Project.Mobile.ViewModels;
 using SkiaSharp.Views.Maui;
 using SkiaSharp;
@@ -26,16 +28,16 @@ public partial class CargoListPage : ContentPage{
     protected override void OnAppearing()
     {
         base.OnAppearing();
-       
-        _cargoListViewModel.RequestAnimationUpdate += () =>
-        {
-            _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
-        };
+
+        _cargoListViewModel.RequestAnimationUpdate += OnRequestAnimationUpdate;
         _cargoListViewModel.CargosLoaded += OnCargosLoaded;  
         _cargoListViewModel.RefreshListCommand?.Execute(null);
-        
+        _cargoListViewModel.ShowAnimation = true;
         Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
         {
+            if (!_cargoListViewModel.ShowAnimation){
+                return false;
+            }
             _angle += 5;
             if (_angle > 360) _angle = 0;
             canvasView.InvalidateSurface(); 
@@ -48,17 +50,19 @@ public partial class CargoListPage : ContentPage{
     {
         base.OnDisappearing();
        _cargoListViewModel.Cleanup();
-       _cargoListViewModel.RequestAnimationUpdate -= () =>
-       {
-           _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
-       };
+       _cargoListViewModel.RequestAnimationUpdate -= OnRequestAnimationUpdate;
+        _cargoListViewModel.CargosLoaded -= OnCargosLoaded;
     }
    
     private void OnCargosLoaded(object sender, EventArgs e)
     {
-        _mainThreadInvoker.InvokeOnMainThread(() => {
-            canvasView.InvalidateSurface(); 
-        });
+        _cargoListViewModel.ShowAnimation = false;
+        _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
+    }
+
+    private void OnRequestAnimationUpdate(){
+        _cargoListViewModel.ShowAnimation = true;
+        _mainThreadInvoker.InvokeOnMainThread(() => canvasView.InvalidateSurface());
     }
    
     private void LstCargos_OnItemTapped(object? sender, ItemTappedEventArgs e){

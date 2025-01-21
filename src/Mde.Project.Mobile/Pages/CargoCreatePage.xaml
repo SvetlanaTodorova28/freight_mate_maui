@@ -4,7 +4,6 @@
              HideSoftInputOnTapped="True"
              xmlns:viewmodels="clr-namespace:Mde.Project.Mobile.ViewModels"
              xmlns:controls="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
-             xmlns:contents="clr-namespace:Mde.Project.Mobile.Contents"
              x:DataType="viewmodels:CargoCreateViewModel"
              x:Class="Mde.Project.Mobile.Pages.CargoCreatePage"
              Style="{StaticResource CustomPageStyle}">

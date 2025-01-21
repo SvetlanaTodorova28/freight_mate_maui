@@ -50,7 +50,7 @@ public class UiService : IUiService
         }
         catch (Exception ex)
         {
-           this.ShowSnackbarWarning("An error occurred while picking a file");
+          ShowSnackbarWarning("An error occurred while picking a file");
         }
         return null;
     }

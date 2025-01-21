@@ -81,17 +81,14 @@ namespace Mde.Project.Mobile.Platforms
             }
         }
 
-        public void SendNotification(string messageBody, Context context)
-        {
-            var channelId = "firebase_notifications";
-
-            var notificationBuilder = new NotificationCompat.Builder(context, channelId)
-                .SetContentText(messageBody)
-                .SetAutoCancel(true)
-                .SetVisibility(NotificationCompat.VisibilityPublic);
-
-            var notificationManager = NotificationManagerCompat.From(context);
-            notificationManager.Notify(0, notificationBuilder.Build());
+        protected override void OnResume(){
+            base.OnResume();
+            MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
+        }
+        
+        protected override void OnPause(){
+            base.OnPause();
+            MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
         }
      
      

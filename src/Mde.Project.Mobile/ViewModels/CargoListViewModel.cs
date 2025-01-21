@@ -18,6 +18,7 @@ public class CargoListViewModel : ObservableObject
     private readonly IUiService _uiService;
     private readonly ISnowVisibilityService _snowVisibilityService; 
     public event Action RequestAnimationUpdate;
+    public event EventHandler CargosLoaded;
 
     
 
@@ -62,6 +63,13 @@ public class CargoListViewModel : ObservableObject
     public ObservableCollection<Cargo> Cargos
     {
         get => _cargos;
+        /*set
+        {
+            if (_cargos != value)
+            {
+                SetProperty(ref _cargos, value);
+            }
+        }*/
         set => SetProperty(ref _cargos, value);
     }
 
@@ -86,12 +94,12 @@ public class CargoListViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-    /*private bool _showAnimation;
+    private bool _showAnimation;
     public bool ShowAnimation
     {
         get => _showAnimation;
         set => SetProperty(ref _showAnimation, value);
-    }*/
+    }
 
     #endregion
 
@@ -109,8 +117,7 @@ public class CargoListViewModel : ObservableObject
 
     #region Methods
   
-
-    public event EventHandler CargosLoaded;
+    
 
     public async Task RefreshListAsync()
     {
@@ -132,7 +139,18 @@ public class CargoListViewModel : ObservableObject
                 return;
             }
 
-          //  ShowAnimation = false;
+            var modelCargos = dtoCargosResult.Data.Select(dto => new Cargo
+            {
+                Id = dto.Id,
+                Destination = dto.Destination,
+                IsDangerous = dto.IsDangerous,
+                TotalWeight = dto.TotalWeight ?? 0,
+                Userid = Guid.Parse(userIdResult.Data)
+            }).ToList();
+
+            Cargos = new ObservableCollection<Cargo>(modelCargos);
+            CargosLoaded?.Invoke(this, EventArgs.Empty);
+            ShowAnimation = false;
         }
         catch (Exception ex)
         {
