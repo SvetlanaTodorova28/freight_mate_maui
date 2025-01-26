@@ -42,17 +42,27 @@
 	</dict>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+	
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera to scan documents.</string>
+	
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to your photo library to select images.</string>
+	
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Access to the photo library to save files.</string>
+	
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.mde.project.mobile</string>
+	
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This application requires microphone access to recognize speech.</string>
 
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires access to your location to provide navigation services.</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs location access even when it is in the background.</string>
 
 </dict>
 </plist>

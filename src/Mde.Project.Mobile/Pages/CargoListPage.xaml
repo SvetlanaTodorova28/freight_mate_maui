@@ -128,6 +128,7 @@
                 </Grid>
             </Border>
             <Grid Grid.Row="2"
+                  Grid.ColumnSpan="2"
                   IsVisible="{Binding IsLoading}"
                   BackgroundColor="#3B3131"
                   Opacity="1.0"

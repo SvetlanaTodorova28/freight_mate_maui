@@ -11,8 +11,10 @@ namespace Mde.Project.Mobile.ViewModels;
 public class CargoDetailsViewModel:ObservableObject{
     
     private readonly IGeocodingService _geocodingService;
-    public CargoDetailsViewModel( IGeocodingService geocodingService){
+    private readonly IPermissionService _permissionService;
+    public CargoDetailsViewModel( IGeocodingService geocodingService, IPermissionService permissionService){
         _geocodingService = geocodingService;
+        _permissionService = permissionService;
         NavigateCommand = new AsyncRelayCommand<string>(OpenNavigationApp);
     }
 
@@ -71,31 +73,36 @@ public class CargoDetailsViewModel:ObservableObject{
     {
         try
         {
-            var locations = await _geocodingService.GetLocationsAsync(destination);
-            var location = locations?.FirstOrDefault();
-            if (location != null)
-            {
-                bool isValidPlacemark = await GeocodingHelper.ValidateDestination(location, destination, _geocodingService);
-                if (!isValidPlacemark)
-                {
-                    await App.Current.MainPage.DisplayAlert("Location Not Valid",
-                        "The resolved location does not match the entered address. Please verify and try again.", "OK");
-                    return;
-                }
+            bool hasPermission = await _permissionService
+                                     .RequestIfNotGrantedAsync<Permissions.LocationWhenInUse>() ==
+                                 PermissionStatus.Granted;
+            if (hasPermission){
 
-                var confirm = await App.Current.MainPage.DisplayAlert("Confirm Location",
-                    $"Do you want to navigate to this address: {destination} at latitude: {location.Latitude}, longitude: {location.Longitude}?",
-                    "Yes", "No");
-                if (confirm)
-                {
-                    var options = new MapLaunchOptions { NavigationMode = NavigationMode.Driving };
-                    await Map.OpenAsync(location, options);
+                var locations = await _geocodingService.GetLocationsAsync(destination);
+                var location = locations?.FirstOrDefault();
+                if (location != null){
+                    bool isValidPlacemark =
+                        await GeocodingHelper.ValidateDestination(location, destination, _geocodingService);
+                    if (!isValidPlacemark){
+                        await App.Current.MainPage.DisplayAlert("Location Not Valid",
+                            "The resolved location does not match the entered address. Please verify and try again.",
+                            "OK");
+                        return;
+                    }
+
+                    var confirm = await App.Current.MainPage.DisplayAlert("Confirm Location",
+                        $"Do you want to navigate to this address: {destination} at latitude: {location.Latitude}, longitude: {location.Longitude}?",
+                        "Yes", "No");
+                    if (confirm){
+                        var options = new MapLaunchOptions{ NavigationMode = NavigationMode.Driving };
+                        await Map.OpenAsync(location, options);
+                    }
                 }
-            }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert("Location Not Found",
-                    "The specified location could not be resolved. Please check the address or enter it manually.", "OK");
+                else{
+                    await App.Current.MainPage.DisplayAlert("Location Not Found",
+                        "The specified location could not be resolved. Please check the address or enter it manually.",
+                        "OK");
+                }
             }
         }
         catch (Exception ex)
@@ -104,5 +111,8 @@ public class CargoDetailsViewModel:ObservableObject{
                 $"An error occurred while trying to navigate: {ex.Message}", "OK");
         }
     }
+    
+   
+
     
 }

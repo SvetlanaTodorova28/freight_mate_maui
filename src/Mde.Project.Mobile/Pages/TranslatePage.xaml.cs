@@ -13,6 +13,7 @@ public partial class TranslatePage : ContentPage{
     private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly TranslateViewModel _translateViewModel;
     
+    
    
     public TranslatePage(ISpeechService speechService, ITranslationService translationService,
         ITranslationStorageService translationStorageService, ITextToSpeechService textToSpeechService, IUiService uiService,

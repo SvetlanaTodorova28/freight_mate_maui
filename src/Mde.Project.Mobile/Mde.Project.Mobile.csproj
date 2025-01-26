@@ -39,8 +39,10 @@
 	  	<UserSecretsId>ee30c4ad-9b30-4108-a446-f4009fcf9b62</UserSecretsId>
   </PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-	  <CodesignKey>Apple Development: svetlanatodorova28@gmail.com (76HV98CWDV)</CodesignKey>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+
+		<CodesignKey>Apple Development: svetlanatodorova28@gmail.com (76HV98CWDV)</CodesignKey>
 	  <CodesignProvision>iOS Team Provisioning Profile: com.companyname.mde.project.mobile</CodesignProvision>
 	</PropertyGroup>
 	

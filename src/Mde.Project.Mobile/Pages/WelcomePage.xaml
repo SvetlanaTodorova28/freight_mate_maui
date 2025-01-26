@@ -2,9 +2,13 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Mde.Project.Mobile.Pages.WelcomePage"
              Style="{StaticResource CustomPageStyle}"
              NavigationPage.HasNavigationBar="False">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#3B3131" />
+    </ContentPage.Behaviors>
     <Grid VerticalOptions="FillAndExpand"
           HorizontalOptions="FillAndExpand">
         
@@ -27,7 +31,6 @@
                 </Label.GestureRecognizers>
             </Label>
         </Border>
-
         
         <Border Grid.Row="2"
                 StyleClass="cargosBorder">

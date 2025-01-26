@@ -124,6 +124,7 @@ namespace Mde.Project.Mobile
             services.AddSingleton<IMainThreadInvoker, MainThreadInvoker>(); 
             services.AddSingleton<IPreferencesService, PreferencesService>(); 
             services.AddSingleton<ISnowVisibilityService, SnowVisibilityService>(); 
+            services.AddSingleton<IPermissionService, PermissionService>();
           
             
             services.AddSingleton<KeyVaultHelper>();
@@ -159,7 +160,7 @@ namespace Mde.Project.Mobile
                 var appUserService = services.GetRequiredService<IAppUserService>();
                 var firbaseTokenService = services.GetRequiredService<IFirebaseTokenService>();
                 if (appUserService != null){
-                    var firebaseTokenResult = await firbaseTokenService.RetrieveAndStoreFcmTokenLocallyAsync();
+                    var firebaseTokenResult = await firbaseTokenService.RetrieveFromFireBaseAndStoreFcmTokenLocallyAsync();
                     if (!firebaseTokenResult.IsSuccess && uiService != null){
                         await MainThread.InvokeOnMainThreadAsync(() => {
                             uiService.ShowSnackbarWarning($"FCM Token Error: {firebaseTokenResult.ErrorMessage}");

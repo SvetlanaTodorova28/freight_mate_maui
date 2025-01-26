@@ -11,13 +11,17 @@ public partial class CargoCreatePage : ContentPage{
     private readonly CargoCreateViewModel _cargoCreateViewModel;
     private readonly IUiService _uiService;
     private readonly IMainThreadInvoker _mainThreadInvoker;
+    private readonly IPermissionService _permissionService;
     private float _angle;
     
-    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService, IMainThreadInvoker mainThreadInvoker){ 
+    public CargoCreatePage(CargoCreateViewModel cargoCreateViewModel, IUiService uiService, IMainThreadInvoker mainThreadInvoker,
+        IPermissionService permissionService)
+    { 
         InitializeComponent();
         BindingContext = _cargoCreateViewModel = cargoCreateViewModel;
         _uiService = uiService;
         _mainThreadInvoker = mainThreadInvoker;
+        _permissionService = permissionService;
     }
 
     protected override void OnAppearing(){
@@ -34,34 +38,36 @@ public partial class CargoCreatePage : ContentPage{
 
     private async void CreateCargo_fromPdf_OnClicked(object sender, EventArgs e)
     {
-        try
-        {
-            Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
+        try{
+            bool hasPermission = await _permissionService
+                                     .RequestIfNotGrantedAsync<Permissions.StorageWrite>() ==
+                                 PermissionStatus.Granted;
+            if (hasPermission){
+                
+                Stream pdfStream = await _uiService.PickAndOpenFileAsync("application/pdf");
 
-            if (pdfStream == null)
-            {
-                await _uiService.ShowSnackbarWarning("No PDF file selected.");
-                return;
+                if (pdfStream == null){
+                    await _uiService.ShowSnackbarWarning("No PDF file selected.");
+                    return;
+                }
+
+
+                await Navigation.PushModalAsync(new LoadingPage());
+
+                bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
+                if (isCreated){
+                    MessagingCenter.Send(this, "CargoListUpdatedInApp", true);
+                }
+                else{
+                    await Navigation.PopModalAsync();
+                }
+
             }
-            
-            
-            await Navigation.PushModalAsync(new LoadingPage());
-        
-            bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(pdfStream);
-            if (isCreated)
-            {
-                MessagingCenter.Send(this, "CargoListUpdatedInApp", true); 
-            }
-            else{
-                await Navigation.PopModalAsync();
-            }
-            
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex){
             await _uiService.ShowSnackbarWarning("Failed to add cargo. Please check your data and try again");
         }
-       
+    
     }
     
 
@@ -69,6 +75,7 @@ public partial class CargoCreatePage : ContentPage{
     {
         try
         {
+            
             var documentStream = await CaptureDocumentFromCameraAsync();
             if (documentStream == null)
             {
@@ -92,17 +99,22 @@ public partial class CargoCreatePage : ContentPage{
         }
        
     }
-    
-    public async Task<Stream> CaptureDocumentFromCameraAsync()
-    {
-        var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
-        {
-            Title = "Please scan the document"
-        });
 
-        if (photo != null)
-        {
-            return await photo.OpenReadAsync();
+    public async Task<Stream> CaptureDocumentFromCameraAsync(){
+        bool hasPermission = await _permissionService
+                                 .RequestIfNotGrantedAsync<Permissions.Camera>() ==
+                             PermissionStatus.Granted;
+        if (hasPermission){
+
+            var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions{
+                Title = "Please scan the document"
+            });
+
+            if (photo != null){
+                return await photo.OpenReadAsync();
+            }
+
+            return null;
         }
         return null;
     }
@@ -173,5 +185,5 @@ public partial class CargoCreatePage : ContentPage{
             await Navigation.PopModalAsync(); 
         }
     }
-
+    
 }

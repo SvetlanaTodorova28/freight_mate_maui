@@ -12,6 +12,7 @@ public class TranslateViewModelTests
     private readonly Mock<IMainThreadInvoker> _mockMainThreadInvoker; 
     private readonly Mock<ITranslationStorageService> _mockTranslationStorageService; 
     private readonly Mock<ISnowVisibilityService> _mockSnowVisibilityService;
+    private readonly Mock<IPermissionService> _mockPermissionService;
     private readonly TranslateViewModel _viewModel;
 
     public TranslateViewModelTests()
@@ -22,6 +23,7 @@ public class TranslateViewModelTests
         _mockTranslationService = new Mock<ITranslationService>();
         _mockTranslationStorageService = new Mock<ITranslationStorageService>();
         _mockSnowVisibilityService = new Mock<ISnowVisibilityService>(); 
+        _mockPermissionService = new Mock<IPermissionService>();
 
         _viewModel = new TranslateViewModel(
             _mockSpeechService.Object,
@@ -30,8 +32,8 @@ public class TranslateViewModelTests
             null,
             _mockUiService.Object,
             _mockMainThreadInvoker.Object,
-            _mockSnowVisibilityService.Object
-            
+            _mockSnowVisibilityService.Object,
+            _mockPermissionService.Object
         );
     }
 
@@ -53,6 +55,10 @@ public class TranslateViewModelTests
             .Callback<Action>(action => action());
         
         _mockSnowVisibilityService.Setup(x => x.DetermineSnowVisibility()).Returns(true);
+        
+        _mockPermissionService.Setup(x => x.RequestPermissionAsync<Permissions.Microphone>(
+                It.IsAny<string>(),
+                It.IsAny<string>())).ReturnsAsync(true);
 
 
         // Act

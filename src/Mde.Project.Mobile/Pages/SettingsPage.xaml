@@ -5,27 +5,26 @@
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:DataType="global:SettingsViewModel"
              Style="{StaticResource CustomPageStyle}">
-    <Grid HorizontalOptions="Center" VerticalOptions="Center">
+    <Grid Padding="10">
        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />  
             <ColumnDefinition Width="Auto" />  
             <ColumnDefinition Width="*" />  
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />  
             <RowDefinition Height="Auto" />  
             <RowDefinition Height="*" />  
         </Grid.RowDefinitions>
 
         
-        <Label Grid.Row="1" Grid.Column="1"
+        <Label Grid.Row="0" Grid.Column="0"
                StyleClass="BaseLabel"
                Text="Let it snow !!!"
                Margin="10"
+               HorizontalOptions="Center"
                IsVisible="{Binding Source={x:Static sys:DateTime.Now}, Converter={StaticResource DateRangeToVisibilityConverter}}" />
         
-        <Switch Grid.Row="2" Grid.Column="1"
+        <Switch Grid.Row="0" Grid.Column="1"
                 Margin="10"
                 IsToggled="{Binding SnowEnabled}"
                 IsVisible="{Binding Source={x:Static sys:DateTime.Now}, Converter={StaticResource DateRangeToVisibilityConverter}}" />

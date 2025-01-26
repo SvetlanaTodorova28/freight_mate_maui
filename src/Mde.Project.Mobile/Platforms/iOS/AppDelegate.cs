@@ -39,7 +39,7 @@ public class AppDelegate : MauiUIApplicationDelegate, IMessagingDelegate, IUNUse
         var userService = MauiProgram.CreateMauiApp().Services.GetService<IAppUserService>() as AppUserService;
         var firebaseTokenService = MauiProgram.CreateMauiApp().Services.GetService<IFirebaseTokenService>() as FirebaseTokenService;
         if (userService != null){
-            firebaseTokenService.RetrieveAndStoreFcmTokenLocallyAsync();
+            firebaseTokenService.RetrieveFromFireBaseAndStoreFcmTokenLocallyAsync();
         }
     }
     
@@ -50,6 +50,6 @@ public class NotificationDelegate : UNUserNotificationCenterDelegate
     public override void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
     {
         completionHandler(UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Badge);
-        MessagingCenter.Send<NotificationDelegate, bool>(this, "CargoListUpdatedRemotely", true);
+        MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
     }
 }

@@ -7,12 +7,13 @@ namespace Mde.Project.Mobile.UnitTests
     public class CargoDetailsViewModelTests
     {
         private readonly Mock<IGeocodingService> _mockGeocodingService;
+        private readonly Mock<IPermissionService> _mockPermissionService;
         private readonly CargoDetailsViewModel _viewModel;
 
         public CargoDetailsViewModelTests()
         {
             _mockGeocodingService = new Mock<IGeocodingService>();
-            _viewModel = new CargoDetailsViewModel(_mockGeocodingService.Object);
+            _viewModel = new CargoDetailsViewModel(_mockGeocodingService.Object, _mockPermissionService.Object);
         }
 
         [Fact]
@@ -35,6 +36,9 @@ namespace Mde.Project.Mobile.UnitTests
             _mockGeocodingService
                 .Setup(x => x.GetLocationsAsync(It.IsAny<string>()))
                 .ReturnsAsync(new List<Location> { new (51.509865, -0.118092) });
+            _mockPermissionService.Setup(x => x.RequestPermissionAsync<Permissions.LocationWhenInUse>(
+                It.IsAny<string>(),
+                It.IsAny<string>())).ReturnsAsync(true);
 
             // Act
             _viewModel.NavigateCommand.Execute("London");

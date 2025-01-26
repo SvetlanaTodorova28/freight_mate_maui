@@ -55,12 +55,13 @@ public class LoginViewModel : ObservableObject
         set => SetProperty(ref _password, value);
     }
 
-    private string _fcm;
+    /*private string _fcm;
     public string Fcm
     {
         get => _fcm;
         set => SetProperty(ref _fcm, value);
     }
+    */
 
     public async Task ExecuteLoginCommandAsync()
     {

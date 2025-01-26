@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Mde.Project.Mobile;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Helpers;
@@ -13,6 +14,7 @@ public partial class TranslateViewModel : ObservableObject
     private readonly IUiService _uiService;
     private readonly IMainThreadInvoker _mainThreadInvoker;
     private readonly ISnowVisibilityService _snowVisibilityService;
+    private readonly IPermissionService _permissionService;
 
     [ObservableProperty]
     private List<LanguageOption> availableLanguages = new()
@@ -46,7 +48,9 @@ public partial class TranslateViewModel : ObservableObject
         ITextToSpeechService textToSpeechService,
         IUiService uiService,
         IMainThreadInvoker mainThreadInvoker,
-        ISnowVisibilityService snowVisibilityService)
+        ISnowVisibilityService snowVisibilityService,
+        IPermissionService permissionService)
+    
     {
         _speechService = speechService;
         _translationService = translationService;
@@ -55,6 +59,7 @@ public partial class TranslateViewModel : ObservableObject
         _uiService = uiService;
         _mainThreadInvoker = mainThreadInvoker;
         _snowVisibilityService = snowVisibilityService;
+        _permissionService = permissionService;
         UpdateSnowVisibility();
         InitializeSubscriptionSnow();
         
@@ -65,46 +70,37 @@ public partial class TranslateViewModel : ObservableObject
         get => _snowVisibility;
         private set => SetProperty(ref _snowVisibility, value);
     }
-    
+
     [RelayCommand]
-    public async Task StartListeningAsync()
-    {
-        string inputLanguageCode = GetLanguageCode(SelectedInputLanguage);
-        var setLanguageResult = await _speechService.SetRecognitionLanguageAsync(inputLanguageCode);
+    public async Task StartListeningAsync(){
 
-        if (!setLanguageResult.IsSuccess)
-        {
-            _mainThreadInvoker.InvokeOnMainThread(async() =>
-            {
-                await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
-            });
-            return;
+        bool hasPermission = await _permissionService
+                                 .RequestIfNotGrantedAsync<Permissions.Microphone>() ==
+                             PermissionStatus.Granted;
+        if (hasPermission){
+            string inputLanguageCode = GetLanguageCode(SelectedInputLanguage);
+            var setLanguageResult = await _speechService.SetRecognitionLanguageAsync(inputLanguageCode);
+
+            if (!setLanguageResult.IsSuccess){
+                _mainThreadInvoker.InvokeOnMainThread(async () => {
+                    await _uiService.ShowSnackbarWarning(setLanguageResult.ErrorMessage);
+                });
+                return;
+            }
+
+            IsListening = true;
+
+            await _speechService.StartContinuousRecognitionAsync(
+                onRecognized: text => { _mainThreadInvoker.InvokeOnMainThread(() => { RecognizedText = text; }); },
+                onError: async error => {
+                    _mainThreadInvoker.InvokeOnMainThread(async () => { await _uiService.ShowSnackbarWarning(error); });
+                },
+                onInfo: async info => {
+                    _mainThreadInvoker.InvokeOnMainThread(async () => {
+                        await _uiService.ShowSnackbarInfoAsync(info);
+                    });
+                });
         }
-
-        IsListening = true;
-
-        await _speechService.StartContinuousRecognitionAsync(
-            onRecognized: text =>
-            {
-                _mainThreadInvoker.InvokeOnMainThread(() =>
-                {
-                    RecognizedText = text;
-                });
-            },
-            onError: async error =>
-            {
-                _mainThreadInvoker.InvokeOnMainThread(async () =>
-                {
-                    await _uiService.ShowSnackbarWarning(error);
-                });
-            },
-            onInfo: async info =>
-            {
-                _mainThreadInvoker.InvokeOnMainThread(async () =>
-                {
-                    await _uiService.ShowSnackbarInfoAsync(info);
-                });
-            });
     }
 
 

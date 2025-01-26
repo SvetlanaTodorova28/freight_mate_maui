@@ -16,7 +16,7 @@ public class FirebaseTokenService : IFirebaseTokenService{
     {
         _appUserService = appUserService;
     }
-      public  async Task<ServiceResult<string>> RetrieveAndStoreFcmTokenLocallyAsync()
+      public  async Task<ServiceResult<string>> RetrieveFromFireBaseAndStoreFcmTokenLocallyAsync()
 {
 #if ANDROID
     try
@@ -86,7 +86,7 @@ public class FirebaseTokenService : IFirebaseTokenService{
             {
                 var localTokenResult = await GetStoredFcmTokenAsync();
                 if (!localTokenResult.IsSuccess){
-                    var tokenResult = await RetrieveAndStoreFcmTokenLocallyAsync();
+                    var tokenResult = await RetrieveFromFireBaseAndStoreFcmTokenLocallyAsync();
                     if (!tokenResult.IsSuccess)
                     {
                         return ServiceResult<string>.Failure("Failed to store FCM token.");

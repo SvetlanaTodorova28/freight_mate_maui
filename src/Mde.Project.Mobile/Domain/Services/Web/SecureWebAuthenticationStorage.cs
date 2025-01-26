@@ -53,8 +53,8 @@ namespace Mde.Project.Mobile.Domain.Services.Web
                 }
 
                 var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadToken(tokenResult.Data) as JwtSecurityToken;
-
+               // var jsonToken = handler.ReadToken(tokenResult.Data) as JwtSecurityToken;
+               var jsonToken = handler.ReadJwtToken(tokenResult.Data);
                 return jsonToken.ValidTo > DateTime.UtcNow
                     ? ServiceResult<bool>.Success(true)
                     : ServiceResult<bool>.Failure("Token has expired.");

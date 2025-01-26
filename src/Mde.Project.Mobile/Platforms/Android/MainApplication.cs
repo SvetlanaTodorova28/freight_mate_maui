@@ -11,8 +11,7 @@ namespace Mde.Project.Mobile.Platforms.Android
     [Application]
     public class MainApplication : MauiApplication
     {
-        private readonly IServiceProvider _serviceProvider;
-
+        
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)
             : base(handle, ownership)
         {
@@ -20,12 +19,10 @@ namespace Mde.Project.Mobile.Platforms.Android
             {
                 if (view is Entry)
                 {
-                    handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
+                    handler.PlatformView.Background.SetTint(Colors.Transparent.ToAndroid());
                     handler.PlatformView.TextCursorDrawable.SetTint(Colors.OrangeRed.ToAndroid());
                 }
             });
-            
-            _serviceProvider = MauiProgram.CreateMauiApp().Services;
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

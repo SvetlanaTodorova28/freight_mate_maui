@@ -47,10 +47,9 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
+    private async void BackToWelcome_OnTapped(object sender, TappedEventArgs e)
     {
-        Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService, _mainThreadInvoker, _firebaseTokenService));
+        await Navigation.PopAsync();
     }
 
     private async void Login_OnClicked(object sender, EventArgs e)

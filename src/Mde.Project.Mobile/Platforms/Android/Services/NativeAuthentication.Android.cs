@@ -50,8 +50,6 @@ public class NativeAuthentication : INativeAuthentication
         }
 
         var taskCancellationSource = new CancellationTokenSource();
-
-        
         var taskCompletionSource = new TaskCompletionSource<NativeAuthResult>();
         var executor = Executors.NewSingleThreadExecutor();
         var activity = (FragmentActivity)Platform.CurrentActivity; 
@@ -75,23 +73,6 @@ public class NativeAuthentication : INativeAuthentication
         return await taskCompletionSource.Task;
 
     }
-
-    /*var taskCompletionSource = new TaskCompletionSource<NativeAuthResult>();
-    var executor = Executors.NewSingleThreadExecutor();
-    var activity = (FragmentActivity)Application.Context;
-    var promptInfo = new BiometricPrompt.PromptInfo.Builder()
-        .SetTitle("Biometric Login")
-        .SetSubtitle("Log in using your biometric credential")
-        .SetDescription(reason)
-        .SetNegativeButtonText("Cancel")
-        .Build();
-
-    var authenticationCallback = new AuthenticationCallback(taskCompletionSource);
-    var biometricPrompt = new BiometricPrompt(activity, executor, authenticationCallback);
-
-    biometricPrompt.Authenticate(promptInfo);
-
-    return await taskCompletionSource.Task;*/
     }
 
     class AuthenticationCallback : BiometricPrompt.AuthenticationCallback

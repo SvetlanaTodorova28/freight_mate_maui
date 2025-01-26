@@ -19,23 +19,25 @@ namespace Mde.Project.Mobile.Platforms
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode)]
     public class MainActivity : MauiAppCompatActivity
     {
-        const int RequestMicrophonePermissionId = 10;
+       
 
         private CargoListViewModel _cargoListViewModel =
             MauiProgram.CreateMauiApp().Services.GetService<CargoListViewModel>();
-        readonly string[] Permissions = { Manifest.Permission.RecordAudio };
+        readonly string[] Permissions = { 
+            Manifest.Permission.RecordAudio, 
+            Manifest.Permission.Camera,
+            Manifest.Permission.AccessFineLocation, 
+            Manifest.Permission.ReadExternalStorage,
+            Manifest.Permission.ReadMediaImages,
+            Manifest.Permission.WriteExternalStorage,
+            Manifest.Permission.ReadExternalStorage
+        };
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             CreateNotificationChannel();
-
-
-            if (CheckSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
-            {
-                RequestPermissions(Permissions, RequestMicrophonePermissionId);
-            }
-
+            
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
                 Platform.Init(this, savedInstanceState);
@@ -85,12 +87,6 @@ namespace Mde.Project.Mobile.Platforms
             base.OnResume();
             MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
         }
-        
-        protected override void OnPause(){
-            base.OnPause();
-            MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
-        }
-     
      
     }
     

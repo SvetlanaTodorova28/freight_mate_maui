@@ -1,4 +1,3 @@
-
 using CoreFoundation;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using LocalAuthentication;
@@ -8,19 +7,15 @@ using Mde.Project.Mobile.Domain.Services;
 namespace Mde.Project.Mobile.Platforms;
 public class NativeAuthentication : INativeAuthentication
 {
-    private readonly LAContext context;
-
-    public NativeAuthentication()
-    {
-        context = new LAContext();
-    }
+    
 
     public SupportStatus IsSupported()
     {
         NSError error;
+        var context = new LAContext();
         var supportStatus = new SupportStatus { IsSupported = context.CanEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, out error) };
 
-        if (!supportStatus.IsSupported)
+        if (!supportStatus.IsSupported && error != null)
         {
             switch ((LAStatus)error.Code)
             {
@@ -50,27 +45,26 @@ public class NativeAuthentication : INativeAuthentication
         {
             return new NativeAuthResult { Authenticated = false, ErrorMessage = supportStatus.ErrorMessage };
         }
+
         var context = new LAContext
         {
-            LocalizedReason = prompt, 
-            LocalizedCancelTitle = "Cancel" 
+            LocalizedReason = prompt,
+            LocalizedCancelTitle = "Cancel",
+            LocalizedFallbackTitle = "Use Passcode"
         };
 
-        var replyHandler = new TaskCompletionSource<NativeAuthResult>();
-        DispatchQueue.MainQueue.DispatchAsync(() => {
-            context.EvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, prompt, (success, error) => {
-                if (success) {
-                    replyHandler.SetResult(new NativeAuthResult() { Authenticated = true });
-                } else {
-                    var message = error?.LocalizedDescription ?? "Authentication failed";
-                    Console.WriteLine($"Authentication failed with error: {error?.Code} - {message}");
-                    replyHandler.SetResult(new NativeAuthResult() { Authenticated = false, ErrorMessage = message });
-                }
-            });
+        var (success, error) = await context.EvaluatePolicyAsync(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, prompt);
 
-        });
-        return await replyHandler.Task;
+        if (success)
+        {
+            return new NativeAuthResult { Authenticated = true };
+        }
+        
+        string errorMessage =
+            error != null ? error.LocalizedDescription : "Authentication failed for an unknown reason.";
+        return new NativeAuthResult{ Authenticated = false, ErrorMessage = errorMessage };
+        
     }
 
-}
 
+}

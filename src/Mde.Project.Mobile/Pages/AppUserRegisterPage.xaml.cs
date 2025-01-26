@@ -34,9 +34,10 @@ public partial class AppUserRegisterPage : ContentPage{
        
     }
 
-    private void BackToLogin_OnTapped(object? sender, TappedEventArgs e){
-        Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
-            _appUserService, _mainThreadInvoker, _firebaseTokenService));
+    private async void BackToWelcome_OnTapped(object? sender, TappedEventArgs e){
+        /*Navigation.PushAsync( new WelcomePage(_uiService, _authenticationServiceMobile,_userRegisterViewModel, _loginViewModel, _nativeAuthentication,
+            _appUserService, _mainThreadInvoker, _firebaseTokenService));*/
+        await Navigation.PopAsync();
     }
     
     protected override void OnAppearing()
