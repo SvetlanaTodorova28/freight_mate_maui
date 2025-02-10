@@ -37,7 +37,7 @@ public class TranslateViewModelTests
         );
     }
 
-    [Fact]
+    /*[Fact]
     public async Task StartListeningAsync_SuccessfullyStartsListening()
     {
         // Arrange
@@ -68,7 +68,7 @@ public class TranslateViewModelTests
         Assert.True(_viewModel.IsListening);
        _mockUiService
            .Verify(x => x.ShowSnackbarWarning(It.IsAny<string>()), Times.Never);
-    }
+    }*/
   
 
 

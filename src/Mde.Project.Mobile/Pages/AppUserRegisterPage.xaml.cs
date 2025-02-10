@@ -40,10 +40,10 @@ public partial class AppUserRegisterPage : ContentPage{
         await Navigation.PopAsync();
     }
     
-    protected override void OnAppearing()
+    /*protected override void OnAppearing()
     {
         _userRegisterViewModel?.OnAppearingCommand.Execute(null);
-    }
+    }*/
    
 
 
@@ -68,8 +68,6 @@ public partial class AppUserRegisterPage : ContentPage{
         else{
             await Navigation.PopModalAsync();
         }
-        
-        
     }
  
   

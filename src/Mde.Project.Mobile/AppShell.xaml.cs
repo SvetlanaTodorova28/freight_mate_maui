@@ -45,7 +45,7 @@ namespace Mde.Project.Mobile
         private async void LinkLinkdIn_OnClicked(Object sender, EventArgs e)
         {
             string linkedInUrl = "https://www.linkedin.com/in/svetlana-todorova-87354bbb";
-            await Shell.Current.GoToAsync($"{nameof(WebViewLinkdInPage)}?url={linkedInUrl}");
+            await Current.GoToAsync($"{nameof(WebViewLinkdInPage)}?url={linkedInUrl}");
         }
 
     }

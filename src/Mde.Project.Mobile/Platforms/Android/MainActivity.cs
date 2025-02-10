@@ -85,7 +85,8 @@ namespace Mde.Project.Mobile.Platforms
 
         protected override void OnResume(){
             base.OnResume();
-            MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
+           // MessagingCenter.Send(this, "CargoListUpdatedRemotely", true);
+           _cargoListViewModel?.RefreshListAsync();
         }
      
     }

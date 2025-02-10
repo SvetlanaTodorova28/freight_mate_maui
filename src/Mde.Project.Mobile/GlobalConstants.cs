@@ -13,8 +13,9 @@ public class GlobalConstants{
     public const string HttpClientFireBase = "FireBase";
 
    
-    public const string EndPointOCR = "https://cargos.cognitiveservices.azure.com";
+    public const string EndPointOCR = "https://weight-cargos.cognitiveservices.azure.com/";
     public const string EndPointTranslate = "https://api.cognitive.microsofttranslator.com";
+    public const string OCRKey = "9vJNH0IaDSr1DkZ4ExGK7XZtrySZDCdOQciLp5yMiRt3CpdzbRJWJQQJ99BBAC5RqLJXJ3w3AAAFACOGhHKk";
     
     public const int EndDateSnow = 22;
 

@@ -43,16 +43,29 @@ public class UiService : IUiService
                 FileTypes = FilePickerFileType.Pdf
             });
 
-            if (fileResult != null)
+            if (fileResult == null)
             {
-                return await fileResult.OpenReadAsync();
+                if (fileResult == null)
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await App.Current.MainPage.DisplayAlert("Notification", "File selection was canceled.", "OK");
+                    });
+                    return null;
+                }
             }
+
+            var stream = await fileResult.OpenReadAsync();
+            return stream;
         }
         catch (Exception ex)
         {
-          ShowSnackbarWarning("An error occurred while picking a file");
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await ShowSnackbarWarning("An error occurred while picking a file.");
+            });
+            return null;
         }
-        return null;
     }
     public async Task ShowSnackbarInfoAsync(string message)
     {

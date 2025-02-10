@@ -63,6 +63,7 @@ public partial class CargoCreatePage : ContentPage{
                 }
 
             }
+            
         }
         catch (Exception ex){
             await _uiService.ShowSnackbarWarning("Failed to add cargo. Please check your data and try again");
@@ -88,7 +89,7 @@ public partial class CargoCreatePage : ContentPage{
             bool isCreated = await _cargoCreateViewModel.UploadAndProcessPdfAsync(documentStream,"jpeg");
             if (isCreated)
             {
-                MessagingCenter.Send<CargoCreatePage, bool>(this, "CargoListUpdated", true); 
+                MessagingCenter.Send(this, "CargoListUpdated", true); 
             }
                                                                                  
         }

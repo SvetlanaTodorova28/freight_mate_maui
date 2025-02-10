@@ -49,12 +49,12 @@ namespace Mde.Project.Mobile
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+            /*Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
             {
 #if ANDROID
                 handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
 #endif
-            });
+            });*/
 
            
            
@@ -131,12 +131,12 @@ namespace Mde.Project.Mobile
             #if ANDROID
             services.AddSingleton<MyFirebaseMessagingService>();
             #endif
-            services.AddSingleton<ISpeechService>(new AzureSpeechService(GlobalConstants.Region));
+            /*services.AddSingleton<ISpeechService>(new AzureSpeechService(GlobalConstants.Region));
             services.AddSingleton<ITextToSpeechService>(new AzureTextToSpeechService(GlobalConstants.Region));
             services.AddHttpClient<ITranslationService, AzureTranslationService>(client =>
             {
                 client.BaseAddress = new Uri(GlobalConstants.EndPointTranslate);
-            });
+            });*/
             services.AddHttpClient<IOcrService, AzureOcrService>(client =>
             {
                 client.BaseAddress = new Uri(GlobalConstants.EndPointOCR);
@@ -146,16 +146,16 @@ namespace Mde.Project.Mobile
         public static async Task InitializeAppAsync(IServiceProvider services)
         {
             try{
-                var keyVaultHelper = services.GetRequiredService<KeyVaultHelper>();
+              //  var keyVaultHelper = services.GetRequiredService<KeyVaultHelper>();
                 var uiService = services.GetService<IUiService>();
 
 
-                var keyVaultResult = await keyVaultHelper.EnsureKeysAreAvailableAsync();
+                /*var keyVaultResult = await keyVaultHelper.EnsureKeysAreAvailableAsync();
                 if (!keyVaultResult.IsSuccess && uiService != null){
                     await MainThread.InvokeOnMainThreadAsync(() => {
                         uiService.ShowSnackbarWarning($"Key Vault Error: {keyVaultResult.ErrorMessage}");
                     });
-                }
+                }*/
 
                 var appUserService = services.GetRequiredService<IAppUserService>();
                 var firbaseTokenService = services.GetRequiredService<IFirebaseTokenService>();

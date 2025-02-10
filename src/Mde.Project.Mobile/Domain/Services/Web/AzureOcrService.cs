@@ -4,6 +4,7 @@ using System.Text.Json;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Helpers;
 using SkiaSharp;
+using Utilities;
 
 namespace Mde.Project.Mobile.Domain.Services.Web
 {
@@ -19,9 +20,9 @@ namespace Mde.Project.Mobile.Domain.Services.Web
             _lazyOcrApiKey = new Lazy<Task<string>>(GetOcrApiKeyAsync);
         }
         
-        private async Task<string> GetOcrApiKeyAsync()
-        {
-            var apiKey = await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
+        private async Task<string> GetOcrApiKeyAsync(){
+            var apiKey = GlobalConstants.OCRKey;
+            //await SecureStorageHelper.GetApiKeyAsync("Key_OCR");
             if (string.IsNullOrEmpty(apiKey))
             {
                 throw new InvalidOperationException("OCR API key not found in secure storage.");

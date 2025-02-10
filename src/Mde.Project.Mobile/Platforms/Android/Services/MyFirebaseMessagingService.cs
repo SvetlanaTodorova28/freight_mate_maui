@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Media;
 using AndroidX.Core.App;
 using Firebase.Messaging;
+using Application = Android.App.Application;
 
 namespace Mde.Project.Mobile.Platforms;
 [Service(Name = "Mde.Project.Mobile.Platforms.MyFirebaseMessagingService", Exported = true)]
@@ -30,10 +31,10 @@ public class MyFirebaseMessagingService : FirebaseMessagingService{
         };
         notificationManager.CreateNotificationChannel(channel);
     
-        var intent = new Intent(this, typeof(MainActivity));
+        var intent = new Intent(Application.Context, typeof(MainActivity));
         intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop); 
         intent.PutExtra("refreshList", true); 
-        var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
+        var pendingIntent = PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
         var notificationBuilder = new NotificationCompat.Builder(this, channelId)
             .SetContentTitle(title)

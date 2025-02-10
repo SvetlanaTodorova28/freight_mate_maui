@@ -33,6 +33,7 @@ public partial class CargoListPage : ContentPage{
         _cargoListViewModel.CargosLoaded += OnCargosLoaded;  
         _cargoListViewModel.RefreshListCommand?.Execute(null);
         _cargoListViewModel.ShowAnimation = true;
+        
         Device.StartTimer(TimeSpan.FromMilliseconds(100), () => 
         {
             if (!_cargoListViewModel.ShowAnimation){
